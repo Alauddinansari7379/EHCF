@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.ehcf">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/circulelogo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EHCF"
+        tools:targetApi="32">
+        <activity
+            android:name=".NotificationView"
+            android:exported="false" />
+        <activity
+            android:name=".Testing.Voice_Calling"
+            android:exported="false" />
+        <activity
+            android:name=".login.activity.SignIn"
+            android:exported="false" />
+        <activity
+            android:name=".Testing.ApiTesting"
+            android:exported="false" />
+        <activity
+            android:name=".Testing.RazorPay"
+            android:exported="false" />
+        <activity
+            android:name=".Testing.VideoCalling"
+            android:exported="false" />
+        <activity
+            android:name=".report.ReportFile"
+            android:exported="false" />
+        <activity
+            android:name=".report.PatientMedicalReport"
+            android:exported="false" />
+        <activity
+            android:name=".Prescription.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Prescription.AddPrescription"
+            android:exported="false" />
+        <activity
+            android:name=".Fragment.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".AddNewFamily"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard"
+            android:exported="false" />
+        <activity
+            android:name=".RatingAndReviews.Rating"
+            android:exported="false" />
+        <activity
+            android:name=".FAQ.FaqDetails"
+            android:exported="false" />
+        <activity
+            android:name=".FAQ.Faq"
+            android:exported="false" />
+        <activity
+            android:name=".FAQ.FAQCategories"
+            android:exported="false" />
+        <activity
+            android:name=".PrivacyPolicies"
+            android:exported="false" />
+        <activity
+            android:name=".Address.Activity.AddressList"
+            android:exported="false" />
+        <activity
+            android:name=".Setting"
+            android:exported="false" />
+        <activity
+            android:name=".invoices.InvoiceAmt"
+            android:exported="false" />
+        <activity
+            android:name=".invoices.Invoice"
+            android:exported="false" />
+        <activity
+            android:name=".report.ReportView"
+            android:exported="false" />
+        <activity
+            android:name=".report.Report"
+            android:exported="false" />
+        <activity
+            android:name=".Prescription.Prescription1"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PerscriptionRepoart"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PrescriptionActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".Prescription.Prescription" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_prescription" -->
+        <!-- android:theme="@style/Theme.EHCF.NoActionBar" /> -->
+        <activity
+            android:name=".PaymentMode"
+            android:exported="false" />
+        <activity
+            android:name=".FindYourDoctor1"
+            android:exported="false" />
+        <activity
+            android:name=".FindYourDoctor"
+            android:exported="false" />
+        <activity
+            android:name=".DateForConsultation"
+            android:exported="false" />
+        <activity
+            android:name=".Specialities"
+            android:exported="false" />
+        <activity
+            android:name=".AboutMe"
+            android:exported="false" />
+        <activity
+            android:name=".Registration.activity.Registration"
+            android:exported="false" />
+        <activity
+            android:name=".OTPVerification"
+            android:exported="false" />
+        <activity
+            android:name=".PhoneNumber.Activity.PhoneNumber"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen.SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_y6bdIFkJ0IzbOK" />
+        <meta-data
+            android:name="com.google.gms.wallet.api.enabled"
+            android:value="true" />
+    </application>
+
+</manifest>
