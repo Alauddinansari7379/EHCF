@@ -2,9 +2,14 @@ package com.example.ehcf.retrofit
 
 import com.example.ehcf.Address.ModelResponse.AddAddressResponse
 import com.example.ehcf.Address.ModelResponse.AddressListResponse
+import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
+import com.example.ehcf.DateForConsultaion.model.ModelSlotRes
+import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
+import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
+import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.login.modelResponse.LogInResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -61,6 +66,33 @@ interface ApiInterface {
         @Field("password") password:String,
     ): Call<ResetPassResponse>
 
+    @FormUrlEncoded
+    @POST("get_nearest_doctors")
+    fun searchByLocation(
+        @Field("lat") lat:String,
+        @Field("lng") lng:String,
+        @Field("search") search:String,
+    ): Call<SearchbyLocationRes>
 
+    @GET("get_doctor_categories")
+    fun getPhotos(): Call<ModelSplic>
+
+    @FormUrlEncoded
+    @POST("get_booking_requests")
+    fun myAppointmentUpComing(
+        @Field("customer_id") customer_id:String,
+    ): Call<ModelUpComingResponse>
+
+    @FormUrlEncoded
+    @POST("get_booking_requests")
+    fun myAppointmentConsulted(
+        @Field("customer_id") customer_id:String,
+    ): Call<ModelConsultedResponse>
+
+    @POST("get_time_slots")
+    fun getTimeSlot(
+        @Query("doctor_id") doctorid: String?,
+        @Query("date") date: String?
+    ): Call<ModelSlotRes>
 
 }

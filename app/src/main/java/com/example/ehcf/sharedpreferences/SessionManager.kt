@@ -12,6 +12,8 @@ class SessionManager(context: Context?) {
         private const val BLOOD_GROUP="blood_group"
         private const val CREATED_AT="created_at"
         private const val CUSTOMER_NAME="customer_name"
+        private const val LATITUDE="latitude"
+        private const val LONGITUDE="longitude"
         private const val EMAIL="email"
         private const val FCM_TOKEN="fcm_token"
         private const val GENDER="gender"
@@ -43,6 +45,16 @@ class SessionManager(context: Context?) {
         get() = prefs.getString(FCM_TOKEN, "")
         set(fcmToken) {
             prefs.edit().putString(FCM_TOKEN, fcmToken).apply()
+        }
+    var latitude: String?
+        get() = prefs.getString(LATITUDE, "")
+        set(latitude) {
+            prefs.edit().putString(LATITUDE, latitude).apply()
+        }
+    var longitude: String?
+        get() = prefs.getString(LONGITUDE, "")
+        set(longitude) {
+            prefs.edit().putString(LONGITUDE, longitude).apply()
         }
     var password: String?
         get() = prefs.getString(PASSWORD, "")

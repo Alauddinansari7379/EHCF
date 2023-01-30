@@ -1,7 +1,6 @@
 package com.example.ehcf.Profile.activity
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.R
-import com.example.ehcf.databinding.FragmentHomeBinding
 import com.example.ehcf.databinding.FragmentProfile2Binding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient

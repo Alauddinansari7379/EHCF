@@ -24,7 +24,6 @@ class VideoCalling : AppCompatActivity() {
 
         }
 
-
         binding.btnJoin.setOnClickListener {
 
             if (binding.edtEnterRoomID.text.isEmpty()) {

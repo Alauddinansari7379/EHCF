@@ -3,14 +3,12 @@ package com.example.ehcf.Fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +28,7 @@ import com.example.easywaylocation.LocationData
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentHomeBinding
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -54,6 +53,8 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     var getLocation: Button? = null
     private val REQUEST_CODE = 100
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var sessionManager: SessionManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,6 +73,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         val current = resources.configuration.locale
 
+        sessionManager = SessionManager(requireContext())
 
 
 
@@ -118,13 +120,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                                 geocoder.getFromLocation(location.latitude, location.longitude, 1)
 //                            lattitude!!.text = "Lattitude: " + addresses[0].latitude
 //                            longitude!!.text = "Longitude: " + addresses[0].longitude
-                            Log.e(
-                                ContentValues.TAG, " addresses[0].latitude${addresses[0].latitude}"
-                            )
-                            Log.e(
-                                ContentValues.TAG,
-                                " addresses[0].latitude${addresses[0].longitude}"
-                            )
+                            Log.e(ContentValues.TAG, " addresses[0].latitude${addresses[0].latitude}")
+                            Log.e(ContentValues.TAG, " addresses[0].latitude${addresses[0].longitude}")
+                            sessionManager.latitude = addresses[0].latitude.toString()
+                            sessionManager.longitude = addresses[0].longitude.toString()
+
                             addresses[0].getAddressLine(0)
 
                             val locality = addresses[0].locality

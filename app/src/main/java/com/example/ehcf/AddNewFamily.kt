@@ -37,8 +37,7 @@ class AddNewFamily : AppCompatActivity() {
         relationList.add("Grandson")
         relationList.add("Husband")
         relationList.add("Brother")
-        binding.spinnerRelation.adapter =
-            ArrayAdapter<String>(context, R.layout.simple_list_item_1, relationList)
+        binding.spinnerRelation.adapter = ArrayAdapter<String>(context, R.layout.simple_list_item_1, relationList)
 
 
         mydilaog?.setCanceledOnTouchOutside(false)

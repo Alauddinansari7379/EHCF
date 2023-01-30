@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ehcf.*
+import com.example.ehcf.DateForConsultaion.DateForConsultation
+import com.example.ehcf.Specialities.activity.Specialities
 import com.example.ehcf.databinding.FragmentBooking3Binding
 
 class BookingFragment : Fragment() {
@@ -18,10 +20,10 @@ class BookingFragment : Fragment() {
         binding = FragmentBooking3Binding.inflate(inflater)
 
         binding.btnConsultDoctor.setOnClickListener {
-            startActivity(Intent(requireContext(), FindYourDoctor1::class.java))
+            startActivity(Intent(requireContext(), Specialities::class.java))
         }
         binding.btnBookAppointment.setOnClickListener {
-            startActivity(Intent(requireContext(), FindYourDoctor::class.java))
+            startActivity(Intent(requireContext(), Specialities::class.java))
         }
         binding.btnHomeVisit.setOnClickListener {
             startActivity(Intent(requireContext(), Specialities::class.java))

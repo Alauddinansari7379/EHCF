@@ -1,4 +1,4 @@
-package com.example.ehcf.Testing.Model
+package com.example.ehcf.Specialities.model
 
 data class ModelSplic(
     val message: String,

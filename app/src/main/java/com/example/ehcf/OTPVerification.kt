@@ -1,7 +1,6 @@
 package com.example.ehcf
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -15,13 +14,10 @@ import com.example.ehcf.Helper.myToast
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
 import com.example.ehcf.Registration.activity.Registration
 import com.example.ehcf.databinding.ActivityOtpverificationBinding
-import com.example.ehcf.retrofit.ApiInterface
 import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class OTPVerification : AppCompatActivity() {

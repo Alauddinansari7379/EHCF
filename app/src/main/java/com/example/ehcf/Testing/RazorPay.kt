@@ -10,11 +10,13 @@ import org.json.JSONObject
 
 class RazorPay : AppCompatActivity(), PaymentResultListener {
     private lateinit var binding: ActivityRazorPayBinding
-    var amt = 0
+    var amt = 1000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRazorPayBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        startPayment()
+
         binding.btnPayment.setOnClickListener {
             if (binding.edtEnterAmount.text.isEmpty()) {
                 Toast.makeText(this, "Enter Amount", Toast.LENGTH_SHORT).show()

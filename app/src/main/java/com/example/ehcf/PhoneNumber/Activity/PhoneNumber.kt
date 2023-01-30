@@ -12,14 +12,10 @@ import com.example.ehcf.OTPVerification
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
 import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.databinding.ActivityPhoneNumberBinding
-import com.example.ehcf.login.modelResponse.LogInResponse
-import com.example.ehcf.retrofit.ApiInterface
 import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class PhoneNumber : AppCompatActivity() {
     private val context: Context = this@PhoneNumber

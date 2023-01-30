@@ -7,8 +7,7 @@ import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.Testing.Adapter.Adapter
 import com.example.ehcf.Testing.Interface.apiInterface
-import com.example.ehcf.Testing.Model.ModelPhotos
-import com.example.ehcf.Testing.Model.ModelSplic
+import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.databinding.ActivityApiTestingBinding
 import retrofit2.Call
 import retrofit2.Callback

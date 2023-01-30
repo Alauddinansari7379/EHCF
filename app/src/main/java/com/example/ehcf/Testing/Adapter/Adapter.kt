@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.Address.ModelResponse.AddressListResponse
 import com.example.ehcf.R
-import com.example.ehcf.Testing.Model.ModelPhotos
-import com.example.ehcf.Testing.Model.ModelSplic
+import com.example.ehcf.Specialities.model.ModelSplic
 import com.squareup.picasso.Picasso
 
 

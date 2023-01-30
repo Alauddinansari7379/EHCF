@@ -12,22 +12,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
-import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Registration.ModelResponse.ModelGender
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
 import com.example.ehcf.Registration.ModelResponse.SpinnerModel
 import com.example.ehcf.databinding.ActivityRegistrationBinding
 import com.example.ehcf.login.activity.SignIn
-import com.example.ehcf.login.modelResponse.LogInResponse
-import com.example.ehcf.retrofit.ApiInterface
 import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.net.URI.create
 
 
 class Registration : AppCompatActivity() {
@@ -181,8 +175,7 @@ class Registration : AppCompatActivity() {
 
                 progressDialog!!.show()
 
-                ApiClient.apiService.register(coustmerName,phoneNumber,
-                    phoneNumberWithCodeNew,email,password,bloodGroup,genderValue,fcmToken)
+                ApiClient.apiService.register(coustmerName,phoneNumber, phoneNumberWithCodeNew,email,password,bloodGroup,genderValue,fcmToken)
                     .enqueue(object :Callback<RegistationResponse>{
                     @SuppressLint("LogNotTimber")
                     override fun onResponse(

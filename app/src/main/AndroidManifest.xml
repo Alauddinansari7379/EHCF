@@ -27,6 +27,15 @@
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
         <activity
+            android:name=".Appointments.Appointments"
+            android:exported="false" />
+        <activity
+            android:name=".DateForConsultaion.activity.ShuduleTiming"
+            android:exported="false" />
+        <activity
+            android:name=".Testing.CalanderTest"
+            android:exported="false" />
+        <activity
             android:name=".NotificationView"
             android:exported="false" />
         <activity
@@ -59,13 +68,12 @@
         <activity
             android:name=".Fragment.MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".AddNewFamily"
             android:exported="false" />
         <activity
-            android:name=".Dashboard"
+            android:name=".Dashboard.Dashboard"
             android:exported="false" />
         <activity
             android:name=".RatingAndReviews.Rating"
@@ -123,10 +131,10 @@
             android:name=".FindYourDoctor"
             android:exported="false" />
         <activity
-            android:name=".DateForConsultation"
+            android:name=".DateForConsultaion.DateForConsultation"
             android:exported="false" />
         <activity
-            android:name=".Specialities"
+            android:name=".Specialities.activity.Specialities"
             android:exported="false" />
         <activity
             android:name=".AboutMe"

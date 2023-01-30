@@ -1,11 +1,9 @@
 package com.example.ehcf.Testing.Interface
 
-import com.example.ehcf.Testing.Model.ModelPhotos
-import com.example.ehcf.Testing.Model.ModelSplic
+import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.Testing.Model.User
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.POST
 
 interface apiInterface {
 

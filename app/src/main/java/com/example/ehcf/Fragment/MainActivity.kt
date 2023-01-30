@@ -1,36 +1,24 @@
 package com.example.ehcf.Fragment
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
-import com.example.easywaylocation.Listener
-import com.example.easywaylocation.LocationData
 import com.example.ehcf.*
+import com.example.ehcf.Appointments.Appointments
+import com.example.ehcf.Dashboard.Dashboard
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.report.ReportView
-import com.giphy.sdk.analytics.GiphyPingbacks.context
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import me.ibrahimsn.lib.SmoothBottomBar
 
 class MainActivity : AppCompatActivity() {
@@ -87,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             binding.includedrawar1.tvAppointments.setOnClickListener {
-                startActivity(Intent(this, FindYourDoctor::class.java))
+                startActivity(Intent(this, Appointments::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             binding.includedrawar1.tvRefunds.setOnClickListener {
