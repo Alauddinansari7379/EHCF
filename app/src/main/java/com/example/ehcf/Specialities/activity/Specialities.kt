@@ -3,6 +3,7 @@ package com.example.ehcf.Specialities.activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Helper.myToast
@@ -20,14 +21,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 class Specialities : AppCompatActivity() {
    private var progressDialog: ProgressDialog? =null
     private val context: Context = this@Specialities
+    var bookingType=""
 
     private lateinit var binding: ActivitySpecialitiesBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySpecialitiesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        apiCall()
 
+        bookingType= intent.getStringExtra("bookingType").toString()
+        Log.e("BookingType","$bookingType")
+        apiCall()
 
 
 //        binding.cardDermatology.setOnClickListener {
@@ -88,5 +92,6 @@ class Specialities : AppCompatActivity() {
             }
         })
     }
+
 //    }
 }

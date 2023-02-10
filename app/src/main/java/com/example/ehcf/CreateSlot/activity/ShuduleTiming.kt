@@ -1,6 +1,7 @@
-package com.example.ehcf.DateForConsultaion.activity
+package com.example.ehcf.CreateSlot.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -15,13 +16,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import com.example.ehcf.DateForConsultaion.Adapter.AdapterShuduleTiming
-import com.example.ehcf.DateForConsultaion.model.ModelSlotRes
+import com.example.ehcf.CreateSlot.Adapter.AdapterShuduleTimingNew
+import com.example.ehcf.CreateSlot.model.ModelSlotResNew
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.PaymentMode
 import com.example.ehcf.R
-import com.example.ehcf.Testing.RazorPay
 import com.example.ehcf.databinding.ActivityShuduleTimingBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
@@ -32,12 +31,14 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ShuduleTiming : AppCompatActivity(),AdapterShuduleTiming.BookPopUp {
+class ShuduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
     private val context: Context = this@ShuduleTiming
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
     var selectedate = ""
-    private var arrayList = ModelSlotRes();
+    var startTime = ""
+    var doctorId = ""
+   // private var arrayList = ModelSlotResNew();
     var dialog: Dialog? = null
     private lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivityShuduleTimingBinding
@@ -45,18 +46,27 @@ class ShuduleTiming : AppCompatActivity(),AdapterShuduleTiming.BookPopUp {
         super.onCreate(savedInstanceState)
         binding = ActivityShuduleTimingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        sessionManager = SessionManager(this)
         binding.imgBack.setOnClickListener {
             onBackPressed()
+            //startActivity(Intent(this, MainActivity::class.java))
         }
-         apiCall()
+        selectedate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        binding.tvDate.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+        // binding.tvDateTotalPatients.text=currentDate
+
+
+         doctorId = intent.getStringExtra("doctorId").toString()
+        Log.e("DoctorId", doctorId)
+        Log.e("startTimeNew", startTime)
+
+
+        apiCall()
 
 //        Handler().postDelayed({
 //        apiCall()
 //        }, 500)
-        selectedate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        // binding.tvDateTotalPatients.text=currentDate
-        binding.tvDate.text = selectedate
+
 
         val view = layoutInflater.inflate(R.layout.book_dialog, null)
 
@@ -94,10 +104,10 @@ class ShuduleTiming : AppCompatActivity(),AdapterShuduleTiming.BookPopUp {
                 newDate[year, monthOfYear] = dayOfMonth
                 DateFormat.getDateInstance().format(newDate.time)
                 // val Date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(newDate.time)
-                selectedate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(newDate.time)
+                selectedate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(newDate.time)
                 binding.tvDate.text = selectedate
                 apiCall()
-                Log.e(ContentValues.TAG, "onCreate: >>>>>>>>>>>>>>>>>>>>>>$selectedate")
+                Log.e(ContentValues.TAG, "selectedate: >>>>>>>>>>>>>>>>>>>>>>$selectedate")
             },
             newCalendar1[Calendar.YEAR],
             newCalendar1[Calendar.MONTH],
@@ -119,53 +129,54 @@ class ShuduleTiming : AppCompatActivity(),AdapterShuduleTiming.BookPopUp {
         progressDialog!!.setCancelable(true)
         progressDialog!!.show()
 
-        val doctorid = "50"
-        val date = "01-01-2023"
-        ApiClient.apiService.getTimeSlot(doctorid, date).enqueue(object :Callback<ModelSlotRes>
+        val doctorid = "54"
+        val date = "2023-02-04"
+        doctorId
+        ApiClient.apiService.getTimeSlot(doctorId, selectedate).enqueue(object :Callback<ModelSlotResNew>
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
-                call: Call<ModelSlotRes>,
-                response: Response<ModelSlotRes>
-            )
-            {
-                arrayList=response.body()!!;
-                if(arrayList!=null)
-                {
-                    // list = ArrayList<mymodal>()
-                    val adapter = AdapterShuduleTiming(arrayList, this@ShuduleTiming,this@ShuduleTiming)
-                    binding.rvSlotTiming.layoutManager = GridLayoutManager(context, 3)
-                    binding.rvSlotTiming?.adapter = adapter
-                    adapter.notifyDataSetChanged()
-                    progressDialog!!.dismiss()
+                call: Call<ModelSlotResNew>,
+                response: Response<ModelSlotResNew>
+            ) {
+               // binding.rvSlotTiming.invalidate();
+                if (response.body()!!.result.isEmpty()) {
+                    binding.rvSlotTiming.apply {
+                        adapter = AdapterShuduleTimingNew(this@ShuduleTiming, response.body()!!, this@ShuduleTiming)
+                        progressDialog!!.dismiss()
+                        myToast(this@ShuduleTiming, "No Slot Found")
+                        progressDialog!!.dismiss()
+                    }
+                } else {
+                    binding.rvSlotTiming.apply {
+                     //   adapter!!.notifyDataSetChanged();
+                        //myToast(this@ShuduleTiming, response.body()!!.message)
+                        adapter = AdapterShuduleTimingNew(this@ShuduleTiming, response.body()!!, this@ShuduleTiming)
+                        progressDialog!!.dismiss()
+                    }
 
-                }
-
-                else
-                {
-                 myToast(this@ShuduleTiming,"Field")
                 }
             }
 
 
-            override fun onFailure(call: Call<ModelSlotRes>, t: Throwable) {
+            override fun onFailure(call: Call<ModelSlotResNew>, t: Throwable) {
 
             }
 
 
         })
-
-
-
-
     }
 
-    override fun showPopup(slotTimeData:String) {
+
+    override fun showPopup(slotTimeData:String,slotTimeValue:String)  {
         val view = layoutInflater.inflate(R.layout.book_dialog, null)
         dialog = Dialog(this)
         val btnBookNowDilog = view.findViewById<Button>(R.id.btnBookNowDilog)
         val slotTime = view.findViewById<TextView>(R.id.tvSlotTime)
         val slotDate = view.findViewById<TextView>(R.id.tvSlotDate)
+        startTime= slotTimeValue
+        Log.e("startTimeNew", startTime)
+
         slotTime.text=slotTimeData
         slotDate.text=selectedate
         if (view.parent != null) {
@@ -177,10 +188,12 @@ class ShuduleTiming : AppCompatActivity(),AdapterShuduleTiming.BookPopUp {
 
         dialog?.show()
         btnBookNowDilog.setOnClickListener {
-            startActivity(Intent(this,RazorPay::class.java))
-            myToast(this,"Click")
+            val intent = Intent(context as Activity, BookingSlot::class.java)
+                .putExtra("doctorId",doctorId)
+                .putExtra("selecteDate",selectedate)
+                .putExtra("startTime",startTime)
+            context.startActivity(intent)
         }
-
     }
 
 }

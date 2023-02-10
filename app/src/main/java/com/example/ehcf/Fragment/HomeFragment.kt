@@ -2,7 +2,9 @@ package com.example.ehcf.Fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -25,15 +27,21 @@ import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.example.easywaylocation.LocationData
+import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
+import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentHomeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.myrecyview.apiclient.ApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 import java.util.*
 
@@ -41,6 +49,7 @@ import java.util.*
 class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     lateinit var easyWayLocation: EasyWayLocation
     lateinit var getLocationDetail: GetLocationDetail
+    var progressDialog: ProgressDialog? = null
     lateinit var lm: LocationManager
     var gps_enabled = false
     private var currentAddress = ""
@@ -77,20 +86,18 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
 
 
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         getLastLocation()
-        binding.tvLocation.text = currentAddress
-
+        apiCallAllDoctor()
 
 //        Handler().postDelayed({
 //
 //        }, 700)
 
         val imageList = ArrayList<SlideUIModel>()
-        imageList.add(SlideUIModel("", "Consult Doctor"))
-        imageList.add(SlideUIModel("", "Book An Appointment"))
-        imageList.add(SlideUIModel("", "Home Visit"))
+        imageList.add(SlideUIModel("https://bit.ly/2YoJ77H", "Consult Doctor"))
+        imageList.add(SlideUIModel("https://bit.ly/2BteuF2", "Book An Appointment"))
+        imageList.add(SlideUIModel("https://ibb.co/LPQxbj6", "Home Visit"))
 
         binding.imageSlide.setImageList(imageList)
 
@@ -136,6 +143,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
                             currentAddress = "$subLocality, $locality, $countryName"
 
+                            binding.tvLocation.text = currentAddress
 
                             Log.e(ContentValues.TAG, "locality-$locality")
                             Log.e(ContentValues.TAG, "countryName-$countryName")
@@ -222,6 +230,45 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                 resultCode
             )
         }
+    }
+    private fun apiCallAllDoctor() {
+
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+      //  progressDialog!!.show()
+
+        val lat="435435"
+        val lng="54357"
+        val searchNew=""
+        ApiClient.apiService.getAllDoctor(sessionManager.latitude,sessionManager.longitude,searchNew)
+            .enqueue(object :
+                Callback<ModelAllDoctorNew> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAllDoctorNew>,
+                    response: Response<ModelAllDoctorNew>
+                ) {
+                    if (response.body()!!.status==1){
+                        binding.rvAllDoctor.apply {
+                            adapter = AdapterAllDoctor(requireContext(), response.body()!!)
+                          //  progressDialog!!.dismiss()
+                        }
+                    }else{
+                        myToast(requireActivity(), response.body()!!.message.toString())
+                      //  progressDialog!!.dismiss()
+                    }
+                }
+                override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
+                    myToast(requireActivity(),"${t.message}")
+                   // progressDialog!!.dismiss()
+
+                }
+
+            })
+
     }
 
     override fun onResume() {

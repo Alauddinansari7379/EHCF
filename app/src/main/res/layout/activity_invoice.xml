@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -20,9 +20,9 @@
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -73,9 +73,9 @@
                     android:textColor="@color/main_color"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -84,7 +84,7 @@
                     android:textColor="@color/main_color"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                     android:layout_marginRight="15dp"
                     android:gravity="end">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -101,16 +101,16 @@
                         android:textColor="@color/main_color"
                         android:textStyle="bold">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/ic_baseline_calendar_month_24"
                         android:drawableTint="#686868"
                         android:textStyle="bold">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
                 </LinearLayout>
 
 
@@ -134,14 +134,14 @@
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="INV202112-961036"
                             android:textColor="@color/black"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -150,16 +150,16 @@
                             android:gravity="end"
                             android:orientation="horizontal">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@drawable/ic_baseline_calendar_month_24"
                                 android:drawableTint="#686868"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
@@ -169,7 +169,7 @@
                                 android:textColor="#686868"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -208,14 +208,14 @@
 
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Ratul Das"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
                         </LinearLayout>
 
                         <LinearLayout
@@ -248,7 +248,7 @@
             </androidx.cardview.widget.CardView>
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

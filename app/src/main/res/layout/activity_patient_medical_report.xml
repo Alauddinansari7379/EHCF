@@ -20,14 +20,13 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-
                 android:background="@drawable/file">
 
-            </ImageView>
+            </androidx.appcompat.widget.AppCompatImageView>
         </LinearLayout>
 
         <LinearLayout
@@ -42,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -51,7 +50,7 @@
                     android:textSize="18dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
 
@@ -59,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -69,7 +68,7 @@
                     android:textSize="13dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
 
@@ -80,7 +79,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/rightarrow"
@@ -90,9 +89,9 @@
                     android:textSize="13dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -102,7 +101,7 @@
                     android:textSize="13dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
 
@@ -113,7 +112,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/rightarrow"
@@ -123,9 +122,9 @@
                     android:textSize="13dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -135,7 +134,7 @@
                     android:textSize="13dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
         </LinearLayout>

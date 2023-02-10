@@ -76,7 +76,6 @@ class AddressList : AppCompatActivity() {
     }
 
     private fun apiCallAddAddress() {
-
         val address = binding.edtEnterAddress.text.toString()
         val landmark = binding.edtLandmark.text.toString()
         val coustmer_id = 20

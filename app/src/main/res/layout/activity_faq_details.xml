@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -20,9 +20,9 @@
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,12 +50,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="@drawable/medicineimg">
 
-                </ImageView>
+                </androidx.appcompat.widget.AppCompatImageView>
 
             </LinearLayout>
 
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -73,14 +73,14 @@
                     android:textColor="#686868"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -90,14 +90,14 @@
                     android:textColor="#686868"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -107,14 +107,14 @@
                     android:textColor="#686868"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -124,11 +124,11 @@
                     android:textColor="#686868"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

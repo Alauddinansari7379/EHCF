@@ -23,7 +23,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -32,7 +32,7 @@
                     android:textSize="20dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -48,13 +48,15 @@
                     android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:background="@drawable/shuffle"
-                        android:backgroundTint="@color/main_color"></ImageView>
+                        android:backgroundTint="@color/main_color">
 
-                    <TextView
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Consult Doctor"
@@ -62,15 +64,17 @@
                         android:textSize="15sp"
                         android:textStyle="bold">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
 
-                    <TextView
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Under 30 Mins"
                         android:textSize="12sp">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -120,13 +124,15 @@
                     android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:background="@drawable/shuffle"
-                        android:backgroundTint="@color/main_color"></ImageView>
+                        android:backgroundTint="@color/main_color">
 
-                    <TextView
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Book An Appointment"
@@ -134,15 +140,15 @@
                         android:textSize="15sp"
                         android:textStyle="bold">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Your Health is our concerns"
                         android:textSize="12sp">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -192,13 +198,15 @@
                     android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:background="@drawable/shuffle"
-                        android:backgroundTint="@color/main_color"></ImageView>
+                        android:backgroundTint="@color/main_color">
 
-                    <TextView
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Home Visit"
@@ -206,15 +214,15 @@
                         android:textSize="15sp"
                         android:textStyle="bold">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hospital At Home"
                         android:textSize="12sp">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -251,7 +259,7 @@
                 </androidx.appcompat.widget.AppCompatButton>
             </androidx.cardview.widget.CardView>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

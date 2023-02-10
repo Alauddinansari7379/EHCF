@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DateForConsultaion.DateForConsultation">
+    tools:context=".CreateSlot.DateForConsultation">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,16 +19,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -36,7 +36,7 @@
             android:textColor="@color/black"
             android:textStyle="bold">
 
-        </TextView>
+        </androidx.appcompat.widget.AppCompatTextView>
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -57,7 +57,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold">
 
-            </TextView>
+            </androidx.appcompat.widget.AppCompatTextView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -79,7 +79,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- date title -->
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_current_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -146,23 +146,24 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Wednesday"
                                     android:textColor="@color/white"
                                     android:textStyle="bold">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
 
-                                <TextView
+
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Dec 21"
 
                                     android:textColor="@color/white">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
@@ -181,22 +182,22 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Wednesday"
                                     android:textColor="@color/black"
                                     android:textStyle="bold">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Dec 21"
                                     android:textColor="@color/black">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
@@ -215,22 +216,22 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Wednesday"
                                     android:textColor="@color/black"
                                     android:textStyle="bold">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Dec 21"
                                     android:textColor="@color/black">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
@@ -249,22 +250,22 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Wednesday"
                                     android:textColor="@color/black"
                                     android:textStyle="bold">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Dec 21"
                                     android:textColor="@color/black">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
@@ -283,22 +284,22 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Wednesday"
                                     android:textColor="@color/black"
                                     android:textStyle="bold">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
 
-                                <TextView
+                                <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Dec 21"
                                     android:textColor="@color/black">
 
-                                </TextView>
+                                </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
@@ -308,7 +309,7 @@
 
             </HorizontalScrollView>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -318,7 +319,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold">
 
-            </TextView>
+            </androidx.appcompat.widget.AppCompatTextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -327,14 +328,14 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/sunrise">
 
-                </ImageView>
+                </androidx.appcompat.widget.AppCompatImageView>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -342,7 +343,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
 
@@ -375,14 +376,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="09:55AM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -408,14 +409,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10:25AM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -443,14 +444,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10:45AM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -478,14 +479,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="11:25AM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -502,14 +503,14 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/afternoon">
 
-                </ImageView>
+                </androidx.appcompat.widget.AppCompatImageView>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -517,7 +518,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
 
@@ -549,14 +550,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="01:00PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -583,14 +584,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="01:30PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -618,14 +619,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="02:00PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -653,14 +654,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="02:30PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -677,14 +678,14 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@drawable/eveninng">
 
-                </ImageView>
+                </androidx.appcompat.widget.AppCompatImageView>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -692,7 +693,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
 
@@ -724,14 +725,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="05:00PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -757,14 +758,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="05:20PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -792,14 +793,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="05:55PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -827,14 +828,14 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="06:25PM"
                                 android:textColor="@color/black"
                                 android:textStyle="bold">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
 
                         </LinearLayout>
@@ -858,7 +859,7 @@
 
             </com.google.android.material.button.MaterialButton>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

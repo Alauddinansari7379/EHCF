@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterUpComing
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
 import com.example.ehcf.Helper.myToast
@@ -18,11 +20,15 @@ import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentUpComingBinding
 import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
+import org.jitsi.meet.sdk.JitsiMeetActivity
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.MalformedURLException
+import java.net.URL
 
 
 class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
@@ -96,6 +102,42 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
             dialog?.dismiss()
         }
     }
+    private fun videoCallFun(startTime:String){
+        try {
+            val options: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
+                .setServerURL(URL("https://meet.jit.si"))
+                .setRoom(startTime)
+                .setAudioMuted(false)
+                .setVideoMuted(false)
+                .build()
+            JitsiMeetActivity.launch(requireContext(), options)
+        } catch (e: MalformedURLException) {
+            e.printStackTrace();
+        }
+    }
+
+    override fun videoCall(startTime: String){
+        SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Are you sure want to Join Meeting?")
+            .setCancelText("No")
+            .setConfirmText("Yes")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+//                val intent = Intent(applicationContext, SignIn::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                finish()
+//                startActivity(intent)
+
+                videoCallFun(startTime)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+    }
+
+
 //    override fun dismissPopup(){
 //        val view = layoutInflater.inflate(R.layout.time_dialognew, null)
 //        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
@@ -124,7 +166,7 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
+        progressDialog!!.setCancelable(true)
         progressDialog!!.show()
         val id="20"
 
@@ -135,22 +177,27 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
             .build()
             .create(ApiInterface::class.java)
 
-        val retrofitData = retrofitBuilder.myAppointmentUpComing(id)
+        val retrofitData = retrofitBuilder.myAppointmentUpComing(sessionManager.id.toString())
         retrofitData.enqueue(object : Callback<ModelUpComingResponse> {
             override fun onResponse(
                 call: Call<ModelUpComingResponse>,
                 response: Response<ModelUpComingResponse>
             )
             {
-//                myToast(requireActivity(),response.body()!!.message)
-//                progressDialog!!.dismiss()
-
-                // val recyclerView = findViewById<RecyclerView>(R.id.rvCancled)
-                binding.rvCancled.apply {
-                    adapter = AdapterUpComing(requireContext(), response.body()!!,this@UpComingFragment)
+                if (response.body()!!.result.upcoming.isEmpty()){
+                    binding.tvNoDataFound.visibility = View.VISIBLE
+                   // myToast(requireActivity(),"No Appointment Found")
                     progressDialog!!.dismiss()
 
+                }else{
+                    binding.rvCancled.apply {
+                        binding.tvNoDataFound.visibility = View.GONE
+                        adapter = AdapterUpComing(requireContext(), response.body()!!,this@UpComingFragment)
+                        progressDialog!!.dismiss()
+
+                    }
                 }
+
             }
 
             override fun onFailure(call: Call<ModelUpComingResponse>, t: Throwable) {

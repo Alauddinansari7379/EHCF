@@ -1,4 +1,4 @@
-package com.example.ehcf.DateForConsultaion
+package com.example.ehcf.CreateSlot
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ehcf.FindYourDoctor
-import com.example.ehcf.DateForConsultaion.Adapter.CalendarAdapter
+import com.example.ehcf.CreateSlot.Adapter.CalendarAdapter
 import com.example.ehcf.databinding.ActivityDateForConsultationBinding
 import java.text.SimpleDateFormat
 import java.util.*

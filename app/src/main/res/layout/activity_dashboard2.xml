@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Dashboard.Dashboard">
+    tools:context=".Dashboard.activity.Dashboard">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_color">
 
-    </TextView>
+    </androidx.appcompat.widget.AppCompatTextView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:background="@color/main_color"
         android:orientation="horizontal">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -29,9 +29,9 @@
             android:backgroundTint="@color/white"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -41,7 +41,7 @@
             android:textSize="18dp"
             android:textStyle="bold">
 
-        </TextView>
+        </androidx.appcompat.widget.AppCompatTextView>
 
     </LinearLayout>
 
@@ -177,161 +177,15 @@
 <!--                </LinearLayout>-->
 
 <!--            </LinearLayout>-->
-
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAllDoctor"
                 android:layout_width="match_parent"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                app:cardCornerRadius="10dp">
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            </androidx.recyclerview.widget.RecyclerView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rana Utban"
-                            android:textColor="@color/black"
-                            android:textStyle="bold">
-
-                        </TextView>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:gravity="end"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_marginRight="15dp"
-                                android:gravity="end"
-                                android:text="9.5 Exp"
-                                android:textColor="@color/main_color"
-                                android:textStyle="bold">
-
-                            </TextView>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="20dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="70dp"
-                                android:layout_height="70dp"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardCornerRadius="250dp">
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp"
-                                    android:layout_gravity="center"
-                                    app:cardCornerRadius="250dp">
-
-                                    <ImageView
-                                        android:layout_width="70dp"
-                                        android:layout_height="70dp"
-                                        android:padding="5dp"
-                                        android:scaleType="centerCrop"
-                                        android:src="@drawable/doctorimage" />
-
-                                </androidx.cardview.widget.CardView>
-
-                            </androidx.cardview.widget.CardView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:text="Test"
-                                android:textColor="@color/black"
-                                android:textStyle="bold">
-
-                            </TextView>
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:drawableLeft="@drawable/ic_baseline_location_on_24mailcolur"
-                            android:text="rtt"
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:textStyle="bold">
-
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:gravity="end"
-                            android:text="1"
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:textStyle="bold">
-
-                        </TextView>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnBookAppointment"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/corner"
-                        android:backgroundTint="@color/main_color"
-                        android:drawableTint="@color/white"
-                        android:padding="5dp"
-                        android:text="Book Appointment"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textStyle="bold">
-
-                    </androidx.appcompat.widget.AppCompatButton>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -12,21 +12,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -35,9 +35,9 @@
                 android:textColor="@color/black"
                 android:textStyle="bold">
 
-            </TextView>
+            </androidx.appcompat.widget.AppCompatTextView>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
@@ -47,7 +47,7 @@
                 android:textColor="@color/main_color"
                 android:textStyle="bold">
 
-            </TextView>
+            </androidx.appcompat.widget.AppCompatTextView>
 
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -68,7 +68,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -79,7 +79,7 @@
                     android:textSize="12sp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -111,7 +111,7 @@
                                 android:layout_gravity="center"
                                 app:cardCornerRadius="250dp">
 
-                                <ImageView
+                                <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="70dp"
                                     android:layout_height="70dp"
                                     android:padding="5dp"
@@ -122,13 +122,13 @@
 
                         </androidx.cardview.widget.CardView>
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_gravity="end"
                             android:background="@drawable/ic_baseline_edit_24">
 
-                        </ImageView>
+                        </androidx.appcompat.widget.AppCompatImageView>
 
                     </LinearLayout>
 
@@ -138,7 +138,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -148,7 +148,7 @@
                             android:textColor="@color/main_color"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -197,7 +197,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -207,7 +207,7 @@
                             android:textColor="@color/main_color"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -217,7 +217,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="15dp">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvDate"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
@@ -227,7 +227,7 @@
                             android:padding="10dp"
                             android:textSize="15dp">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
 
                     </LinearLayout>
 
@@ -237,7 +237,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -247,7 +247,7 @@
                             android:textColor="@color/main_color"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -257,7 +257,7 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvMale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -267,9 +267,9 @@
                             android:text="Male"
                             android:textColor="@color/main_color">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvFemale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -279,9 +279,9 @@
                             android:text="Female"
                             android:textColor="@color/main_color">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvOther"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -291,7 +291,7 @@
                             android:text="Other"
                             android:textColor="@color/main_color">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
 
@@ -301,7 +301,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -311,7 +311,7 @@
                             android:textColor="@color/main_color"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -346,7 +346,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -356,7 +356,7 @@
                             android:textColor="@color/main_color"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -365,7 +365,7 @@
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -375,7 +375,7 @@
                             android:textColor="#A19398"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout

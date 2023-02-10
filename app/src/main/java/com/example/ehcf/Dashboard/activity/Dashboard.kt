@@ -1,13 +1,16 @@
-package com.example.ehcf.Dashboard
+package com.example.ehcf.Dashboard.activity
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.postDelayed
+import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
+import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
-import com.example.ehcf.DateForConsultaion.activity.ShuduleTiming
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityDashboard2Binding
 import com.example.ehcf.sharedpreferences.SessionManager
@@ -29,17 +32,13 @@ class Dashboard : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
-        binding.btnBookAppointment.setOnClickListener {
-            startActivity(Intent(this, ShuduleTiming::class.java))
-        }
 
         sessionManager = SessionManager(this)
 
-        progressDialog = ProgressDialog(this@Dashboard)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
+        Handler(Looper.getMainLooper()).postDelayed(200) {
+            apiCallAllDoctor()
+
+        }
 
         binding.btnSignIn.setOnClickListener {
             if (binding.edtLocation.text!!.isEmpty()) {
@@ -53,11 +52,16 @@ class Dashboard : AppCompatActivity() {
 //                return@setOnClickListener
 //            }
 
-            apiCall()
+            apiCallSearch()
         }
     }
 
-        private fun apiCall() {
+        private fun apiCallSearch() {
+            progressDialog = ProgressDialog(this@Dashboard)
+            progressDialog!!.setMessage("Loading..")
+            progressDialog!!.setTitle("Please Wait")
+            progressDialog!!.isIndeterminate = false
+            progressDialog!!.setCancelable(true)
             progressDialog!!.show()
             val search = binding.edtLocation.text.toString().trim()
             val password = binding.edtSpecilization.text.toString().trim()
@@ -80,6 +84,45 @@ class Dashboard : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<SearchbyLocationRes>, t: Throwable) {
+                    myToast(this@Dashboard,"${t.message}")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+
+        }
+        private fun apiCallAllDoctor() {
+
+            progressDialog = ProgressDialog(this@Dashboard)
+            progressDialog!!.setMessage("Loading..")
+            progressDialog!!.setTitle("Please Wait")
+            progressDialog!!.isIndeterminate = false
+            progressDialog!!.setCancelable(true)
+            progressDialog!!.show()
+
+            val lat="435435"
+            val lng="54357"
+            val searchNew=""
+            ApiClient.apiService.getAllDoctor(sessionManager.latitude,sessionManager.longitude,searchNew)
+                .enqueue(object :
+                Callback<ModelAllDoctorNew> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAllDoctorNew>,
+                    response: Response<ModelAllDoctorNew>
+                ) {
+                    if (response.body()!!.status==1){
+                        binding.rvAllDoctor.apply {
+                            adapter = AdapterAllDoctor(this@Dashboard, response.body()!!)
+                            progressDialog!!.dismiss()
+                        }
+                    }else{
+                        myToast(this@Dashboard, response.body()!!.message.toString())
+                        progressDialog!!.dismiss()
+                    }
+                }
+                override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
                     myToast(this@Dashboard,"${t.message}")
                     progressDialog!!.dismiss()
 

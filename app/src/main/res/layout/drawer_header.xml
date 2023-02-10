@@ -6,7 +6,7 @@
     android:background="@color/main_color"
     android:padding="16dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"

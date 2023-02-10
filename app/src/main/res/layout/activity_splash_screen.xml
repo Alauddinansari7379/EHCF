@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".SplashScreen.SplashScreen">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:background="@drawable/namelogo"
@@ -17,5 +17,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </ImageView>
+    </androidx.appcompat.widget.AppCompatImageView>
 </androidx.constraintlayout.widget.ConstraintLayout>

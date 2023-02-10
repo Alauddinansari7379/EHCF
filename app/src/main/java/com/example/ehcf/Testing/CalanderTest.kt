@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ehcf.DateForConsultaion.Adapter.CalendarAdapter
+import com.example.ehcf.CreateSlot.Adapter.CalendarAdapter
 import com.example.ehcf.databinding.ActivityCalanderTestBinding
 import java.text.SimpleDateFormat
 import java.util.*

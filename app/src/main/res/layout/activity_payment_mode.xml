@@ -19,16 +19,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -36,7 +36,7 @@
             android:textColor="@color/black"
             android:textStyle="bold">
 
-        </TextView>
+        </androidx.appcompat.widget.AppCompatTextView>
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -65,14 +65,16 @@
                     android:layout_gravity="center"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20dp"
-                        android:background="@drawable/razorpay"></ImageView>
+                        android:background="@drawable/razorpay">
 
-                    <TextView
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -81,7 +83,7 @@
                         android:textColor="@color/black"
                         android:textStyle="bold">
 
-                    </TextView>
+                    </androidx.appcompat.widget.AppCompatTextView>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!--<LinearLayout-->

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -20,9 +20,9 @@
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 android:src="?android:attr/selectableItemBackground"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,8 +65,9 @@
                     android:textSize="16dp"
                     android:textStyle="bold">
 
-                </TextView>
-                <TextView
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvArrowHide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,7 +81,8 @@
                     android:textSize="16dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
+
             </LinearLayout>
 <LinearLayout
     android:id="@+id/layoutAddress"
@@ -95,23 +97,25 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:text="Address">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
-                <TextView
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="*"
                     android:textColor="#E91E63">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
+
             </LinearLayout>
 
             <LinearLayout

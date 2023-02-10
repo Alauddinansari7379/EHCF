@@ -38,7 +38,7 @@
                     android:layout_height="match_parent"
                     android:background="#062E63" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/toast_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

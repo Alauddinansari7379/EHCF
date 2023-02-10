@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -20,9 +20,9 @@
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:src="?android:attr/selectableItemBackground">
 
-        </ImageView>
+        </androidx.appcompat.widget.AppCompatImageView>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,15 +52,15 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About EHSCF"
+                    android:text="About EHCF"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -70,7 +70,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableTint="#868686"
@@ -79,7 +79,7 @@
                     android:textColor="#686868"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -88,7 +88,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Please read the Terms carefully and make sure that you understand them before placing an order."
@@ -96,7 +96,7 @@
                     android:textSize="20dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -105,7 +105,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -115,10 +115,10 @@
                     android:textColor="#686868"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

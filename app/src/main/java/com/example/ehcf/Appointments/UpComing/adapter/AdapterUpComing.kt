@@ -1,6 +1,7 @@
 package com.example.ehcf.Appointments.UpComing.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
 import com.example.ehcf.R
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AdapterUpComing(val context: Context, private val list: ModelUpComingResponse,val showPopUp:ShowPopUp) :
@@ -22,6 +25,7 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
             LayoutInflater.from(context).inflate(R.layout.single_row_upcoming, parent, false)
         )
     }
+    var currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
@@ -29,6 +33,30 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
         holder.appointmentDate.text = list.result.upcoming[position].start_time.substring(0,10)
         holder.doctorName.text = list.result.upcoming[position].doctor_name
         holder.startTime.text = list.result.upcoming[position].start_time.substring(10)
+        holder.tvStatus.text = list.result.upcoming[position].status_for_customer
+
+        when (list.result.upcoming[position].slug) {
+            "waiting_for_confirmation" -> {
+                holder.btnCheck.visibility = View.GONE
+
+            }
+
+
+//            1 -> {
+//                holder.btnStart.setBackgroundColor(Color.parseColor("#FF0000"))
+//                holder.btnStart.text = "Stop"
+//            }
+//            2 -> {
+//                holder.btnStart.setBackgroundColor(Color.parseColor("#119241"))
+//                holder.btnStart.text = "Done"
+//            }
+        }
+        if (list.result.upcoming[position].start_time <=currentDate)
+        {
+            holder.btnJoinMeeting.visibility = View.VISIBLE
+            holder.btnCheck.visibility = View.GONE
+
+        }
 //        holder.bookingId.text = list.result.upcoming[position].id.toString()
 //        holder.title.text = list.result[position].title.toString()
 //        holder.status.text = list.result[position].status_name.toString()
@@ -36,6 +64,10 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
 
         holder.btnCheck.setOnClickListener {
             showPopUp.showPopup()
+
+        }
+        holder.btnJoinMeeting.setOnClickListener {
+            showPopUp.videoCall(list.result.upcoming[position].start_time)
 
         }
 //        holder.btnOkDialog.setOnClickListener {
@@ -57,9 +89,10 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
           val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDate)
           val doctorName: TextView = itemView.findViewById(R.id.tvDoctorName)
           val startTime: TextView = itemView.findViewById(R.id.tvStartTime)
-          val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
+          val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)
           val btnCheck: Button = itemView.findViewById(R.id.btnCheck)
+          val btnJoinMeeting: Button = itemView.findViewById(R.id.btnJoinMeeting)
         //  val btnOkDialog: Button = itemView.findViewById(R.id.btnOkDialog)
 //        val image: ImageView = itemView.findViewById(R.id.cardSpecia)
 //        val cardView: CardView = itemView.findViewById(R.id.cardView)
@@ -68,6 +101,7 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
     }
     interface ShowPopUp{
         fun showPopup()
+        fun videoCall(startTime:String)
       //  fun dismissPopup()
 
     }

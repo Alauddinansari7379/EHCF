@@ -27,12 +27,12 @@
 
             <!--        </LinearLayout>-->
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="250dp"
                 android:layout_height="150dp"
                 android:background="@drawable/logo">
 
-            </ImageView>
+            </androidx.appcompat.widget.AppCompatImageView>
 
             <LinearLayout
                 android:id="@+id/tvDashboard"
@@ -41,7 +41,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -53,7 +53,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +63,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -74,7 +74,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -84,7 +84,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -95,7 +95,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -105,7 +105,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -116,7 +116,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -126,7 +126,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -137,7 +137,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -147,7 +147,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -158,7 +158,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -168,7 +168,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -179,7 +179,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -189,7 +189,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -200,7 +200,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -210,7 +210,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -221,7 +221,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <LinearLayout
@@ -231,7 +231,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -242,7 +242,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
                 <!--</LinearLayout>-->
                 <!--    </ScrollView>-->
 

@@ -15,7 +15,7 @@ import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.ehcf.*
 import com.example.ehcf.Appointments.Appointments
-import com.example.ehcf.Dashboard.Dashboard
+import com.example.ehcf.Dashboard.activity.Dashboard
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.report.ReportView

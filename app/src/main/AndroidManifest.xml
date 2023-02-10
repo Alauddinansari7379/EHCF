@@ -26,11 +26,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
+
+        <activity
+            android:name=".Specialities.activity.DoctorProfile"
+            android:exported="false" />
+        <activity
+            android:name=".Specialities.activity.FilteredDoctor"
+            android:exported="false" />
+        <activity
+            android:name=".CreateSlot.activity.BookingSlot"
+            android:exported="false" />
         <activity
             android:name=".Appointments.Appointments"
             android:exported="false" />
         <activity
-            android:name=".DateForConsultaion.activity.ShuduleTiming"
+            android:name=".CreateSlot.activity.ShuduleTiming"
             android:exported="false" />
         <activity
             android:name=".Testing.CalanderTest"
@@ -73,7 +83,7 @@
             android:name=".AddNewFamily"
             android:exported="false" />
         <activity
-            android:name=".Dashboard.Dashboard"
+            android:name=".Dashboard.activity.Dashboard"
             android:exported="false" />
         <activity
             android:name=".RatingAndReviews.Rating"
@@ -125,13 +135,13 @@
             android:name=".PaymentMode"
             android:exported="false" />
         <activity
-            android:name=".FindYourDoctor1"
+            android:name=".OnlineDoctor.activity.OnlineDoctor"
             android:exported="false" />
         <activity
             android:name=".FindYourDoctor"
             android:exported="false" />
         <activity
-            android:name=".DateForConsultaion.DateForConsultation"
+            android:name=".CreateSlot.DateForConsultation"
             android:exported="false" />
         <activity
             android:name=".Specialities.activity.Specialities"

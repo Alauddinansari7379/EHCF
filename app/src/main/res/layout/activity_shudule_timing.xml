@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".DateForConsultaion.activity.ShuduleTiming">
+    tools:context=".CreateSlot.activity.ShuduleTiming">
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,6 +88,26 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tvNoDataFound"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="No Slot Found"-->
+<!--            android:visibility="gone"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            >-->
+
+<!--        </androidx.appcompat.widget.AppCompatTextView>-->
+    </LinearLayout>
+
 
     <!--    <androidx.cardview.widget.CardView-->
 <!--        android:layout_width="match_parent"-->

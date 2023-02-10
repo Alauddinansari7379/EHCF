@@ -26,7 +26,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!-- date title -->
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_current_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

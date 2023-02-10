@@ -1,4 +1,4 @@
-package com.example.ehcf.DateForConsultaion.Adapter
+package com.example.ehcf.CreateSlot.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Context

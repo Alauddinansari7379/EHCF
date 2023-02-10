@@ -17,14 +17,14 @@
             android:gravity="center"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
 
                 android:background="@drawable/file">
 
-            </ImageView>
+            </androidx.appcompat.widget.AppCompatImageView>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Keep Your Medical records Save!"
@@ -50,14 +50,14 @@
                     android:textSize="18dp"
                     >
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Start managing your medical health Records!"
@@ -68,7 +68,7 @@
                     android:textSize="13dp"
                     >
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
             <LinearLayout
@@ -78,7 +78,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 >
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Upload and save recoards"
@@ -89,7 +89,7 @@
                     android:textSize="13dp"
                     >
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
             <LinearLayout
@@ -99,7 +99,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 >
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Share Records with Doctors "
@@ -110,7 +110,7 @@
                     android:textSize="13dp"
                     >
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
         </LinearLayout>

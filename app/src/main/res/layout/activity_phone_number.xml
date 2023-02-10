@@ -47,7 +47,7 @@
                         android:layout_marginTop="25dp"
                         android:orientation="vertical">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -56,7 +56,7 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -77,28 +77,28 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:text="We'll send you a ">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="One Time Password "
                                 android:textColor="#9F367A">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="to this number.">
 
-                            </TextView>
+                            </androidx.appcompat.widget.AppCompatTextView>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -147,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -155,7 +155,7 @@
                             android:text="Already have an  account?"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                     <LinearLayout
@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp">
 
-                        <TextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvSignIn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
                             android:textColor="#9F367A"
                             android:textStyle="bold">
 
-                        </TextView>
+                        </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
                 </LinearLayout>

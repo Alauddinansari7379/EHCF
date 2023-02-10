@@ -29,6 +29,7 @@ class SessionManager(context: Context?) {
         private const val STATUS="status"
         private const val UPDATED_AT="updated_at"
         private const val WALLET="wallet"
+        private const val BOOKING_TYPE="bookingType"
     }
 
     var isLogin: Boolean
@@ -55,6 +56,11 @@ class SessionManager(context: Context?) {
         get() = prefs.getString(LONGITUDE, "")
         set(longitude) {
             prefs.edit().putString(LONGITUDE, longitude).apply()
+        }
+    var bookingType: String?
+        get() = prefs.getString(BOOKING_TYPE, "")
+        set(bookingType) {
+            prefs.edit().putString(BOOKING_TYPE, bookingType).apply()
         }
     var password: String?
         get() = prefs.getString(PASSWORD, "")
