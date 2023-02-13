@@ -95,9 +95,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //        }, 700)
 
         val imageList = ArrayList<SlideUIModel>()
-        imageList.add(SlideUIModel("https://bit.ly/2YoJ77H", "Consult Doctor"))
-        imageList.add(SlideUIModel("https://bit.ly/2BteuF2", "Book An Appointment"))
-        imageList.add(SlideUIModel("https://ibb.co/LPQxbj6", "Home Visit"))
+        //https://bit.ly/2YoJ77H"
+        //https://bit.ly/2BteuF2
+        imageList.add(SlideUIModel("", "Consult Doctor"))
+        imageList.add(SlideUIModel("", "Book An Appointment"))
+        imageList.add(SlideUIModel("", "Home Visit"))
 
         binding.imageSlide.setImageList(imageList)
 
@@ -257,12 +259,12 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                           //  progressDialog!!.dismiss()
                         }
                     }else{
-                        myToast(requireActivity(), response.body()!!.message.toString())
+                      //  myToast(requireActivity(), response.body()!!.message.toString())
                       //  progressDialog!!.dismiss()
                     }
                 }
                 override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
-                    myToast(requireActivity(),"${t.message}")
+                   // myToast(requireActivity(),"${t.message}")
                    // progressDialog!!.dismiss()
 
                 }

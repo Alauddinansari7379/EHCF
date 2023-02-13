@@ -1,19 +1,14 @@
 package com.example.ehcf.Specialities.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.ehcf.CreateSlot.activity.ShuduleTiming
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Specialities.adapter.AdapterDoctorProfile
-import com.example.ehcf.Specialities.adapter.AdapterFilteredDoctor
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
-import com.example.ehcf.Specialities.model.ModelFilteredDoctor
 import com.example.ehcf.databinding.ActivityDoctorProfileBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient

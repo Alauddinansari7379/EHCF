@@ -40,7 +40,7 @@
             android:name=".Appointments.Appointments"
             android:exported="false" />
         <activity
-            android:name=".CreateSlot.activity.ShuduleTiming"
+            android:name=".CreateSlot.activity.ScheduleTiming"
             android:exported="false" />
         <activity
             android:name=".Testing.CalanderTest"

@@ -94,7 +94,7 @@
             android:text="Our Valuable Services"
             android:layout_marginLeft="10dp"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold">
 
         </androidx.appcompat.widget.AppCompatTextView>
@@ -142,7 +142,7 @@
             android:text="Find the doctor for common symptoms"
             android:layout_marginLeft="10dp"
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold">
 
         </androidx.appcompat.widget.AppCompatTextView>
@@ -189,15 +189,10 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+
                     <androidx.cardview.widget.CardView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginBottom="2dp"
                         android:backgroundTint="#B7B9C8"
                         app:cardCornerRadius="10dp"
@@ -211,7 +206,6 @@
 
 
                     </androidx.cardview.widget.CardView>
-        </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -219,7 +213,7 @@
                         android:layout_marginTop="15dp"
                         android:gravity="start"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:layout_marginBottom="5dp"
                         android:text="CHEST PAIN"
                         android:textColor="@color/black"
@@ -232,14 +226,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+
                     <androidx.cardview.widget.CardView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginBottom="2dp"
                         android:backgroundTint="#B7B9C8"
                         app:cardCornerRadius="10dp"
@@ -254,7 +244,6 @@
 
 
                     </androidx.cardview.widget.CardView>
-        </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -264,7 +253,7 @@
                         android:layout_marginBottom="5dp"
                         android:text="COUGH"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:textColor="@color/black"
                          />
 
@@ -275,14 +264,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+
                     <androidx.cardview.widget.CardView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginBottom="2dp"
                         android:backgroundTint="#B7B9C8"
                         app:cardCornerRadius="10dp"
@@ -298,7 +283,6 @@
 
                     </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -309,7 +293,7 @@
                         android:text="CONSTIPATION"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         />
 
                 </LinearLayout>
@@ -319,14 +303,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+
                     <androidx.cardview.widget.CardView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginBottom="2dp"
                         android:backgroundTint="#B7B9C8"
                         app:cardCornerRadius="10dp"
@@ -341,7 +321,6 @@
 
 
                     </androidx.cardview.widget.CardView>
-        </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -351,7 +330,7 @@
                         android:layout_marginBottom="5dp"
                         android:text="BACK PAIN"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:textColor="@color/black"
                         />
 
@@ -362,14 +341,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+
                     <androidx.cardview.widget.CardView
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginBottom="2dp"
                         android:backgroundTint="#B7B9C8"
                         app:cardCornerRadius="10dp"
@@ -383,7 +358,6 @@
 
 
                     </androidx.cardview.widget.CardView>
-        </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -391,9 +365,9 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:textSize="8.5dp"
+                        android:textSize="8dp"
                         android:layout_marginBottom="5dp"
-                        android:text="BLOOD PRESSURE"
+                        android:text="BLOODPRESSURE"
                         android:textColor="@color/black"
                          />
 
@@ -415,15 +389,10 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:orientation="vertical">
+
                         <androidx.cardview.widget.CardView
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_marginBottom="2dp"
                             android:backgroundTint="#B7B9C8"
                             app:cardCornerRadius="10dp"
@@ -437,7 +406,6 @@
 
 
                         </androidx.cardview.widget.CardView>
-                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -445,7 +413,7 @@
                         android:layout_marginTop="15dp"
                         android:gravity="start"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:layout_marginBottom="5dp"
                         android:text="CHEST PAIN"
                         android:textColor="@color/black"
@@ -458,14 +426,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+
                         <androidx.cardview.widget.CardView
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_marginBottom="2dp"
                             android:backgroundTint="#B7B9C8"
                             app:cardCornerRadius="10dp"
@@ -480,7 +444,6 @@
 
 
                         </androidx.cardview.widget.CardView>
-                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -490,7 +453,7 @@
                         android:layout_marginBottom="5dp"
                         android:text="COUGH"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:textColor="@color/black"
                         />
 
@@ -501,14 +464,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+
                         <androidx.cardview.widget.CardView
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_marginBottom="2dp"
                             android:backgroundTint="#B7B9C8"
                             app:cardCornerRadius="10dp"
@@ -524,7 +483,6 @@
 
                         </androidx.cardview.widget.CardView>
 
-                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -535,7 +493,7 @@
                         android:text="CONSTIPATION"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         />
 
                 </LinearLayout>
@@ -545,14 +503,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+
                         <androidx.cardview.widget.CardView
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_marginBottom="2dp"
                             android:backgroundTint="#B7B9C8"
                             app:cardCornerRadius="10dp"
@@ -567,7 +521,6 @@
 
 
                         </androidx.cardview.widget.CardView>
-                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -577,7 +530,7 @@
                         android:layout_marginBottom="5dp"
                         android:text="BACK PAIN"
                         android:textStyle="bold"
-                        android:textSize="10dp"
+                        android:textSize="8dp"
                         android:textColor="@color/black"
                         />
 
@@ -588,14 +541,10 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+
                         <androidx.cardview.widget.CardView
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_marginBottom="2dp"
                             android:backgroundTint="#B7B9C8"
                             app:cardCornerRadius="10dp"
@@ -607,9 +556,7 @@
                                 android:layout_gravity="center"
                                 android:src="@drawable/bloodpressure"  />
 
-
                         </androidx.cardview.widget.CardView>
-                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -617,9 +564,9 @@
                         android:layout_marginTop="15dp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:textSize="8.5dp"
+                        android:textSize="8dp"
                         android:layout_marginBottom="5dp"
-                        android:text="BLOOD PRESSURE"
+                        android:text="BLOODPRESSURE"
                         android:textColor="@color/black"
                         />
 

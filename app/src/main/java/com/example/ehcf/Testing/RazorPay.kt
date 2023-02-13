@@ -10,7 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.Appointments
-import com.example.ehcf.CreateSlot.activity.ShuduleTiming
+import com.example.ehcf.CreateSlot.activity.ScheduleTiming
 import com.example.ehcf.CreateSlot.model.ModelCreateBooking
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityRazorPayBinding
@@ -155,7 +155,7 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
 
     override fun onPaymentError(p0: Int, p1: String?) {
         Toast.makeText(this, "Payment Field ", Toast.LENGTH_LONG).show()
-        val intent = Intent(applicationContext, ShuduleTiming::class.java)
+        val intent = Intent(applicationContext, ScheduleTiming::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         finish()
         startActivity(intent)

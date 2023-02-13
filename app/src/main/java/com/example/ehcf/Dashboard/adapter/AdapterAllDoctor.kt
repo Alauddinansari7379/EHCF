@@ -10,8 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
-import com.example.ehcf.CreateSlot.activity.ShuduleTiming
-import com.example.ehcf.Dashboard.modelResponse.Doctor
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 

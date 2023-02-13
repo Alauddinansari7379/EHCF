@@ -31,8 +31,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ShuduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
-    private val context: Context = this@ShuduleTiming
+class ScheduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
+    private val context: Context = this@ScheduleTiming
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
     var selectedate = ""
@@ -122,7 +122,7 @@ class ShuduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
 
     private fun apiCall() {
 
-        progressDialog = ProgressDialog(this@ShuduleTiming)
+        progressDialog = ProgressDialog(this@ScheduleTiming)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
@@ -142,16 +142,16 @@ class ShuduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
                // binding.rvSlotTiming.invalidate();
                 if (response.body()!!.result.isEmpty()) {
                     binding.rvSlotTiming.apply {
-                        adapter = AdapterShuduleTimingNew(this@ShuduleTiming, response.body()!!, this@ShuduleTiming)
+                        adapter = AdapterShuduleTimingNew(this@ScheduleTiming, response.body()!!, this@ScheduleTiming)
                         progressDialog!!.dismiss()
-                        myToast(this@ShuduleTiming, "No Slot Found")
+                        myToast(this@ScheduleTiming, "No Slot Found")
                         progressDialog!!.dismiss()
                     }
                 } else {
                     binding.rvSlotTiming.apply {
                      //   adapter!!.notifyDataSetChanged();
                         //myToast(this@ShuduleTiming, response.body()!!.message)
-                        adapter = AdapterShuduleTimingNew(this@ShuduleTiming, response.body()!!, this@ShuduleTiming)
+                        adapter = AdapterShuduleTimingNew(this@ScheduleTiming, response.body()!!, this@ScheduleTiming)
                         progressDialog!!.dismiss()
                     }
 
