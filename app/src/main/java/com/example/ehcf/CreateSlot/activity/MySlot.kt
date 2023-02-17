@@ -31,8 +31,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ScheduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
-    private val context: Context = this@ScheduleTiming
+class MySlot : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
+    private val context: Context = this@MySlot
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
     var selectedate = ""
@@ -115,14 +115,14 @@ class ScheduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
         )
         datePicker.datePicker.minDate = System.currentTimeMillis() - 1000;
 
-        binding.tvSelectDate.setOnClickListener {
+        binding.cardSelectDate.setOnClickListener {
             datePicker.show()
         }
     }
 
     private fun apiCall() {
 
-        progressDialog = ProgressDialog(this@ScheduleTiming)
+        progressDialog = ProgressDialog(this@MySlot)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
@@ -142,16 +142,16 @@ class ScheduleTiming : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
                // binding.rvSlotTiming.invalidate();
                 if (response.body()!!.result.isEmpty()) {
                     binding.rvSlotTiming.apply {
-                        adapter = AdapterShuduleTimingNew(this@ScheduleTiming, response.body()!!, this@ScheduleTiming)
+                        adapter = AdapterShuduleTimingNew(this@MySlot, response.body()!!, this@MySlot)
                         progressDialog!!.dismiss()
-                        myToast(this@ScheduleTiming, "No Slot Found")
+                        myToast(this@MySlot, "No Slot Found")
                         progressDialog!!.dismiss()
                     }
                 } else {
                     binding.rvSlotTiming.apply {
                      //   adapter!!.notifyDataSetChanged();
                         //myToast(this@ShuduleTiming, response.body()!!.message)
-                        adapter = AdapterShuduleTimingNew(this@ScheduleTiming, response.body()!!, this@ScheduleTiming)
+                        adapter = AdapterShuduleTimingNew(this@MySlot, response.body()!!, this@MySlot)
                         progressDialog!!.dismiss()
                     }
 

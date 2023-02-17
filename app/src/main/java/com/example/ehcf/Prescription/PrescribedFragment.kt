@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ehcf.R
+import com.example.ehcf.databinding.FragmentCodeBinding
 
 
 class PrescribedFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-
+    private lateinit var binding:FragmentCodeBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) =
+        savedInstanceState: Bundle?) =
+        
         inflater.inflate(R.layout.fragment_code, container, false)!!
 }

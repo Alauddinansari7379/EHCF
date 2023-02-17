@@ -2,6 +2,7 @@ package com.example.ehcf.Address.Activity
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAddressListBinding
 import com.example.ehcf.retrofit.ApiInterface
+import com.example.ehcf.sharedpreferences.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,9 +23,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AddressList : AppCompatActivity() {
+    private val context: Context = this@AddressList
     var progressDialog: ProgressDialog? = null
     private var recyclerView: RecyclerView? = null
-
+    private lateinit var sessionManager: SessionManager
 
   //  private var addressList = AddressListResponse("",0)
 
@@ -32,6 +35,7 @@ class AddressList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddressListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sessionManager = SessionManager(this)
 
 
         progressDialog = ProgressDialog(this@AddressList)
@@ -89,13 +93,12 @@ class AddressList : AppCompatActivity() {
             .build()
             .create(ApiInterface::class.java)
 
-        val retrofitData = retrofitBuilder.addAddress(coustmer_id, address, landmark, lat, lng)
+        val retrofitData = retrofitBuilder.addAddress(sessionManager.id, address, landmark, sessionManager.latitude.toString(), sessionManager.longitude.toString())
         retrofitData.enqueue(
             object : Callback<AddAddressResponse> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
-                    call: Call<AddAddressResponse>, response: Response<AddAddressResponse>
-                ) {
+                    call: Call<AddAddressResponse>, response: Response<AddAddressResponse>) {
 
                     Log.e("Ala", response.body()!!.message)
                     Log.e("Ala", "${response.body()!!.status}")
@@ -138,7 +141,7 @@ class AddressList : AppCompatActivity() {
             .build()
             .create(ApiInterface::class.java)
 
-        val retrofitData = retrofitBuilder.allAddress(coustmer_id)
+        val retrofitData = retrofitBuilder.allAddress(sessionManager.id)
         retrofitData.enqueue(
             object : Callback<AddressListResponse> {
                 override fun onResponse(

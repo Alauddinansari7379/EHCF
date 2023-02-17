@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.CreateSlot.activity.ScheduleTiming
+import com.example.ehcf.CreateSlot.activity.MySlot
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
 import com.example.ehcf.R
 
-class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew, val showBookPopUp: ScheduleTiming
+class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew, val showBookPopUp: MySlot
 ): RecyclerView.Adapter<AdapterShuduleTiming.Myholder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Myholder {
 

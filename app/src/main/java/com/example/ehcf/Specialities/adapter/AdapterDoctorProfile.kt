@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.CreateSlot.activity.ScheduleTiming
+import com.example.ehcf.CreateSlot.activity.MySlot
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 
@@ -50,7 +50,7 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
         holder.btnBookApp.setOnClickListener {
-            val intent = Intent(context as Activity, ScheduleTiming::class.java)
+            val intent = Intent(context as Activity, MySlot::class.java)
                 .putExtra("doctorId",list.result[position].id.toString())
             context.startActivity(intent)
         }
