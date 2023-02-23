@@ -12,7 +12,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.CreateSlot.activity.MySlot
 import com.example.ehcf.CreateSlot.model.ModelCreateBooking
+import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.databinding.ActivityRazorPayBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
@@ -42,7 +44,6 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
         setContentView(binding.root)
         sessionManager = SessionManager(this)
 
-        startPayment()
 
         doctorId = intent.getStringExtra("doctorId").toString()
         selectedate = intent.getStringExtra("selecteDate").toString()
@@ -56,8 +57,11 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
         Log.e("title","$title")
         Log.e("description","$description")
 
+        startPayment()
 
         // startPayment()
+
+
 
         binding.btnPayment.setOnClickListener {
             if (binding.edtEnterAmount.text.isEmpty()) {
@@ -69,7 +73,83 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
         }
 
     }
-    private fun apiCallCreateBooking(){
+    private fun apiCallCreateBookingOnlineConsult(){
+
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(false)
+        progressDialog!!.show()
+        val amount="1000"
+        val paymentMode="1"
+
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,"","")
+            .enqueue(object : Callback<ModelCreateConsultation>
+            {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelCreateConsultation>,
+                    response: Response<ModelCreateConsultation>
+                )
+                {
+                    if (response.body()!!.status==1){
+                        popUpConsult()
+                        progressDialog!!.dismiss()
+                    }else{
+                        myToast(this@RazorPay,response.body()!!.message)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+
+                }
+
+
+            })
+    }
+
+    private fun apiCallCreateBookingAppointment(){
+
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(false)
+        progressDialog!!.show()
+        val amount="1000"
+        val paymentMode="2"
+
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType, selectedate,startTime)
+            .enqueue(object : Callback<ModelCreateConsultation>
+            {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelCreateConsultation>,
+                    response: Response<ModelCreateConsultation>
+                )
+                {
+                    if (response.body()!!.status==1){
+                        popUp()
+                        progressDialog!!.dismiss()
+                    }else{
+                        myToast(this@RazorPay,response.body()!!.message)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+
+                }
+
+
+            })
+    }
+/*
+    private fun apiCallCreateBookingAppointment(){
 
         progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading..")
@@ -106,8 +186,82 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
 
             })
     }
+*/
+    private fun apiCallCreateBookingHomeVisit(){
+
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(false)
+        progressDialog!!.show()
+        val amount="1000"
+        val paymentMode="3"
+
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime)
+            .enqueue(object : Callback<ModelCreateConsultation>
+            {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelCreateConsultation>,
+                    response: Response<ModelCreateConsultation>
+                )
+                {
+                    if (response.body()!!.status==1){
+                        popUpHomeVisit()
+                        progressDialog!!.dismiss()
+                    }else{
+                        myToast(this@RazorPay,response.body()!!.message)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+
+                }
+
+
+            })
+    }
 
     private fun popUp(){
+        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Your Booking Confirmed")
+            .setConfirmText("Ok")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+                val intent = Intent(applicationContext, Appointments::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                finish()
+                startActivity(intent)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+
+    }
+    private fun popUpConsult(){
+        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Your Booking Confirmed")
+            .setConfirmText("Ok")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+                val intent = Intent(applicationContext, Appointments::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                finish()
+                startActivity(intent)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+
+    }
+    private fun popUpHomeVisit(){
         SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
             .setTitleText("Your Booking Confirmed")
             .setConfirmText("Ok")
@@ -149,16 +303,27 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
     }
 
     override fun onPaymentSuccess(p0: String?) {
-        apiCallCreateBooking()
         Toast.makeText(this, "Payment Successful: ", Toast.LENGTH_LONG).show()
+        when(sessionManager.bookingType){
+            "1"->{
+                apiCallCreateBookingOnlineConsult()
+            }
+            "2"->{
+                apiCallCreateBookingAppointment()
+            }else->
+            {
+                apiCallCreateBookingHomeVisit()
+            }
+        }
     }
 
     override fun onPaymentError(p0: Int, p1: String?) {
         Toast.makeText(this, "Payment Field ", Toast.LENGTH_LONG).show()
-        val intent = Intent(applicationContext, MySlot::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        finish()
-        startActivity(intent)
+
+//        val intent = Intent(applicationContext, MySlot::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//        finish()
+//        startActivity(intent)
 
     }
 

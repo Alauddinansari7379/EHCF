@@ -26,7 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
-
+        <activity
+            android:name=".Appointments.UpComing.activity.AppointmentDetails"
+            android:exported="false" />
         <activity
             android:name=".Specialities.activity.DoctorProfile"
             android:exported="false" />
@@ -34,7 +36,7 @@
             android:name=".Specialities.activity.FilteredDoctor"
             android:exported="false" />
         <activity
-            android:name=".CreateSlot.activity.BookingSlot"
+            android:name=".CreateSlot.activity.Payment"
             android:exported="false" />
         <activity
             android:name=".Appointments.Appointments"

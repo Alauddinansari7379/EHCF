@@ -5,6 +5,7 @@ import android.content.Intent
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +20,7 @@ import com.example.ehcf.Dashboard.activity.Dashboard
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.report.ReportView
+import com.example.ehcf.sharedpreferences.SessionManager
 import me.ibrahimsn.lib.SmoothBottomBar
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var easyWayLocation: EasyWayLocation
     lateinit var getLocationDetail: GetLocationDetail
     lateinit var lm: LocationManager
+    private lateinit var sessionManager: SessionManager
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -38,7 +41,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sessionManager = SessionManager(this)
 
+        Log.e("PateintId","${sessionManager.id}")
         bottomNav = binding.bottomNavigation1
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.hostFragment)
         val navController = navHostFragment!!.findNavController()

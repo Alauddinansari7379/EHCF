@@ -1,4 +1,4 @@
-package com.example.ehcf.Specialities.adapter
+package com.example.ehcf.OnlineDoctor.adapter
 
 import android.app.Activity
 import android.content.Context
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PaymentMode
 import com.example.ehcf.R
+import com.example.ehcf.Specialities.activity.DoctorProfile
 
 
 class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoctor) :
@@ -36,8 +37,9 @@ class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoc
         holder.fee.text = list.result[position].consultation_fee.toString()
       //  Picasso.get().load(list.result[position].profile_image).into(holder.imgProfile)
 //
-        holder.btnConsultNow.setOnClickListener {
-            val intent = Intent(context as Activity, PaymentMode::class.java)
+        holder.btnViewProfileOnline.setOnClickListener {
+          //  val intent = Intent(context as Activity, PaymentMode::class.java)
+            val intent = Intent(context as Activity, DoctorProfile::class.java)
                 .putExtra("doctorId",list.result[position].id.toString())
             context.startActivity(intent)
         }
@@ -61,7 +63,7 @@ class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoc
       //  val language: TextView = itemView.findViewById(R.id.tvLanguageOnline)
         val fee: TextView = itemView.findViewById(R.id.tvFeeOnline)
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfileOnline)
-        val btnConsultNow: Button = itemView.findViewById(R.id.btnConsultNowOnline)
+        val btnViewProfileOnline: Button = itemView.findViewById(R.id.btnViewProfileOnline)
 
 
     }

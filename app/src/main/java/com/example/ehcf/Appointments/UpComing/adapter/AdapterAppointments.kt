@@ -1,7 +1,8 @@
 package com.example.ehcf.Appointments.UpComing.adapter
 
+import android.app.Activity
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
+import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
+import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.R
-import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterUpComing(val context: Context, private val list: ModelUpComingResponse,val showPopUp:ShowPopUp) :
-    RecyclerView.Adapter<AdapterUpComing.MyViewHolder>() {
+class AdapterAppointments(val context: Context, private val list: ModelAppointments, val showPopUp: UpComingFragment) :
+    RecyclerView.Adapter<AdapterAppointments.MyViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -30,13 +32,13 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
 
-        holder.appointmentDate.text = list.result.upcoming[position].start_time.substring(0,10)
-        holder.doctorName.text = list.result.upcoming[position].doctor_name
-        holder.startTime.text = list.result.upcoming[position].start_time.substring(10)
-        holder.tvStatus.text = list.result.upcoming[position].status_for_customer
+        holder.appointmentDate.text = list.result[position].date
+        holder.doctorName.text = list.result[position].doctor_name.toString()
+        holder.startTime.text = list.result[position].time
+        holder.tvStatus.text = list.result[position].status_for_customer
 
-        when (list.result.upcoming[position].slug) {
-            "waiting_for_confirmation" -> {
+        when (list.result[position].slug) {
+            "waiting_for_accept" -> {
                 holder.btnCheck.visibility = View.GONE
 
             }
@@ -52,7 +54,7 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
 //            }
         }
 
-        if (list.result.upcoming[position].start_time <=currentDate )
+        if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="booking_confirmed")
         {
             holder.btnJoinMeeting.visibility = View.VISIBLE
             holder.btnCheck.visibility = View.GONE
@@ -68,10 +70,19 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
 
         }
         holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list.result.upcoming[position].start_time)
+            showPopUp.videoCall(list.result[position].time)
 
         }
 
+        holder.btnJoinMeeting.setOnClickListener {
+            showPopUp.videoCall(list.result[position].time)
+
+        }
+        holder.btnView.setOnClickListener {
+            val intent = Intent(context as Activity, AppointmentDetails::class.java)
+                .putExtra("bookingId",list.result[position].id.toString())
+            context.startActivity(intent)
+        }
 //        holder.btnOkDialog.setOnClickListener {
 //            showPopUp.dismissPopup()
 //
@@ -83,7 +94,7 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
 
 
     override fun getItemCount(): Int {
-        return list.result.upcoming.size
+        return list.result.size
 
     }
 
@@ -95,6 +106,8 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)
           val btnCheck: Button = itemView.findViewById(R.id.btnCheck)
           val btnJoinMeeting: Button = itemView.findViewById(R.id.btnJoinMeeting)
+        val btnView: Button = itemView.findViewById(R.id.btnViewUpcoming)
+
         //  val btnOkDialog: Button = itemView.findViewById(R.id.btnOkDialog)
 //        val image: ImageView = itemView.findViewById(R.id.cardSpecia)
 //        val cardView: CardView = itemView.findViewById(R.id.cardView)

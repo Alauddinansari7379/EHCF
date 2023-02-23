@@ -11,12 +11,15 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.CreateSlot.activity.MySlot
+import com.example.ehcf.PaymentMode
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
+import com.example.ehcf.sharedpreferences.SessionManager
 
 
 class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorProfile) :
     RecyclerView.Adapter<AdapterDoctorProfile.MyViewHolder>() {
+    private lateinit var sessionManager: SessionManager
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -32,6 +35,8 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
         holder.qualification.text = list.result[position].qualification
         holder.additionalQualification.text = list.result[position].additional_qualification
         holder.phoneNumber.text = list.result[position].phone_number
+        sessionManager = SessionManager(context)
+
         when(list.result[position].gender){
             "1"->{
                 list.result[position].gender="Male"
@@ -50,9 +55,25 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
         holder.btnBookApp.setOnClickListener {
-            val intent = Intent(context as Activity, MySlot::class.java)
-                .putExtra("doctorId",list.result[position].id.toString())
-            context.startActivity(intent)
+            when(sessionManager.bookingType){
+                "1"->{
+                    val intent = Intent(context as Activity, PaymentMode::class.java)
+                        .putExtra("doctorId",list.result[position].id.toString())
+                    context.startActivity(intent)
+                }
+                "2"->{
+                    val intent = Intent(context as Activity, MySlot::class.java)
+                        .putExtra("doctorId",list.result[position].id.toString())
+                    context.startActivity(intent)
+                }
+                else->{
+                    val intent = Intent(context as Activity, MySlot::class.java)
+                        .putExtra("doctorId",list.result[position].id.toString())
+                    context.startActivity(intent)
+
+                }
+            }
+
         }
 
         // Glide.with(hol der.image).load(list[position].url).into(holder.image)

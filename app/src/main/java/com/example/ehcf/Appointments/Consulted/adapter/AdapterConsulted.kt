@@ -58,7 +58,7 @@ class AdapterConsulted(val context: Context, private val list: ModelConsultedRes
           val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDate)
           val doctorName: TextView = itemView.findViewById(R.id.tvDoctorName)
           val startTime: TextView = itemView.findViewById(R.id.tvStartTime)
-          val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
+         // val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)
           val btnCheck: Button = itemView.findViewById(R.id.btnCheck)
         //  val btnOkDialog: Button = itemView.findViewById(R.id.btnOkDialog)

@@ -188,7 +188,7 @@ class MySlot : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
 
         dialog?.show()
         btnBookNowDilog.setOnClickListener {
-            val intent = Intent(context as Activity, BookingSlot::class.java)
+            val intent = Intent(context as Activity, Payment::class.java)
                 .putExtra("doctorId",doctorId)
                 .putExtra("selecteDate",selectedate)
                 .putExtra("startTime",startTime)

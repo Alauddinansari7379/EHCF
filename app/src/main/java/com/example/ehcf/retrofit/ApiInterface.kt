@@ -4,11 +4,14 @@ import com.example.ehcf.Address.ModelResponse.AddAddressResponse
 import com.example.ehcf.Address.ModelResponse.AddressListResponse
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentsDetails
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
 import com.example.ehcf.CreateSlot.model.ModelCreateBooking
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
+import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
@@ -114,7 +117,7 @@ interface ApiInterface {
         @Query("search") search: String?
     ): Call<ModelAllDoctorNew>
 
-    @POST("create_booking")
+    @POST("create_consultation")
     fun createBooking(
         @Query("patient_id") patient_id: String?,
         @Query("doctor_id") doctor_id: String?,
@@ -140,5 +143,26 @@ interface ApiInterface {
         @Query("specialist") specialist: String?,
         @Query("search") search: String?,
     ): Call<ModelOnlineDoctor>
+
+    @POST("create_consultation")
+    fun createConsultation(
+        @Query("patient_id") patient_id: String?,
+        @Query("doctor_id") doctor_id: String?,
+        @Query("total") total: String?,
+        @Query("payment_mode") payment_mode: String?,
+        @Query("consultation_type") consultation_type: String?,
+        @Query("date") date: String?,
+        @Query("time") time: String?,
+    ): Call<ModelCreateConsultation>
+
+    @POST("get_consultation_requests")
+    fun appointments(
+        @Query("customer_id") customer_id: String?,
+    ): Call<ModelAppointments>
+
+    @POST("get_consultation_details")
+    fun appointmentsDetails(
+        @Query("id") id: String?,
+    ): Call<ModelAppointmentsDetails>
 
 }

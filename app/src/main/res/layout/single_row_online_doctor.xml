@@ -267,12 +267,12 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnConsultNowOnline"
+                    android:id="@+id/btnViewProfileOnline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:backgroundTint="@color/main_color"
-                    android:text="Consult Now"
+                    android:text="View Profile"
                     android:textAllCaps="false"
                     android:textColor="@color/white">
 
