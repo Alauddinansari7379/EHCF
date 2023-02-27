@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".RatingAndReviews.Rating">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,6 +36,23 @@
             android:textColor="@color/black" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center">
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:backgroundTintMode="@color/black"
+            android:hapticFeedbackEnabled="true"
+            android:backgroundTint="@color/black"
+            android:rating="2.0"
+            android:stepSize="1.0" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -51,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -136,6 +155,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:orientation="horizontal">
 
@@ -189,7 +209,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Please share your opinion \nAbout our Produt "
+                                android:text="Please share your opinion \nAbout this Meeting "
                                 android:textColor="#A7A4A5"
                                 android:textSize="15dp"
                                 android:textStyle="bold">

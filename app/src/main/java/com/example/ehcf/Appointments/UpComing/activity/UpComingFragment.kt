@@ -3,43 +3,44 @@ package com.example.ehcf.Appointments.UpComing.activity
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
-import com.example.ehcf.Appointments.UpComing.adapter.AdapterUpComing
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
-import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.RatingAndReviews.Rating
 import com.example.ehcf.databinding.FragmentUpComingBinding
-import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.facebook.react.modules.core.PermissionListener
 import org.jitsi.meet.sdk.JitsiMeetActivity
+import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
+import org.jitsi.meet.sdk.log.JitsiMeetLogger
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.MalformedURLException
 import java.net.URL
 
 
-class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
+class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
     private lateinit var binding:FragmentUpComingBinding
     private lateinit var sessionManager: SessionManager
     var mydilaog: Dialog? = null
     var progressDialog : ProgressDialog?=null
     var dialog: Dialog?= null
+    var ratingPage=false
     private var tvTimeCounter: TextView?=null
 
     override fun onCreateView(
@@ -56,6 +57,8 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
 
         //apiCall()
         apiCallAppointments()
+        //startActivity(Intent(requireContext(),Rating::class.java))
+
         val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
         val btnCheck = view.findViewById<Button>(R.id.btnCheck)
         tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
@@ -105,6 +108,7 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
         btnOkDialog.setOnClickListener {
             dialog?.dismiss()
         }
+
     }
     private fun videoCallFun(startTime:String){
         try {
@@ -115,9 +119,21 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
                 .setVideoMuted(false)
                 .build()
             JitsiMeetActivity.launch(requireContext(), options)
+            ratingPage=true
+          //  startActivity(Intent(requireContext(),Rating::class.java))
         } catch (e: MalformedURLException) {
             e.printStackTrace();
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (ratingPage){
+            startActivity(Intent(requireContext(),Rating::class.java))
+            ratingPage=false
+
+        }
+
     }
 
     override fun videoCall(startTime: String){
@@ -164,7 +180,7 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
             }
         }.start()
     }
-    private fun apiCall(){
+/*    private fun apiCall(){
 
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
@@ -211,7 +227,7 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
                 }
             }
         })
-    }
+    }*/
     private fun apiCallAppointments() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading...")
@@ -253,5 +269,6 @@ class UpComingFragment : Fragment(),AdapterUpComing.ShowPopUp {
 
             })
     }
+
 
 }

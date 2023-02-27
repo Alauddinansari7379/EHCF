@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +13,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Appointments.Cancelled.adapter.AdapterCancelled
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
+import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentCancelledBinding
 import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,15 +46,18 @@ class CancelledFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCancelledBinding.bind(view)
         sessionManager = SessionManager(requireContext())
-        apiCall()
+       // apiCall()
+        apiCallAppointments()
         val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
         val btnCheck = view.findViewById<Button>(R.id.btnCheck)
         tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
         binding.imgRefresh.setOnClickListener {
-            apiCall()
+           // apiCall()
+            apiCallAppointments()
 
             binding.imgRefresh.setOnClickListener {
-                apiCall()
+              //  apiCall()
+                apiCallAppointments()
             }
 
         }
@@ -72,7 +79,49 @@ class CancelledFragment : Fragment() {
     }
 
 
+    private fun apiCallAppointments() {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading...")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
+        ApiClient.apiService.appointments(sessionManager.id.toString())
+            .enqueue(object : Callback<ModelAppointments> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAppointments>, response: Response<ModelAppointments>
+                ) {
+                    Log.e("Ala", "${response.body()!!}")
+                    Log.e("Ala", "${response.body()!!.status}")
+                    if (response.body()!!.result.isEmpty()){
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        // myToast(requireActivity(),"No Appointment Found")
+                        progressDialog!!.dismiss()
+
+                    }else{
+                        binding.rvCancled.apply {
+                            binding.tvNoDataFound.visibility = View.GONE
+                            adapter = AdapterCancelled(requireContext(), response.body()!!)
+                            progressDialog!!.dismiss()
+
+                        }
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<ModelAppointments>, t: Throwable) {
+                    myToast(requireActivity(), t.message.toString())
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+    }
+
+/*
     private fun apiCall(){
 
         progressDialog = ProgressDialog(requireContext())
@@ -123,5 +172,6 @@ class CancelledFragment : Fragment() {
             }
         })
     }
+*/
 
 }

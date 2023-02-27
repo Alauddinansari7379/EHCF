@@ -3,6 +3,7 @@ package com.example.ehcf.Appointments.UpComing.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,8 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
         when (list.result[position].slug) {
             "waiting_for_accept" -> {
                 holder.btnCheck.visibility = View.GONE
+                holder.btnJoinMeeting.visibility = View.GONE
+
 
             }
 
@@ -54,7 +57,9 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
 //            }
         }
 
-        if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="booking_confirmed")
+        Log.e("currentDate", currentDate)
+        Log.e("startTime", list.result[position].date+" "+list.result[position].time)
+        if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted")
         {
             holder.btnJoinMeeting.visibility = View.VISIBLE
             holder.btnCheck.visibility = View.GONE
@@ -70,14 +75,14 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
 
         }
         holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list.result[position].time)
+            showPopUp.videoCall(list.result[position].date+" "+list.result[position].time)
 
         }
 
-        holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list.result[position].time)
-
-        }
+//        holder.btnJoinMeeting.setOnClickListener {
+//            showPopUp.videoCall(list.result[position].time)
+//
+//        }
         holder.btnView.setOnClickListener {
             val intent = Intent(context as Activity, AppointmentDetails::class.java)
                 .putExtra("bookingId",list.result[position].id.toString())
