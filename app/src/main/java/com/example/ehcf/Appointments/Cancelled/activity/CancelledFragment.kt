@@ -113,7 +113,7 @@ class CancelledFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ModelAppointments>, t: Throwable) {
-                    myToast(requireActivity(), t.message.toString())
+                    myToast(requireActivity(), "Something went wrong")
                     progressDialog!!.dismiss()
 
                 }

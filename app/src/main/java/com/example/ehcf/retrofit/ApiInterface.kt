@@ -15,6 +15,7 @@ import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
+import com.example.ehcf.RatingAndReviews.model.ModelRating
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
@@ -164,5 +165,12 @@ interface ApiInterface {
     fun appointmentsDetails(
         @Query("id") id: String?,
     ): Call<ModelAppointmentsDetails>
+
+    @POST("get_consultation_details")
+    fun rating(
+        @Query("id") id: String?,
+        @Query("rating") rating: String?,
+        @Query("comments") comments: String?,
+    ): Call<ModelRating>
 
 }

@@ -22,6 +22,8 @@ import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 
 class Registration : AppCompatActivity() {
@@ -200,7 +202,7 @@ class Registration : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<RegistationResponse>, t: Throwable) {
-                        myToast(this@Registration,t.message.toString())
+                        myToast(this@Registration,"Something went wrong")
                         progressDialog!!.dismiss()
 
                     }
@@ -213,6 +215,21 @@ class Registration : AppCompatActivity() {
         }
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 
 //    override fun onProgressChanged(view: WebView, progress: Int) {
 //        //Make the bar disappear after URL is loaded, and changes string to Loading...

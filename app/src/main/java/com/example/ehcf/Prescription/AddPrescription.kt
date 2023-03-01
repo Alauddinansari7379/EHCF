@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.databinding.ActivityAddPrescriptionBinding
 import com.giphy.sdk.analytics.GiphyPingbacks.context
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,4 +76,19 @@ class AddPrescription : AppCompatActivity() {
 
         }
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

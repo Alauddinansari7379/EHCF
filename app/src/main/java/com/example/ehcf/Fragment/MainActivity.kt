@@ -22,6 +22,8 @@ import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.report.ReportView
 import com.example.ehcf.sharedpreferences.SessionManager
 import me.ibrahimsn.lib.SmoothBottomBar
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class MainActivity : AppCompatActivity() {
     private val context: Context = this@MainActivity
@@ -93,5 +95,20 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }
 

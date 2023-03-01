@@ -17,6 +17,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class Specialities : AppCompatActivity() {
    private var progressDialog: ProgressDialog? =null
@@ -85,13 +87,26 @@ class Specialities : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ModelSplic>, t: Throwable) {
-                t.message?.let { myToast(this@Specialities, it)
+                myToast(this@Specialities,"Something went wrong")
                     progressDialog!!.dismiss()
 
-                }
+
             }
         })
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
 
-//    }
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

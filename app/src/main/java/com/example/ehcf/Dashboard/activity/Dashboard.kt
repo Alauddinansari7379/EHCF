@@ -18,6 +18,8 @@ import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboard2Binding
@@ -84,7 +86,7 @@ class Dashboard : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<SearchbyLocationRes>, t: Throwable) {
-                    myToast(this@Dashboard,"${t.message}")
+                    myToast(this@Dashboard,"Something went wrong")
                     progressDialog!!.dismiss()
 
                 }
@@ -92,7 +94,22 @@ class Dashboard : AppCompatActivity() {
             })
 
         }
-        private fun apiCallAllDoctor() {
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
+    private fun apiCallAllDoctor() {
 
             progressDialog = ProgressDialog(this@Dashboard)
             progressDialog!!.setMessage("Loading..")

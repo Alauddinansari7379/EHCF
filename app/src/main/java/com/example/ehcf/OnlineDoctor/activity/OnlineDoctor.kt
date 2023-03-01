@@ -14,6 +14,8 @@ import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class OnlineDoctor : AppCompatActivity() {
     private lateinit var binding: ActivityFindYourDoctor1Binding
@@ -51,25 +53,40 @@ class OnlineDoctor : AppCompatActivity() {
                 response: Response<ModelOnlineDoctor>
             ) {
 
-                if (response.body()!!.status == 1) {
+                if (response.body()!!.result.isEmpty()) {
+                    myToast(this@OnlineDoctor, "No Doctor Found")
+                    progressDialog!!.dismiss()
+                } else {
                     binding.rvAllDoctor.apply {
                         adapter = AdapterOnlineDoctor(this@OnlineDoctor, response.body()!!)
                         progressDialog!!.dismiss()
                     }
-                } else {
-                    myToast(this@OnlineDoctor, response.body()!!.message.toString())
-                    progressDialog!!.dismiss()
+
                 }
 
             }
 
             override fun onFailure(call: Call<ModelOnlineDoctor>, t: Throwable) {
-                myToast(this@OnlineDoctor,"${t.message}")
+                myToast(this@OnlineDoctor,"Something went wrong")
                 progressDialog!!.dismiss()
 
             }
 
         })
+    }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
     }
 
 

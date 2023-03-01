@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import com.example.ehcf.Specialities.activity.Specialities
 import com.example.ehcf.databinding.FragmentBooking3Binding
 import com.example.ehcf.sharedpreferences.SessionManager
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class BookingFragment : Fragment() {
     private lateinit var binding: FragmentBooking3Binding
@@ -50,4 +52,19 @@ class BookingFragment : Fragment() {
         return (binding.root)
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

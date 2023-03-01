@@ -75,7 +75,7 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
 
         }
         holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list.result[position].date+" "+list.result[position].time)
+            showPopUp.videoCall(list.result[position].date+" "+list.result[position].time,list.result[position].id)
 
         }
 
@@ -121,7 +121,7 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
     }
     interface ShowPopUp{
         fun showPopup()
-        fun videoCall(startTime:String)
+        fun videoCall(startTime: String, id: String)
       //  fun dismissPopup()
 
     }

@@ -1,21 +1,40 @@
 package com.example.ehcf.RatingAndReviews
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.ViewGroup
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ehcf.Appointments.Appointments
+import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
+import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.RatingAndReviews.model.ModelRating
 import com.example.ehcf.databinding.ActivityRatingBinding
+import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.myrecyview.apiclient.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 
 class Rating : AppCompatActivity() {
+    private val context: Context = this@Rating
     private lateinit var binding: ActivityRatingBinding
     lateinit var ratingBar: RatingBar
     lateinit var button: Button
+    var meetingId = ""
+    var rating = ""
+    private lateinit var sessionManager: SessionManager
+    var progressDialog: ProgressDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRatingBinding.inflate(layoutInflater)
@@ -23,6 +42,8 @@ class Rating : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
+        meetingId = intent.getStringExtra("meetingId").toString()
+        Log.e("meetingId", meetingId)
 
         binding.tvAddPhoto.setOnClickListener {
             val i = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
@@ -35,43 +56,72 @@ class Rating : AppCompatActivity() {
         ratingBar.numStars = 5
         ratingBar.onRatingBarChangeListener =
             RatingBar.OnRatingBarChangeListener { _, rating, _ ->
-                Toast.makeText(
-                    this@Rating, "Stars: " +
-                            rating.toInt(), Toast.LENGTH_SHORT
-                ).show()
+                this.rating = rating.toInt().toString()
+              //  Toast.makeText(this@Rating, "Stars: " + rating.toInt(), Toast.LENGTH_SHORT).show()
             }
+        binding.btnSendReview.setOnClickListener {
+            if (binding.edtComment.text.isEmpty()){
+                binding.edtComment.error="Enter Your Review"
+                return@setOnClickListener
+            }else{
+                apiCallRating()
+            }
+        }
 
     }
-//
-//        val rBar = RatingBar(this)
-//        val layoutParams = LinearLayout.LayoutParams(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT)
-//        rBar.layoutParams = layoutParams
-//        rBar.stepSize = 1f
-//        rBar.numStars = 5
-////
-////        //create button
-////        val button = Button(this)
-////        val layoutParams1 = LinearLayout.LayoutParams(
-////            ViewGroup.LayoutParams.MATCH_PARENT,
-////            ViewGroup.LayoutParams.WRAP_CONTENT)
-////        button.text="Submit Rating"
-//
-//
-//        val linearLayout = findViewById<LinearLayout>(R.id.container)
-//        // Add RatingBar and button to LinearLayout
-//        linearLayout?.addView(rBar)
-     //   linearLayout?.addView(button)
-
-//        button.setOnClickListener {
-//            val msg = rBar.rating.toString()
-//            Toast.makeText(this@Rating, "Given Rating: "+msg,
-//                Toast.LENGTH_SHORT).show()
-//        }
 
 
+    private fun apiCallRating() {
+        val comment =binding.edtComment.text.toString()
+        progressDialog = ProgressDialog(this@Rating)
+        progressDialog!!.setMessage("Loading...")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
+        ApiClient.apiService.rating(meetingId, rating, comment)
+            .enqueue(object : Callback<ModelRating> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelRating>, response: Response<ModelRating>
+                ) {
+                    Log.e("Ala", "${response.body()!!}")
+                    Log.e("Ala", "${response.body()!!.status}")
+                    if (response.body()!!.status == 1) {
+                        myToast(this@Rating, response.body()!!.message)
+                        startActivity(Intent(this@Rating, Appointments::class.java))
+
+                    } else {
+                        myToast(this@Rating, response.body()!!.message)
+
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<ModelRating>, t: Throwable) {
+                    myToast(this@Rating,"Something went wrong")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+    }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
 
 
 }

@@ -13,6 +13,8 @@ import com.example.ehcf.Prescription.ViewPagerAdapter1
 import com.example.ehcf.databinding.FragmentNewsBinding
 import com.example.ehcf.report.ViewReportFragment
 import com.google.android.material.tabs.TabLayout
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class PrecriscptionFragment : Fragment() {
     private lateinit var pager: ViewPager // creating object of ViewPager
@@ -42,4 +44,19 @@ class PrecriscptionFragment : Fragment() {
         return (binding.root)
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

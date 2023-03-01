@@ -98,7 +98,7 @@ dependencies {
     implementation 'com.github.Fuadafdhal:Auto-Image-Slider:1.0'
     //SweetAlert
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
-    //Countert Code Picker
+    //Counter Code Picker
     implementation 'com.hbb20:ccp:2.5.0'
 
     //lottiew Animation
@@ -106,9 +106,17 @@ dependencies {
     //okhttp3
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
-    //horizontalcalendar
-    //circuleImage
+    //horizontal calendar
+    //circleImage
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    //Check Internet
+    implementation 'com.github.raheemadamboev:check-internet-android:1.1.1'
+    implementation 'com.github.rrsaikat:ConnectionStatusLikeYoutube:v1.0.1'
+
 
 
 

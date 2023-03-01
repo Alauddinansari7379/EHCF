@@ -12,6 +12,8 @@ import com.example.ehcf.databinding.ActivitySettingBinding
 import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.giphy.sdk.analytics.GiphyPingbacks.context
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class Setting : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
@@ -56,4 +58,19 @@ class Setting : AppCompatActivity() {
                     .show()
                    }
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

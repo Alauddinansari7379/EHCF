@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -36,12 +35,12 @@ import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 import java.io.IOException
 import java.util.*
 
@@ -74,21 +73,43 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
+//
+//        CheckInternet().check { connected ->
+//            if (connected) {
+//
+//       // myToast(requireActivity(),"Connected")
+//            }
+//            else {
+//                val changeReceiver = NetworkChangeReceiver(requireContext())
+//                changeReceiver.build()
+//              //  myToast(requireActivity(),"Check Internet")
+//            }
+//        }
+//        easyWayLocation.startLocation()
+
+
+
         getLocationDetail = GetLocationDetail(this, requireContext())
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)
 
 
-        lm = requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+        lm =
+            requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
 
         val current = resources.configuration.locale
 
         sessionManager = SessionManager(requireContext())
 
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("FetchContact89", "fetchContacts: coroutine start")
 
+            apiCallAllDoctor()
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        }
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
         getLastLocation()
-        apiCallAllDoctor()
 
 //        Handler().postDelayed({
 //
@@ -129,8 +150,14 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                                 geocoder.getFromLocation(location.latitude, location.longitude, 1)
 //                            lattitude!!.text = "Lattitude: " + addresses[0].latitude
 //                            longitude!!.text = "Longitude: " + addresses[0].longitude
-                            Log.e(ContentValues.TAG, " addresses[0].latitude${addresses[0].latitude}")
-                            Log.e(ContentValues.TAG, " addresses[0].latitude${addresses[0].longitude}")
+                            Log.e(
+                                ContentValues.TAG,
+                                " addresses[0].latitude${addresses[0].latitude}"
+                            )
+                            Log.e(
+                                ContentValues.TAG,
+                                " addresses[0].latitude${addresses[0].longitude}"
+                            )
                             sessionManager.latitude = addresses[0].latitude.toString()
                             sessionManager.longitude = addresses[0].longitude.toString()
 
@@ -176,7 +203,20 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
             REQUEST_CODE
         )
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
 
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -233,19 +273,24 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
             )
         }
     }
+
     private fun apiCallAllDoctor() {
+//
+//        progressDialog = ProgressDialog(requireContext())
+//        progressDialog!!.setMessage("Loading..")
+//        progressDialog!!.setTitle("Please Wait")
+//        progressDialog!!.isIndeterminate = false
+//        progressDialog!!.setCancelable(true)
+        //  progressDialog!!.show()
 
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-      //  progressDialog!!.show()
-
-        val lat="435435"
-        val lng="54357"
-        val searchNew=""
-        ApiClient.apiService.getAllDoctor(sessionManager.latitude,sessionManager.longitude,searchNew)
+        val lat = "435435"
+        val lng = "54357"
+        val searchNew = ""
+        ApiClient.apiService.getAllDoctor(
+            sessionManager.latitude,
+            sessionManager.longitude,
+            searchNew
+        )
             .enqueue(object :
                 Callback<ModelAllDoctorNew> {
                 @SuppressLint("LogNotTimber")
@@ -253,19 +298,20 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                     call: Call<ModelAllDoctorNew>,
                     response: Response<ModelAllDoctorNew>
                 ) {
-                    if (response.body()!!.status==1){
+                    if (response.body()!!.status == 1) {
                         binding.rvAllDoctor.apply {
                             adapter = AdapterAllDoctor(requireContext(), response.body()!!)
-                          //  progressDialog!!.dismiss()
+                            //  progressDialog!!.dismiss()
                         }
-                    }else{
-                      //  myToast(requireActivity(), response.body()!!.message.toString())
-                      //  progressDialog!!.dismiss()
+                    } else {
+                        //  myToast(requireActivity(), response.body()!!.message.toString())
+                        //  progressDialog!!.dismiss()
                     }
                 }
+
                 override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
-                   // myToast(requireActivity(),"${t.message}")
-                   // progressDialog!!.dismiss()
+                    // myToast(requireActivity(),"${t.message}")
+                    // progressDialog!!.dismiss()
 
                 }
 
@@ -275,6 +321,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
     override fun onResume() {
         super.onResume()
-        easyWayLocation.startLocation()
+      //  easyWayLocation.startLocation()
     }
 }

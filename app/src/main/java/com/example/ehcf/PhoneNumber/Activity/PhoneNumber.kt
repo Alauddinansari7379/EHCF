@@ -16,6 +16,8 @@ import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class PhoneNumber : AppCompatActivity() {
     private val context: Context = this@PhoneNumber
@@ -74,7 +76,7 @@ class PhoneNumber : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
-                    myToast(this@PhoneNumber,t.message.toString())
+                    myToast(this@PhoneNumber,"Something went wrong")
                     progressDialog!!.dismiss()
 
                 }
@@ -82,4 +84,19 @@ class PhoneNumber : AppCompatActivity() {
             })
         }
         }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

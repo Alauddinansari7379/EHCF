@@ -1,6 +1,7 @@
 package com.example.ehcf.CreateSlot
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -11,11 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ehcf.FindYourDoctor
 import com.example.ehcf.CreateSlot.Adapter.CalendarAdapter
 import com.example.ehcf.databinding.ActivityDateForConsultationBinding
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class DateForConsultation : AppCompatActivity() {
+    private var context:Context=this@DateForConsultation
     private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH)
     private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
     private val cal = Calendar.getInstance(Locale.ENGLISH)
@@ -516,4 +520,19 @@ class DateForConsultation : AppCompatActivity() {
         })
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

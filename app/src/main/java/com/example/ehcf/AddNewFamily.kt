@@ -14,6 +14,8 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityAddNewFamilyBinding
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -89,4 +91,19 @@ class AddNewFamily : AppCompatActivity() {
             myToast(this, "Add Successfully")
         }
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }

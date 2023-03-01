@@ -1,6 +1,7 @@
 package com.example.ehcf.Appointments.UpComing.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
@@ -22,14 +23,13 @@ import com.example.ehcf.RatingAndReviews.Rating
 import com.example.ehcf.databinding.FragmentUpComingBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
-import com.facebook.react.modules.core.PermissionListener
 import org.jitsi.meet.sdk.JitsiMeetActivity
-import org.jitsi.meet.sdk.JitsiMeetActivityInterface
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
-import org.jitsi.meet.sdk.log.JitsiMeetLogger
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -42,6 +42,7 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
     var dialog: Dialog?= null
     var ratingPage=false
     private var tvTimeCounter: TextView?=null
+    var meetingId=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,6 +91,21 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
 
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
     override fun showPopup(){
         var view = layoutInflater.inflate(R.layout.time_dialognew, null)
         dialog = Dialog(requireContext())
@@ -110,7 +126,8 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
         }
 
     }
-    private fun videoCallFun(startTime:String){
+    private fun videoCallFun(startTime: String, id: String){
+        meetingId=id
         try {
             val options: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
                 .setServerURL(URL("https://meet.jit.si"))
@@ -129,14 +146,18 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
     override fun onResume() {
         super.onResume()
         if (ratingPage){
-            startActivity(Intent(requireContext(),Rating::class.java))
+            val intent=Intent(context as Activity,Rating::class.java)
+                .putExtra("meetingId",meetingId)
+            (context as Activity).startActivity(intent)
+
+           // startActivity(Intent(requireContext(),Rating::class.java))
             ratingPage=false
 
         }
 
     }
 
-    override fun videoCall(startTime: String){
+    override fun videoCall(startTime: String, id: String){
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText("Are you sure want to Join Meeting?")
             .setCancelText("No")
@@ -149,7 +170,7 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
 //                finish()
 //                startActivity(intent)
 
-                videoCallFun(startTime)
+                videoCallFun(startTime,id)
             }
             .setCancelClickListener { sDialog ->
                 sDialog.cancel()
@@ -262,7 +283,7 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
                 }
 
                 override fun onFailure(call: Call<ModelAppointments>, t: Throwable) {
-                    myToast(requireActivity(), t.message.toString())
+                    myToast(requireActivity(), "Something went wrong")
                     progressDialog!!.dismiss()
 
                 }

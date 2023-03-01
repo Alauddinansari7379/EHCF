@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.util.Log
 import com.example.ehcf.Testing.RazorPay
 import com.example.ehcf.databinding.ActivityBookingSlotBinding
+import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import xyz.teamgravity.checkinternet.CheckInternet
 
 class Payment : AppCompatActivity() {
     private val context: Context = this@Payment
@@ -61,4 +63,19 @@ class Payment : AppCompatActivity() {
 
 
     }
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            }
+            else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
+            }
+        }
+    }
+
 }
