@@ -18,7 +18,7 @@ class PrescriptionActivity : AppCompatActivity() {
         binding = ActivityPrescription2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.imgBack.setOnClickListener {
+        binding.imgBack.setOnClickListener { 
             onBackPressed()
         }
     }

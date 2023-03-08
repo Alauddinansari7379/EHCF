@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Appointments.Consulted.adapter.AdapterConsulted
 import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
+import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentConsultedBinding
@@ -46,20 +47,6 @@ class ConsultedFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        CheckInternet().check { connected ->
-            if (connected) {
-
-                // myToast(requireActivity(),"Connected")
-            }
-            else {
-                val changeReceiver = NetworkChangeReceiver(context)
-                changeReceiver.build()
-                //  myToast(requireActivity(),"Check Internet")
-            }
-        }
-    }
 
 
     private fun apiCall(){
@@ -109,6 +96,27 @@ class ConsultedFragment : Fragment() {
 
             }
         })
+    }
+    override fun onStart() {
+        super.onStart()
+        if (isOnline(requireContext())){
+            //  myToast(requireActivity(), "Connected")
+        }else{
+            val changeReceiver = NetworkChangeReceiver(context)
+            changeReceiver.build()
+            //  myToast(requireActivity(), "Not C")
+
+        }
+//        CheckInternet().check { connected ->
+//            if (connected) {
+//             //    myToast(requireActivity(),"Connected")
+//            }
+//            else {
+//                val changeReceiver = NetworkChangeReceiver(context)
+//                changeReceiver.build()
+//                //  myToast(requireActivity(),"Check Internet")
+//            }
+//        }
     }
 
 }

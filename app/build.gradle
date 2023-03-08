@@ -113,9 +113,10 @@ dependencies {
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
-    //Check Internet
+    //Check Internet Connection
     implementation 'com.github.raheemadamboev:check-internet-android:1.1.1'
     implementation 'com.github.rrsaikat:ConnectionStatusLikeYoutube:v1.0.1'
+
 
 
 

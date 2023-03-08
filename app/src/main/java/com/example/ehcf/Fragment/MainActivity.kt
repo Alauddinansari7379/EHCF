@@ -17,6 +17,7 @@ import com.example.easywaylocation.GetLocationDetail
 import com.example.ehcf.*
 import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Dashboard.activity.Dashboard
+import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.report.ReportView
@@ -97,17 +98,24 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onStart() {
         super.onStart()
-        CheckInternet().check { connected ->
-            if (connected) {
+        if (isOnline(this)){
+            //  myToast(requireActivity(), "Connected")
+        }else{
+            val changeReceiver = NetworkChangeReceiver(context)
+            changeReceiver.build()
+            //  myToast(requireActivity(), "Not C")
 
-                // myToast(requireActivity(),"Connected")
-            }
-            else {
-                val changeReceiver = NetworkChangeReceiver(context)
-                changeReceiver.build()
-                //  myToast(requireActivity(),"Check Internet")
-            }
         }
+//        CheckInternet().check { connected ->
+//            if (connected) {
+//             //    myToast(requireActivity(),"Connected")
+//            }
+//            else {
+//                val changeReceiver = NetworkChangeReceiver(context)
+//                changeReceiver.build()
+//                //  myToast(requireActivity(),"Check Internet")
+//            }
+//        }
     }
 
 }

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
+import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.Rating
@@ -90,20 +91,6 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
 //        }
 
 
-    }
-    override fun onStart() {
-        super.onStart()
-        CheckInternet().check { connected ->
-            if (connected) {
-
-                // myToast(requireActivity(),"Connected")
-            }
-            else {
-                val changeReceiver = NetworkChangeReceiver(context)
-                changeReceiver.build()
-                //  myToast(requireActivity(),"Check Internet")
-            }
-        }
     }
 
     override fun showPopup(){
@@ -289,6 +276,27 @@ class UpComingFragment : Fragment(),AdapterAppointments.ShowPopUp {
                 }
 
             })
+    }
+    override fun onStart() {
+        super.onStart()
+        if (isOnline(requireContext())){
+            //  myToast(requireActivity(), "Connected")
+        }else{
+            val changeReceiver = NetworkChangeReceiver(context)
+            changeReceiver.build()
+            //  myToast(requireActivity(), "Not C")
+
+        }
+//        CheckInternet().check { connected ->
+//            if (connected) {
+//             //    myToast(requireActivity(),"Connected")
+//            }
+//            else {
+//                val changeReceiver = NetworkChangeReceiver(context)
+//                changeReceiver.build()
+//                //  myToast(requireActivity(),"Check Internet")
+//            }
+//        }
     }
 
 

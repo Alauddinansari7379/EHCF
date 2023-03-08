@@ -6,7 +6,8 @@ pluginManagement {
         maven {
             url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
-        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://www.jitpack.io'
+        }
     }
 }
 dependencyResolutionManagement {
