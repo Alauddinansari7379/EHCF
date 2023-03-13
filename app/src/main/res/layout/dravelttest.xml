@@ -247,6 +247,27 @@
                 <!--    </ScrollView>-->
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tvLogOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:drawableTint="@color/main_color"
+                    android:text="Logout"
+                    android:drawableLeft="@drawable/ic_baseline_logout_24">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

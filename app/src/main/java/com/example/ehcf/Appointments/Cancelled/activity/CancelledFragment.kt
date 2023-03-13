@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import com.example.ehcf.Appointments.Cancelled.adapter.AdapterCancelled
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
+import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointmentsAccepted
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -47,18 +49,13 @@ class CancelledFragment : Fragment() {
         binding = FragmentCancelledBinding.bind(view)
         sessionManager = SessionManager(requireContext())
        // apiCall()
-        apiCallAppointments()
+        apiCallGetConsultationRejected()
         val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
         val btnCheck = view.findViewById<Button>(R.id.btnCheck)
         tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
         binding.imgRefresh.setOnClickListener {
            // apiCall()
-            apiCallAppointments()
-
-            binding.imgRefresh.setOnClickListener {
-              //  apiCall()
-                apiCallAppointments()
-            }
+            apiCallGetConsultationRejected()
 
         }
 //       btnCheck.setOnClickListener {
@@ -78,7 +75,50 @@ class CancelledFragment : Fragment() {
 
     }
 
+    private fun apiCallGetConsultationRejected() {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
+
+        ApiClient.apiService.getConsultation(sessionManager.id.toString(),"rejected")
+            .enqueue(object : Callback<ModelAppointmentBySlag> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
+                ) {
+                    Log.e("Ala", "${response.body()!!}")
+                    Log.e("Ala", "${response.body()!!.status}")
+                    if (response.body()!!.result.isEmpty()){
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        // myToast(requireActivity(),"No Appointment Found")
+                        progressDialog!!.dismiss()
+
+                    }else{
+                        binding.rvCancled.apply {
+                            binding.tvNoDataFound.visibility = View.GONE
+                            adapter = AdapterCancelled(requireContext(), response.body()!!)
+                            progressDialog!!.dismiss()
+
+                        }
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<ModelAppointmentBySlag>, t: Throwable) {
+                    myToast(requireActivity(), "Something went wrong")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+    }
+
+/*
     private fun apiCallAppointments() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading...")
@@ -120,6 +160,7 @@ class CancelledFragment : Fragment() {
 
             })
     }
+*/
 
 /*
     private fun apiCall(){

@@ -4,6 +4,7 @@ import com.example.ehcf.Address.ModelResponse.AddAddressResponse
 import com.example.ehcf.Address.ModelResponse.AddressListResponse
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentsDetails
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
@@ -172,5 +173,11 @@ interface ApiInterface {
         @Query("rating") rating: String?,
         @Query("comments") comments: String?,
     ): Call<ModelRating>
+
+    @POST("get_consultation_requests")
+    fun getConsultation(
+        @Query("customer_id") customer_id: String?,
+        @Query("slug") slug: String?,
+    ): Call<ModelAppointmentBySlag>
 
 }

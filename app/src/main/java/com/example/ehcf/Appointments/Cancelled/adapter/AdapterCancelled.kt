@@ -10,12 +10,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.R
 
 
-class AdapterCancelled(val context: Context, private val list: ModelAppointments) :
+class AdapterCancelled(val context: Context, private val list:  ModelAppointmentBySlag) :
     RecyclerView.Adapter<AdapterCancelled.MyViewHolder>() {
 
 
@@ -35,7 +36,7 @@ class AdapterCancelled(val context: Context, private val list: ModelAppointments
 //        holder.description.text = list.result.cancelled[position].description
 //        holder.totalAmount.text = list.result.cancelled[position].total_amount
 
-        holder.appointmentDate.text = list.result[position].time
+        holder.appointmentDate.text = list.result[position].date
         holder.doctorName.text = list.result[position].doctor_name.toString()
         holder.startTime.text = list.result[position].time
         holder.tvStatus.text = list.result[position].status_for_customer

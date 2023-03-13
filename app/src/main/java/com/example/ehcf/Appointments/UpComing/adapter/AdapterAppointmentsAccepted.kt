@@ -20,8 +20,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterAppointments(val context: Context, private val list: ModelAppointmentBySlag, val showPopUp: UpComingFragment) :
-    RecyclerView.Adapter<AdapterAppointments.MyViewHolder>() {
+class AdapterAppointmentsAccepted(val context: Context, private val list: ModelAppointmentBySlag, val showPopUp: UpComingFragment) :
+    RecyclerView.Adapter<AdapterAppointmentsAccepted.MyViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -38,7 +38,6 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
         holder.doctorName.text = list.result[position].doctor_name.toString()
         holder.startTime.text = list.result[position].time
         holder.tvStatus.text = list.result[position].status_for_customer
-        holder.consultationType.text = list.result[position].consultation_type
 
         when (list.result[position].slug) {
             "waiting_for_accept" -> {
@@ -74,28 +73,39 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
 
 
             }
+
+
+//            1 -> {
+//                holder.btnStart.setBackgroundColor(Color.parseColor("#FF0000"))
+//                holder.btnStart.text = "Stop"
+//            }
+//            2 -> {
+//                holder.btnStart.setBackgroundColor(Color.parseColor("#119241"))
+//                holder.btnStart.text = "Done"
+//            }
         }
+
         Log.e("currentDate", currentDate)
         Log.e("startTime", list.result[position].date+" "+list.result[position].time)
         if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted" &&
              list.result[position].consultation_type=="1")
         {
             holder.btnJoinMeeting.visibility = View.VISIBLE
-            holder.btnCheck.visibility = View.GONE
+            holder.btnCheck.visibility = View.VISIBLE
 
         }
         if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted"
             && list.result[position].consultation_type=="2")
         {
             holder.btnJoinMeeting.visibility = View.GONE
-            holder.btnCheck.visibility = View.GONE
+            holder.btnCheck.visibility = View.VISIBLE
 
         }
         if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted"
             && list.result[position].consultation_type=="3")
         {
             holder.btnJoinMeeting.visibility = View.GONE
-            holder.btnCheck.visibility = View.GONE
+            holder.btnCheck.visibility = View.VISIBLE
         }
 //        holder.bookingId.text = list.result.upcoming[position].id.toString()
 //        holder.title.text = list.result[position].title.toString()

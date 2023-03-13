@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.ehcf.*
@@ -20,6 +21,7 @@ import com.example.ehcf.Dashboard.activity.Dashboard
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
+import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.report.ReportView
 import com.example.ehcf.sharedpreferences.SessionManager
 import me.ibrahimsn.lib.SmoothBottomBar
@@ -51,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.hostFragment)
         val navController = navHostFragment!!.findNavController()
         val popupMenu = PopupMenu(this, null)
-
         popupMenu.inflate(R.menu.bottom_nav_menu)
 
         binding.bottomNavigation1.setupWithNavController(popupMenu.menu, navController)
@@ -90,6 +91,27 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, AddNewFamily::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
+            binding.includedrawar1.tvLogOut.setOnClickListener {
+                SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Are you sure want to logout?")
+                    .setCancelText("No")
+                    .setConfirmText("Yes")
+                    .showCancelButton(true)
+                    .setConfirmClickListener { sDialog ->
+                        sDialog.cancel()
+                        sessionManager.logout()
+                        val intent = Intent(applicationContext, SignIn::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        finish()
+                        startActivity(intent)
+                    }
+                    .setCancelClickListener { sDialog ->
+                        sDialog.cancel()
+                    }
+                    .show()
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+
         }
         drawerLayout = binding.drawerlayout1
         // For Navigation UP

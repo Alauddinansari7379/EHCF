@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.CreateSlot.DateForConsultation
 import com.example.ehcf.CreateSlot.activity.MySlot
 import com.example.ehcf.PaymentMode
 import com.example.ehcf.R
@@ -62,6 +63,9 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
                     context.startActivity(intent)
                 }
                 "2"->{
+//                    val intent = Intent(context as Activity, DateForConsultation::class.java)
+//                        .putExtra("doctorId",list.result[position].id.toString())
+//                    context.startActivity(intent)
                     val intent = Intent(context as Activity, MySlot::class.java)
                         .putExtra("doctorId",list.result[position].id.toString())
                     context.startActivity(intent)

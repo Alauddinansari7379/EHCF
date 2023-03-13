@@ -82,7 +82,7 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
         progressDialog!!.setCancelable(false)
         progressDialog!!.show()
         val amount="1000"
-        val paymentMode="1"
+        val paymentMode="2"
 
         ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,"","")
             .enqueue(object : Callback<ModelCreateConsultation>
@@ -93,7 +93,10 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
                     response: Response<ModelCreateConsultation>
                 )
                 {
-                    if (response.body()!!.status==1){
+                    if (response.code()==500){
+                        myToast(this@RazorPay,"Server Error")
+                    }
+                   else if (response.code()==200){
                         popUpConsult()
                         progressDialog!!.dismiss()
                     }else{
@@ -196,7 +199,7 @@ class RazorPay : AppCompatActivity(), PaymentResultListener {
         progressDialog!!.setCancelable(false)
         progressDialog!!.show()
         val amount="1000"
-        val paymentMode="3"
+        val paymentMode="2"
 
         ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime)
             .enqueue(object : Callback<ModelCreateConsultation>

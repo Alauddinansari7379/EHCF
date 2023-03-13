@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -35,7 +36,7 @@
 
                 </androidx.appcompat.widget.AppCompatTextView>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvAppointmentDate"
+                    android:id="@+id/tvAppointmentDateCom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="13-12-2023"
@@ -65,7 +66,7 @@
     android:layout_marginTop="5dp"
     android:orientation="horizontal">
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgProfile"
+        android:id="@+id/imgProfileCom"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/profile"
@@ -95,7 +96,7 @@
 
                         </androidx.appcompat.widget.AppCompatTextView>
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvDoctorName"
+                            android:id="@+id/tvDoctorNameCom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -115,12 +116,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Session Start Time-"
-                            android:textColor="@color/black"
+                            android:textColor="#686868"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvStartTime"
+                            android:id="@+id/tvStartTimeCom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -139,17 +140,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Consultation Type-"
-                            android:textColor="@color/black"
+                            android:text="Total Amount-"
+                            android:textColor="#686868"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvConsultationType"
+                            android:id="@+id/tvTotalAmountCom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Home Visit"
+                            android:text="500"
                             android:textColor="#686868"
                             android:textStyle="bold">
 
@@ -165,17 +166,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Status-"
-                            android:textColor="#4CAF50"
+                            android:textColor="#F44336"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvStatus"
+                            android:id="@+id/tvStatusCom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Status"
-                            android:textColor="#4CAF50"
+                            android:textColor="#F44336"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -184,60 +185,6 @@
                 </LinearLayout>
 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:gravity="end"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/corner"
-                        android:backgroundTint="@color/main_color"
-                        android:drawableLeft="@drawable/ic_baseline_add_24"
-                        android:drawableTint="@color/white"
-                        android:visibility="gone"
-                        android:padding="2dp"
-                        android:text="Check Time"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white">
-
-                    </androidx.appcompat.widget.AppCompatButton>
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnJoinMeeting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/corner"
-                        android:backgroundTint="@color/main_color"
-                        android:drawableTint="@color/white"
-                        android:visibility="gone"
-                        android:text="Join Meeting"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white">
-
-                    </androidx.appcompat.widget.AppCompatButton>
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnViewUpcoming"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/corner"
-                        android:backgroundTint="@color/main_color"
-                        android:drawableLeft="@drawable/ic_baseline_add_24"
-                        android:drawableTint="@color/white"
-                        android:text="View"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white">
-
-                    </androidx.appcompat.widget.AppCompatButton>
-                </LinearLayout>
 
             </LinearLayout>
 

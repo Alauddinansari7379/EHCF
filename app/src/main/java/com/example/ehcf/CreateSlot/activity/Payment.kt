@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.ehcf.PaymentMode
 import com.example.ehcf.Testing.RazorPay
 import com.example.ehcf.databinding.ActivityBookingSlotBinding
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
@@ -53,7 +54,8 @@ class Payment : AppCompatActivity() {
 //            val title= binding.edtTitle.text.toString().trim()
 //            val description= binding.edtDescription.text.toString().trim()
 
-            val intent = Intent(context as Activity, RazorPay::class.java)
+       //     val intent = Intent(context as Activity, RazorPay::class.java)
+            val intent = Intent(context as Activity, PaymentMode::class.java)
                 .putExtra("doctorId",doctorId)
                 .putExtra("selecteDate",selectedate)
                 .putExtra("startTime",startTime)

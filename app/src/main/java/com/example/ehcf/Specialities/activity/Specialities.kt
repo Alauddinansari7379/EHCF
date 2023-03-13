@@ -78,10 +78,16 @@ class Specialities : AppCompatActivity() {
                 call: Call<ModelSplic>,
                 response: Response<ModelSplic>)
             {
-                val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewSpeci)
-                recyclerView.apply {
-                    adapter = AdapterSpecialities(context, response.body()!!)
-                    progressDialog!!.dismiss()
+                if (response.code()==200) {
+                    val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewSpeci)
+                    recyclerView.apply {
+                        adapter = AdapterSpecialities(context, response.body()!!)
+                        progressDialog!!.dismiss()
+                    }
+                }else if (response.code()==500){
+                    myToast(this@Specialities,"Server Error")
+                } else{
+                    myToast(this@Specialities,"Something went wrong")
 
                 }
             }
