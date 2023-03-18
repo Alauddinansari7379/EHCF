@@ -15,6 +15,8 @@ import com.example.ehcf.CreateSlot.model.ModelSlotResNew
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
+import com.example.ehcf.Prescription.model.ModelPrePending
+import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.RatingAndReviews.model.ModelRating
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
@@ -22,6 +24,8 @@ import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
 import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.login.modelResponse.LogInResponse
+import com.example.ehcf.report.model.ModelUploadReport
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -109,6 +113,7 @@ interface ApiInterface {
     @POST("get_time_slots")
     fun getTimeSlot(
         @Query("doctor_id") doctorid: String?,
+        @Query("day") day: String?,
         @Query("date") date: String?
     ): Call<ModelSlotResNew>
 
@@ -179,5 +184,21 @@ interface ApiInterface {
         @Query("customer_id") customer_id: String?,
         @Query("slug") slug: String?,
     ): Call<ModelAppointmentBySlag>
+
+    @POST("pending_pre_list")
+    fun pendingPreList(
+        @Query("patient_id") customer_id: String?,
+    ): Call<ModelPrePending>
+    @POST("pre_list")
+    fun prescribedList(
+        @Query("patient_id") customer_id: String?,
+    ): Call<ModelPrescribed>
+
+    @Multipart
+    @POST("upload_report")
+    fun uploadImage( @Part image: MultipartBody.Part
+    ):Call<ModelUploadReport>
+
+
 
 }

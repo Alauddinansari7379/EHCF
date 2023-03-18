@@ -26,7 +26,7 @@ class AdapterShuduleTimingNew(val context: Context, private val list: ModelSlotR
 
 
 
-        holder.date.text= list.result[position].date
+        //holder.date.text= list.result[position].date
         holder.startTime.text= list.result[position].start_time
         holder.endTime.text= list.result[position].end_time
         holder.slotId.text= list.result[position].slot_id.toString()
@@ -48,7 +48,7 @@ class AdapterShuduleTimingNew(val context: Context, private val list: ModelSlotR
     }
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var date:TextView  =itemView.findViewById(R.id.tvtDateSTime);
+       // var date:TextView  =itemView.findViewById(R.id.tvtDateSTime);
         var startTime:TextView  =itemView.findViewById(R.id.tvStartTimeStime);
         var endTime:TextView  =itemView.findViewById(R.id.tvEndTimeStime);
         var slotId:TextView  =itemView.findViewById(R.id.tvSlotIdSTime);

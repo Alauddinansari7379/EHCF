@@ -90,6 +90,7 @@ class MySlot : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
         }
         btnBookNow.setOnClickListener {
             dialog?.dismiss()
+          //  startActivity(Intent(this, PaymentMode::class.java))
             startActivity(Intent(this, PaymentMode::class.java))
 
         }
@@ -148,7 +149,7 @@ class MySlot : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
         val doctorid = "54"
         val date = "2023-02-04"
         doctorId
-        ApiClient.apiService.getTimeSlot(doctorId, selectedate).enqueue(object :Callback<ModelSlotResNew>
+        ApiClient.apiService.getTimeSlot(doctorId,"1" ,selectedate).enqueue(object :Callback<ModelSlotResNew>
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
@@ -204,7 +205,7 @@ class MySlot : AppCompatActivity(),AdapterShuduleTimingNew.dilog {
 
         dialog?.show()
         btnBookNowDilog.setOnClickListener {
-            val intent = Intent(context as Activity, Payment::class.java)
+            val intent = Intent(context as Activity, PaymentMode::class.java)
                 .putExtra("doctorId",doctorId)
                 .putExtra("selecteDate",selectedate)
                 .putExtra("startTime",startTime)

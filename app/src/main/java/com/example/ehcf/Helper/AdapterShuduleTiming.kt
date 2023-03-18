@@ -24,7 +24,7 @@ class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew,
 //        Glide.with(context).load(arraylist.get(position).languageImg.toString()).into(holder.data)
 
 
-        holder.date.text= arraylist.result[position].date
+      //  holder.date.text= arraylist.result[position].date
         holder.startTime.text= arraylist.result[position].start_time
         holder.endTime.text= arraylist.result[position].end_time
         holder.slotId.text= arraylist.result[position].slot_id.toString()
@@ -42,7 +42,7 @@ class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew,
 //
         //var data:ImageView  =itemview.findViewById(R.id.shayari_rl);
 
-        var date:TextView  =itemview.findViewById(R.id.tvtDateSTime);
+     //   var date:TextView  =itemview.findViewById(R.id.tvtDateSTime);
         var startTime:TextView  =itemview.findViewById(R.id.tvStartTimeStime);
         var endTime:TextView  =itemview.findViewById(R.id.tvEndTimeStime);
         var slotId:TextView  =itemview.findViewById(R.id.tvSlotIdSTime);

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.Appointments
@@ -53,6 +54,12 @@ class PaymentMode : AppCompatActivity() {
         startTime = intent.getStringExtra("startTime").toString()
         title = intent.getStringExtra("title").toString()
         description = intent.getStringExtra("description").toString()
+
+        Log.e("doctorId",doctorId)
+        Log.e("selectedate",selectedate)
+        Log.e("startTime",startTime)
+        Log.e("title",title)
+        Log.e("description",description)
 
 
 
@@ -113,10 +120,18 @@ class PaymentMode : AppCompatActivity() {
                     response: Response<ModelCreateConsultation>
                 )
                 {
-                    if (response.body()!!.status==1){
+                    if(response.code()==500){
+                        myToast(this@PaymentMode,"Server Error")
+                        progressDialog!!.dismiss()
+
+                    }
+                    else if (response.body()!!.status==1){
                         popUp()
                         progressDialog!!.dismiss()
-                    }else{
+                    }
+
+
+                    else{
                         myToast(this@PaymentMode,response.body()!!.message)
                         progressDialog!!.dismiss()
                     }
@@ -124,7 +139,8 @@ class PaymentMode : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
-
+                    t.message?.let { myToast(this@PaymentMode, it) }
+                    progressDialog!!.dismiss()
                 }
 
 
@@ -162,7 +178,8 @@ class PaymentMode : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
-
+                    t.message?.let { myToast(this@PaymentMode, it) }
+                    progressDialog!!.dismiss()
                 }
 
 

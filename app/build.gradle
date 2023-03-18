@@ -118,6 +118,10 @@ dependencies {
     implementation 'com.github.raheemadamboev:check-internet-android:1.1.1'
     implementation 'com.github.rrsaikat:ConnectionStatusLikeYoutube:v1.0.1'
 
+    //imagePicker
+    implementation 'com.github.dhaval2404:imagepicker:1.8'
+
+
 
 
 

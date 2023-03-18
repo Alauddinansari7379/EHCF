@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
 import com.example.ehcf.Helper.isOnline
+import com.example.ehcf.Prescription.PrescribedFragment
 import com.example.ehcf.Prescription.PrescriptionPendingFragment
 import com.example.ehcf.Prescription.ViewPagerAdapter1
 import com.example.ehcf.databinding.FragmentNewsBinding
@@ -37,8 +38,9 @@ class PrecriscptionFragment : Fragment() {
 
         val adapter = ViewPagerAdapter1(childFragmentManager)
 
-        adapter.addFragment(Prescribed(), "Prescribed")
-        adapter.addFragment(ViewReportFragment(), "View Report")
+
+        adapter.addFragment(PrescriptionPendingFragment(), "Prescription Pending")
+        adapter.addFragment(PrescribedFragment(), "Prescribed")
         pager.adapter = adapter
         tab.setupWithViewPager(pager)
 

@@ -41,40 +41,40 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Date-"
-                    android:textColor="@color/black"
-                    android:textStyle="bold">
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Date-"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textStyle="bold">-->
 
-                </androidx.appcompat.widget.AppCompatTextView>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvtDateSTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="13-12-2023"
-                    android:textColor="@color/black"
-                    android:textStyle="bold">
+<!--                </androidx.appcompat.widget.AppCompatTextView>-->
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/tvtDateSTime"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="13-12-2023"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textStyle="bold">-->
 
-                </androidx.appcompat.widget.AppCompatTextView>
-            </LinearLayout>
+<!--                </androidx.appcompat.widget.AppCompatTextView>-->
+<!--            </LinearLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:background="#E7EDF5">
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:background="#E7EDF5">-->
 
-            </View>
+<!--            </View>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

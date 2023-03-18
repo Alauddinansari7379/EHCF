@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:gravity="center"
+            android:layout_marginBottom="5dp"
             android:text="Dashboard"
             android:textColor="@color/white"
             android:textSize="18dp"
@@ -58,7 +59,7 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="300dp"
                 android:background="@drawable/logo1">
 
             </androidx.appcompat.widget.Toolbar>
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="-25dp"
+                android:layout_marginTop="-35dp"
                 android:layout_marginEnd="10dp"
                 app:cardCornerRadius="10dp">
 
@@ -82,7 +83,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginRight="10dp">
 
                         <EditText
@@ -116,6 +117,7 @@
                             android:drawableLeft="@drawable/ic_baseline_check_circle_24"
                             android:hint="Search By Specialization"
                             android:inputType="text"
+                            android:padding="10dp"
                             android:maxLength="10"
                             android:textColorHint="@color/black"
                             android:textSize="15dp">
@@ -129,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:backgroundTint="@color/main_color"

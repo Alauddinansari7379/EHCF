@@ -3,14 +3,21 @@ package com.example.ehcf.Prescription
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.ehcf.R
+import com.example.ehcf.databinding.ActivityPrescriptionDetailsBinding
 import com.giphy.sdk.analytics.GiphyPingbacks.context
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 
-class Prescription1 : AppCompatActivity() {
+class PrescriptionDetails : AppCompatActivity() {
+    private lateinit var binding:ActivityPrescriptionDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_prescription1)
+        binding=ActivityPrescriptionDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.imgBack.setOnClickListener {
+            onBackPressed()
+        }
     }
     override fun onStart() {
         super.onStart()

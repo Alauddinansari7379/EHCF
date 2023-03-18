@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ehcf">
+    package="com.example.ehcf" >
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,7 +25,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
-        tools:targetApi="32">
+        tools:targetApi="32" >
+        <activity
+            android:name=".Fragment.test.ImageUpload"
+            android:exported="false" />
         <activity
             android:name=".Appointments.UpComing.activity.AppointmentDetails"
             android:exported="false" />
@@ -72,7 +75,7 @@
             android:name=".report.PatientMedicalReport"
             android:exported="false" />
         <activity
-            android:name=".Prescription.MainActivity"
+            android:name=".Prescription.ReportMain"
             android:exported="false" />
         <activity
             android:name=".Prescription.AddPrescription"
@@ -121,7 +124,7 @@
             android:name=".report.Report"
             android:exported="false" />
         <activity
-            android:name=".Prescription.Prescription1"
+            android:name=".Prescription.PrescriptionDetails"
             android:exported="false" />
         <activity
             android:name=".activity.PerscriptionRepoart"
@@ -162,7 +165,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen.SplashScreen"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -172,7 +175,7 @@
 
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_y6bdIFkJ0IzbOK" />
+            android:value="rzp_test_tnOp3sjGL6gTju" /> <!-- android:value="rzp_test_y6bdIFkJ0IzbOK" -->
         <meta-data
             android:name="com.google.gms.wallet.api.enabled"
             android:value="true" />

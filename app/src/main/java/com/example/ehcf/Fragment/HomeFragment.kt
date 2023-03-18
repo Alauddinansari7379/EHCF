@@ -94,8 +94,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)
 
 
-        lm =
-            requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+        lm = requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
 
         val current = resources.configuration.locale
 
@@ -329,6 +328,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
     override fun onResume() {
         super.onResume()
-      //  easyWayLocation.startLocation()
+        easyWayLocation.startLocation()
     }
 }
