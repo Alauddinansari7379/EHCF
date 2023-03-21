@@ -9,6 +9,7 @@ import okhttp3.RequestBody
 import okio.BufferedSink
 import java.io.File
 import java.io.FileInputStream
+import java.net.URI
 
 class UploadRequestBody(
     private val file: File,
@@ -40,7 +41,6 @@ class UploadRequestBody(
 
 
     interface UploadCallback {
-
         fun onProgressUpdate(percentage: Int)
 
     }

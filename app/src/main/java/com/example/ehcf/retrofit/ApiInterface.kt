@@ -8,10 +8,11 @@ import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentsDetails
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
-import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
 import com.example.ehcf.CreateSlot.model.ModelCreateBooking
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
+import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
+import com.example.ehcf.Fragment.test.UploadResponse
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
@@ -24,10 +25,11 @@ import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
 import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.login.modelResponse.LogInResponse
-import com.example.ehcf.report.model.ModelUploadReport
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+
 
 interface ApiInterface {
 
@@ -194,10 +196,18 @@ interface ApiInterface {
         @Query("patient_id") customer_id: String?,
     ): Call<ModelPrescribed>
 
+//    @Multipart
+//    @POST("upload_report")
+//    fun uploadImage( @Part image: MultipartBody.Part
+//    ):Call<ModelUploadReport>
+
     @Multipart
     @POST("upload_report")
-    fun uploadImage( @Part image: MultipartBody.Part
-    ):Call<ModelUploadReport>
+    fun uploadImage(
+        @Query("id") id:String,
+        @Part image: MultipartBody.Part,
+        @Part("desc") desc: RequestBody,
+        ): Call<UploadResponse>
 
 
 

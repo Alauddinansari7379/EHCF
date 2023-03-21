@@ -4,18 +4,22 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/layout_root"
     android:layout_height="match_parent"
     tools:context=".Fragment.AddReport">
     <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardSubmit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:backgroundTint="@color/cardview_shadow_end_color"
             app:cardCornerRadius="10dp">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -33,112 +37,115 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        app:cardCornerRadius="10dp">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="15dp"-->
+<!--        app:cardCornerRadius="10dp">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Blood Test"
-                    android:textColor="#686868"
-                    android:textStyle="bold">
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Blood Test"-->
+<!--                    android:textColor="#686868"-->
+<!--                    android:textStyle="bold">-->
 
-                </androidx.appcompat.widget.AppCompatTextView>
+<!--                </androidx.appcompat.widget.AppCompatTextView>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="54dp"
-                    android:gravity="center">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginRight="20dp"-->
+<!--                    android:layout_marginBottom="54dp"-->
+<!--                    android:gravity="center">-->
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/drop"
-                        android:gravity="center">
+<!--                    <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                        android:layout_width="50dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:background="@drawable/drop"-->
+<!--                        android:gravity="center">-->
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+<!--                    </androidx.appcompat.widget.LinearLayoutCompat>-->
+<!--                    <androidx.appcompat.widget.AppCompatImageView-->
+<!--                        android:id="@+id/image_view"-->
+<!--                        android:layout_width="50dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        />-->
 
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:orientation="horizontal">
+<!--                </LinearLayout>-->
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnSelectImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/corner"
-                        android:padding="5dp"
-                        android:text="Select Report Image"
-                        android:textAllCaps="false"
-                        android:textColor="#868686">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="50dp"-->
+<!--                    android:orientation="horizontal">-->
 
-                    </androidx.appcompat.widget.AppCompatButton>
+<!--                    <androidx.appcompat.widget.AppCompatButton-->
+<!--                        android:id="@+id/btnSelectImage"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="35dp"-->
+<!--                        android:layout_marginRight="10dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/corner"-->
+<!--                        android:padding="5dp"-->
+<!--                        android:text="Select Report Image"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="#868686">-->
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/corner"
-                        android:backgroundTint="@color/main_color"
-                        android:padding="5dp"
-                        android:text="Disabled"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white">
+<!--                    </androidx.appcompat.widget.AppCompatButton>-->
 
-                    </androidx.appcompat.widget.AppCompatButton>
-                </LinearLayout>
+<!--                    <androidx.appcompat.widget.AppCompatButton-->
+<!--                        android:id="@+id/button_upload"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="35dp"-->
+<!--                        android:layout_marginRight="10dp"-->
+<!--                        android:background="@drawable/corner"-->
+<!--                        android:backgroundTint="@color/main_color"-->
+<!--                        android:padding="5dp"-->
+<!--                        android:text="Upload"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/white">-->
 
-            </LinearLayout>
+<!--                    </androidx.appcompat.widget.AppCompatButton>-->
+<!--                </LinearLayout>-->
 
-        </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-    <Button
-        android:id="@+id/btnOpenGallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Gallery" />
+<!--            </LinearLayout>-->
+<!--            <ProgressBar-->
+<!--                android:id="@+id/progress_bar"-->
+<!--                style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:max="100"-->
+<!--                tools:progress="40" />-->
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imgSelected"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/btnOpenGallery"
-        android:layout_centerHorizontal="true" />
+<!--        </LinearLayout>-->
+
+<!--    </androidx.cardview.widget.CardView>-->
+
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:background="@drawable/circuleimage"-->
@@ -269,5 +276,31 @@
 
 <!--        </com.google.android.material.button.MaterialButton>-->
 <!--    </LinearLayout>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
+    </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNoDataFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Appointment Found"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+    </LinearLayout>
 </LinearLayout>

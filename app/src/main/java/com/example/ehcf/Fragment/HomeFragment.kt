@@ -28,6 +28,7 @@ import com.example.easywaylocation.Listener
 import com.example.easywaylocation.LocationData
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -41,7 +42,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
-import xyz.teamgravity.checkinternet.CheckInternet
 import java.io.IOException
 import java.util.*
 
@@ -88,7 +88,9 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //        }
 //        easyWayLocation.startLocation()
 
-
+binding.symtom.setOnClickListener {
+    startActivity(Intent(requireContext(), ImageUpload::class.java))
+}
 
         getLocationDetail = GetLocationDetail(this, requireContext())
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)

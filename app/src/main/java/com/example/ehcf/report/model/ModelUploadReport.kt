@@ -1,6 +1,6 @@
 package com.example.ehcf.report.model
 
-data class ModelUploadReport(
+data class UploadResponseModelUploadReport(
     val message:String,
     val data:List<DataItem>
 )

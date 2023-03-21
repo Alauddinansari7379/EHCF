@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ehcf" >
+    package="com.example.ehcf">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,7 +25,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
-        tools:targetApi="32" >
+        tools:targetApi="32">
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
         <activity
             android:name=".Fragment.test.ImageUpload"
             android:exported="false" />
@@ -51,7 +54,7 @@
             android:name=".Testing.CalanderTest"
             android:exported="false" />
         <activity
-            android:name=".NotificationView"
+            android:name=".Testing.NotificationView"
             android:exported="false" />
         <activity
             android:name=".Testing.Voice_Calling"
@@ -165,7 +168,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

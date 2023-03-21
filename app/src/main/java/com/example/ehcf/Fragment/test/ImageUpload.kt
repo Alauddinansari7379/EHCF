@@ -1,17 +1,19 @@
 package com.example.ehcf.Fragment.test
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.view.View
-import com.example.ehcf.R
+import androidx.appcompat.app.AppCompatActivity
+import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityImageUploadBinding
+import com.example.ehcf.report.adapter.AdapterAppReport
+import com.example.myrecyview.apiclient.ApiClient
 import com.google.android.material.snackbar.Snackbar
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,61 +39,33 @@ class ImageUpload : AppCompatActivity(), UploadRequestBody.UploadCallback {
         }
 
         binding.buttonUpload.setOnClickListener {
-            uploadImage()
+            uploadImage1()
         }
 
     }
+    fun opeinImageChooser() {
 
-    private fun uploadImage() {
-
-        if (selectedImageUri == null) {
-            binding.layoutRoot.snackbar("Select an Image First")
-            return
-        }
-
-        val parcelFileDescriptor = contentResolver.openFileDescriptor(
-            selectedImageUri!!, "r", null
-        ) ?: return
-
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file = File(cacheDir,contentResolver.getFileName(selectedImageUri!!))
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
-        binding.progressBar.progress = 0
-        val body = UploadRequestBody(file,"image",this)
-
-        MyApi().uploadImage(MultipartBody.Part.createFormData("image", file.name, body),
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(),"json")
-        ).enqueue(object : Callback<UploadResponse>{
-            override fun onResponse(
-                call: Call<UploadResponse>,
-                response: Response<UploadResponse>
-            ) {
-                response.body()?.let {
-                    binding.layoutRoot.snackbar(it.message)
-                    binding.progressBar.progress = 100
-                }
-            }
-
-            override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
-                binding.layoutRoot.snackbar(t.message!!)
-                binding.progressBar.progress = 0
-            }
-
-        })
-
-
-    }
-
-    private fun opeinImageChooser() {
-
+//        ImagePicker.with(this)
+//            .crop()	    			//Crop image(Optional), Check Customization for more option
+//            .compress(1024)			//Final image size will be less than 1 MB(Optional)
+//            .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+//            .start()
         Intent(Intent.ACTION_PICK).also {
             it.type = "image/*"
+            (MediaStore.ACTION_IMAGE_CAPTURE)
             val mimeTypes = arrayOf("image/jpeg", "image/png")
             it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
             startActivityForResult(it, REQUEST_CODE_IMAGE)
+
         }
     }
+
+    fun uploadImage(id: String) {
+        uploadImage1()
+
+    }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -104,6 +78,52 @@ class ImageUpload : AppCompatActivity(), UploadRequestBody.UploadCallback {
             }
         }
     }
+    fun selectImage() {
+        opeinImageChooser()
+
+    }
+    fun uploadImage1() {
+
+        if (selectedImageUri == null) {
+//            binding.layoutRoot.snackbar("Select an Image First")
+            return
+        }
+
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(
+            selectedImageUri!!, "r", null
+        ) ?: return
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+
+        val file = File(cacheDir,contentResolver.getFileName(selectedImageUri!!))
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
+
+      //  binding.progressBar.progress = 0
+        val body = UploadRequestBody(file,"image",this)
+
+//        ApiClient.apiService.uploadImage("22",MultipartBody.Part.createFormData("image", file.name,body),
+//            RequestBody.create("multipart/form-data".toMediaTypeOrNull(),"json")).enqueue(object : Callback<UploadResponse>{
+//            override fun onResponse(
+//                call: Call<UploadResponse>,
+//                response: Response<UploadResponse>
+//            ) {
+//                response.body()?.let {
+//                    myToast(this@ImageUpload,response.message())
+//                   binding.layoutRoot.snackbar(it.message)
+////                    binding.progressBar.progress = 100
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
+////                binding.layoutRoot.snackbar(t.message!!)
+////                binding.progressBar.progress = 0
+//            }
+//
+//        })
+
+
+    }
 
     companion object {
         const val REQUEST_CODE_IMAGE = 101
@@ -112,6 +132,47 @@ class ImageUpload : AppCompatActivity(), UploadRequestBody.UploadCallback {
     override fun onProgressUpdate(percentage: Int) {
         binding.progressBar.progress = percentage
     }
+
+
+
+    fun upload(id: String) {
+
+            val parcelFileDescriptor = contentResolver.openFileDescriptor(
+                selectedImageUri!!, "r", null
+            ) ?: return
+
+            val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+
+            val file = File(cacheDir,contentResolver.getFileName(selectedImageUri!!))
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+
+           // binding.progressBar.progress = 0
+            val body = UploadRequestBody(file,"image",this)
+//
+//            ApiClient.apiService.uploadImage("22",MultipartBody.Part.createFormData("image", file.name, body),
+//                RequestBody.create("multipart/form-data".toMediaTypeOrNull(),"json"))
+//                .enqueue(object : Callback<UploadResponse>{
+//                override fun onResponse(
+//                    call: Call<UploadResponse>,
+//                    response: Response<UploadResponse>
+//                ) {
+//                    response.body()?.let {
+////                        binding.layoutRoot.snackbar(it.message)
+////                        binding.progressBar.progress = 100
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
+////                    binding.layoutRoot.snackbar(t.message!!)
+////                    binding.progressBar.progress = 0
+//                }
+//
+//            })
+
+
+        }
+
 }
 
 private fun ContentResolver.getFileName(selectedImageUri: Uri): String {
@@ -135,3 +196,6 @@ private fun View.snackbar(message: String) {
     }.show()
 
 }
+
+
+
