@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Fragment.AddReport
 import com.example.ehcf.Fragment.test.ImageUpload
@@ -42,10 +43,18 @@ class AdapterAppReport(
 //        holder.consultationType.text = list.result[position].consultation_type
 
 
+
+
+
         if ( holder.btnUpload.text =="Disabled"){
             holder.btnUpload.isEnabled = false
         }
 
+        when(list.result[position].is_test){
+            "0"->{
+                holder.cardView.visibility=View.GONE
+            }
+        }
 
 //        holder.bookingId.text = list.result.upcoming[position].id.toString()
 //        holder.title.text = list.result[position].title.toString()
@@ -96,6 +105,7 @@ class AdapterAppReport(
         val testName: TextView = itemView.findViewById(R.id.tvTestNameAddRe)
         val selectImage: TextView = itemView.findViewById(R.id.btnSelectReportImgRe)
         val btnUpload: TextView = itemView.findViewById(R.id.btnUploadRe)
+        val cardView: CardView = itemView.findViewById(R.id.cardAddReport)
 
 
     }

@@ -17,6 +17,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -32,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginEnd="15dp"
             android:text="Select Payment Mode"
             android:textColor="@color/black"
             android:textStyle="bold">
@@ -71,7 +74,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="20dp"
-                        android:background="@drawable/razorpay">
+                        android:background="@drawable/online_pay">
 
                     </androidx.appcompat.widget.AppCompatImageView>
 

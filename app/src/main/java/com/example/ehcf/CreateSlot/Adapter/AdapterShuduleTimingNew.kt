@@ -29,10 +29,10 @@ class AdapterShuduleTimingNew(val context: Context, private val list: ModelSlotR
         //holder.date.text= list.result[position].date
         holder.startTime.text= list.result[position].start_time
         holder.endTime.text= list.result[position].end_time
-        holder.slotId.text= list.result[position].slot_id.toString()
+        holder.slotId.text= list.result[position].id.toString()
 
         holder.cardView.setOnClickListener {
-            showPopUp.showPopup(list.result?.get(position)?.start_time.toString(),list.result?.get(position)?.end_time.toString())
+            showPopUp.showPopup(list.result?.get(position)?.start_time.toString(),list.result?.get(position)?.end_time.toString(),list.result[position].id.toString())
             // holder.textname.setBackgroundColor(Color.parseColor("#451DE4"))
 
         }
@@ -56,7 +56,7 @@ class AdapterShuduleTimingNew(val context: Context, private val list: ModelSlotR
 
     }
     interface dilog{
-        fun showPopup(slotTime:String,slotTimeValue:String)
+        fun showPopup(slotTime: String, slotTimeValue: String, slotId: String)
         //  fun dismissPopup()
 
     }

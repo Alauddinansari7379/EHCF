@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
 import com.example.ehcf.R
 import com.squareup.picasso.Picasso
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterUpComing(val context: Context, private val list: ModelUpComingResponse,val showPopUp:ShowPopUp) :
+class AdapterUpComing(val context: Context, private val list: ModelAppointmentBySlag, val showPopUp:ShowPopUp) :
     RecyclerView.Adapter<AdapterUpComing.MyViewHolder>() {
 
 
@@ -28,49 +29,50 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
     var currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // holder.SrNo.text= "${position+1}"
-
-        holder.appointmentDate.text = list.result.upcoming[position].start_time.substring(0,10)
-        holder.doctorName.text = list.result.upcoming[position].doctor_name
-        holder.startTime.text = list.result.upcoming[position].start_time.substring(10)
-        holder.tvStatus.text = list.result.upcoming[position].status_for_customer
-
-        when (list.result.upcoming[position].slug) {
-            "waiting_for_confirmation" -> {
-                holder.btnCheck.visibility = View.GONE
-
-            }
-
-
-//            1 -> {
-//                holder.btnStart.setBackgroundColor(Color.parseColor("#FF0000"))
-//                holder.btnStart.text = "Stop"
+//        // holder.SrNo.text= "${position+1}"
+//
+//        holder.appointmentDate.text = list.result[position].start_time.substring(0,10)
+//        holder.doctorName.text = list.result.upcoming[position].doctor_name
+//        holder.startTime.text = list.result.upcoming[position].start_time.substring(10)
+//        holder.tvStatus.text = list.result.upcoming[position].status_for_customer
+//
+//        when (list.result.upcoming[position].slug) {
+//            "waiting_for_confirmation" -> {
+//                holder.btnCheck.visibility = View.GONE
+//
 //            }
+//
+//
+////            1 -> {
+////                holder.btnStart.setBackgroundColor(Color.parseColor("#FF0000"))
+////                holder.btnStart.text = "Stop"
+////
+    //}
 //            2 -> {
 //                holder.btnStart.setBackgroundColor(Color.parseColor("#119241"))
 //                holder.btnStart.text = "Done"
 //            }
-        }
-
-        if (list.result.upcoming[position].start_time <=currentDate )
-        {
-            holder.btnJoinMeeting.visibility = View.VISIBLE
-            holder.btnCheck.visibility = View.GONE
-
-        }
-//        holder.bookingId.text = list.result.upcoming[position].id.toString()
-//        holder.title.text = list.result[position].title.toString()
-//        holder.status.text = list.result[position].status_name.toString()
-     //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
-
-        holder.btnCheck.setOnClickListener {
-            showPopUp.showPopup()
-
-        }
-        holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list.result.upcoming[position].start_time)
-
-        }
+     //   }
+//
+//        if (list.result.upcoming[position].start_time <=currentDate )
+//        {
+//            holder.btnJoinMeeting.visibility = View.VISIBLE
+//            holder.btnCheck.visibility = View.GONE
+//
+//        }
+////        holder.bookingId.text = list.result.upcoming[position].id.toString()
+////        holder.title.text = list.result[position].title.toString()
+////        holder.status.text = list.result[position].status_name.toString()
+//     //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
+//
+//        holder.btnCheck.setOnClickListener {
+//            showPopUp.showPopup()
+//
+//        }
+//        holder.btnJoinMeeting.setOnClickListener {
+//            showPopUp.videoCall(list.result.upcoming[position].start_time)
+//
+//        }
 
 //        holder.btnOkDialog.setOnClickListener {
 //            showPopUp.dismissPopup()
@@ -83,7 +85,7 @@ class AdapterUpComing(val context: Context, private val list: ModelUpComingRespo
 
 
     override fun getItemCount(): Int {
-        return list.result.upcoming.size
+        return list.result.size
 
     }
 

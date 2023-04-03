@@ -13,14 +13,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
-import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
+import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.R
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterAppointments(val context: Context, private val list: ModelAppointmentBySlag, val showPopUp: UpComingFragment) :
+class AdapterAppointments(val context: Context, private val list: ModelUpComingNew, val showPopUp: UpComingFragment) :
     RecyclerView.Adapter<AdapterAppointments.MyViewHolder>() {
 
 
@@ -37,7 +37,7 @@ class AdapterAppointments(val context: Context, private val list: ModelAppointme
         holder.appointmentDate.text = list.result[position].date
         holder.doctorName.text = list.result[position].doctor_name.toString()
         holder.startTime.text = list.result[position].time
-        holder.tvStatus.text = list.result[position].status_for_customer
+        holder.tvStatus.text = list.result[position].status_name
         holder.consultationType.text = list.result[position].consultation_type
 
         when (list.result[position].slug) {

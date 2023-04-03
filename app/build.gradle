@@ -121,6 +121,12 @@ dependencies {
     //imagePicker
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
+    //shimmerlayout
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
+
+
+
 
 
 

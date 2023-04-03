@@ -213,6 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_marginRight="10dp"
+                        android:padding="2dp"
                         android:background="@drawable/corner"
                         android:backgroundTint="@color/main_color"
                         android:drawableTint="@color/white"

@@ -27,6 +27,15 @@
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
         <activity
+            android:name=".PrescriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyDoctor.MyDoctors"
+            android:exported="false" />
+        <activity
+            android:name=".report.activity.ViewReport"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity

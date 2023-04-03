@@ -6,12 +6,15 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.R
 import com.example.ehcf.Specialities.adapter.AdapterDoctorProfile
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.databinding.ActivityDoctorProfileBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +27,8 @@ class DoctorProfile : AppCompatActivity() {
     private var context: Context = this@DoctorProfile
     var doctorId=""
     private lateinit var sessionManager: SessionManager
+    var shimmerFrameLayout: ShimmerFrameLayout? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDoctorProfileBinding.inflate(layoutInflater)
@@ -32,6 +37,9 @@ class DoctorProfile : AppCompatActivity() {
         //         doctorId = intent.getStringExtra("doctorId").toString()
          doctorId= intent.getStringExtra("doctorId").toString()
         Log.e("doctorId","$doctorId")
+        shimmerFrameLayout = findViewById(R.id.shimmer)
+        shimmerFrameLayout!!.startShimmer();
+
         apiCallDoctorProfile()
         binding.imgBack.setOnClickListener {
             onBackPressed()
@@ -51,7 +59,7 @@ class DoctorProfile : AppCompatActivity() {
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        //progressDialog!!.show()
 
         Log.e("doctorId", "$doctorId")
 
@@ -64,10 +72,14 @@ class DoctorProfile : AppCompatActivity() {
                     response: Response<ModelDoctorProfile>
                 ) {
                     if (response.body()!!.result.isEmpty()) {
+                        binding.shimmer.visibility = View.GONE
                         myToast(this@DoctorProfile, "No Doctor Found")
                         progressDialog!!.dismiss()
                     } else {
                         binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
                             adapter = AdapterDoctorProfile(this@DoctorProfile, response.body()!!)
                             progressDialog!!.dismiss()
                         }
@@ -76,6 +88,7 @@ class DoctorProfile : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelDoctorProfile>, t: Throwable) {
+                    binding.shimmer.visibility = View.GONE
                     myToast(this@DoctorProfile,"Something went wrong")
                     progressDialog!!.dismiss()
 

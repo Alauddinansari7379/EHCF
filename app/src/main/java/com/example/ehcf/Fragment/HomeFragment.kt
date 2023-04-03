@@ -32,9 +32,11 @@ import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.Specialities.activity.Specialities
 import com.example.ehcf.databinding.FragmentHomeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.*
@@ -56,6 +58,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var lattitude = ""
     var longitude = ""
+    var id = ""
     var city = ""
     private var country = ""
     var address = ""
@@ -63,17 +66,25 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     private val REQUEST_CODE = 100
     private lateinit var binding: FragmentHomeBinding
     private lateinit var sessionManager: SessionManager
+    var shimmerFrameLayout: ShimmerFrameLayout? = null
+
+
+    // val container = view?.findViewById(com.example.ehcf.R.id.shimmer) as ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(com.example.ehcf.R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
+        shimmerFrameLayout = view.findViewById(R.id.shimmer)
+        shimmerFrameLayout!!.startShimmer();
+
+
 //
 //        CheckInternet().check { connected ->
 //            if (connected) {
@@ -88,19 +99,24 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //        }
 //        easyWayLocation.startLocation()
 
-binding.symtom.setOnClickListener {
-    startActivity(Intent(requireContext(), ImageUpload::class.java))
-}
+        binding.symtom.setOnClickListener {
+            startActivity(Intent(requireContext(), ImageUpload::class.java))
+        }
 
         getLocationDetail = GetLocationDetail(this, requireContext())
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)
 
 
-        lm = requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+        lm =
+            requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
 
         val current = resources.configuration.locale
 
         sessionManager = SessionManager(requireContext())
+
+
+        id = sessionManager.id.toString()
+     //   binding.id.text = id
 
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("FetchContact89", "fetchContacts: coroutine start")
@@ -120,16 +136,47 @@ binding.symtom.setOnClickListener {
         val imageList = ArrayList<SlideUIModel>()
         //https://bit.ly/2YoJ77H"
         //https://bit.ly/2BteuF2
-        imageList.add(SlideUIModel("", "Consult Doctor"))
-        imageList.add(SlideUIModel("", "Book An Appointment"))
-        imageList.add(SlideUIModel("", "Home Visit"))
+        imageList.add(
+            SlideUIModel(
+                "https://ehcf.thedemostore.in/uploads/prescriptions/1679740963.png",
+                ""
+            )
+        )
+        imageList.add(
+            SlideUIModel(
+                "https://ehcf.thedemostore.in/uploads/prescriptions/1679741056.png",
+                ""
+            )
+        )
+        imageList.add(
+            SlideUIModel(
+                "https://ehcf.thedemostore.in/uploads/prescriptions/1679741017.png",
+                ""
+            )
+        )
 
         binding.imageSlide.setImageList(imageList)
 
 
+
         binding.imageSlide.setItemClickListener(object : ItemClickListener {
             override fun onItemClick(model: SlideUIModel, position: Int) {
-                myToast(requireActivity(), "${model.title}")
+
+                when (position) {
+                    0 -> {
+                        sessionManager.bookingType = "1"
+                        startActivity(Intent(requireContext(), Specialities::class.java))
+                    }
+                    1 -> {
+                        sessionManager.bookingType = "2"
+                        startActivity(Intent(requireContext(), Specialities::class.java))
+                    }
+                    else -> {
+                        sessionManager.bookingType = "3"
+                        startActivity(Intent(requireContext(), Specialities::class.java))
+                    }
+                }
+                //  myToast(requireActivity(), "${model.title}")
                 // Toast.makeText(requireContext(), "${model.title}", Toast.LENGTH_SHORT).show()
             }
         })
@@ -205,11 +252,12 @@ binding.symtom.setOnClickListener {
             REQUEST_CODE
         )
     }
+
     override fun onStart() {
         super.onStart()
-        if (isOnline(requireContext())){
+        if (isOnline(requireContext())) {
             //  myToast(requireActivity(), "Connected")
-        }else{
+        } else {
             val changeReceiver = NetworkChangeReceiver(context)
             changeReceiver.build()
             //  myToast(requireActivity(), "Not C")
@@ -226,6 +274,7 @@ binding.symtom.setOnClickListener {
 //            }
 //        }
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -309,16 +358,23 @@ binding.symtom.setOnClickListener {
                 ) {
                     if (response.body()!!.status == 1) {
                         binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
                             adapter = AdapterAllDoctor(requireContext(), response.body()!!)
                             //  progressDialog!!.dismiss()
                         }
                     } else {
+                        binding.shimmer.visibility = View.GONE
+
                         //  myToast(requireActivity(), response.body()!!.message.toString())
                         //  progressDialog!!.dismiss()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
+                    binding.shimmer.visibility = View.GONE
+
                     // myToast(requireActivity(),"${t.message}")
                     // progressDialog!!.dismiss()
 

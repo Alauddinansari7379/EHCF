@@ -45,7 +45,7 @@
 
                 </androidx.appcompat.widget.AppCompatTextView>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvSpecialitiesName"
+                    android:id="@+id/tvSpecialitiesNamePreList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"

@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Helper.myToast
@@ -12,6 +13,7 @@ import com.example.ehcf.Specialities.adapter.AdapterSpecialities
 import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.Testing.Interface.apiInterface
 import com.example.ehcf.databinding.ActivitySpecialitiesBinding
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,12 +26,16 @@ class Specialities : AppCompatActivity() {
    private var progressDialog: ProgressDialog? =null
     private val context: Context = this@Specialities
     var bookingType=""
+    var shimmerFrameLayout: ShimmerFrameLayout? = null
 
     private lateinit var binding: ActivitySpecialitiesBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySpecialitiesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        shimmerFrameLayout = findViewById(R.id.shimmer_specialities)
+        shimmerFrameLayout!!.startShimmer();
 
         bookingType= intent.getStringExtra("bookingType").toString()
         Log.e("BookingType","$bookingType")
@@ -64,7 +70,7 @@ class Specialities : AppCompatActivity() {
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+    //    progressDialog!!.show()
 
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -81,6 +87,9 @@ class Specialities : AppCompatActivity() {
                 if (response.code()==200) {
                     val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewSpeci)
                     recyclerView.apply {
+                        shimmerFrameLayout?.startShimmer()
+                        binding.recyclerViewSpeci.visibility = View.VISIBLE
+                        binding.shimmerSpecialities.visibility = View.GONE
                         adapter = AdapterSpecialities(context, response.body()!!)
                         progressDialog!!.dismiss()
                     }

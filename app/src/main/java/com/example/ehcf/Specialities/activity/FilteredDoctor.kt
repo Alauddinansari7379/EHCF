@@ -6,14 +6,18 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.R
 import com.example.ehcf.Specialities.adapter.AdapterFilteredDoctor
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
 import com.example.ehcf.databinding.ActivityFilteredDoctorBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.facebook.shimmer.ShimmerFrameLayout
+import io.supercharge.shimmerlayout.ShimmerLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,11 +30,17 @@ class FilteredDoctor : AppCompatActivity() {
     private var specialitiesID = ""
     var progressDialog: ProgressDialog? = null
     private lateinit var sessionManager: SessionManager
+    var shimmerFrameLayout: ShimmerFrameLayout? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFilteredDoctorBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
+
+
+        shimmerFrameLayout = findViewById(R.id.shimmer)
+        shimmerFrameLayout!!.startShimmer();
 
         binding.imgBack.setOnClickListener {
             onBackPressed()
@@ -51,7 +61,7 @@ class FilteredDoctor : AppCompatActivity() {
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+      //  progressDialog!!.show()
 
         val lat = "435435"
         val lng = "54357"
@@ -70,12 +80,15 @@ class FilteredDoctor : AppCompatActivity() {
                 ) {
                     if (response.body()!!.status == 1) {
                         binding.rvAllDoctor.apply {
+
                             adapter = AdapterAllDoctor(this@FilteredDoctor, response.body()!!)
                             progressDialog!!.dismiss()
                         }
                     } else {
                         myToast(this@FilteredDoctor, response.body()!!.message.toString())
                         progressDialog!!.dismiss()
+                        binding.shimmer.visibility = View.GONE
+
                     }
                 }
 
@@ -96,7 +109,7 @@ class FilteredDoctor : AppCompatActivity() {
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+      //  progressDialog!!.show()
 
         Log.e("specialitiesIDAPI", "$specialitiesID")
 
@@ -110,9 +123,14 @@ class FilteredDoctor : AppCompatActivity() {
                 ) {
                     if (response.body()!!.result.isEmpty()) {
                         myToast(this@FilteredDoctor, "No Doctor Found")
+                        binding.shimmer.visibility = View.GONE
+
                         progressDialog!!.dismiss()
                     } else {
                         binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
                             adapter = AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
                             progressDialog!!.dismiss()
                         }
@@ -121,6 +139,8 @@ class FilteredDoctor : AppCompatActivity() {
                 }
                 override fun onFailure(call: Call<ModelFilteredDoctor>, t: Throwable) {
                     myToast(this@FilteredDoctor,"Something went wrong")
+                    binding.shimmer.visibility = View.GONE
+
                     progressDialog!!.dismiss()
 
                 }

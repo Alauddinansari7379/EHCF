@@ -12,7 +12,11 @@ data class ResultX(
     val objective_information: String,
     val patient_id: String,
     val plan: String,
-    val report: String,
+    val doctor_name: String?=null,
+    val start_time: String?=null,
+    val end_time: String?=null,
+    val category_name: String,
+    val report: String?=null,
     val subjective_information: String,
     val updated_at: String
 )

@@ -9,7 +9,7 @@ data class ResultXXX(
     val customer_rating: String,
     val date: String,
     val doctor_id: String,
-    val doctor_name: String,
+    val doctor_name: String?=null,
     val email: String,
     val id: String,
     val patient_id: String,

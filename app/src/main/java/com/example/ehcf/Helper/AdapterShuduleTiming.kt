@@ -27,10 +27,14 @@ class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew,
       //  holder.date.text= arraylist.result[position].date
         holder.startTime.text= arraylist.result[position].start_time
         holder.endTime.text= arraylist.result[position].end_time
-        holder.slotId.text= arraylist.result[position].slot_id.toString()
+        holder.slotId.text= arraylist.result[position].id.toString()
 
         holder.cardView.setOnClickListener {
-            showBookPopUp.showPopup(arraylist.result?.get(position)?.start_time.toString(),arraylist.result?.get(position)?.end_time.toString())
+            showBookPopUp.showPopup(
+                arraylist.result?.get(position)?.start_time.toString(),
+                arraylist.result?.get(position)?.end_time.toString(),
+                arraylist.result?.get(position)?.id.toString(),
+            )
            // holder.textname.setBackgroundColor(Color.parseColor("#451DE4"))
 
         }

@@ -1,7 +1,6 @@
 package com.example.ehcf
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -9,28 +8,32 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.ehcf.Appointments.Appointments
+import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
-import com.example.ehcf.Testing.RazorPay
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
-import com.giphy.sdk.analytics.GiphyPingbacks.context
+import com.razorpay.Checkout
+import com.razorpay.PaymentResultListener
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 
-class PaymentMode : AppCompatActivity() {
+class PaymentMode : AppCompatActivity(),PaymentResultListener {
     private val context: Context = this@PaymentMode
     private var doctorId=""
     private lateinit var sessionManager:SessionManager
     var selectedate = ""
     var progressDialog: ProgressDialog? = null
     var startTime = ""
+    var slotId = ""
+    var amt = 1000
     var title = ""
     var description = ""
     private lateinit var binding: ActivityPaymentModeBinding
@@ -52,6 +55,7 @@ class PaymentMode : AppCompatActivity() {
         doctorId = intent.getStringExtra("doctorId").toString()
         selectedate = intent.getStringExtra("selecteDate").toString()
         startTime = intent.getStringExtra("startTime").toString()
+        slotId = intent.getStringExtra("slotId").toString()
         title = intent.getStringExtra("title").toString()
         description = intent.getStringExtra("description").toString()
 
@@ -92,12 +96,272 @@ class PaymentMode : AppCompatActivity() {
 
 
         binding.cardRazorPay.setOnClickListener {
-            val intent = Intent(context as Activity, RazorPay::class.java)
-                .putExtra("doctorId",doctorId)
-                .putExtra("selecteDate",selectedate)
-                .putExtra("startTime",startTime)
-            context.startActivity(intent)
+            startPaymentOnline()
+
+//            val intent = Intent(context as Activity, RazorPay::class.java)
+//                .putExtra("doctorId",doctorId)
+//                .putExtra("selecteDate",selectedate)
+//                .putExtra("startTime",startTime)
+//                .putExtra("slotId",slotId)
+//            context.startActivity(intent)
         }
+
+    }
+
+    private fun apiCallCreateBookingOnlineConsultOnline(){
+
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(false)
+        progressDialog!!.show()
+        val amount="1000"
+        val paymentMode="2"
+
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,"","",slotId)
+            .enqueue(object : Callback<ModelCreateConsultation>
+            {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelCreateConsultation>,
+                    response: Response<ModelCreateConsultation>
+                )
+                {
+                    if (response.code()==500){
+                        myToast(this@PaymentMode,"Server Error")
+                    }
+                    else if (response.code()==200){
+                        popUpConsultOnline()
+                        progressDialog!!.dismiss()
+                    }else{
+                        myToast(this@PaymentMode,response.body()!!.message)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+
+                }
+
+
+            })
+    }
+
+    private fun apiCallCreateBookingAppointmentOnline(){
+
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(false)
+        progressDialog!!.show()
+        val amount="1000"
+        val paymentMode="2"
+
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType, selectedate,startTime,slotId)
+            .enqueue(object : Callback<ModelCreateConsultation>
+            {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelCreateConsultation>,
+                    response: Response<ModelCreateConsultation>
+                )
+                {
+                    if (response.body()!!.status==1){
+                        popUpOnline()
+                        progressDialog!!.dismiss()
+                    }else{
+                        myToast(this@PaymentMode,response.body()!!.message)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+
+                }
+
+
+            })
+    }
+    /*
+        private fun apiCallCreateBookingAppointment(){
+
+            progressDialog = ProgressDialog(this)
+            progressDialog!!.setMessage("Loading..")
+            progressDialog!!.setTitle("Please Wait")
+            progressDialog!!.isIndeterminate = false
+            progressDialog!!.setCancelable(false)
+            progressDialog!!.show()
+            val amount="1000"
+            val paymentMode="2"
+
+            ApiClient.apiService.createBooking(sessionManager.id.toString(),doctorId,startTime,title,description,amount,paymentMode)
+                .enqueue(object : Callback<ModelCreateBooking>
+                {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onResponse(
+                        call: Call<ModelCreateBooking>,
+                        response: Response<ModelCreateBooking>
+                    )
+                    {
+                        if (response.body()!!.status==1){
+                            popUp()
+                            progressDialog!!.dismiss()
+                        }else{
+                            myToast(this@RazorPay,response.body()!!.message)
+                            progressDialog!!.dismiss()
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<ModelCreateBooking>, t: Throwable) {
+
+                    }
+
+
+                })
+        }
+    */
+    private fun apiCallCreateBookingHomeVisitOnline(){
+
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(false)
+        progressDialog!!.show()
+        val amount="1000"
+        val paymentMode="2"
+
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
+            .enqueue(object : Callback<ModelCreateConsultation>
+            {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelCreateConsultation>,
+                    response: Response<ModelCreateConsultation>
+                )
+                {
+                    if (response.body()!!.status==1){
+                        popUpHomeVisitOnline()
+                        progressDialog!!.dismiss()
+                    }else{
+                        myToast(this@PaymentMode,response.body()!!.message)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+
+                }
+
+
+            })
+    }
+
+    private fun popUpOnline(){
+        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Your Booking Confirmed")
+            .setConfirmText("Ok")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                finish()
+                startActivity(intent)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+
+    }
+    private fun popUpConsultOnline(){
+        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Your Booking Confirmed")
+            .setConfirmText("Ok")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                finish()
+                startActivity(intent)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+
+    }
+    private fun popUpHomeVisitOnline(){
+        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Your Booking Confirmed")
+            .setConfirmText("Ok")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                finish()
+                startActivity(intent)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+
+    }
+
+    private fun startPaymentOnline() {
+        val co = Checkout()
+        try {
+            val options = JSONObject()
+            options.put("name", "Alauddin Ansari")
+            options.put("description", "Payment Description")
+            //You can omit the image option to fetch the image from the dashboard
+            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg")
+            options.put("theme.color", "#3399cc");
+            options.put("currency", "INR");
+            options.put("amount", amt * 100)//pass amount in currency subunits
+            val prefill = JSONObject()
+            prefill.put("email", "alauddinansari7379@gmail.com.com")
+            prefill.put("contact", "7379452259")
+            options.put("prefill", prefill)
+            co.open(this, options)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error in payment: " + e.message, Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+    }
+
+    override fun onPaymentSuccess(p0: String?) {
+        Toast.makeText(this, "Payment Successful: ", Toast.LENGTH_LONG).show()
+        when(sessionManager.bookingType){
+            "1"->{
+                apiCallCreateBookingOnlineConsultOnline()
+            }
+            "2"->{
+                apiCallCreateBookingAppointmentOnline()
+            }else->
+        {
+            apiCallCreateBookingHomeVisitOnline()
+        }
+        }
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?) {
+        Toast.makeText(this, "Payment Field ", Toast.LENGTH_LONG).show()
+
+//        val intent = Intent(applicationContext, MySlot::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//        finish()
+//        startActivity(intent)
 
     }
     private fun apiCallCreateBookingAppointment(){
@@ -111,7 +375,7 @@ class PaymentMode : AppCompatActivity() {
         val amount="1000"
         val paymentMode="1"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType, selectedate,startTime)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType, selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
@@ -158,7 +422,7 @@ class PaymentMode : AppCompatActivity() {
         val amount="1000"
         val paymentMode="1"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
@@ -192,7 +456,7 @@ class PaymentMode : AppCompatActivity() {
             .showCancelButton(true)
             .setConfirmClickListener { sDialog ->
                 sDialog.cancel()
-                val intent = Intent(applicationContext, Appointments::class.java)
+                val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 finish()
                 startActivity(intent)

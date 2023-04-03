@@ -58,7 +58,8 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
         holder.btnBookApp.setOnClickListener {
             when(sessionManager.bookingType){
                 "1"->{
-                    val intent = Intent(context as Activity, PaymentMode::class.java)
+                   // val intent = Intent(context as Activity, PaymentMode::class.java)
+                    val intent = Intent(context as Activity, MySlot::class.java)
                         .putExtra("doctorId",list.result[position].id.toString())
                     context.startActivity(intent)
                 }

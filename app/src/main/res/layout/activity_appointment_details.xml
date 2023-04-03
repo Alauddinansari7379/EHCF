@@ -16,12 +16,13 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="10dp"
+            android:padding="5dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_baseline_arrow_back_24"
-            android:src="?android:attr/selectableItemBackground">
+            android:background="?actionBarItemBackground"
+            android:src="@drawable/ic_baseline_arrow_back_24">
 
         </androidx.appcompat.widget.AppCompatImageView>
 
@@ -32,6 +33,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:minHeight="?actionBarSize"
+            android:layout_marginEnd="10dp"
             android:padding="@dimen/appbar_padding"
             android:text="Appointment Details"
             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"

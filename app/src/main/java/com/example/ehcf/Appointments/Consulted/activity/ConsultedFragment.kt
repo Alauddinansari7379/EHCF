@@ -19,6 +19,7 @@ import com.example.ehcf.databinding.FragmentConsultedBinding
 import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +33,7 @@ class ConsultedFragment : Fragment() {
     private lateinit var binding: FragmentConsultedBinding
     var progressDialog: ProgressDialog? = null
     private lateinit var sessionManager: SessionManager
+    var shimmerFrameLayout: ShimmerFrameLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +47,8 @@ class ConsultedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentConsultedBinding.bind(view)
         sessionManager = SessionManager(requireContext())
+        shimmerFrameLayout = view.findViewById(R.id.shimmer)
+        shimmerFrameLayout!!.startShimmer();
 
         apiCallGetConsultationCompleted()
         binding.imgRefresh.setOnClickListener {
@@ -60,25 +64,28 @@ class ConsultedFragment : Fragment() {
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
         progressDialog!!.show()
-
-
         ApiClient.apiService.getConsultation(sessionManager.id.toString(), "completed")
             .enqueue(object : Callback<ModelAppointmentBySlag> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
                     call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
                 ) {
-                    Log.e("Ala", "${response.body()!!}")
-                    Log.e("Ala", "${response.body()!!.status}")
+
                     if (response.code() == 500) {
                         myToast(requireActivity(), "Server Error")
-                    } else if (response.body()!!.result.isEmpty()) {
+                    }
+                    else if (response.body()!!.result.isEmpty()) {
+                        binding.shimmer.visibility = View.GONE
                         binding.tvNoDataFound.visibility = View.VISIBLE
                         // myToast(requireActivity(),"No Appointment Found")
                         progressDialog!!.dismiss()
 
                     } else {
                         binding.rvCancled.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvCancled.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
+                            binding.tvNoDataFound.visibility = View.GONE
                             binding.tvNoDataFound.visibility = View.GONE
                             adapter = AdapterConsulted(requireContext(), response.body()!!)
                             progressDialog!!.dismiss()

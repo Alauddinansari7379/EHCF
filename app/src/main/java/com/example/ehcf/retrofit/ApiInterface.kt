@@ -4,20 +4,17 @@ import com.example.ehcf.Address.ModelResponse.AddAddressResponse
 import com.example.ehcf.Address.ModelResponse.AddressListResponse
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
-import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
-import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
-import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentsDetails
-import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
+import com.example.ehcf.Appointments.UpComing.model.*
 import com.example.ehcf.CreateSlot.model.ModelCreateBooking
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
 import com.example.ehcf.Fragment.test.UploadResponse
+import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
-import com.example.ehcf.Prescription.model.ModelPrePending
-import com.example.ehcf.Prescription.model.ModelPrescribed
+import com.example.ehcf.Prescription.model.*
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.RatingAndReviews.model.ModelRating
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
@@ -162,6 +159,7 @@ interface ApiInterface {
         @Query("consultation_type") consultation_type: String?,
         @Query("date") date: String?,
         @Query("time") time: String?,
+        @Query("slot id") slot_id: String?,
     ): Call<ModelCreateConsultation>
 
     @POST("get_consultation_requests")
@@ -181,20 +179,47 @@ interface ApiInterface {
         @Query("comments") comments: String?,
     ): Call<ModelRating>
 
+    @POST("get_consultations_pat")
+    fun getConsultationAccpted(
+        @Query("patient_id") patient_id: String?,
+        @Query("slug") slug: String?,
+    ): Call<ModelUpComingNew>
+
     @POST("get_consultation_requests")
     fun getConsultation(
         @Query("customer_id") customer_id: String?,
         @Query("slug") slug: String?,
     ): Call<ModelAppointmentBySlag>
 
+
+    @Headers("Accept: application/json")
     @POST("pending_pre_list")
-    fun pendingPreList(
-        @Query("patient_id") customer_id: String?,
+    fun  pendingPreList(
+        @Query("patient_id") customer_id: String?, ): Call<My_model>
+
+    @Headers("Accept: application/json")
+    @POST("pending_pre_list")
+    fun therapiess(
+        @Query("patient_id") patientId: String?,
     ): Call<ModelPrePending>
+
+    //   Call<List<model>>
+
+   // @Headers("Accept: application/json")
     @POST("pre_list")
     fun prescribedList(
         @Query("patient_id") customer_id: String?,
     ): Call<ModelPrescribed>
+
+    @POST("get_doctors")
+    fun myDoctors(
+        @Query("patient_id") customer_id: String?,
+    ): Call<ModelMyDoctor>
+
+    @POST("view_prescription_pat")
+    fun viewPrescriptionDetial(
+        @Query("id") customer_id: String?,
+    ): Call<ModelPrescriptionDetial>
 
 //    @Multipart
 //    @POST("upload_report")
@@ -208,7 +233,5 @@ interface ApiInterface {
         @Part image: MultipartBody.Part,
         @Part("desc") desc: RequestBody,
         ): Call<UploadResponse>
-
-
 
 }

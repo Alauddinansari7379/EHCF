@@ -37,7 +37,7 @@ class AdapterCancelled(val context: Context, private val list:  ModelAppointment
 //        holder.totalAmount.text = list.result.cancelled[position].total_amount
 
         holder.appointmentDate.text = list.result[position].date
-        holder.doctorName.text = list.result[position].doctor_name.toString()
+       // holder.doctorName.text = list.result[position].doctor_name.toString()
         holder.startTime.text = list.result[position].time
         holder.tvStatus.text = list.result[position].status_for_customer
         holder.totalAmount.text = list.result[position].total

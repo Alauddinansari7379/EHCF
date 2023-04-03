@@ -47,6 +47,7 @@ class AdapterSpecialities(val context: Context, private val list: ModelSplic) :
             when(sessionManager.bookingType){
                "1" ->{
                    val intent = Intent(context as Activity, OnlineDoctor::class.java)
+                  // val intent = Intent(context as Activity, FilteredDoctor::class.java)
                         .putExtra("specialitiesID",list.result[position].id)
                      context.startActivity(intent)
                }

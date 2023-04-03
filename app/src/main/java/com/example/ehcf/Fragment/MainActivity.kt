@@ -19,6 +19,8 @@ import com.example.ehcf.*
 import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Dashboard.activity.Dashboard
 import com.example.ehcf.Helper.isOnline
+import com.example.ehcf.MyDoctor.MyDoctors
+import com.example.ehcf.Prescription.ReportMain
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.login.activity.SignIn
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             binding.includedrawar1.tvMyReport.setOnClickListener {
-                startActivity(Intent(this, ReportView::class.java))
+                startActivity(Intent(this, ReportMain::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             binding.includedrawar1.tvInvoice.setOnClickListener {
@@ -87,8 +89,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, Appointments::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
-            binding.includedrawar1.tvRefunds.setOnClickListener {
-                startActivity(Intent(this, AddNewFamily::class.java))
+//            binding.includedrawar1.tvRefunds.setOnClickListener {
+//                startActivity(Intent(this, AddNewFamily::class.java))
+//                drawerLayout.closeDrawer(GravityCompat.START)
+//            }
+            binding.includedrawar1.tvMyDoctor.setOnClickListener {
+                startActivity(Intent(this, MyDoctors::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
             binding.includedrawar1.tvLogOut.setOnClickListener {

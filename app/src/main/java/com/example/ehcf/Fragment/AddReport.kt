@@ -36,15 +36,13 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
-class AddReport : Fragment(), UploadRequestBody.UploadCallback ,AdapterAppReport.UploadImage{
+class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport.UploadImage {
     private lateinit var binding: FragmentViewReportBinding
     private var selectedImageUri: Uri? = null
     private lateinit var sessionManager: SessionManager
     var image_viewAddRe: ImageView? = null
     var progressDialog: ProgressDialog? = null
-    var imageView: ImageView? =null
-
-
+    var imageView: ImageView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +60,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback ,AdapterAppReport
 //            startActivity(Intent(requireContext(), ImageUpload::class.java))
 //        }
 
-       // imageView= view.findViewById<ImageView>(R.id.imageViewNew)
+        // imageView= view.findViewById<ImageView>(R.id.imageViewNew)
 
         apiCallGetPrePending()
 
@@ -113,6 +111,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback ,AdapterAppReport
 
             })
     }
+
     private fun apiCallGetPrePending1() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
@@ -270,10 +269,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback ,AdapterAppReport
 
     override fun upload(id: String) {
         uploadImage(id)
-
     }
-
-
 }
 
 

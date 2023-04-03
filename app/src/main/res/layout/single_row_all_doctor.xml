@@ -52,9 +52,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:gravity="end"
+                        android:text="Exp "
+                        android:textColor="@color/main_color"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/exprinceMyDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
                         android:layout_marginRight="15dp"
                         android:gravity="end"
-                        android:text="9.5 Exp"
+                        android:text="9.5"
                         android:textColor="@color/main_color"
                         android:textStyle="bold">
 

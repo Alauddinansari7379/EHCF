@@ -1,0 +1,104 @@
+package com.example.ehcf.report.activity
+
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Handler
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.ehcf.R
+import com.example.ehcf.databinding.ActivityViewReportBinding
+import java.io.IOException
+import java.io.InputStream
+import java.net.URL
+
+class ViewReport : AppCompatActivity() {
+    private lateinit var binding:ActivityViewReportBinding
+
+    var setView = 1
+    var imageView: ImageView? = null
+    var left: ImageView? = null
+    var etURL: EditText? = null
+    var clearbtn: Button? = null
+    var fetchbtn: Button? = null
+    var mainHandler = Handler()
+    var progressDialog: ProgressDialog? = null
+    var reportData=""
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding= ActivityViewReportBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.imgBack.setOnClickListener {
+            onBackPressed()
+        }
+        binding.btnDashboard.setOnClickListener {
+            onBackPressed()
+        }
+
+        imageView = findViewById<View>(R.id.imageView2) as ImageView
+//        etURL = findViewById<View>(R.id.etURL) as EditText
+
+//        String url = etURL.getText().toString();
+
+        reportData=intent.getStringExtra("report").toString()
+        Log.e("reportData",reportData)
+        val baseUrl="https://ehcf.thedemostore.in/uploads/"
+
+        if (reportData=="null"){
+            SweetAlertDialog(this@ViewReport, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("No Report Found")
+                .setConfirmText("Ok")
+                //.setCancelText("Ok")
+                .showCancelButton(true)
+                .setConfirmClickListener { sDialog ->
+                    sDialog.cancel()
+                    onBackPressed()
+                }
+                .setCancelClickListener { sDialog ->
+                    sDialog.cancel()
+                }
+                .show()
+            // myToast(this,"No Report Found")
+        }else{
+            val url= baseUrl+reportData
+            FetchImage(url).start()
+
+        }
+
+
+        // url1 = "https://ehcf.thedemostore.in/uploads/prescriptions/1679551088.jpg"
+    }
+
+    internal inner class FetchImage(var URL: String) : Thread() {
+        var bitmap: Bitmap? = null
+        override fun run() {
+            mainHandler.post {
+                progressDialog = ProgressDialog(this@ViewReport)
+                progressDialog!!.setMessage("Getting Report Image....")
+                progressDialog!!.setCancelable(true)
+                progressDialog!!.show()
+            }
+            var inputStream: InputStream? = null
+            try {
+                inputStream = URL(URL).openStream()
+                bitmap = BitmapFactory.decodeStream(inputStream)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            mainHandler.post {
+                if (progressDialog!!.isShowing) progressDialog!!.dismiss()
+                imageView!!.setImageBitmap(bitmap)
+            }
+        }
+    }
+}

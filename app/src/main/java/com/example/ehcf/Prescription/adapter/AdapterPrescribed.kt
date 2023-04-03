@@ -3,7 +3,6 @@ package com.example.ehcf.Prescription.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,8 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.Prescription.ReportMain
-import com.example.ehcf.Prescription.model.ModelPrePending
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class AdapterPrescribed(
@@ -35,21 +31,23 @@ class AdapterPrescribed(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-        holder.startTime.text = list.result[position].date
-        holder.endTime.text = list.result[position].date
+        holder.startTime.text = list.result[position].start_time
+        holder.endTime.text = list.result[position].end_time
         holder.bookingDate.text = list.result[position].date
+        holder.specialitiesNamePrescribed.text = list.result[position].category_name
+        holder.doctorName.text = list.result[position].doctor_name
       //  holder.doctorName.text = list.result[position].n.toString()
 
         holder.btnAddReport.setOnClickListener {
             val intent = Intent(context as Activity, ReportMain::class.java)
-                //.putExtra("slotId",list.result[position].id.toString())
+                .putExtra("id",list.result[position].id.toString())
             context.startActivity(intent)
 
         }
 
         holder.btnViewPrescription.setOnClickListener {
             val intent = Intent(context as Activity, PrescriptionDetails::class.java)
-                //.putExtra("slotId",list.result[position].id.toString())
+                .putExtra("id",list.result[position].id.toString())
             context.startActivity(intent)
 
         }

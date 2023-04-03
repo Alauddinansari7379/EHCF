@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.ehcf.PaymentMode
-import com.example.ehcf.Testing.RazorPay
 import com.example.ehcf.databinding.ActivityBookingSlotBinding
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet

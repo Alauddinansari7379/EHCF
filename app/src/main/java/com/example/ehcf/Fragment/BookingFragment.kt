@@ -25,10 +25,10 @@ class BookingFragment : Fragment() {
         sessionManager = SessionManager(requireContext())
 
         binding.btnConsultDoctor.setOnClickListener {
-            val bookingType="1"
-            sessionManager.bookingType ="1"
+            val bookingType = "1"
+            sessionManager.bookingType = "1"
             val intent = Intent(context as Activity, Specialities::class.java)
-                .putExtra("bookingType",bookingType)
+                .putExtra("bookingType", bookingType)
             (context as Activity).startActivity(intent)
 
 //            val intent = Intent(context as Activity, SpecialitiesConsultDoctor::class.java)
@@ -36,28 +36,29 @@ class BookingFragment : Fragment() {
 //            (context as Activity).startActivity(intent)
         }
         binding.btnBookAppointment.setOnClickListener {
-            sessionManager.bookingType ="2"
-            val bookingType="2"
+            sessionManager.bookingType = "2"
+            val bookingType = "2"
             val intent = Intent(context as Activity, Specialities::class.java)
-                .putExtra("bookingType",bookingType)
+                .putExtra("bookingType", bookingType)
             (context as Activity).startActivity(intent)
         }
         binding.btnHomeVisit.setOnClickListener {
-            sessionManager.bookingType ="3"
-            val bookingType="3"
+            sessionManager.bookingType = "3"
+            val bookingType = "3"
             val intent = Intent(context as Activity, Specialities::class.java)
-                .putExtra("bookingType",bookingType)
+                .putExtra("bookingType", bookingType)
             (context as Activity).startActivity(intent)
         }
 
         return (binding.root)
 
     }
+
     override fun onStart() {
         super.onStart()
-        if (isOnline(requireContext())){
+        if (isOnline(requireContext())) {
             //  myToast(requireActivity(), "Connected")
-        }else{
+        } else {
             val changeReceiver = NetworkChangeReceiver(context)
             changeReceiver.build()
             //  myToast(requireActivity(), "Not C")

@@ -12,22 +12,16 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Appointments.Cancelled.adapter.AdapterCancelled
-import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
-import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
-import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointmentsAccepted
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
-import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentCancelledBinding
-import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class CancelledFragment : Fragment() {
@@ -37,6 +31,8 @@ class CancelledFragment : Fragment() {
     var progressDialog : ProgressDialog?=null
     var dialog: Dialog?= null
     private var tvTimeCounter: TextView?=null
+    var shimmerFrameLayout: ShimmerFrameLayout? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +44,8 @@ class CancelledFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCancelledBinding.bind(view)
         sessionManager = SessionManager(requireContext())
+        shimmerFrameLayout = view.findViewById(R.id.shimmer)
+        shimmerFrameLayout!!.startShimmer();
        // apiCall()
         apiCallGetConsultationRejected()
         val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
@@ -56,7 +54,6 @@ class CancelledFragment : Fragment() {
         binding.imgRefresh.setOnClickListener {
            // apiCall()
             apiCallGetConsultationRejected()
-
         }
 //       btnCheck.setOnClickListener {
 //            dialog=   Dialog(requireContext())
@@ -94,11 +91,15 @@ class CancelledFragment : Fragment() {
                     Log.e("Ala", "${response.body()!!.status}")
                     if (response.body()!!.result.isEmpty()){
                         binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
                         // myToast(requireActivity(),"No Appointment Found")
                         progressDialog!!.dismiss()
 
                     }else{
                         binding.rvCancled.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvCancled.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
                             binding.tvNoDataFound.visibility = View.GONE
                             adapter = AdapterCancelled(requireContext(), response.body()!!)
                             progressDialog!!.dismiss()
