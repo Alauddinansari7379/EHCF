@@ -11,8 +11,16 @@ data class ResultXX(
     val objective_information: String,
     val patient_id: String,
     val plan: String,
+    val address: String,
+    val city: String,
+    val country: String,
     val date: String,
+    val gender: String,
+    val doctor_name: String,
+    val registration: String,
+    val clinic_name: String,
     val report: Any,
     val subjective_information: String,
     val updated_at: String
 )
+

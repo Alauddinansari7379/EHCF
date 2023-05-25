@@ -58,7 +58,7 @@ class AppointmentDetails : AppCompatActivity() {
                     Log.e("Ala", "${response.body()!!.status}")
 
                    binding.tvDate.text= response.body()!!.result.date
-                   binding.tvTime.text= response.body()!!.result.time
+                   binding.tvTime.text= response.body()!!.result.start_time
                    binding.tvDoctorName.text= response.body()!!.result.doctor_name
                     when(response.body()!!.result.consultation_type){
                         "1"->{

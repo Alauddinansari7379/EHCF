@@ -15,8 +15,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Fragment.test.*
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.report.activity.ReportMain
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentViewReportBinding
@@ -26,7 +28,6 @@ import com.example.myrecyview.apiclient.ApiClient
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,13 +61,13 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 //            startActivity(Intent(requireContext(), ImageUpload::class.java))
 //        }
 
-        // imageView= view.findViewById<ImageView>(R.id.imageViewNew)
+         imageView= view.findViewById<ImageView>(R.id.imageViewNew)
 
         apiCallGetPrePending()
 
-        binding.cardSubmit.setOnClickListener {
-            opeinImageChooser()
-        }
+//        binding.cardSubmit.setOnClickListener {
+//            opeinImageChooser()
+//        }
 
 
     }
@@ -93,9 +94,11 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                     } else {
                         binding.recyclerView.apply {
                             binding.tvNoDataFound.visibility = View.GONE
-                            adapter = AdapterAppReport(
-                                requireContext(), response.body()!!, this@AddReport
-                            )
+                            adapter = activity?.let {
+                                AdapterAppReport(
+                                    it, response.body()!!, this@AddReport
+                                )
+                            }
                             progressDialog!!.dismiss()
 
                         }
@@ -133,9 +136,11 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                     } else {
                         binding.recyclerView.apply {
                             binding.tvNoDataFound.visibility = View.GONE
-                            adapter = AdapterAppReport(
-                                requireContext(), response.body()!!, this@AddReport
-                            )
+                            adapter = activity?.let {
+                                AdapterAppReport(
+                                    it, response.body()!!, this@AddReport
+                                )
+                            }
                             progressDialog!!.dismiss()
 
                         }
@@ -189,9 +194,23 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                 call: Call<UploadResponse>, response: Response<UploadResponse>
             ) {
                 response.body()?.let {
-                    binding.layoutRoot.snackbar("Successfully Uploaded")
+                 //   binding.layoutRoot.snackbar("Successfully Uploaded")
                     progressDialog!!.dismiss()
-                    apiCallGetPrePending1()
+                    SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Successfully Uploaded")
+                        .setConfirmText("Ok")
+                        .showCancelButton(true)
+                        .setConfirmClickListener { sDialog ->
+                            sDialog.cancel()
+                            (activity as ReportMain).refresh()
+
+                        }
+                        .setCancelClickListener { sDialog ->
+                            sDialog.cancel()
+                        }
+                        .show()
+                   // apiCallGetPrePending1()
+
                     //  binding.progressBar.progress = 100
                     progressDialog!!.dismiss()
 
@@ -209,14 +228,19 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
     }
 
     private fun opeinImageChooser() {
-        Intent(Intent.ACTION_PICK).also {
-            it.type = "image/*"
-            (MediaStore.ACTION_IMAGE_CAPTURE)
-            val mimeTypes = arrayOf("image/jpeg", "image/png")
-            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-            startActivityForResult(it, REQUEST_CODE_IMAGE)
+//        Intent(Intent.ACTION_PICK).also {
+//            it.type = "image/*"
+//            (MediaStore.ACTION_IMAGE_CAPTURE)
+//            val mimeTypes = arrayOf("image/jpeg", "image/png")
+//            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+//            startActivityForResult(it, REQUEST_CODE_IMAGE)
 
-        }
+            val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+            pdfIntent.type = "application/pdf"
+            pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+            startActivityForResult(pdfIntent, REQUEST_CODE_IMAGE)
+
+     //   }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -226,7 +250,8 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                 REQUEST_CODE_IMAGE -> {
                     selectedImageUri = data?.data
                     Log.e("data?.data", data?.data.toString())
-                    // imageView?.setImageURI(selectedImageUri)
+                    binding.imageViewNew.visibility = View.VISIBLE
+                 //   imageView?.setImageURI(selectedImageUri)
                 }
             }
         }

@@ -139,6 +139,31 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:text="Session End Time-"
+                            android:textColor="@color/black"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvEndTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="16:15"
+                            android:textColor="#686868"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                             android:text="Consultation Type-"
                             android:textColor="@color/black"
                             android:textStyle="bold">
@@ -201,7 +226,6 @@
                         android:backgroundTint="@color/main_color"
                         android:drawableLeft="@drawable/ic_baseline_add_24"
                         android:drawableTint="@color/white"
-                        android:visibility="gone"
                         android:padding="2dp"
                         android:text="Check Time"
                         android:textAllCaps="false"

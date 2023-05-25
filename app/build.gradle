@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+
 }
 
 android {
@@ -37,6 +39,7 @@ android {
 }
 
 dependencies {
+    //noinspection GradleCompatible
     implementation 'com.google.android.support:wearable:2.9.0'
     def nav_version = "2.5.2"
 
@@ -125,6 +128,26 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'io.supercharge:shimmerlayout:2.1.0'
 
+    //Searchable Spinner
+    implementation 'com.github.DonMat:searchablespinner:v1.0.1'
+//    implementation 'com.github.mudassar1:SearchableSpinner:v1.1'
+//    implementation 'com.github.leoncydsilva:SearchableSpinner:1.0.1'
+    implementation 'com.github.chivorns:smartmaterialspinner:1.5.0'
+
+
+    //firebase
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+    implementation "com.google.firebase:firebase-iid:21.1.0"
+    implementation "com.google.firebase:firebase-messaging:23.1.2"
+    implementation 'com.google.firebase:firebase-appdistribution-api-ktx:16.0.0-beta05'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.1'
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+    implementation 'com.google.firebase:firebase-analytics'
+
+    //PDF Viewer
+    implementation 'com.github.afreakyelf:Pdf-Viewer:v1.0.7'
 
 
 

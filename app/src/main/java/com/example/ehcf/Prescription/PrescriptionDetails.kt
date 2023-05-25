@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetial
 import com.example.ehcf.Prescription.model.ModelPreDetialJava
@@ -36,6 +37,13 @@ class PrescriptionDetails : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
+        val refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            overridePendingTransition(0, 0)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
+        binding.swipeRefreshLayout.setOnRefreshListener(refreshListener)
         apiCallGetPrePending()
     }
 

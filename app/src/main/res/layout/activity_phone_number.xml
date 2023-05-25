@@ -117,9 +117,9 @@
                             android:layout_height="45dp"
                             android:background="@drawable/corner"
                             android:drawableLeft="@drawable/ic_baseline_phone_enabled_24"
-                            android:hint="Phone Number"
+                            android:hint="Phone With Code"
                             android:inputType="number"
-                            android:maxLength="10"
+                            android:maxLength="12"
                             android:padding="10dp"
                             android:textSize="15dp">
 

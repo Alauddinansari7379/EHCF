@@ -15,6 +15,8 @@ import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
+import com.example.ehcf.Helper.changeDateFormatNew
+import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +38,9 @@ class AdapterAppointments(val context: Context, private val list: ModelUpComingN
 
         holder.appointmentDate.text = list.result[position].date
         holder.doctorName.text = list.result[position].doctor_name.toString()
-        holder.startTime.text = list.result[position].time
+      //  holder.startTime.text = list.result[position].start_time
+        holder.startTime.text = convertTo12Hour(list.result[position].start_time)
+        holder.endTime.text = convertTo12Hour(list.result[position].end_time)
         holder.tvStatus.text = list.result[position].status_name
         holder.consultationType.text = list.result[position].consultation_type
 
@@ -44,9 +48,12 @@ class AdapterAppointments(val context: Context, private val list: ModelUpComingN
             "waiting_for_accept" -> {
                 holder.btnCheck.visibility = View.GONE
                 holder.btnJoinMeeting.visibility = View.GONE
-
-
             }
+//                "waiting_for_accept" -> {
+//                holder.btnCheck.visibility = View.GONE
+//                holder.btnJoinMeeting.visibility = View.GONE
+//
+//            }
 
 
 //            1 -> {
@@ -77,21 +84,22 @@ class AdapterAppointments(val context: Context, private val list: ModelUpComingN
         }
         Log.e("currentDate", currentDate)
         Log.e("startTime", list.result[position].date+" "+list.result[position].time)
-        if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted" &&
+
+        if (list.result[position].date+" "+list.result[position].start_time<=currentDate && list.result[position].slug=="accepted" &&
              list.result[position].consultation_type=="1")
         {
             holder.btnJoinMeeting.visibility = View.VISIBLE
             holder.btnCheck.visibility = View.GONE
 
         }
-        if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted"
+        if (list.result[position].date+" "+list.result[position].start_time<=currentDate && list.result[position].slug=="accepted"
             && list.result[position].consultation_type=="2")
         {
             holder.btnJoinMeeting.visibility = View.GONE
             holder.btnCheck.visibility = View.GONE
 
         }
-        if (list.result[position].date+" "+list.result[position].time<=currentDate && list.result[position].slug=="accepted"
+        if (list.result[position].date+" "+list.result[position].start_time<=currentDate && list.result[position].slug=="accepted"
             && list.result[position].consultation_type=="3")
         {
             holder.btnJoinMeeting.visibility = View.GONE
@@ -103,11 +111,15 @@ class AdapterAppointments(val context: Context, private val list: ModelUpComingN
      //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
 
         holder.btnCheck.setOnClickListener {
-            showPopUp.showPopup()
+
+            showPopUp.popupRemainingTime(list.result[position].date?.let { it1 -> changeDateFormatNew(it1) } +" "+list.result[position].start_time)
+
+
+           // showPopUp.showPopup()
 
         }
         holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list.result[position].date+" "+list.result[position].time,list.result[position].id)
+            showPopUp.videoCall(list.result[position].date+" "+list.result[position].start_time,list.result[position].id)
 
         }
 
@@ -139,6 +151,7 @@ class AdapterAppointments(val context: Context, private val list: ModelUpComingN
           val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDate)
           val doctorName: TextView = itemView.findViewById(R.id.tvDoctorName)
           val startTime: TextView = itemView.findViewById(R.id.tvStartTime)
+          val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
           val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
           val consultationType: TextView = itemView.findViewById(R.id.tvConsultationType)
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)
@@ -153,7 +166,9 @@ class AdapterAppointments(val context: Context, private val list: ModelUpComingN
 
     }
     interface ShowPopUp{
-        fun showPopup()
+      //  fun showPopup()
+        fun popupRemainingTime(startTime: String)
+
         fun videoCall(startTime: String, id: String)
       //  fun dismissPopup()
 

@@ -113,7 +113,7 @@ class AdapterAppointmentsAccepted(val context: Context, private val list: ModelA
      //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
 
         holder.btnCheck.setOnClickListener {
-            showPopUp.showPopup()
+           // showPopUp.showPopup()
 
         }
         holder.btnJoinMeeting.setOnClickListener {

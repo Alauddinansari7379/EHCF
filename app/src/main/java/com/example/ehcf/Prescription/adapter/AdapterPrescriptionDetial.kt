@@ -31,11 +31,31 @@ class AdapterPrescriptionDetial(val context: Context, private val list: ModelPre
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
         sessionManager = SessionManager(context)
+        holder.doctorName.text = list.result[position].doctor_name
+        holder.address.text = list.result[position].address
+        holder.registration.text = list.result[position].registration
         holder.note.text = list.result[position].doctor_notes
         holder.coustmorName.text = sessionManager.customerName.toString()
         holder.date.text = list.result[position].date
+        holder.subjectiveInformation.text = list.result[position].subjective_information
+        holder.objectiveInformation.text = list.result[position].objective_information
+        holder.assessment.text = list.result[position].assessment
+        holder.plan.text = list.result[position].plan
+        holder.tvRegistrationPreDetial.text = list.result[position].registration
 
        // holder.endTime.text = list.result[position].end_time
+
+        when(list.result[position].gender){
+            "1"->{
+                holder.gender.text="Male"
+            }
+            "2"->{
+                holder.gender.text="Female"
+            }
+            else->{
+                holder.gender.text="Other"
+            }
+        }
 
     }
 
@@ -45,9 +65,18 @@ class AdapterPrescriptionDetial(val context: Context, private val list: ModelPre
     }
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val note: TextView = itemView.findViewById(R.id.tvNotePreDetial)
+        val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNamePreDetial)
+        val address: TextView = itemView.findViewById(R.id.tvAddressPreDetial)
+        val registration: TextView = itemView.findViewById(R.id.tvRegistrationPreDetial)
+        val gender: TextView = itemView.findViewById(R.id.tvGenderPreDetial)
+        val note: TextView = itemView.findViewById(R.id.doctor_notes)
+        val subjectiveInformation: TextView = itemView.findViewById(R.id.subjectiveInformation)
+        val objectiveInformation: TextView = itemView.findViewById(R.id.objectiveInformation)
+        val assessment: TextView = itemView.findViewById(R.id.assessment)
+        val plan: TextView = itemView.findViewById(R.id.plan)
+        val tvRegistrationPreDetial: TextView = itemView.findViewById(R.id.tvRegistrationPreDetial)
         val coustmorName: TextView = itemView.findViewById(R.id.tvCoustmorNamePreDet)
-        val date: TextView = itemView.findViewById(R.id.tvDatePreDetial)
+        val date: TextView = itemView.findViewById(R.id.tvDatePreDetialPreDetial)
 //        val startTime: TextView = itemView.findViewById(R.id.tvStartTimePPending)
 //        val endTime: TextView = itemView.findViewById(R.id.tvEndTimePending)
 

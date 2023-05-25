@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
@@ -33,11 +32,11 @@ class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
         holder.specialities.text = list.result[position].specialist
        // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 
-//        holder.btnBookApp.setOnClickListener {
-//            val intent = Intent(context as Activity, DoctorProfile::class.java)
-//                .putExtra("doctorId",list.result.doctor_list[position].admin_user_id)
-//            context.startActivity(intent)
-//        }
+        holder.btnBookApp.setOnClickListener {
+            val intent = Intent(context as Activity, DoctorProfile::class.java)
+                .putExtra("doctorId",list.result[position].id)
+            context.startActivity(intent)
+        }
 
         // Glide.with(hol der.image).load(list[position].url).into(holder.image)
 
@@ -52,8 +51,8 @@ class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hospitalName: TextView = itemView.findViewById(R.id.tvHospitalName)
         val id: TextView = itemView.findViewById(R.id.tvIdAllDoctor)
-        val exprince: TextView = itemView.findViewById(R.id.exprinceMyDoctor)
-        val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor)
+        val exprince: TextView = itemView.findViewById(R.id.tvexprinceAllDoctorN)
+        val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor1)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppAllDoctor)
 
 

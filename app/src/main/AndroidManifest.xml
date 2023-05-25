@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ehcf">
+    package="com.example.ehcf" >
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,9 +25,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
-        tools:targetApi="32">
+        tools:targetApi="32" >
         <activity
-            android:name=".PrescriptionActivity"
+            android:name=".Upload.UploadReportNew"
+            android:exported="false" />
+        <activity
+            android:name=".ResetPassword"
+            android:exported="false" />
+        <activity
+            android:name=".invoices.InvoiceDetail"
+            android:exported="false" />
+        <activity
+            android:name=".Specialities.activity.DoctorProfileNew"
+            android:exported="false" />
+        <activity
+            android:name=".PhoneNumber.Activity.ResetPassword"
+            android:exported="false" />
+        <activity
+            android:name=".Prescription.PrescriptionActivity"
             android:exported="false" />
         <activity
             android:name=".MyDoctor.MyDoctors"
@@ -57,7 +72,7 @@
             android:name=".Appointments.Appointments"
             android:exported="false" />
         <activity
-            android:name=".CreateSlot.activity.MySlot"
+            android:name=".CreateSlot.activity.MyAvailableSlot"
             android:exported="false" />
         <activity
             android:name=".Testing.CalanderTest"
@@ -87,7 +102,7 @@
             android:name=".report.PatientMedicalReport"
             android:exported="false" />
         <activity
-            android:name=".Prescription.ReportMain"
+            android:name=".report.activity.ReportMain"
             android:exported="false" />
         <activity
             android:name=".Prescription.AddPrescription"
@@ -177,7 +192,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen.SplashScreen"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -191,6 +206,25 @@
         <meta-data
             android:name="com.google.gms.wallet.api.enabled"
             android:value="true" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel"
+            android:value="@string/channel_id" />
+        <service
+            android:name=".Testing.MyFirebaseMessagingService"
+            android:exported="false">
+
+                <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

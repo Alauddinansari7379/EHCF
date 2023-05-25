@@ -33,8 +33,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
-    private val context: Context = this@MySlot
+class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
+    private val context: Context = this@MyAvailableSlot
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
     private var selectedate = ""
@@ -57,6 +57,9 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
             //startActivity(Intent(this, MainActivity::class.java))
         }
         selectedate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val selectedDate1 = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+        sessionManager.selectedDate=selectedDate1
+
         dayCode = SimpleDateFormat("E", Locale.getDefault()).format(Date())
         when (dayCode) {
             "Mon" -> {
@@ -136,8 +139,9 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                 newDate[year, monthOfYear] = dayOfMonth
                 DateFormat.getDateInstance().format(newDate.time)
                 // val Date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(newDate.time)
-                selectedate =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(newDate.time)
+                selectedate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(newDate.time)
+                val selectedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(newDate.time)
+                sessionManager.selectedDate=selectedDate
                 dayCode = SimpleDateFormat("E", Locale.getDefault()).format(newDate.time)
 
                 Log.e(ContentValues.TAG, "dayCode: >>>>>>$dayCode")
@@ -179,7 +183,17 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
             datePicker.show()
         }
     }
-
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        sessionManager.bookingType = null
+//
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        sessionManager.bookingType = null
+//
+//    }
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->
@@ -196,7 +210,7 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
 
     private fun apiCall() {
 
-        progressDialog = ProgressDialog(this@MySlot)
+        progressDialog = ProgressDialog(this@MyAvailableSlot)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
@@ -207,7 +221,7 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
         Log.e(ContentValues.TAG, "selectedate:>>$selectedate")
 
 
-        ApiClient.apiService.getTimeSlot(doctorId, dayCode, selectedate)
+        ApiClient.apiService.getTimeSlot(doctorId, dayCode, selectedate,sessionManager.bookingType)
             .enqueue(object : Callback<ModelSlotResNew> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
@@ -215,11 +229,19 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                     response: Response<ModelSlotResNew>
                 ) {
                     // binding.rvSlotTiming.invalidate();
-                    if (response.body()!!.result.isEmpty()) {
+                    if (response.body()!!.status==0){
+                        myToast(this@MyAvailableSlot, "${response.body()!!.message}")
+                        progressDialog!!.dismiss()
+
+                    }
+                    else if (response.code()==500){
+                        myToast(this@MyAvailableSlot, "Server Error")
+                    }
+                   else if (response.body()!!.result.isEmpty()) {
                         binding.rvSlotTiming.apply {
-                            adapter = AdapterShuduleTimingNew(this@MySlot, response.body()!!, this@MySlot)
+                            adapter = AdapterShuduleTimingNew(this@MyAvailableSlot, response.body()!!, this@MyAvailableSlot)
                             progressDialog!!.dismiss()
-                            myToast(this@MySlot, "No Slot Found")
+                            myToast(this@MyAvailableSlot, "No Slot Found")
                             progressDialog!!.dismiss()
                         }
                     } else {
@@ -227,7 +249,8 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                             //   adapter!!.notifyDataSetChanged();
                             //myToast(this@ShuduleTiming, response.body()!!.message)
                             adapter =
-                                AdapterShuduleTimingNew(this@MySlot, response.body()!!, this@MySlot)
+                                AdapterShuduleTimingNew(this@MyAvailableSlot, response.body()!!, this@MyAvailableSlot)
+
                             progressDialog!!.dismiss()
                         }
 
@@ -236,7 +259,8 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
 
 
                 override fun onFailure(call: Call<ModelSlotResNew>, t: Throwable) {
-                    myToast(this@MySlot, "Something went wrong")
+                    progressDialog!!.dismiss()
+                    myToast(this@MyAvailableSlot, "Something went wrong")
                 }
 
 
@@ -244,12 +268,15 @@ class MySlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
     }
 
 
+    @SuppressLint("MissingInflatedId")
     override fun showPopup(slotTimeData: String, slotTimeValue: String, slotId: String) {
         val view = layoutInflater.inflate(R.layout.book_dialog, null)
         dialog = Dialog(this)
         val btnBookNowDilog = view.findViewById<Button>(R.id.btnBookNowDilog)
         val slotTime = view.findViewById<TextView>(R.id.tvSlotTime)
         val slotDate = view.findViewById<TextView>(R.id.tvSlotDate)
+        val price = view.findViewById<TextView>(R.id.tvPrice)
+        price.text=sessionManager.pricing
         startTime = slotTimeValue
         Log.e("startTimeNew", startTime)
 

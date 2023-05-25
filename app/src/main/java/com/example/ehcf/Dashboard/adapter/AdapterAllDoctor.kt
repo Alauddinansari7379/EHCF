@@ -27,12 +27,15 @@ class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
        // holder.id.text= "${position+1}"
         holder.id.text= list.result.doctor_list[position].id
-        holder.hospitalName.text = list.result.doctor_list[position].hospital_name.toString()
+        holder.hospitalName.text = list.result.doctor_list[position].hospital_name
+        holder.specialities.text = list.result.doctor_list[position].specialist
+        holder.tvAddressAllDoctor.text = list.result.doctor_list[position].address
        // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 
         holder.btnBookApp.setOnClickListener {
             val intent = Intent(context as Activity, DoctorProfile::class.java)
                 .putExtra("doctorId",list.result.doctor_list[position].admin_user_id)
+                .putExtra("dashboard","1")
             context.startActivity(intent)
         }
 
@@ -49,7 +52,8 @@ class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hospitalName: TextView = itemView.findViewById(R.id.tvHospitalName)
         val id: TextView = itemView.findViewById(R.id.tvIdAllDoctor)
-        val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor)
+        val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor1)
+        val tvAddressAllDoctor: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppAllDoctor)
 
 

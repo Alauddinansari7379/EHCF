@@ -1,8 +1,10 @@
 package com.example.ehcf
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,8 +12,11 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.PhoneNumber.Activity.ResetPassword
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
+import com.example.ehcf.PhoneNumber.ModelReponse.ModelForgotPass
 import com.example.ehcf.Registration.activity.Registration
 import com.example.ehcf.databinding.ActivityOtpverificationBinding
 import com.example.myrecyview.apiclient.ApiClient
@@ -26,7 +31,11 @@ import xyz.teamgravity.checkinternet.CheckInternet
 class OTPVerification : AppCompatActivity() {
     private lateinit var binding: ActivityOtpverificationBinding
     var progressDialog: ProgressDialog? =null
+    private val context: Context = this@OTPVerification
     var phoneNumber=""
+    var id=""
+    private var otp=""
+    var finalOTP=""
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +51,34 @@ class OTPVerification : AppCompatActivity() {
 
         val intent = intent
         phoneNumber = intent.getStringExtra("Mobilenumber").toString()
-        binding.tvMobileNumber.text = "+91$phoneNumber";
+        id = intent.getStringExtra("id").toString()
+        otp = intent.getStringExtra("otp").toString()
+        binding.tvMobileNumber.text = "+$phoneNumber"
+       // otpPopup(otp)
 
         Log.e(ContentValues.TAG, "Mobilenumber-----:---$phoneNumber")
 
         binding.btnVerify.setOnClickListener {
-            startActivity(Intent(this, Registration::class.java))
+            val otp1=binding.otpBox1.text.toString()
+            val otp2=binding.otpBox2.text.toString()
+            val otp3=binding.otpBox3.text.toString()
+            val otp4=binding.otpBox4.text.toString()
+            Log.e("otp1", otp1)
+
+            finalOTP="$otp1$otp2$otp3$otp4"
+
+            Log.e("finalOTP", finalOTP.toString())
+            Log.e("otp", otp)
+
+
+            if (finalOTP==otp){
+                val intent = Intent(context as Activity, ResetPassword::class.java)
+                intent.putExtra("Mobilenumber", phoneNumber)
+                intent.putExtra("id", id)
+                context.startActivity(intent)
+            }else{
+                myToast(this@OTPVerification,"You are entered wrong OTP")
+            }
 
         }
         binding.imgBack.setOnClickListener {
@@ -71,10 +102,10 @@ class OTPVerification : AppCompatActivity() {
             binding.tvResend.setTextColor(Color.parseColor("#858284"))
             progressDialog!!.show()
 
-            ApiClient.apiService.forgotPassword(phoneNumber).enqueue(object :Callback<ForgotPasswordResponse>{
+            ApiClient.apiService.forgotPassword(phoneNumber).enqueue(object :Callback<ModelForgotPass>{
 
                 override fun onResponse(
-                    call: Call<ForgotPasswordResponse>, response: Response<ForgotPasswordResponse>
+                    call: Call<ModelForgotPass>, response: Response<ModelForgotPass>
                 ) {
 
                     // Log.e("Ala","${response.body()!!.result}")
@@ -83,6 +114,10 @@ class OTPVerification : AppCompatActivity() {
                     if (response.body()!!.status==1){
                         myToast(this@OTPVerification,response.body()!!.message)
                         progressDialog!!.dismiss()
+                        val otp = response.body()!!.result.otp.toString()
+                        val id = response.body()!!.result.id
+                        this@OTPVerification.otp =otp
+                       // otpPopup(otp)
                         timeCounter()
                     }
                     else{
@@ -93,7 +128,7 @@ class OTPVerification : AppCompatActivity() {
 
                 }
 
-                override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
+                override fun onFailure(call: Call<ModelForgotPass>, t: Throwable) {
                     myToast(this@OTPVerification,"Something went wrong")
                     progressDialog!!.dismiss()
 
@@ -104,6 +139,19 @@ class OTPVerification : AppCompatActivity() {
 
 
         }
+    private fun otpPopup(otp: String) {
+        SweetAlertDialog(this@OTPVerification, SweetAlertDialog.SUCCESS_TYPE)
+            .setTitleText("Your OTP is $otp")
+            .setConfirmText("Ok")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+    }
 
 
     private fun timeCounter() {

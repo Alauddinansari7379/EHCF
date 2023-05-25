@@ -30,6 +30,7 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
         holder.doctorName.text= list.result[position].doctor_name
         holder.experience.text = list.result[position].experience
         holder.qualification.text = list.result[position].qualification
+        holder.tvAddressAllDoctor.text = list.result[position].city
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
         holder.viewProfile.setOnClickListener {
@@ -52,6 +53,7 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
         val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameFilter)
         val experience: TextView = itemView.findViewById(R.id.tvExprinceFilter)
         val qualification: TextView = itemView.findViewById(R.id.tvQualification)
+        val tvAddressAllDoctor: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val viewProfile: Button = itemView.findViewById(R.id.btnViewProfileFilter)
         val cardView: CardView = itemView.findViewById(R.id.cardFilter)
 

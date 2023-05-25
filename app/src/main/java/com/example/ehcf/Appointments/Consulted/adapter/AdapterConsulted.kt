@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
+import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.R
 
 
@@ -28,8 +29,9 @@ class AdapterConsulted(val context: Context, private val list: ModelAppointmentB
 
         holder.appointmentDate.text = list.result[position].date
         holder.doctorName.text = list.result[position].doctor_name.toString()
-        holder.startTime.text = list.result[position].time
-        holder.status.text = list.result[position].status_for_customer
+        holder.startTime.text = convertTo12Hour(list.result[position].start_time)
+        holder.endTime.text = convertTo12Hour(list.result[position].end_time)
+        holder.status.text = list.result[position].slug
         holder.amount.text = list.result[position].total
 
 //        holder.btnCheck.setOnClickListener {
@@ -55,6 +57,7 @@ class AdapterConsulted(val context: Context, private val list: ModelAppointmentB
           val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDateCom)
           val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameCom)
           val startTime: TextView = itemView.findViewById(R.id.tvStartTimeCom)
+          val endTime: TextView = itemView.findViewById(R.id.tvEndTimeCom)
           val status: TextView = itemView.findViewById(R.id.tvStatusCom)
           val amount: TextView = itemView.findViewById(R.id.tvTotalAmountCom)
          // val endTime: TextView = itemView.findViewById(R.id.tvEndTime)

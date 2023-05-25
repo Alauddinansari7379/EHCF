@@ -100,15 +100,29 @@
                     android:textColor="@color/black" />
 
             </LinearLayout>
-            <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_gravity="center"
                 android:textStyle="bold"
-                android:text="Consultation fee: 1000"
+                android:text="Consultation fee: "
                 android:textColor="@color/black" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:text="1000"
+                android:textColor="@color/black" />
+            </LinearLayout>
 
         </LinearLayout>
 

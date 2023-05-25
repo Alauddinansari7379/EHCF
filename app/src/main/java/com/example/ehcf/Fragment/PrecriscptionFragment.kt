@@ -11,12 +11,10 @@ import androidx.viewpager.widget.ViewPager
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Prescription.PrescribedFragment
 import com.example.ehcf.Prescription.PrescriptionPendingFragment
-import com.example.ehcf.Prescription.ViewPagerAdapter1
+import com.example.ehcf.report.activity.ViewPagerAdapter1
 import com.example.ehcf.databinding.FragmentNewsBinding
-import com.example.ehcf.report.ViewReportFragment
 import com.google.android.material.tabs.TabLayout
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
-import xyz.teamgravity.checkinternet.CheckInternet
 
 class PrecriscptionFragment : Fragment() {
     private lateinit var pager: ViewPager // creating object of ViewPager

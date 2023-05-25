@@ -90,9 +90,11 @@ class Rating : AppCompatActivity() {
                     Log.e("Ala", "${response.body()!!.status}")
                     if (response.body()!!.status == 1) {
                         myToast(this@Rating, response.body()!!.message)
+                        progressDialog!!.dismiss()
                         startActivity(Intent(this@Rating, Appointments::class.java))
 
                     } else {
+                        progressDialog!!.dismiss()
                         myToast(this@Rating, response.body()!!.message)
 
                     }
@@ -122,6 +124,41 @@ class Rating : AppCompatActivity() {
             }
         }
     }
-
+//    private fun printerSdk() {
+//        mPrinterList = java.util.ArrayList()
+//        mFilterOption = FilterOption()
+//        mFilterOption.deviceType = Discovery.TYPE_PRINTER
+//        mFilterOption.epsonFilter = Discovery.FILTER_NAME
+//        mFilterOption.usbDeviceName = Discovery.TRUE
+//
+//        try {
+//            printerIpaddress.clear()
+//            Discovery.start(this, mFilterOption, mDiscoveryListener)
+//        } catch (e: Exception) {
+//            Log.e("SettingError", e.message.toString())
+//            e.printStackTrace()
+//        }
+//
+//    }
+//
+//    val mDiscoveryListener = DiscoveryListener { deviceInfo ->
+//        this.runOnUiThread {
+//            val item = HashMap<String, String>()
+//            item["PrinterName"] = deviceInfo.deviceName
+//            item["Target"] = deviceInfo.target
+//            item["IP_Address"] = deviceInfo.ipAddress
+//
+//            if (item["Target"]!!.contains("[local_printer]")) {
+//                target = deviceInfo.target.replace("[local_printer]", "")
+//            } else {
+//                target = deviceInfo.target
+//            }
+//            printerIpaddress.add(PrinterIPAddress(deviceInfo.ipAddress, target))
+//            mPrinterList!!.add(item)
+//            Log.e("CheckTarget",target)
+//            Log.e("xceltecip", printerIpaddress.toString())
+//            Log.e("xcelteclist", mPrinterList.toString())
+//        }
+//    }
 
 }

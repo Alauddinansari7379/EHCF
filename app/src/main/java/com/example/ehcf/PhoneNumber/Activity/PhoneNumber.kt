@@ -1,5 +1,6 @@
 package com.example.ehcf.PhoneNumber.Activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
@@ -10,6 +11,7 @@ import android.util.Log
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.OTPVerification
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
+import com.example.ehcf.PhoneNumber.ModelReponse.ModelForgotPass
 import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.databinding.ActivityPhoneNumberBinding
 import com.example.myrecyview.apiclient.ApiClient
@@ -42,48 +44,70 @@ class PhoneNumber : AppCompatActivity() {
         }
 
         binding.btnProcess.setOnClickListener {
-                if (binding.edtPhoneNumber.text.isEmpty()){
-                    binding.edtPhoneNumber.error="Enter Phone Number"
-                    binding.edtPhoneNumber.requestFocus()
-                    return@setOnClickListener
-                }
-            phoneNumber= binding.edtPhoneNumber.text.toString()
-            progressDialog!!.show()
+            myToast(this@PhoneNumber, "Work On Progress")
 
-            ApiClient.apiService.forgotPassword(phoneNumber).enqueue(object :Callback<ForgotPasswordResponse>{
+        }
+        binding.btnProcess.setOnClickListener {
+            if (binding.edtPhoneNumber.text.isEmpty()) {
+                binding.edtPhoneNumber.error = "Enter Phone Number"
+                binding.edtPhoneNumber.requestFocus()
+                return@setOnClickListener
+            }
+            if (binding.edtPhoneNumber.text.length<12) {
+                binding.edtPhoneNumber.error = "Enter Country Code"
+                binding.edtPhoneNumber.requestFocus()
+                return@setOnClickListener
+            }
+            apiCallForgotPassword()
+        }
+    }
 
-                override fun onResponse(
-                    call: Call<ForgotPasswordResponse>, response: Response<ForgotPasswordResponse>
-                ) {
+    private fun apiCallForgotPassword() {
+        phoneNumber = binding.edtPhoneNumber.text.toString()
+        progressDialog = ProgressDialog(this@PhoneNumber)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
-                    // Log.e("Ala","${response.body()!!.result}")
-                    Log.e("Ala","${response.body()!!.message}")
-                    Log.e("Ala","${response.body()!!.status}")
-                    if (response.body()!!.status==1){
-                        myToast(this@PhoneNumber,response.body()!!.message)
-                        progressDialog!!.dismiss()
-                        val intent = Intent(context as Activity, OTPVerification::class.java)
-                        intent.putExtra("Mobilenumber", phoneNumber)
-                        context.startActivity(intent)
+        ApiClient.apiService.forgotPassword(phoneNumber).enqueue(object :
+            Callback<ModelForgotPass> {
 
-                    }
-                    else{
-                        myToast(this@PhoneNumber,"${response.body()!!.message}")
-                        progressDialog!!.dismiss()
-
-                    }
-
-                }
-
-                override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
-                    myToast(this@PhoneNumber,"Something went wrong")
+            @SuppressLint("LogNotTimber")
+            override fun onResponse(
+                call: Call<ModelForgotPass>, response: Response<ModelForgotPass>
+            ) {
+                if (response.body()!!.status == 1) {
+                    myToast(this@PhoneNumber, response.body()!!.message)
                     progressDialog!!.dismiss()
+                    val otp = response.body()!!.result.otp
+                    val id = response.body()!!.result.id
 
+                    val intent = Intent(context as Activity, OTPVerification::class.java)
+                    intent.putExtra("Mobilenumber", phoneNumber)
+                    intent.putExtra("id", id.toString())
+                    intent.putExtra("otp", otp.toString())
+                    Log.e("otp", response.body()!!.result.otp.toString())
+                    Log.e("id", response.body()!!.result.id.toString())
+                    context.startActivity(intent)
+                } else {
+                    myToast(this@PhoneNumber, "Please enter valid phone number")
+                    progressDialog!!.dismiss()
                 }
 
-            })
-        }
-        }
+
+            }
+            override fun onFailure(call: Call<ModelForgotPass>, t: Throwable) {
+                myToast(this@PhoneNumber,t.message.toString())
+                // myToast(this@MobileNumber, "Something went wrong")
+                progressDialog!!.dismiss()
+
+            }
+
+        })
+    }
+
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->

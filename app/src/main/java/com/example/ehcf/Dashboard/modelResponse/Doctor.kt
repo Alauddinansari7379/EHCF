@@ -1,7 +1,7 @@
 package com.example.ehcf.Dashboard.modelResponse
 
 data class Doctor(
-    val address: Any,
+    val address: String,
     val admin_user_id: String,
     val appointment_fee: Any,
     val closing_time: String,
@@ -16,6 +16,9 @@ data class Doctor(
     val hospital_name: String,
     val hospital_services: List<Any>,
     val id: String,
+    val experience: String,
+    val specialist: String,
+    val doctor_name: String,
     val insurances: List<Any>,
     val is_recommended: String,
     val latitude: String,

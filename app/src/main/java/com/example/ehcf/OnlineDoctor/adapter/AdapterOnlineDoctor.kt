@@ -34,7 +34,8 @@ class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoc
         holder.qualification.text = list.result[position].qualification
        // holder.language.text = list.result[position].toString()
       //  holder.symptomName.text = list.result[position].providing_services.toString()
-        holder.fee.text = list.result[position].consultation_fee.toString()
+        holder.consaltaionFee.text = list.result[position].pricing
+        holder.addressOnline.text = list.result[position].clinic_address
       //  Picasso.get().load(list.result[position].profile_image).into(holder.imgProfile)
 //
         holder.btnViewProfileOnline.setOnClickListener {
@@ -59,9 +60,10 @@ class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoc
         val experience: TextView = itemView.findViewById(R.id.tvExprinceOnline)
         val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesOnline)
         val qualification: TextView = itemView.findViewById(R.id.tvQualificationOnline)
+        val consaltaionFee: TextView = itemView.findViewById(R.id.tvFeeOnline)
+        val addressOnline: TextView = itemView.findViewById(R.id.tvAddressOnline)
       //  val symptomName: TextView = itemView.findViewById(R.id.tvSymptomNameOnline)
       //  val language: TextView = itemView.findViewById(R.id.tvLanguageOnline)
-        val fee: TextView = itemView.findViewById(R.id.tvFeeOnline)
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfileOnline)
         val btnViewProfileOnline: Button = itemView.findViewById(R.id.btnViewProfileOnline)
 

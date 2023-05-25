@@ -22,6 +22,7 @@ data class ResultXX(
     val status_for_customer: String,
     val status_name: String,
     val time: String,
+    val start_time: String,
     val total: String,
     val updated_at: String
 )

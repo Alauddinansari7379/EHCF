@@ -7,11 +7,10 @@ import android.os.Bundle
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Address.Activity.AddressList
 import com.example.ehcf.FAQ.FAQCategories
-import com.example.ehcf.Fragment.MainActivity
+import com.example.ehcf.Upload.UploadReportNew
 import com.example.ehcf.databinding.ActivitySettingBinding
 import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.giphy.sdk.analytics.GiphyPingbacks.context
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 

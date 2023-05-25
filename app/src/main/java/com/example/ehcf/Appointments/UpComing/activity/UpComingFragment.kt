@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
@@ -35,6 +36,10 @@ import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import java.net.MalformedURLException
 import java.net.URL
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
@@ -43,6 +48,16 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     var mydilaog: Dialog? = null
     var progressDialog: ProgressDialog? = null
     var dialog: Dialog? = null
+    private var currentTime = ""
+    var endTime = ""
+    var hours = ""
+    var minutes = ""
+    var secondsNew = ""
+    private var diffTime:Long? =null
+    private var diffTimeSeconds:Long? = null
+    var bookingId = ""
+    var d1: Date? = null
+    var d2: Date? = null
     var ratingPage = false
     private var tvTimeCounter: TextView? = null
     var meetingId = ""
@@ -73,20 +88,33 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
 
         // val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
         val btnCheck = view.findViewById<Button>(R.id.btnCheck)
-        tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
+       // tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
 
         binding.imgRefresh.setOnClickListener {
             // apiCall()
           //  apiCallAppointmentsWaiting()
+          //  apiCallGetConsultationAccepted()
+            (activity as Appointments).refresh()
+        }
+        binding.imgRefresh.setOnClickListener {
             apiCallGetConsultationAccepted()
         }
 
-
-        var view = layoutInflater.inflate(R.layout.time_dialognew, null)
-        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
-        btnOkDialog.setOnClickListener {
-            dialog?.dismiss()
+        binding.imgSearch.setOnClickListener {
+            if (binding.edtSearch.text.toString().isEmpty()) {
+                binding.edtSearch.error = "Enter Doctor Name"
+                binding.edtSearch.requestFocus()
+            } else {
+                val search = binding.edtSearch.text.toString()
+                apiCallSearchAppointments(search)
+            }
         }
+
+//        var view = layoutInflater.inflate(R.layout.time_dialognew, null)
+//        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
+//        btnOkDialog.setOnClickListener {
+//            dialog?.dismiss()
+//        }
 //       btnCheck.setOnClickListener {
 //            dialog=   Dialog(requireContext())
 //            val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
@@ -104,25 +132,156 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
 
     }
 
-    override fun showPopup() {
+//    override fun showPopup() {
+//        var view = layoutInflater.inflate(R.layout.time_dialognew, null)
+//        dialog = Dialog(requireContext())
+//
+//        val btnOkDialog = view!!.findViewById<Button>(R.id.btnOkDialog)
+//
+//        dialog = Dialog(requireContext())
+//        if (view.parent != null) {
+//            (view.parent as ViewGroup).removeView(view) // <- fix
+//        }
+//        dialog!!.setContentView(view)
+//        dialog?.setCancelable(true)
+//        // dialog?.setContentView(view)
+//
+//        dialog?.show()
+//        btnOkDialog.setOnClickListener {
+//            dialog?.dismiss()
+//        }
+//
+//    }
+    private fun remainingTime() {
+        val format = SimpleDateFormat("yy/MM/dd HH:m:ss")
+
+        try {
+            d1 = format.parse(currentTime)
+            d2 = format.parse(endTime)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+    Log.e("d1", d1!!.time.toString())
+    Log.e("d2", d2!!.time.toString())
+
+    diffTime = (d2!!.time - d1!!.time)
+        diffTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(diffTime!!)
+
+        Log.e("minnew1", diffTimeSeconds.toString())
+
+    }
+
+    override fun popupRemainingTime(startTime: String) {
         var view = layoutInflater.inflate(R.layout.time_dialognew, null)
         dialog = Dialog(requireContext())
-
-        val btnOkDialog = view!!.findViewById<Button>(R.id.btnOkDialog)
-
+        endTime = startTime
+        val btnOkDialog = view!!.findViewById<Button>(R.id.btnOkDialogNew)
+        val hour = view!!.findViewById<TextView>(R.id.tvHourTime)
+        val minute = view!!.findViewById<TextView>(R.id.tvMinuteTime)
+        val second = view!!.findViewById<TextView>(R.id.tvSecondTime)
         dialog = Dialog(requireContext())
+
+        currentTime = SimpleDateFormat("yy/MM/dd HH:m:ss", Locale.getDefault()).format(Date())
+
         if (view.parent != null) {
             (view.parent as ViewGroup).removeView(view) // <- fix
         }
         dialog!!.setContentView(view)
         dialog?.setCancelable(true)
         // dialog?.setContentView(view)
+        // val d1 = format.parse("2023/03/29 11:04:00")
+//        Log.e("currentDate", currentTime)
+//        Log.e("EndTime", startTime)
+
+        remainingTime()
+        fun timeCalculator(seconds: Long) {
+            print(seconds)
+            hours = (seconds / 3600).toInt().toString()
+            minutes = (seconds % 3600 / 60).toInt().toString()
+            secondsNew = (seconds % 3600 % 60).toInt().toString()
+
+            hour.text = hours
+            minute.text = minutes
+            second.text = secondsNew
+
+            println("Hours: $hours")
+            println("Minutes: $minutes")
+            println("Seconds: $seconds")
+        }
+
+        timeCalculator(diffTimeSeconds!!)
 
         dialog?.show()
         btnOkDialog.setOnClickListener {
             dialog?.dismiss()
         }
+    }
+    private fun apiCallSearchAppointments(doctorName: String) {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
+
+        ApiClient.apiService.searchAppointments(sessionManager.id.toString(),doctorName,"accepted")
+            .enqueue(object : Callback<ModelUpComingNew> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelUpComingNew>, response: Response<ModelUpComingNew>
+                ) {
+                    if (response.code() == 500) {
+                        myToast(requireActivity(), "Server Error")
+                        binding.shimmer.visibility = View.GONE
+                    } else if (response.body()!!.status == 0) {
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        myToast(requireActivity(), "${response.body()!!.message}")
+                        progressDialog!!.dismiss()
+
+                    } else if (response.body()!!.result.isEmpty()) {
+                        binding.rvCancled.adapter =
+                            activity?.let { AdapterAppointments(it, response.body()!!,this@UpComingFragment) }
+                        binding.rvCancled.adapter!!.notifyDataSetChanged()
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        myToast(requireActivity(), "No Appointment Found")
+                        progressDialog!!.dismiss()
+
+                    } else {
+                        binding.rvCancled.adapter =
+                            activity?.let { AdapterAppointments(it, response.body()!!,this@UpComingFragment) }
+                        binding.rvCancled.adapter!!.notifyDataSetChanged()
+                        binding.tvNoDataFound.visibility = View.GONE
+                        shimmerFrameLayout?.startShimmer()
+                        binding.rvCancled.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        progressDialog!!.dismiss()
+//                        binding.rvManageSlot.apply {
+//                            binding.tvNoDataFound.visibility = View.GONE
+//                            shimmerFrameLayout?.startShimmer()
+//                            binding.rvManageSlot.visibility = View.VISIBLE
+//                            binding.shimmerMySlot.visibility = View.GONE
+//                            // myToast(this@ShuduleTiming, response.body()!!.message)
+//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
+//                            progressDialog!!.dismiss()
+//
+//                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelUpComingNew>, t: Throwable) {
+                    myToast(requireActivity(), "Something went wrong")
+                    binding.shimmer.visibility = View.GONE
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
     }
 
     private fun videoCallFun(startTime: String, id: String) {
@@ -145,6 +304,7 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     override fun onResume() {
         super.onResume()
         if (ratingPage) {
+            (activity as Appointments).refresh()
             val intent = Intent(context as Activity, Rating::class.java)
                 .putExtra("meetingId", meetingId)
             (context as Activity).startActivity(intent)

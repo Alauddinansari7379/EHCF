@@ -30,6 +30,8 @@ class SessionManager(context: Context?) {
         private const val UPDATED_AT="updated_at"
         private const val WALLET="wallet"
         private const val BOOKING_TYPE="bookingType"
+        private const val PRICE="pricing"
+        private const val SELECTED_DATE="selected_date"
     }
 
     var isLogin: Boolean
@@ -61,6 +63,11 @@ class SessionManager(context: Context?) {
         get() = prefs.getString(BOOKING_TYPE, "")
         set(bookingType) {
             prefs.edit().putString(BOOKING_TYPE, bookingType).apply()
+        }
+    var pricing: String?
+        get() = prefs.getString(PRICE, "")
+        set(pricing) {
+            prefs.edit().putString(PRICE, pricing).apply()
         }
     var password: String?
         get() = prefs.getString(PASSWORD, "")
@@ -99,6 +106,11 @@ class SessionManager(context: Context?) {
         get() = prefs.getString(GENDER, "")
         set(gender) {
             prefs.edit().putString(GENDER, gender).apply()
+        }
+    var selectedDate: String?
+        get() = prefs.getString(SELECTED_DATE, "")
+        set(selectedDate) {
+            prefs.edit().putString(SELECTED_DATE, selectedDate).apply()
         }
 
 

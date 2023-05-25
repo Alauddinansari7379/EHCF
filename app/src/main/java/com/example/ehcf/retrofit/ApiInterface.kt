@@ -8,20 +8,28 @@ import com.example.ehcf.Appointments.UpComing.model.*
 import com.example.ehcf.CreateSlot.model.ModelCreateBooking
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
+import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
 import com.example.ehcf.Fragment.test.UploadResponse
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
-import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
+import com.example.ehcf.PhoneNumber.ModelReponse.ModelForgotPass
 import com.example.ehcf.Prescription.model.*
+import com.example.ehcf.Profile.modelResponse.ModelUpdateNameEmail
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.RatingAndReviews.model.ModelRating
+import com.example.ehcf.Registration.ModelResponse.ModelOTP
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
 import com.example.ehcf.Specialities.model.ModelSplic
+import com.example.ehcf.Upload.model.ModelGetAllReport
+import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.login.modelResponse.LogInResponse
+import com.example.ehcf_doctor.Invoice.model.ModelInvoice
+import com.example.ehcf_doctor.Invoice.model.ModelInvoiceDetial
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -34,58 +42,59 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST("login")
     fun login(
-        @Field("phone_with_code") phone_with_code:String,
-        @Field("password") password:String,
-        @Field("fcm_token") fcm_token:String,
-    ):Call<LogInResponse>
+        @Field("phone_with_code") phone_with_code: String,
+        @Field("password") password: String,
+        @Field("fcm_token") fcm_token: String,
+    ): Call<LogInResponse>
 
     @FormUrlEncoded
     @POST("register")
     fun register(
-            @Field("customer_name") customer_name:String,
-            @Field("phone_number") phone_number:String,
-            @Field("phone_with_code") phone_with_code:String,
-            @Field("email") email:String,
-            @Field("password") password:String,
-            @Field("blood_group") blood_group:String,
-            @Field("gender") gender:Int,
-            @Field("fcm_token") fcm_token:String,
+        @Field("customer_name") customer_name: String,
+        @Field("phone_number") phone_number: String,
+        @Field("phone_with_code") phone_with_code: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("blood_group") blood_group: String,
+        @Field("gender") gender: Int,
+        @Field("fcm_token") fcm_token: String,
     ): Call<RegistationResponse>
 
     @FormUrlEncoded
     @POST("forget_password")
     fun forgotPassword(
-        @Field("phone_with_code") phone_with_code:String,
-    ): Call<ForgotPasswordResponse>
+        @Field("phone_with_code") phone_with_code: String,
+    ): Call<ModelForgotPass>
 
     @FormUrlEncoded
     @POST("add_address")
     fun addAddress(
-        @Field("customer id") customer_id:Int,
-        @Field("address") address:String,
-        @Field("landmark") landmark:String,
-        @Field("lat") lat:String,
-        @Field("lng") lng:String,
+        @Field("customer id") customer_id: Int,
+        @Field("address") address: String,
+        @Field("landmark") landmark: String,
+        @Field("lat") lat: String,
+        @Field("lng") lng: String,
     ): Call<AddAddressResponse>
 
 
     @POST("all_addresses")
-    fun allAddress(@Query("customer id") customer_id: Int
+    fun allAddress(
+        @Query("customer id") customer_id: Int
     ): Call<AddressListResponse>
 
     @FormUrlEncoded
     @POST("reset_password")
     fun resetPassword(
-        @Field("id") id:String,
-        @Field("password") password:String,
+        @Field("id") id: String,
+        @Field("password") password: String,
     ): Call<ResetPassResponse>
 
     @FormUrlEncoded
     @POST("get_nearest_doctors")
     fun searchByLocation(
-        @Field("lat") lat:String,
-        @Field("lng") lng:String,
-        @Field("search") search:String,
+        @Field("lat") lat: String,
+        @Field("lng") lng: String,
+        @Field("search") search: String,
     ): Call<SearchbyLocationRes>
 
     @GET("get_doctor_categories")
@@ -94,26 +103,27 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST("get_booking_requests")
     fun myAppointmentUpComing(
-        @Field("customer_id") customer_id:String,
+        @Field("customer_id") customer_id: String,
     ): Call<ModelUpComingResponse>
 
     @FormUrlEncoded
     @POST("get_booking_requests")
     fun myAppointmentCancelled(
-        @Field("customer_id") customer_id:String,
+        @Field("customer_id") customer_id: String,
     ): Call<ModelCancelled>
 
     @FormUrlEncoded
     @POST("get_booking_requests")
     fun myAppointmentConsulted(
-        @Field("customer_id") customer_id:String,
+        @Field("customer_id") customer_id: String,
     ): Call<ModelConsultedResponse>
 
     @POST("get_time_slots")
     fun getTimeSlot(
         @Query("doctor_id") doctorid: String?,
         @Query("day") day: String?,
-        @Query("date") date: String?
+        @Query("date") date: String?,
+        @Query("consultation_type") consultation_type: String?
     ): Call<ModelSlotResNew>
 
     @POST("get_nearest_doctors")
@@ -194,8 +204,22 @@ interface ApiInterface {
 
     @Headers("Accept: application/json")
     @POST("pending_pre_list")
-    fun  pendingPreList(
-        @Query("patient_id") customer_id: String?, ): Call<My_model>
+    fun pendingPreList(
+        @Query("patient_id") customer_id: String?,
+    ): Call<ModelPreList>
+
+    @Headers("Accept: application/json")
+    @POST("serch_prescription")
+    fun searchPrescription(
+        @Query("patient_id") customer_id: String?,
+        @Query("doctor_name") doctor_name: String?,
+    ): Call<ModelPreList>
+    @Headers("Accept: application/json")
+    @POST("serch_prescription")
+    fun searchPrescribed(
+        @Query("patient_id") customer_id: String?,
+        @Query("doctor_name") doctor_name: String?,
+    ): Call<ModelPrescribed>
 
     @Headers("Accept: application/json")
     @POST("pending_pre_list")
@@ -205,7 +229,7 @@ interface ApiInterface {
 
     //   Call<List<model>>
 
-   // @Headers("Accept: application/json")
+    // @Headers("Accept: application/json")
     @POST("pre_list")
     fun prescribedList(
         @Query("patient_id") customer_id: String?,
@@ -229,9 +253,78 @@ interface ApiInterface {
     @Multipart
     @POST("upload_report")
     fun uploadImage(
-        @Query("id") id:String,
+        @Query("id") id: String,
         @Part image: MultipartBody.Part,
         @Part("desc") desc: RequestBody,
-        ): Call<UploadResponse>
+    ): Call<UploadResponse>
+    @Multipart
+    @Headers("Accept: application/json")
+    @POST("create_report")
+    fun uploadReport(
+        @Query("patient_id") patient_id: String,
+        @Part report: MultipartBody.Part,
+       @Part("desc") desc: RequestBody,
+    ): Call<ModelUploadReport>
+
+    @POST("get_lo_spc")
+    fun searchByLocationAndSpec(
+        @Query("address") id: String,
+        @Query("specialist") specialist: String,
+    ): Call<ModelScarchByLocationAndSpc>
+
+    @GET("specialist_category")
+    fun specialistCategoryTest(
+    ): Call<ModelSpecilList>
+
+    @POST("profile_update")
+    fun updateNameEmail(
+        @Query("id") id: String?,
+        @Query("customer_name") doctor_name: String?,
+        @Query("email") email: String?,
+    ): Call<ModelUpdateNameEmail>
+    @POST("get_invoice_list_ptient")
+    fun invoiceList(
+        @Query("patient_id") id: String?,
+    ): Call<ModelInvoice>
+
+    @POST("search_doctor")
+    fun searchDoctor(
+        @Query("patient_id") id: String?,
+        @Query("doctor_name") doctor_name: String?,
+    ): Call<ModelMyDoctor>
+    @POST("search_doctor_by_date")
+    fun searchDoctorByDate(
+        @Query("patient_id") id: String?,
+        @Query("doctor_name") doctor_name: String?,
+        @Query("date") date: String?,
+    ): Call<ModelInvoice>
+    @POST("invoice_details")
+    fun invoiceDetails(
+        @Query("invoice_id") id: String?,
+    ): Call<ModelInvoiceDetial>
+
+    @POST("search_appointments")
+    fun searchAppointments(
+        @Query("patient_id") patient_id: String?,
+        @Query("doctor_name") doctor_name: String?,
+        @Query("slug") slug: String?,
+    ): Call<ModelUpComingNew>
+    @POST("search_appointments")
+    fun searchAppointmentsCompleted(
+        @Query("patient_id") patient_id: String?,
+        @Query("doctor_name") doctor_name: String?,
+        @Query("slug") slug: String?,
+    ): Call<ModelAppointmentBySlag>
+
+    @POST("get_repo")
+    fun getReport(
+        @Query("patient_id") patient_id: String?,
+    ): Call<ModelGetAllReport>
+
+    @POST("check_phone")
+    fun checkPhone(
+        @Query("phone_with_code") phone_with_code: String?,
+    ): Call<ModelOTP>
+
 
 }

@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.R
-import com.giphy.sdk.analytics.GiphyPingbacks.context
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.text.DateFormat
@@ -49,6 +48,22 @@ fun progrossDilog(context: Context){
     progressDialog!!.isIndeterminate = false
     progressDialog!!.setCancelable(true)
     progressDialog.show()
+}
+fun convertTo12Hour(Time: String): String? {
+    var Time = Time
+    if (Time.length == 5) {
+        Time = "$Time:00"
+    }
+    val f1: DateFormat = SimpleDateFormat("hh:mm:ss") //11:00 pm
+    var d: Date? = null
+    try {
+        d = f1.parse(Time)
+    } catch (e: ParseException) {
+        // TODO Auto-generated catch block
+        e.printStackTrace()
+    }
+    val f2: DateFormat = SimpleDateFormat("hh:mm a")
+    return f2.format(d)
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -104,6 +119,12 @@ fun changeDateFormat(date:String):String{
 fun changeDateFormat1(date:String):String{
     val inf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
     val out = SimpleDateFormat("dd-MM-yyyy")
+    return out.format(inf.parse(date))
+}
+
+fun changeDateFormatNew(date: String): String {
+    val inf = SimpleDateFormat("yyyy-MM-dd")
+    val out = SimpleDateFormat("yy/MM/dd")
     return out.format(inf.parse(date))
 }
 fun changeDateFormat2(date:String):String{

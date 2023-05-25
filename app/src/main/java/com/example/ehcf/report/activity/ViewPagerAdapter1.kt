@@ -1,4 +1,4 @@
-package com.example.ehcf.Prescription
+package com.example.ehcf.report.activity
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

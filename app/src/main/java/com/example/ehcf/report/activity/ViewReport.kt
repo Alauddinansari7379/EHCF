@@ -2,6 +2,7 @@ package com.example.ehcf.report.activity
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -15,13 +16,14 @@ import android.widget.ImageView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityViewReportBinding
+import com.rajat.pdfviewer.PdfViewerActivity
 import java.io.IOException
 import java.io.InputStream
 import java.net.URL
 
 class ViewReport : AppCompatActivity() {
     private lateinit var binding:ActivityViewReportBinding
-
+    private val context: Context = this@ViewReport
     var setView = 1
     var imageView: ImageView? = null
     var left: ImageView? = null
@@ -70,8 +72,18 @@ class ViewReport : AppCompatActivity() {
                 .show()
             // myToast(this,"No Report Found")
         }else{
-            val url= baseUrl+reportData
-            FetchImage(url).start()
+            startActivity(
+                // Use 'launchPdfFromPath' if you want to use assets file (enable "fromAssets" flag) / internal directory
+                PdfViewerActivity.launchPdfFromUrl(           //PdfViewerActivity.Companion.launchPdfFromUrl(..   :: incase of JAVA
+                    context,
+                    "https://ehcf.thedemostore.in/uploads/$reportData",                                // PDF URL in String format
+                    "Report",                        // PDF Name/Title in String format
+                    "pdf directory to save",                  // If nothing specific, Put "" it will save to Downloads
+                    enableDownload = true                    // This param is true by defualt.
+                )
+            )
+//            val url= baseUrl+reportData
+//            FetchImage(url).start()
 
         }
 

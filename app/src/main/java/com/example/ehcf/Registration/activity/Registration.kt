@@ -5,7 +5,12 @@ import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -13,12 +18,19 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.R
 import com.example.ehcf.Registration.ModelResponse.ModelGender
+import com.example.ehcf.Registration.ModelResponse.ModelOTP
+import com.example.ehcf.Registration.ModelResponse.ModelOTPResponse
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
 import com.example.ehcf.Registration.ModelResponse.SpinnerModel
 import com.example.ehcf.databinding.ActivityRegistrationBinding
 import com.example.ehcf.login.activity.SignIn
 import com.example.myrecyview.apiclient.ApiClient
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,12 +44,15 @@ class Registration : AppCompatActivity() {
 
     var bloodGroupList = ArrayList<SpinnerModel>()
     var genderList = ArrayList<ModelGender>()
-    private var bloodGroup=""
-    private var phoneNumberWithCode=""
-    var progressDialog: ProgressDialog? =null
-    private var phoneNumberWithCodeNew=""
-    private var countryCode=""
-    private var genderValue=0
+    private var bloodGroup = ""
+    private var phoneNumberWithCode = ""
+    var progressDialog: ProgressDialog? = null
+    private var phoneNumberWithCodeNew = ""
+    private var countryCode = ""
+    private var fcmToken = ""
+    private var genderValue = 0
+    private var responseOTP = "0"
+    private var varifyed = false
 
     private lateinit var binding: ActivityRegistrationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +60,9 @@ class Registration : AppCompatActivity() {
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.e("Alla,","countryCode$countryCode")
-        Log.e("Alla,","genderValue$genderValue")
-        Log.e("Alla,","bloodGroup$bloodGroup")
+        Log.e("Alla,", "countryCode$countryCode")
+        Log.e("Alla,", "genderValue$genderValue")
+        Log.e("Alla,", "bloodGroup$bloodGroup")
 
         progressDialog = ProgressDialog(this@Registration)
         progressDialog!!.setMessage("Loading..")
@@ -55,24 +70,57 @@ class Registration : AppCompatActivity() {
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
 
-
+        getToken()
         binding.spinnerCountryCode.setOnCountryChangeListener {
-             countryCode = binding.spinnerCountryCode.selectedCountryCodeWithPlus
-           val matchingcode = countryCode.substring(countryCode.length ,1);
+            countryCode = binding.spinnerCountryCode.selectedCountryCodeWithPlus
+//            val matchingcode = countryCode.substring(countryCode.length, 1);
         }
 
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
+        binding.btnSendOTP.setOnClickListener {
+            countryCode = binding.spinnerCountryCode.selectedCountryCodeWithPlus
+            val phoneWithCode=binding.edtPhoneNumberWithCode.text.toString()
+            val phoneWithCodeNew=countryCode+phoneWithCode
+            val phoneWithCodeNew1 = phoneWithCodeNew.substring(1,);
+
+            Log.e("Alla,", "phoneWithCodeNew-$phoneWithCodeNew1")
+
+            apiCallOTP(phoneWithCodeNew1)
+
+        }
+
+        binding.btnVerify.setOnClickListener {
+            if (binding.edtEnterOTP.text.toString()==responseOTP){
+                binding.layoutPhoneWithCode.setBackgroundResource(R.drawable.corner_green);
+               // binding.edtPhoneNumberWithCode.setBackgroundColor(Color.parseColor("#FF4CAF50"))
+                myToast(this,"Phone Number Verified")
+                varifyed=true
+                binding.layoutOTP.visibility=View.GONE
+                binding.edtPhoneNumberWithCode.isEnabled = false
+
+            }else if (binding.edtEnterOTP.text.isEmpty())
+                {     binding.edtEnterOTP.error="Enter OTP"
+                    binding.edtEnterOTP.requestFocus()
+
+                }else{
+                binding.edtEnterOTP.error="Wrong OTP"
+                binding.edtEnterOTP.requestFocus()
+            }
+
+
+        }
 
 
 
 
-        genderList.add(ModelGender("Male",1))
-        genderList.add(ModelGender("Female",2))
-        genderList.add(ModelGender("Transgender",3))
-        genderList.add(ModelGender("Other",4))
-        binding.spinnerGender.adapter = ArrayAdapter<ModelGender>(context, android.R.layout.simple_list_item_1, genderList)
+        genderList.add(ModelGender("Male", 1))
+        genderList.add(ModelGender("Female", 2))
+        genderList.add(ModelGender("Transgender", 3))
+        genderList.add(ModelGender("Other", 4))
+        binding.spinnerGender.adapter =
+            ArrayAdapter<ModelGender>(context, android.R.layout.simple_list_item_1, genderList)
 
 
 
@@ -87,19 +135,51 @@ class Registration : AppCompatActivity() {
 
 
 
-        binding.spinnerBloodGroup.adapter = ArrayAdapter<SpinnerModel>(context, android.R.layout.simple_list_item_1, bloodGroupList)
+        binding.spinnerBloodGroup.adapter =
+            ArrayAdapter<SpinnerModel>(context, android.R.layout.simple_list_item_1, bloodGroupList)
 
 
-        binding.spinnerBloodGroup.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                if (bloodGroupList.size > 0) {
-                    bloodGroup = bloodGroupList[i].bloodGroup
+        binding.edtPhoneNumberWithCode.addTextChangedListener(object : TextWatcher {
 
-                    Log.e(ContentValues.TAG, "bloodGroup: $bloodGroup")
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+
+                if (binding.edtPhoneNumberWithCode.length() >= 10) {
+                    binding.layoutOTP.visibility = View.VISIBLE
+                } else {
+                    binding.layoutOTP.visibility = View.GONE
+
                 }
             }
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        }
+        })
+
+        binding.spinnerBloodGroup.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    if (bloodGroupList.size > 0) {
+                        bloodGroup = bloodGroupList[i].bloodGroup
+
+                        Log.e(ContentValues.TAG, "bloodGroup: $bloodGroup")
+                    }
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+            }
         binding.spinnerGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 if (genderList.size > 0) {
@@ -109,92 +189,159 @@ class Registration : AppCompatActivity() {
                     Log.e(ContentValues.TAG, "genderValue: $genderValue")
                 }
             }
+
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
 
         binding.btnRegister.setOnClickListener {
-            if (binding.edtFirstName.text.isEmpty()){
-                binding.edtFirstName.error="First Name Required"
+            if (binding.edtFirstName.text.isEmpty()) {
+                binding.edtFirstName.error = "First Name Required"
                 binding.edtFirstName.requestFocus()
                 return@setOnClickListener
             }
-            if (binding.edtLastName.text.isEmpty()){
-                binding.edtLastName.error="Last Name Required"
+            if (binding.edtLastName.text.isEmpty()) {
+                binding.edtLastName.error = "Last Name Required"
                 binding.edtLastName.requestFocus()
                 return@setOnClickListener
             }
-            if (binding.edtPhoneNumber.text.isEmpty()){
-                binding.edtPhoneNumber.error="Phone Number Required"
-                binding.edtPhoneNumber.requestFocus()
+            if (binding.edtPhoneNumberWithCode.text.isEmpty()) {
+                binding.edtPhoneNumberWithCode.error = "Verify Phone Number"
+                binding.edtPhoneNumberWithCode.requestFocus()
+                binding.layoutOTP.visibility=View.VISIBLE
                 return@setOnClickListener
             }
-            if (binding.edtEmail.text.isEmpty()){
-                binding.edtEmail.error="Email Required"
+            if (!varifyed) {
+                binding.edtPhoneNumberWithCode.error = "Verify Phone Number"
+                binding.edtPhoneNumberWithCode.requestFocus()
+                binding.layoutOTP.visibility=View.VISIBLE
+                return@setOnClickListener
+            }
+            if (binding.edtEmail.text.isEmpty()) {
+                binding.edtEmail.error = "Email Required"
                 binding.edtEmail.requestFocus()
                 return@setOnClickListener
             }
-            if (binding.spinnerBloodGroup.selectedItem==null){
-                myToast(this,"Blood Group Required")
+            if (binding.spinnerBloodGroup.selectedItem == null) {
+                myToast(this, "Blood Group Required")
                 return@setOnClickListener
             }
-            if (binding.edtPassword.text.isEmpty()){
-                binding.edtPassword.error="Password Required"
+            if (binding.edtPassword.text.isEmpty()) {
+                binding.edtPassword.error = "Password Required"
                 binding.edtPassword.requestFocus()
                 return@setOnClickListener
             }
-            if (binding.edtConfirmPassword.text!!.isEmpty()){
-                binding.edtConfirmPassword.error="Password Required"
+            if (binding.edtConfirmPassword.text!!.isEmpty()) {
+                binding.edtConfirmPassword.error = "Password Required"
                 binding.edtConfirmPassword.requestFocus()
                 return@setOnClickListener
             }
-            if (binding.edtBiography.text.isEmpty()){
-                binding.edtBiography.error="Please enter Biography"
+            if (binding.edtBiography.text.isEmpty()) {
+                binding.edtBiography.error = "Please enter Biography"
                 binding.edtBiography.requestFocus()
                 return@setOnClickListener
             }
+            apiCallRegistration()
 
-
-
-            val firstName= binding.edtFirstName.text.toString()
-            val lastName= binding.edtLastName.text.toString()
-            val coustmerName= "$firstName $lastName"
-            val phoneNumber=binding.edtPhoneNumber.text.toString()
-            phoneNumberWithCode=binding.edtPhoneNumberWithCode.text.toString()
-            val email=binding.edtEmail.text.toString()
-            bloodGroup=binding.spinnerBloodGroup.selectedItem.toString()
-            val password=binding.edtPassword.text.toString()
-            val confirmPassword=binding.edtConfirmPassword.text.toString()
-            val biography=binding.edtBiography.text.toString()
-            val fcmToken="Alauddin1234"
-
-            phoneNumberWithCodeNew = countryCode + phoneNumberWithCode
-
-            if(password !=confirmPassword){
-                binding.edtConfirmPassword.error="Password Miss Match"
-                binding.edtConfirmPassword.requestFocus()
+        }
+    }
+    @SuppressLint("StringFormatInvalid")
+    private fun getToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
             }
-            else{
 
-                progressDialog!!.show()
+            // Get new FCM registration token
+            fcmToken = task.result
 
-                ApiClient.apiService.register(coustmerName,phoneNumber, phoneNumberWithCodeNew,email,password,bloodGroup,genderValue,fcmToken)
-                    .enqueue(object :Callback<RegistationResponse>{
+            // Log and toast
+            val msg = getString(R.string.channel_id, fcmToken)
+            Log.e("Token", fcmToken)
+            // Toast.makeText(requireContext(), token, Toast.LENGTH_SHORT).show()
+        })
+    }
+    private fun subscribed() {
+        Firebase.messaging.subscribeToTopic("Patient")
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed"
+                if (!task.isSuccessful) {
+                    msg = "Subscribe failed"
+                }
+                Log.d(ContentValues.TAG, msg)
+            }
+    }
+    private fun timeCounter() {
+        object : CountDownTimer(30000, 1000) {
+
+            // Callback function, fired on regular interval
+            @SuppressLint("SetTextI18n")
+            override fun onTick(millisUntilFinished: Long) {
+                binding.btnSendOTP.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.shimmer_color));
+                binding.tvSecond.text =
+                    "OTP Resend In : " + millisUntilFinished / 1000 + " " + " Seconds"
+            }
+
+            override fun onFinish() {
+                binding.btnSendOTP.isClickable = true
+                binding.btnSendOTP.setBackgroundColor(Color.parseColor("#9F367A"))
+
+            }
+        }.start()
+    }
+
+
+    private fun apiCallRegistration() {
+
+        val firstName = binding.edtFirstName.text.toString()
+        val lastName = binding.edtLastName.text.toString()
+        val coustmerName = "$firstName $lastName"
+        phoneNumberWithCode = binding.edtPhoneNumberWithCode.text.toString()
+        val email = binding.edtEmail.text.toString()
+        bloodGroup = binding.spinnerBloodGroup.selectedItem.toString()
+        val password = binding.edtPassword.text.toString()
+        val confirmPassword = binding.edtConfirmPassword.text.toString()
+        val biography = binding.edtBiography.text.toString()
+
+        phoneNumberWithCodeNew = countryCode + phoneNumberWithCode
+        val phoneWithCodeNew1 = phoneNumberWithCodeNew.substring(1,);
+
+        if (password != confirmPassword) {
+            binding.edtConfirmPassword.error = "Password Miss Match"
+            binding.edtConfirmPassword.requestFocus()
+        }
+        else {
+
+            progressDialog!!.show()
+
+            ApiClient.apiService.register(
+                coustmerName,
+                binding.edtPhoneNumberWithCode.text.toString(),
+                phoneWithCodeNew1,
+                email,
+                password,
+                bloodGroup,
+                genderValue,
+                fcmToken
+            )
+                .enqueue(object : Callback<RegistationResponse> {
                     @SuppressLint("LogNotTimber")
                     override fun onResponse(
-                        call: Call<RegistationResponse>, response: Response<RegistationResponse>) {
+                        call: Call<RegistationResponse>, response: Response<RegistationResponse>
+                    ) {
 
-                         Log.e("Ala","${response.body()!!.result}")
+                        Log.e("Ala", "${response.body()!!.result}")
                         Log.e("Ala", response.body()!!.message)
-                        Log.e("Ala","${response.body()!!.status}")
+                        Log.e("Ala", "${response.body()!!.status}")
 
-                        if (response.body()!!.status==1){
-                            myToast(this@Registration,response.body()!!.message)
+                        if (response.body()!!.status == 1) {
+                            myToast(this@Registration, response.body()!!.message)
+                            subscribed()
                             progressDialog!!.dismiss()
                             startActivity(Intent(context, SignIn::class.java))
 
-                        }
-                        else{
-                            myToast(this@Registration,"${response.body()!!.message}")
+                        } else {
+                            myToast(this@Registration, "${response.body()!!.message}")
                             progressDialog!!.dismiss()
 
                         }
@@ -202,27 +349,73 @@ class Registration : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<RegistationResponse>, t: Throwable) {
-                        myToast(this@Registration,"Something went wrong")
+                        myToast(this@Registration, "Something went wrong")
                         progressDialog!!.dismiss()
 
                     }
 
                 })
-            }
-
-
-
         }
 
     }
+
+    private fun apiCallOTP(phoneWithCodeNew: String) {
+
+        progressDialog = ProgressDialog(this@Registration)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+
+        ApiClient.apiService.checkPhone(phoneWithCodeNew)
+            .enqueue(object :
+                Callback<ModelOTP> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelOTP>,
+                    response: Response<ModelOTP>
+                ) {
+                    if (response.code()==500) {
+                        myToast(this@Registration, "Server Error")
+                        progressDialog!!.dismiss()
+                    }
+                    else if (response.body()!!.status == 1) {
+                        responseOTP= response.body()!!.result.otp
+                        myToast(this@Registration, "OTP Send Successfully")
+                        binding.btnSendOTP.text="Resend OTP"
+                        binding.btnSendOTP.isClickable = false
+                        binding.btnSendOTP.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.shimmer_color));
+                      //  binding.btnSendOTP.setBackgroundColor(Color.parseColor("#9F367A"))
+                        timeCounter()
+                        progressDialog!!.dismiss()
+                    } else {
+
+                        myToast(this@Registration,response.body()!!.message)
+                        progressDialog!!.dismiss()
+
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelOTP>, t: Throwable) {
+                    myToast(this@Registration, "Something went wrong")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+
+    }
+
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->
             if (connected) {
 
                 // myToast(requireActivity(),"Connected")
-            }
-            else {
+            } else {
                 val changeReceiver = NetworkChangeReceiver(context)
                 changeReceiver.build()
                 //  myToast(requireActivity(),"Check Internet")

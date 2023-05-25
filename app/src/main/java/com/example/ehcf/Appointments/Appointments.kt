@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.Cancelled.activity.CancelledFragment
@@ -39,6 +40,15 @@ class Appointments : AppCompatActivity() {
             onBackPressed()
         }
         sessionManager= SessionManager(this)
+
+        val refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            overridePendingTransition(0, 0)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
+        binding.swipeRefreshLayout.setOnRefreshListener(refreshListener)
+
         binding.imgLogout.setOnClickListener {
             SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Are you sure want to logout?")
@@ -101,6 +111,14 @@ class Appointments : AppCompatActivity() {
 
         tab.setupWithViewPager(pager)
     }
+
+    fun refresh() {
+        overridePendingTransition(0, 0)
+        finish()
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+    }
+
     override fun onStart() {
         super.onStart()
         if (isOnline(this)){

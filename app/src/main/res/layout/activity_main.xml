@@ -26,8 +26,8 @@
                 android:id="@+id/drawerClick"
                 android:layout_width="35dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="10dp"
                 android:padding="5dp"
+                android:layout_gravity="start"
                 android:src="@drawable/ic_baseline_dehaze_24"
                 android:backgroundTint="@color/black"
                 android:background="?actionBarItemBackground">
@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:text="Home"
+                android:layout_marginStart="25dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

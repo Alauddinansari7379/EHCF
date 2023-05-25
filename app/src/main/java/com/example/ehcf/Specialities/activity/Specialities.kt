@@ -90,7 +90,7 @@ class Specialities : AppCompatActivity() {
                         shimmerFrameLayout?.startShimmer()
                         binding.recyclerViewSpeci.visibility = View.VISIBLE
                         binding.shimmerSpecialities.visibility = View.GONE
-                        adapter = AdapterSpecialities(context, response.body()!!)
+                        adapter = AdapterSpecialities(context, response.body()!!,DoctorProfile())
                         progressDialog!!.dismiss()
                     }
                 }else if (response.code()==500){

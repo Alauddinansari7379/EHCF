@@ -10,8 +10,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Prescription.PrescriptionDetails
-import com.example.ehcf.Prescription.ReportMain
+import com.example.ehcf.report.activity.ReportMain
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 
@@ -31,8 +32,8 @@ class AdapterPrescribed(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-        holder.startTime.text = list.result[position].start_time
-        holder.endTime.text = list.result[position].end_time
+        holder.startTime.text = convertTo12Hour(list.result[position].start_time.toString())
+        holder.endTime.text = convertTo12Hour(list.result[position].end_time.toString())
         holder.bookingDate.text = list.result[position].date
         holder.specialitiesNamePrescribed.text = list.result[position].category_name
         holder.doctorName.text = list.result[position].doctor_name

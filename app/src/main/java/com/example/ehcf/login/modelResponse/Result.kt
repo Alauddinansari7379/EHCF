@@ -13,6 +13,7 @@ data class Result(
     val overall_ratings: String,
     val password: String,
     val phone_number: String,
+    val pricing: String,
     val phone_with_code: String,
     val pre_existing_desease: Any,
     val profile_picture: String,

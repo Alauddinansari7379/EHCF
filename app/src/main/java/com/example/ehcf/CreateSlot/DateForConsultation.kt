@@ -56,16 +56,14 @@ class DateForConsultation : AppCompatActivity() {
                 ColorStateList.valueOf(Color.parseColor("#9F367A"))
             binding.card1025.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-            binding.card1045.backgroundTintList =
-                ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+            binding.card1045.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
             binding.card1125.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
             binding.card0100.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
             binding.card0130.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-            binding.card0200.backgroundTintList =
-                ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+            binding.card0200.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
             binding.card0230.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
             binding.card0500.backgroundTintList =

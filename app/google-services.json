@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "473219171626",
+    "firebase_url": "https://ehcf-9eb57-default-rtdb.firebaseio.com",
+    "project_id": "ehcf-9eb57",
+    "storage_bucket": "ehcf-9eb57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473219171626:android:cdb7d018b35545b33cca53",
+        "android_client_info": {
+          "package_name": "com.example.ehcf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473219171626-dmkehd0smhoga5ri2osgqm4drh0sfppq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH0irJ94JjPCbepgVDmtwQUqbe2q70U8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473219171626-dmkehd0smhoga5ri2osgqm4drh0sfppq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "473219171626-o4hsjv0ugqgulaggek327bgq241qi1bv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Amtech.EHCF"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,11 +8,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
+import com.example.ehcf.Helper.convertTo12Hour
+import com.example.ehcf.Prescription.model.ModelPreList
 import com.example.ehcf.Prescription.model.My_model
 import com.example.ehcf.R
 
 
-class AdapterPrescriptionPending(val context: Context, private val list: ModelAppointmentBySlag
+class AdapterPrescriptionPending(val context: Context, private val list: ModelPreList
 ) :
     RecyclerView.Adapter<AdapterPrescriptionPending.MyViewHolder>() {
 
@@ -30,17 +32,17 @@ class AdapterPrescriptionPending(val context: Context, private val list: ModelAp
 
 
         holder.bookingDate.text = list.result[position].date
+        holder.specialitiesName.text = list.result[position].category_name.toString()
         holder.doctorName.text = list.result[position].doctor_name.toString()
-        holder.startTime.text = list.result[position].time
-       // holder.startTime.text = list.result[position].e
-       // holder.amount.text = list.result[position].total
+        holder.startTime.text = convertTo12Hour(list.result[position].start_time.toString())
+        holder.endTime.text = convertTo12Hour(list.result[position].end_time.toString())
 
 //        holder.bookingDate.text = list.result[0].get(position).date
 //         holder.specialitiesName.text = list.result[0].get(position).categoryName
 //        holder.doctorName.text = list.result[position].get(0).doctorName
 //        holder.startTime.text = list.result[position].get(position).startTime
 //        holder.endTime.text = list.result[position].get(position).endTime
-        //  holder.doctorName.text = list.result[position].n.toString()
+         // holder.doctorName.text = list.result[position]..toString()
 
 //        when (list.result[position].specialist) {
 //            "1" -> {

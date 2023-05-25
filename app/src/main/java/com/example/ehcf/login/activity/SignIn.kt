@@ -2,6 +2,7 @@ package com.example.ehcf.login.activity
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,12 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.PhoneNumber.Activity.PhoneNumber
+import com.example.ehcf.R
 import com.example.ehcf.Registration.activity.Registration
 import com.example.ehcf.Testing.CalanderTest
 import com.example.ehcf.databinding.ActivitySigninBinding
 import com.example.ehcf.login.modelResponse.LogInResponse
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +30,8 @@ class SignIn : AppCompatActivity() {
     private val context: Context = this@SignIn
     var progressDialog: ProgressDialog? =null
     private lateinit var sessionManager: SessionManager
+    var countryCodeNew="91"
+    var fcmToken=""
 
     private lateinit var binding: ActivitySigninBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,16 +40,24 @@ class SignIn : AppCompatActivity() {
         setContentView(binding.root)
         sessionManager = SessionManager(this)
 
-
+        getToken()
 
         binding.tvWelComeBack.setOnClickListener {
-            startActivity(Intent(this@SignIn,CalanderTest::class.java))
+            //startActivity(Intent(this@SignIn,CalanderTest::class.java))
+        }
+        binding.spinnerCountryCode.setOnCountryChangeListener {
+            val countryCode = binding.spinnerCountryCode.selectedCountryCodeWithPlus
+
+            countryCodeNew = countryCode.substring(1)
+            Log.e("Log","countryCode-$countryCodeNew")
+
         }
 
         if (sessionManager.isLogin) {
             startActivity(Intent(context, MainActivity::class.java))
             finish()
         }
+
 
         progressDialog = ProgressDialog(this@SignIn)
         progressDialog!!.setMessage("Loading..")
@@ -64,12 +78,13 @@ class SignIn : AppCompatActivity() {
             }
             val phoneNumber = binding.edtPhone.text.toString().trim()
             val password = binding.edtPassword.text.toString().trim()
-            val fcmToken="sadasdqweqq34e23fdcdsf"
+            val phoneNumberNew=countryCodeNew+phoneNumber
+            Log.e("Log","phoneNumberNew-$phoneNumberNew")
 
             progressDialog!!.show()
            // ApiClient.getApiService().loveline("20").enqueue(object : Callback<LanguageResponse>
 
-            ApiClient.apiService.login(phoneNumber,password,fcmToken).enqueue(object :Callback<LogInResponse>{
+            ApiClient.apiService.login(phoneNumberNew,password,fcmToken).enqueue(object :Callback<LogInResponse>{
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
                     call: Call<LogInResponse>,
@@ -122,10 +137,30 @@ class SignIn : AppCompatActivity() {
             startActivity(Intent(context, Registration::class.java))
         }
         binding.tvForgot.setOnClickListener {
+           // myToast(this@SignIn,"Work On Progress")
+
             startActivity(Intent(context, PhoneNumber::class.java))
         }
 
     }
+    @SuppressLint("StringFormatInvalid")
+    private fun getToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            fcmToken = task.result
+
+            // Log and toast
+            val msg = getString(R.string.channel_id, fcmToken)
+            Log.e("Token", fcmToken)
+            // Toast.makeText(requireContext(), token, Toast.LENGTH_SHORT).show()
+        })
+    }
+
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->

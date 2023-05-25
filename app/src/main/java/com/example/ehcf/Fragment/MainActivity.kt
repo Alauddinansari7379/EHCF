@@ -1,5 +1,6 @@
 package com.example.ehcf.Fragment
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
@@ -20,15 +21,16 @@ import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Dashboard.activity.Dashboard
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.MyDoctor.MyDoctors
-import com.example.ehcf.Prescription.ReportMain
+import com.example.ehcf.PhoneNumber.Activity.ResetPassword
+import com.example.ehcf.Prescription.PrescriptionActivity
+import com.example.ehcf.Upload.UploadReportNew
+import com.example.ehcf.report.activity.ReportMain
 import com.example.ehcf.databinding.ActivityMainBinding
 import com.example.ehcf.invoices.Invoice
 import com.example.ehcf.login.activity.SignIn
-import com.example.ehcf.report.ReportView
 import com.example.ehcf.sharedpreferences.SessionManager
 import me.ibrahimsn.lib.SmoothBottomBar
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
-import xyz.teamgravity.checkinternet.CheckInternet
 
 class MainActivity : AppCompatActivity() {
     private val context: Context = this@MainActivity
@@ -81,6 +83,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, ReportMain::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
+            binding.includedrawar1.tvPrescription.setOnClickListener {
+                startActivity(Intent(this, PrescriptionActivity::class.java))
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
             binding.includedrawar1.tvInvoice.setOnClickListener {
                 startActivity(Intent(this, Invoice::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -97,6 +103,21 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, MyDoctors::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
+            binding.includedrawar1.tvUploadReport.setOnClickListener {
+                startActivity(Intent(this, UploadReportNew::class.java))
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            binding.includedrawar1.tvPasswordChange.setOnClickListener {
+                val intent = Intent(context as Activity, ResetPassword::class.java)
+                intent.putExtra("id", sessionManager.id.toString())
+                context.startActivity(intent)
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            binding.includedrawar1.tvPrivacyTerms.setOnClickListener {
+                startActivity(Intent(this, PrivacyPolicies::class.java))
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+
             binding.includedrawar1.tvLogOut.setOnClickListener {
                 SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Are you sure want to logout?")

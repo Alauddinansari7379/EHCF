@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Appointments.Cancelled.adapter.AdapterCancelled
+import com.example.ehcf.Appointments.Consulted.adapter.AdapterConsulted
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -48,12 +49,26 @@ class CancelledFragment : Fragment() {
         shimmerFrameLayout!!.startShimmer();
        // apiCall()
         apiCallGetConsultationRejected()
-        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
-        val btnCheck = view.findViewById<Button>(R.id.btnCheck)
-        tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
+//        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
+//        val btnCheck = view.findViewById<Button>(R.id.btnCheck)
+//        tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
         binding.imgRefresh.setOnClickListener {
            // apiCall()
             apiCallGetConsultationRejected()
+        }
+
+        binding.imgRefresh.setOnClickListener {
+            apiCallGetConsultationRejected()
+        }
+
+        binding.imgSearch.setOnClickListener {
+            if (binding.edtSearch.text.toString().isEmpty()) {
+                binding.edtSearch.error = "Enter Doctor Name"
+                binding.edtSearch.requestFocus()
+            } else {
+                val search = binding.edtSearch.text.toString()
+                apiCallSearchAppointments(search)
+            }
         }
 //       btnCheck.setOnClickListener {
 //            dialog=   Dialog(requireContext())
@@ -70,6 +85,73 @@ class CancelledFragment : Fragment() {
 //        }
 
 
+    }
+    private fun apiCallSearchAppointments(doctorName: String) {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+
+        ApiClient.apiService.searchAppointmentsCompleted(sessionManager.id.toString(),doctorName,"rejected")
+            .enqueue(object : Callback<ModelAppointmentBySlag> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
+                ) {
+                    if (response.code() == 500) {
+                        myToast(requireActivity(), "Server Error")
+                        binding.shimmer.visibility = View.GONE
+                    } else if (response.body()!!.status == 0) {
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        myToast(requireActivity(), "${response.body()!!.message}")
+                        progressDialog!!.dismiss()
+
+                    } else if (response.body()!!.result.isEmpty()) {
+                        binding.rvCancled.adapter =
+                            activity?.let { AdapterCancelled(it, response.body()!!) }
+                        binding.rvCancled.adapter!!.notifyDataSetChanged()
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        myToast(requireActivity(), "No Appointment Found")
+                        progressDialog!!.dismiss()
+
+                    } else {
+                        binding.rvCancled.adapter =
+                            activity?.let { AdapterCancelled(it, response.body()!!) }
+                        binding.rvCancled.adapter!!.notifyDataSetChanged()
+                        binding.tvNoDataFound.visibility = View.GONE
+                        shimmerFrameLayout?.startShimmer()
+                        binding.rvCancled.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        progressDialog!!.dismiss()
+//                        binding.rvManageSlot.apply {
+//                            binding.tvNoDataFound.visibility = View.GONE
+//                            shimmerFrameLayout?.startShimmer()
+//                            binding.rvManageSlot.visibility = View.VISIBLE
+//                            binding.shimmerMySlot.visibility = View.GONE
+//                            // myToast(this@ShuduleTiming, response.body()!!.message)
+//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
+//                            progressDialog!!.dismiss()
+//
+//                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelAppointmentBySlag>, t: Throwable) {
+                    myToast(requireActivity(), "Something went wrong")
+                    binding.shimmer.visibility = View.GONE
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
     }
 
     private fun apiCallGetConsultationRejected() {

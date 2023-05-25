@@ -13,13 +13,14 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.OnlineDoctor.activity.OnlineDoctor
 import com.example.ehcf.R
+import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.Specialities.activity.FilteredDoctor
 import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
-class AdapterSpecialities(val context: Context, private val list: ModelSplic) :
+class AdapterSpecialities(val context: Context, private val list: ModelSplic,private val consaltaton: DoctorProfile) :
     RecyclerView.Adapter<AdapterSpecialities.MyViewHolder>() {
     private lateinit var sessionManager: SessionManager
 
@@ -46,8 +47,8 @@ class AdapterSpecialities(val context: Context, private val list: ModelSplic) :
 
             when(sessionManager.bookingType){
                "1" ->{
-                   val intent = Intent(context as Activity, OnlineDoctor::class.java)
-                  // val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                  // val intent = Intent(context as Activity, OnlineDoctor::class.java)
+                   val intent = Intent(context as Activity, FilteredDoctor::class.java)
                         .putExtra("specialitiesID",list.result[position].id)
                      context.startActivity(intent)
                }
@@ -56,11 +57,17 @@ class AdapterSpecialities(val context: Context, private val list: ModelSplic) :
                         .putExtra("specialitiesID",list.result[position].id)
                      context.startActivity(intent)
                }
-                "3" ->{
-                   val intent = Intent(context as Activity, FilteredDoctor::class.java)
-                        .putExtra("specialitiesID",list.result[position].id)
-                     context.startActivity(intent)
-               }
+                "3" -> {
+                    val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                        .putExtra("specialitiesID", list.result[position].id)
+                    context.startActivity(intent)
+                }
+//                    else->{
+//                        consaltaton.consaltationType(list.result[position].id.toString())
+//
+//
+//
+//                    }
             }
 
         }
@@ -82,5 +89,7 @@ class AdapterSpecialities(val context: Context, private val list: ModelSplic) :
 
 
     }
-
+    interface ConsaltaionTypeInterFace{
+        fun consaltationType(toString: String)
+    }
 }

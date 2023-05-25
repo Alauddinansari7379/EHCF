@@ -109,7 +109,6 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
     }
 
     private fun apiCallCreateBookingOnlineConsultOnline(){
-
         progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
@@ -119,14 +118,12 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
         val amount="1000"
         val paymentMode="2"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,"","",slotId)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,sessionManager.pricing,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
-                    call: Call<ModelCreateConsultation>,
-                    response: Response<ModelCreateConsultation>
-                )
+                    call: Call<ModelCreateConsultation>, response: Response<ModelCreateConsultation>)
                 {
                     if (response.code()==500){
                         myToast(this@PaymentMode,"Server Error")
@@ -134,7 +131,8 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
                     else if (response.code()==200){
                         popUpConsultOnline()
                         progressDialog!!.dismiss()
-                    }else{
+                    }
+                    else{
                         myToast(this@PaymentMode,response.body()!!.message)
                         progressDialog!!.dismiss()
                     }
@@ -160,7 +158,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
         val amount="1000"
         val paymentMode="2"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType, selectedate,startTime,slotId)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,sessionManager.pricing,paymentMode,sessionManager.bookingType, selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
@@ -236,7 +234,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
         val amount="1000"
         val paymentMode="2"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,sessionManager.pricing,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
@@ -264,7 +262,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
     }
 
     private fun popUpOnline(){
-        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText("Your Booking Confirmed")
             .setConfirmText("Ok")
             .showCancelButton(true)
@@ -282,7 +280,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
 
     }
     private fun popUpConsultOnline(){
-        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText("Your Booking Confirmed")
             .setConfirmText("Ok")
             .showCancelButton(true)
@@ -300,7 +298,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
 
     }
     private fun popUpHomeVisitOnline(){
-        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText("Your Booking Confirmed")
             .setConfirmText("Ok")
             .showCancelButton(true)
@@ -328,7 +326,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg")
             options.put("theme.color", "#3399cc");
             options.put("currency", "INR");
-            options.put("amount", amt * 100)//pass amount in currency subunits
+            options.put("amount", sessionManager.pricing!!.toInt() * 100)//pass amount in currency subunits
             val prefill = JSONObject()
             prefill.put("email", "alauddinansari7379@gmail.com.com")
             prefill.put("contact", "7379452259")
@@ -375,7 +373,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
         val amount="1000"
         val paymentMode="1"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType, selectedate,startTime,slotId)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,sessionManager.pricing,paymentMode,sessionManager.bookingType, selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
@@ -422,7 +420,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
         val amount="1000"
         val paymentMode="1"
 
-        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,amount,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
+        ApiClient.apiService.createConsultation(sessionManager.id.toString(),doctorId,sessionManager.pricing,paymentMode,sessionManager.bookingType,selectedate,startTime,slotId)
             .enqueue(object : Callback<ModelCreateConsultation>
             {
                 @SuppressLint("NotifyDataSetChanged")
@@ -450,7 +448,7 @@ class PaymentMode : AppCompatActivity(),PaymentResultListener {
             })
     }
     private fun popUp(){
-        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText("Your Booking Confirmed")
             .setConfirmText("Ok")
             .showCancelButton(true)

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -26,8 +27,12 @@ import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.example.easywaylocation.LocationData
+import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
+import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
+import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
 import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
@@ -39,6 +44,10 @@ import com.example.myrecyview.apiclient.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -85,6 +94,10 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         shimmerFrameLayout!!.startShimmer();
 
 
+
+
+
+
 //
 //        CheckInternet().check { connected ->
 //            if (connected) {
@@ -99,9 +112,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //        }
 //        easyWayLocation.startLocation()
 
-        binding.symtom.setOnClickListener {
-            startActivity(Intent(requireContext(), ImageUpload::class.java))
-        }
 
         getLocationDetail = GetLocationDetail(this, requireContext())
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)
@@ -116,12 +126,13 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
 
         id = sessionManager.id.toString()
-     //   binding.id.text = id
+        // binding.id.text = id
 
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("FetchContact89", "fetchContacts: coroutine start")
 
             apiCallAllDoctor()
+            apiCallGetConsultationAccepted()
 
         }
 
@@ -184,6 +195,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         binding.imageSlide.stopSliding()
     }
 
+
     @SuppressLint("SetTextI18n", "LogNotTimber")
     private fun getLastLocation() {
         if (ContextCompat.checkSelfPermission(
@@ -201,23 +213,23 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //                            longitude!!.text = "Longitude: " + addresses[0].longitude
                             Log.e(
                                 ContentValues.TAG,
-                                " addresses[0].latitude${addresses[0].latitude}"
+                                " addresses[0].latitude${addresses?.get(0)?.latitude}"
                             )
                             Log.e(
                                 ContentValues.TAG,
-                                " addresses[0].latitude${addresses[0].longitude}"
+                                " addresses[0].latitude${addresses?.get(0)?.longitude}"
                             )
-                            sessionManager.latitude = addresses[0].latitude.toString()
-                            sessionManager.longitude = addresses[0].longitude.toString()
+                            sessionManager.latitude = addresses?.get(0)?.latitude.toString()
+                            sessionManager.longitude = addresses?.get(0)?.longitude.toString()
 
-                            addresses[0].getAddressLine(0)
+                            addresses?.get(0)?.getAddressLine(0)
 
-                            val locality = addresses[0].locality
-                            val countryName = addresses[0].countryName
-                            val countryCode = addresses[0].countryCode
-                            val postalCode = addresses[0].postalCode
-                            val subLocality = addresses[0].subLocality
-                            val subAdminArea = addresses[0].subAdminArea
+                            val locality = addresses?.get(0)?.locality
+                            val countryName = addresses?.get(0)?.countryName
+                            val countryCode = addresses?.get(0)?.countryCode
+                            val postalCode = addresses?.get(0)?.postalCode
+                            val subLocality = addresses?.get(0)?.subLocality
+                            val subAdminArea = addresses?.get(0)?.subAdminArea
 
                             currentAddress = "$subLocality, $locality, $countryName"
 
@@ -232,7 +244,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
                             Log.e(
                                 ContentValues.TAG,
-                                " addresses[0].Address${addresses[0].getAddressLine(0)}"
+                                " addresses[0].Address${addresses?.get(0)?.getAddressLine(0)}"
                             )
 
                         } catch (e: IOException) {
@@ -356,12 +368,15 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                     call: Call<ModelAllDoctorNew>,
                     response: Response<ModelAllDoctorNew>
                 ) {
-                    if (response.body()!!.status == 1) {
+                    if (response.code() == 500) {
+                        myToast(requireActivity(), "Unable to fetch nearest doctor")
+                    }
+                   else if (response.body()!!.status == 1) {
                         binding.rvAllDoctor.apply {
                             shimmerFrameLayout?.startShimmer()
                             binding.rvAllDoctor.visibility = View.VISIBLE
                             binding.shimmer.visibility = View.GONE
-                            adapter = AdapterAllDoctor(requireContext(), response.body()!!)
+                            adapter = activity?.let { AdapterAllDoctor(it, response.body()!!) }
                             //  progressDialog!!.dismiss()
                         }
                     } else {
@@ -382,6 +397,38 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
             })
 
+    }
+
+    private fun apiCallGetConsultationAccepted() {
+        ApiClient.apiService.getConsultationAccpted(sessionManager.id.toString(), "accepted")
+            .enqueue(object : Callback<ModelUpComingNew> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelUpComingNew>, response: Response<ModelUpComingNew>
+                ) {
+                    if (response.code() == 500) {
+                        myToast(requireActivity(), "Server error")
+                    } else if (response.body()!!.result.isEmpty()) {
+                        binding.shimmer.visibility = View.GONE
+                        // myToast(requireActivity(),"No Data Found")
+                    } else {
+                        binding.rvAppointment.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAppointment.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
+                            adapter =
+                                activity?.let { AdapterAppointmentsHome(it, response.body()!!) }
+                        }
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelUpComingNew>, t: Throwable) {
+                    myToast(requireActivity(), "Something went wrong")
+
+                }
+
+            })
     }
 
     override fun onResume() {

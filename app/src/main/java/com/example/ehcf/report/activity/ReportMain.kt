@@ -1,4 +1,4 @@
-package com.example.ehcf.Prescription
+package com.example.ehcf.report.activity
 
 import android.os.Bundle
 import android.widget.Toolbar
@@ -60,6 +60,12 @@ class ReportMain : AppCompatActivity() {
 
 
         tab.setupWithViewPager(pager)
+    }
+    fun refresh() {
+        overridePendingTransition(0, 0)
+        finish()
+        startActivity(intent)
+        overridePendingTransition(0, 0)
     }
     override fun onStart() {
         super.onStart()

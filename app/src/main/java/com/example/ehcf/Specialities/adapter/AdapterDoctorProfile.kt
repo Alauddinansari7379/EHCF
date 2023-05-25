@@ -10,15 +10,15 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.CreateSlot.DateForConsultation
-import com.example.ehcf.CreateSlot.activity.MySlot
-import com.example.ehcf.PaymentMode
+import com.example.ehcf.CreateSlot.activity.MyAvailableSlot
 import com.example.ehcf.R
+import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.sharedpreferences.SessionManager
 
 
-class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorProfile) :
+class AdapterDoctorProfile
+    (val context: Context, private val list: ModelDoctorProfile, private val consaltaton:DoctorProfile) :
     RecyclerView.Adapter<AdapterDoctorProfile.MyViewHolder>() {
     private lateinit var sessionManager: SessionManager
 
@@ -34,6 +34,9 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
         holder.doctorName.text= list.result[position].doctor_name
         holder.exeprince.text= list.result[position].experience
         holder.qualification.text = list.result[position].qualification
+        holder.location.text = list.result[position].city
+        holder.description.text = list.result[position].description
+        holder.price.text = list.result[position].pricing
         holder.additionalQualification.text = list.result[position].additional_qualification
         holder.phoneNumber.text = list.result[position].phone_number
         sessionManager = SessionManager(context)
@@ -56,10 +59,18 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
         holder.btnBookApp.setOnClickListener {
+            sessionManager.pricing=list.result[position].pricing
+            // val intent = Intent(context as Activity, PaymentMode::class.java)
+            val intent = Intent(context as Activity, MyAvailableSlot::class.java)
+                .putExtra("doctorId",list.result[position].id.toString())
+            context.startActivity(intent)
+/*
             when(sessionManager.bookingType){
                 "1"->{
+                    sessionManager.pricing=list.result[position].pricing
                    // val intent = Intent(context as Activity, PaymentMode::class.java)
-                    val intent = Intent(context as Activity, MySlot::class.java)
+                    val intent = Intent(context as Activity, MyAvailableSlot::class.java)
+                        .putExtra("dashboard",1)
                         .putExtra("doctorId",list.result[position].id.toString())
                     context.startActivity(intent)
                 }
@@ -67,17 +78,30 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
 //                    val intent = Intent(context as Activity, DateForConsultation::class.java)
 //                        .putExtra("doctorId",list.result[position].id.toString())
 //                    context.startActivity(intent)
-                    val intent = Intent(context as Activity, MySlot::class.java)
-                        .putExtra("doctorId",list.result[position].id.toString())
-                    context.startActivity(intent)
-                }
-                else->{
-                    val intent = Intent(context as Activity, MySlot::class.java)
-                        .putExtra("doctorId",list.result[position].id.toString())
-                    context.startActivity(intent)
+                    sessionManager.pricing=list.result[position].pricing
 
+                    val intent = Intent(context as Activity, MyAvailableSlot::class.java)
+                        .putExtra("doctorId",list.result[position].id.toString())
+                    context.startActivity(intent)
                 }
+                "3"->{
+//                    val intent = Intent(context as Activity, DateForConsultation::class.java)
+//                        .putExtra("doctorId",list.result[position].id.toString())
+//                    context.startActivity(intent)
+                    sessionManager.pricing=list.result[position].pricing
+                    val intent = Intent(context as Activity, MyAvailableSlot::class.java)
+                        .putExtra("doctorId",list.result[position].id.toString())
+                    context.startActivity(intent)
+                }
+//                else->{
+//                    sessionManager.pricing=list.result[position].pricing
+//                    consaltaton.consaltationType(list.result[position].id.toString())
+//
+//
+//
+//                }
             }
+*/
 
         }
 
@@ -94,15 +118,20 @@ class AdapterDoctorProfile(val context: Context, private val list: ModelDoctorPr
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val doctorName: TextView = itemView.findViewById(R.id.tvDoctorDProfile)
         val exeprince: TextView = itemView.findViewById(R.id.tvExprinceDProfile)
-        val qualification: TextView = itemView.findViewById(R.id.tvAdditionalQualificationDProfile)
+        val qualification: TextView = itemView.findViewById(R.id.tvQualificationDProfile)
         val additionalQualification: TextView = itemView.findViewById(R.id.tvAdditionalQualificationDProfile)
         val phoneNumber: TextView = itemView.findViewById(R.id.tvPhoneNumberDProfile)
         val gender: TextView = itemView.findViewById(R.id.tvGenderDProfile)
         val email: TextView = itemView.findViewById(R.id.tvEmailDProfile)
+        val price: TextView = itemView.findViewById(R.id.tvPriceDProfile)
+        val location: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val description: TextView = itemView.findViewById(R.id.tvDescriptionDProfile)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppDProfile)
         val cardView: CardView = itemView.findViewById(R.id.cardDoctorProfile)
 
 
+    }
+    interface ConsaltaionTypeInterFace{
+        fun consaltationType(toString: String)
     }
 }

@@ -37,7 +37,12 @@ class Report : AppCompatActivity() {
         }
 
     }
-
+    fun refresh() {
+        overridePendingTransition(0, 0)
+        finish()
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+    }
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->

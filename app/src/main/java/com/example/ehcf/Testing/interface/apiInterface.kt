@@ -1,7 +1,9 @@
 package com.example.ehcf.Testing.Interface
 
 import android.net.Uri
+import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Fragment.test.UploadResponse
+import com.example.ehcf.Prescription.model.My_model
 import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.Testing.Model.User
 import okhttp3.MultipartBody
@@ -21,6 +23,8 @@ interface apiInterface {
 
     @GET("get_doctor_categories")
     fun getPhotos(): Call<ModelSplic>
+    @GET("specialist_category")
+    fun specialistCategory(): Call<ModelSpecilList>
 
 //    @POST("register")
 //    fun getRegister(): Call<ModelRegisteration>

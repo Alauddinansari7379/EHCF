@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
+import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.R
 
@@ -38,7 +39,8 @@ class AdapterCancelled(val context: Context, private val list:  ModelAppointment
 
         holder.appointmentDate.text = list.result[position].date
        // holder.doctorName.text = list.result[position].doctor_name.toString()
-        holder.startTime.text = list.result[position].time
+        holder.startTime.text = convertTo12Hour(list.result[position].start_time)
+        holder.endTime.text = convertTo12Hour(list.result[position].end_time)
         holder.tvStatus.text = list.result[position].status_for_customer
         holder.totalAmount.text = list.result[position].total
 
@@ -87,6 +89,7 @@ class AdapterCancelled(val context: Context, private val list:  ModelAppointment
           val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDateCan)
           val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameCan)
           val startTime: TextView = itemView.findViewById(R.id.tvStartTimeCan)
+          val endTime: TextView = itemView.findViewById(R.id.tvEndTimeCan)
           val totalAmount: TextView = itemView.findViewById(R.id.tvTotalAmountCan)
           val tvStatus: TextView = itemView.findViewById(R.id.tvStatusCan)
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)

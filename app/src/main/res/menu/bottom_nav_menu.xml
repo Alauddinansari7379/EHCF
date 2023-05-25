@@ -7,12 +7,12 @@
         android:title="@string/title_home"/>
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/profile"
+        android:icon="@drawable/profilenew"
         android:title="Profile"/>
 
     <item
         android:id="@+id/fragment_prescription"
-        android:icon="@drawable/invoice"
+        android:icon="@drawable/prescription"
         android:title="Prescription"/>
     <item
         android:id="@+id/fragment_booking"

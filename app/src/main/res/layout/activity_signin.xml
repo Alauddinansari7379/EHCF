@@ -77,23 +77,48 @@
 
                         </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/inputUser"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        app:startIconDrawable="@drawable/ic_baseline_phone_enabled_24"
-
-                    android:layout_marginHorizontal="10dp"
-                        android:layout_marginTop="10dp"
-                        android:hint="Phone Number">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edtPhone"
-                            android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginStart="10dp"
+                            >
+
+                            <com.hbb20.CountryCodePicker
+                                android:id="@+id/spinnerCountryCode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="55dp"
+                                app:ccp_showFlag="false"
+                                android:background="@drawable/cornercountrtcode"
+                                android:padding="5dp"
+                                app:ccp_textSize="15sp"
+                                />
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputUser"
+                            android:layout_weight="1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+
+                            app:startIconDrawable="@drawable/ic_baseline_phone_enabled_24"
+                            android:layout_marginHorizontal="10dp"
+                            android:hint="Phone Number">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtPhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/inputPassword"
@@ -131,13 +156,16 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:gravity="center"
                         android:layout_height="wrap_content">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvForgot"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:background="?actionBarItemBackground"
                             android:gravity="center"
                             android:text="Forgot Password"
                             android:textColor="#9F367A"
@@ -179,13 +207,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:gravity="center"
                         android:layout_marginBottom="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvSignUp"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:padding="8dp"
+                            android:background="?actionBarItemBackground"
                             android:gravity="center"
                             android:text="Sign up"
                             android:textColor="#9F367A"

@@ -25,6 +25,8 @@ data class Result(
     val overall_ratings: String,
     val password: String,
     val phone_number: String,
+    val clinic_address: String,
+    val pricing: String,
     val phone_with_code: String,
     val profile_image: String,
     val profile_status: String,
