@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardDoctorProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:elevation="5dp"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -37,6 +37,7 @@
                     android:textStyle="bold">
 
                 </androidx.appcompat.widget.AppCompatTextView>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDoctorDProfile"
                     android:layout_width="wrap_content"
@@ -64,6 +65,7 @@
                         android:textStyle="bold">
 
                     </androidx.appcompat.widget.AppCompatTextView>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvExprinceDProfile"
                         android:layout_width="wrap_content"
@@ -96,26 +98,29 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgProfile"
                         android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:layout_gravity="start"
                         android:padding="5dp"
-                        android:layout_height="75dp"
                         android:src="@drawable/doctorimage"
-                        app:civ_border_width="1dp"
-                        app:civ_border_color="#9E9999"/>
+                          />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:orientation="horizontal">
+
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -125,6 +130,7 @@
                                     android:textStyle="bold">
 
                                 </androidx.appcompat.widget.AppCompatTextView>
+
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tvQualificationDProfile"
                                     android:layout_width="wrap_content"
@@ -136,62 +142,42 @@
 
                                 </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:visibility="gone"
                                 android:orientation="horizontal">
+
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
-                                    android:text="Additional Qualification-"
+                                    android:text="specialist-"
                                     android:textColor="@color/black"
                                     android:textStyle="bold">
 
                                 </androidx.appcompat.widget.AppCompatTextView>
+
                                 <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/tvAdditionalQualificationDProfile"
+                                    android:id="@+id/tvSpecialistDProfile"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
-                                    android:text="Qualification"
+                                    android:text="Specialist"
                                     android:textColor="#676565"
                                     android:textStyle="bold">
 
                                 </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
+
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:orientation="horizontal">
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:text="Phone Number-"
-                                    android:textColor="@color/black"
-                                    android:textStyle="bold">
 
-                                </androidx.appcompat.widget.AppCompatTextView>
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/tvPhoneNumberDProfile"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:text="Phone Number"
-                                    android:textColor="#676565"
-                                    android:textStyle="bold">
-
-                                </androidx.appcompat.widget.AppCompatTextView>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -201,6 +187,7 @@
                                     android:textStyle="bold">
 
                                 </androidx.appcompat.widget.AppCompatTextView>
+
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tvGenderDProfile"
                                     android:layout_width="wrap_content"
@@ -212,36 +199,14 @@
 
                                 </androidx.appcompat.widget.AppCompatTextView>
                             </LinearLayout>
+
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:orientation="horizontal">
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:text="Email-"
-                                    android:textColor="@color/black"
-                                    android:textStyle="bold">
 
-                                </androidx.appcompat.widget.AppCompatTextView>
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/tvEmailDProfile"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="5dp"
-                                    android:text="Email"
-                                    android:textColor="#676565"
-                                    android:textStyle="bold">
-
-                                </androidx.appcompat.widget.AppCompatTextView>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -251,12 +216,85 @@
                                     android:textStyle="bold">
 
                                 </androidx.appcompat.widget.AppCompatTextView>
+
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:id="@+id/tvPriceDProfile"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="5dp"
                                     android:text="Email"
+                                    android:textColor="#676565"
+                                    android:textStyle="bold">
+
+                                </androidx.appcompat.widget.AppCompatTextView>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="2dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal">
+    <RatingBar
+        android:id="@+id/ratingBarDProfile"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hapticFeedbackEnabled="true"
+        android:numStars="5"
+        android:progressTint="#ffc107"
+        android:rating="1.0"
+        android:stepSize=".2" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOverAllRating"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="0"
+        android:layout_marginTop="-1dp"
+        android:textSize="12sp"
+        android:textColor="#676565"
+        android:textStyle="bold">
+
+    </androidx.appcompat.widget.AppCompatTextView>
+</LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:gravity="end"
+                                android:layout_marginStart="25dp"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tvNoOfrating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold">
+
+                                </androidx.appcompat.widget.AppCompatTextView>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:text="ratings"
+                                    android:textSize="12sp"
                                     android:textColor="#676565"
                                     android:textStyle="bold">
 
@@ -276,26 +314,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:visibility="gone"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginBottom="5dp"
+                    android:gravity="center"
                     android:text="Description- "
                     android:textColor="@color/black"
                     android:textStyle="bold">
 
                 </androidx.appcompat.widget.AppCompatTextView>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDescriptionDProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginBottom="5dp"
+                    android:gravity="center"
                     android:text="Description"
                     android:textColor="@color/black"
                     android:textSize="12sp"
@@ -303,6 +342,29 @@
 
                 </androidx.appcompat.widget.AppCompatTextView>
 
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="end"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRatingReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="View Rating &amp; Reviews"
+                    android:background="?actionBarItemBackground"
+                    android:textColor="@color/main_color"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -313,20 +375,21 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginBottom="5dp"
                     android:drawableLeft="@drawable/ic_baseline_location_on_24mailcolur"
+                    android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold">
 
                 </androidx.appcompat.widget.AppCompatTextView>
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddressAllDoctor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginBottom="5dp"
+                    android:gravity="center"
                     android:text="MalakPet"
                     android:textColor="@color/black"
                     android:textSize="12sp"

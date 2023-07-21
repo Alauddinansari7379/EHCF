@@ -20,6 +20,7 @@ import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.R
+import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,16 +39,30 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
 
-        holder.appointmentDate.text = list.result[position].date
-        holder.doctorName.text = list.result[position].doctor_name.toString()
-        holder.startTime.text = convertTo12Hour(list.result[position].start_time)
-        holder.endTime.text = convertTo12Hour(list.result[position].end_time)
-        holder.tvStatus.text = list.result[position].status_name
-        holder.consultationType.text = list.result[position].consultation_type
-
-        when (list.result[position].slug) {
-            "waiting_for_accept" -> {
+        try {
+            if (list.result[position].profile_image!!.isNotEmpty()){
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.profile)
+                Log.e("pofile","https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}")
             }
+
+            holder.appointmentDate.text = list.result[position].date
+            holder.doctorName.text = list.result[position].doctor_name.toString()
+            if (list.result[position].start_time != null) {
+                holder.startTime.text = convertTo12Hour(list.result[position].start_time)
+                holder.endTime.text = convertTo12Hour(list.result[position].end_time)
+            }
+            if (list.result[position].member_name != null) {
+                holder.tvPatientName.text = list.result[position].member_name
+
+            } else {
+                holder.tvPatientName.text = list.result[position].customer_name.toString()
+            }
+            holder.tvStatus.text = list.result[position].status_name
+            holder.consultationType.text = list.result[position].consultation_type
+
+            when (list.result[position].slug) {
+                "waiting_for_accept" -> {
+                }
 //                "waiting_for_accept" -> {
 //                holder.btnCheck.visibility = View.GONE
 //                holder.btnJoinMeeting.visibility = View.GONE
@@ -63,68 +78,71 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
 //                holder.btnStart.setBackgroundColor(Color.parseColor("#119241"))
 //                holder.btnStart.text = "Done"
 //            }
-        }
-        when (list.result[position].consultation_type) {
-            "1" -> {
-                holder.consultationType.text = "Tele-Consultation"
+            }
+            when (list.result[position].consultation_type) {
+                "1" -> {
+                    holder.consultationType.text = "Tele-Consultation"
 
+
+                }
+                "2" -> {
+                    holder.consultationType.text = "Clinic-Visit"
+
+
+                }
+                "3" -> {
+                    holder.consultationType.text = "Home-Visit"
+
+
+                }
+            }
+            Log.e("currentDate", currentDate)
+            Log.e("startTime", list.result[position].date + " " + list.result[position].time)
+            if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted" &&
+                list.result[position].consultation_type == "1"
+            ) {
 
             }
-            "2" -> {
-                holder.consultationType.text = "Clinic-Visit"
-
-
-            }
-            "3" -> {
-                holder.consultationType.text = "Home-Visit"
-
+            if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
+                && list.result[position].consultation_type == "2"
+            ) {
 
             }
-        }
-        Log.e("currentDate", currentDate)
-        Log.e("startTime", list.result[position].date+" "+list.result[position].time)
-        if (list.result[position].date+" "+list.result[position].start_time<=currentDate && list.result[position].slug=="accepted" &&
-             list.result[position].consultation_type=="1")
-        {
-
-        }
-        if (list.result[position].date+" "+list.result[position].start_time<=currentDate && list.result[position].slug=="accepted"
-            && list.result[position].consultation_type=="2")
-        {
-
-        }
-        if (list.result[position].date+" "+list.result[position].start_time<=currentDate && list.result[position].slug=="accepted"
-            && list.result[position].consultation_type=="3")
-        {
-        }
+            if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
+                && list.result[position].consultation_type == "3"
+            ) {
+            }
 //        holder.bookingId.text = list.result.upcoming[position].id.toString()
 //        holder.title.text = list.result[position].title.toString()
 //        holder.status.text = list.result[position].status_name.toString()
-     //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
+            //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
 
 
 //        holder.btnJoinMeeting.setOnClickListener {
 //            showPopUp.videoCall(list.result[position].time)
 //
 //        }
-        holder.btnView.setOnClickListener {
-            val intent = Intent(context as Activity, AppointmentDetails::class.java)
-                .putExtra("bookingId",list.result[position].id.toString())
-            context.startActivity(intent)
-        }
+            holder.btnView.setOnClickListener {
+                val intent = Intent(context as Activity, AppointmentDetails::class.java)
+                    .putExtra("bookingId", list.result[position].id.toString())
+                context.startActivity(intent)
+            }
 
-        holder.cardAppointmentHome.setOnClickListener {
-            val intent = Intent(context as Activity, Appointments::class.java)
-                .putExtra("bookingId",list.result[position].id.toString())
-            context.startActivity(intent)
-        }
+            holder.cardAppointmentHome.setOnClickListener {
+                val intent = Intent(context as Activity, Appointments::class.java)
+                    .putExtra("bookingId", list.result[position].id.toString())
+                context.startActivity(intent)
+            }
 //        holder.btnOkDialog.setOnClickListener {
 //            showPopUp.dismissPopup()
 //
 //        }
 
-        // Glide.with(hol der.image).load(list[position].url).into(holder.image)
+            // Glide.with(hol der.image).load(list[position].url).into(holder.image)
 
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
 
@@ -139,6 +157,7 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
           val startTime: TextView = itemView.findViewById(R.id.tvStartTime)
           val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
           val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
+          val tvPatientName: TextView = itemView.findViewById(R.id.tvPatientName)
           val consultationType: TextView = itemView.findViewById(R.id.tvConsultationType)
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)
         val btnView: Button = itemView.findViewById(R.id.btnViewUpcomingHome)

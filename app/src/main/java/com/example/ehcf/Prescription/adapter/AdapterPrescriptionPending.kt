@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,9 +13,11 @@ import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Prescription.model.ModelPreList
 import com.example.ehcf.Prescription.model.My_model
 import com.example.ehcf.R
+import com.squareup.picasso.Picasso
 
 
-class AdapterPrescriptionPending(val context: Context, private val list: ModelPreList
+class AdapterPrescriptionPending(
+    val context: Context, private val list: ModelPreList
 ) :
     RecyclerView.Adapter<AdapterPrescriptionPending.MyViewHolder>() {
 
@@ -30,19 +33,32 @@ class AdapterPrescriptionPending(val context: Context, private val list: ModelPr
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
 
+        try {
+            if (list.result[position].profile_image!!.isNotEmpty()){
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+            }
+            holder.bookingDate.text = list.result[position].date
+            holder.specialitiesName.text = list.result[position].category_name.toString()
+            holder.doctorName.text = list.result[position].doctor_name.toString()
 
-        holder.bookingDate.text = list.result[position].date
-        holder.specialitiesName.text = list.result[position].category_name.toString()
-        holder.doctorName.text = list.result[position].doctor_name.toString()
-        holder.startTime.text = convertTo12Hour(list.result[position].start_time.toString())
-        holder.endTime.text = convertTo12Hour(list.result[position].end_time.toString())
+            if (list.result[position].member_name != null) {
+                holder.tvPatientNamePending.text = list.result[position].member_name
+
+            } else {
+                holder.tvPatientNamePending.text = list.result[position].customer_name
+            }
+            if (list.result[position].start_time.toString() != null) {
+                holder.startTime.text = convertTo12Hour(list.result[position].start_time.toString())
+                holder.endTime.text = convertTo12Hour(list.result[position].end_time.toString())
+            }
+
 
 //        holder.bookingDate.text = list.result[0].get(position).date
 //         holder.specialitiesName.text = list.result[0].get(position).categoryName
 //        holder.doctorName.text = list.result[position].get(0).doctorName
 //        holder.startTime.text = list.result[position].get(position).startTime
 //        holder.endTime.text = list.result[position].get(position).endTime
-         // holder.doctorName.text = list.result[position]..toString()
+            // holder.doctorName.text = list.result[position]..toString()
 
 //        when (list.result[position].specialist) {
 //            "1" -> {
@@ -104,6 +120,9 @@ class AdapterPrescriptionPending(val context: Context, private val list: ModelPr
 //            }
 //        }
 
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
     }
 
@@ -118,7 +137,9 @@ class AdapterPrescriptionPending(val context: Context, private val list: ModelPr
         val startTime: TextView = itemView.findViewById(R.id.tvStartTimePPending)
         val endTime: TextView = itemView.findViewById(R.id.tvEndTimePending)
         val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNamePending)
+        val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
         val specialitiesName: TextView = itemView.findViewById(R.id.tvSpecialitiesNamePreList)
+        val tvPatientNamePending: TextView = itemView.findViewById(R.id.tvPatientNamePending)
 
         //  val btnAddPrescription: Button = itemView.findViewById(R.id.btnAddPrescriptionPPending)
         val cardView: CardView = itemView.findViewById(R.id.cardViewPre)

@@ -15,6 +15,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_bootom_navigation">BootomNavigation</string>
     <string name="title_home">Home</string>
+    <string name="lbl_select_date">Select Date</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_bootom_test">BootomTest</string>

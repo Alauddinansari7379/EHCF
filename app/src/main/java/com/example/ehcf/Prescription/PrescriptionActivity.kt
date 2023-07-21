@@ -4,14 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toolbar
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
-import com.example.ehcf.Fragment.AddReport
 import com.example.ehcf.Helper.isOnline
-import com.example.ehcf.R
 import com.example.ehcf.activity.ViewPagerAdapter
 import com.example.ehcf.databinding.ActivityPrescriptionBinding
-import com.example.ehcf.report.ViewReportFragment
 import com.giphy.sdk.analytics.GiphyPingbacks.context
 import com.google.android.material.tabs.TabLayout
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver

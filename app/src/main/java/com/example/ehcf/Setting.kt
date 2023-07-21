@@ -7,12 +7,13 @@ import android.os.Bundle
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Address.Activity.AddressList
 import com.example.ehcf.FAQ.FAQCategories
-import com.example.ehcf.Upload.UploadReportNew
+import com.example.ehcf.FamailyMember.activity.AddNewFamily
+import com.example.ehcf.FamailyMember.activity.FamilyList
+import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.databinding.ActivitySettingBinding
 import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.sharedpreferences.SessionManager
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
-import xyz.teamgravity.checkinternet.CheckInternet
 
 class Setting : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
@@ -28,6 +29,14 @@ class Setting : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
+//        binding.tvAddFamilyMember.setOnClickListener {
+//            startActivity(Intent(this, AddNewFamily::class.java))
+//
+//        }
+//        binding.tvFamilyMemberList.setOnClickListener {
+//            startActivity(Intent(this, FamilyList::class.java))
+//        }
+
         binding.tvAddressBook.setOnClickListener {
             startActivity(Intent(this, AddressList::class.java))
         }
@@ -59,16 +68,13 @@ class Setting : AppCompatActivity() {
     }
     override fun onStart() {
         super.onStart()
-        CheckInternet().check { connected ->
-            if (connected) {
+        if (isOnline(this)) {
+            //  myToast(requireActivity(), "Connected")
+        } else {
+            val changeReceiver = NetworkChangeReceiver(context)
+            changeReceiver.build()
+            //  myToast(requireActivity(), "Not C")
 
-                // myToast(requireActivity(),"Connected")
-            }
-            else {
-                val changeReceiver = NetworkChangeReceiver(context)
-                changeReceiver.build()
-                //  myToast(requireActivity(),"Check Internet")
-            }
         }
     }
 

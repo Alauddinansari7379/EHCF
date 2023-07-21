@@ -21,17 +21,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.afdhal_fa.imageslider.`interface`.ItemClickListener
 import com.afdhal_fa.imageslider.model.SlideUIModel
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.example.easywaylocation.LocationData
+import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Fragment.Model.ModelNearestDoctor
+import com.example.ehcf.Fragment.adapter.AdapterAllDoctorHome
 import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
 import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Helper.isOnline
@@ -94,7 +98,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         shimmerFrameLayout!!.startShimmer();
 
 
+        val refreshListener = SwipeRefreshLayout.OnRefreshListener {
 
+            (activity as MainActivity).refreshMain()
+        }
+        binding.swipeRefreshLayout.setOnRefreshListener(refreshListener)
 
 
 
@@ -149,19 +157,19 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         //https://bit.ly/2BteuF2
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescriptions/1679740963.png",
+                "https://ehcf.thedemostore.in/uploads/prescription/0420d2cfe028b40be93f3f6a826e0606.png",
                 ""
             )
         )
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescriptions/1679741056.png",
+                "https://ehcf.thedemostore.in/uploads/prescription/78d539ca61f950a4748bc0238bd0de04.png",
                 ""
             )
         )
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescriptions/1679741017.png",
+                "https://ehcf.thedemostore.in/uploads/prescription/e6a581790c0889d5cf1ef62a04257370.png",
                 ""
             )
         )
@@ -353,8 +361,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //        progressDialog!!.setCancelable(true)
         //  progressDialog!!.show()
 
-        val lat = "435435"
-        val lng = "54357"
         val searchNew = ""
         ApiClient.apiService.getAllDoctor(
             sessionManager.latitude,
@@ -368,22 +374,26 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                     call: Call<ModelAllDoctorNew>,
                     response: Response<ModelAllDoctorNew>
                 ) {
-                    if (response.code() == 500) {
-                        myToast(requireActivity(), "Unable to fetch nearest doctor")
-                    }
-                   else if (response.body()!!.status == 1) {
-                        binding.rvAllDoctor.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvAllDoctor.visibility = View.VISIBLE
+                    try {
+                        if (response.code() == 500) {
+                            myToast(requireActivity(), "Unable to fetch nearest doctor")
+                        } else if (response.body()!!.status == 1) {
+                            binding.rvAllDoctor.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAllDoctor.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                adapter = activity?.let { AdapterAllDoctor(it, response.body()!!) }
+                                //  progressDialog!!.dismiss()
+                            }
+                        } else {
                             binding.shimmer.visibility = View.GONE
-                            adapter = activity?.let { AdapterAllDoctor(it, response.body()!!) }
+
+                            //  myToast(requireActivity(), response.body()!!.message.toString())
                             //  progressDialog!!.dismiss()
                         }
-                    } else {
-                        binding.shimmer.visibility = View.GONE
-
-                        //  myToast(requireActivity(), response.body()!!.message.toString())
-                        //  progressDialog!!.dismiss()
+                    }catch (e:Exception){
+                        Log.e("Exception",e.printStackTrace().toString())
+                       e.printStackTrace()
                     }
                 }
 
@@ -406,25 +416,28 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                 override fun onResponse(
                     call: Call<ModelUpComingNew>, response: Response<ModelUpComingNew>
                 ) {
-                    if (response.code() == 500) {
-                        myToast(requireActivity(), "Server error")
-                    } else if (response.body()!!.result.isEmpty()) {
-                        binding.shimmer.visibility = View.GONE
-                        // myToast(requireActivity(),"No Data Found")
-                    } else {
-                        binding.rvAppointment.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvAppointment.visibility = View.VISIBLE
+                    try {
+                        if (response.code() == 500) {
+                            myToast(requireActivity(), "Server error")
+                        } else if (response.body()!!.result.isEmpty()) {
                             binding.shimmer.visibility = View.GONE
-                            adapter =
-                                activity?.let { AdapterAppointmentsHome(it, response.body()!!) }
+                            // myToast(requireActivity(),"No Data Found")
+                        } else {
+                            binding.rvAppointment.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAppointment.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                adapter = activity?.let { AdapterAppointmentsHome(it, response.body()!!) }
+                            }
                         }
-                    }
 
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                    }
                 }
 
                 override fun onFailure(call: Call<ModelUpComingNew>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
+                    activity?.let { myToast(it, "Something went wrong") }
 
                 }
 

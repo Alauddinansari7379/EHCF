@@ -26,16 +26,48 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTestNameAddRe"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Test"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
                     android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/reportStatus"
+                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="#FF6F00"
                     android:textStyle="bold">
 
                 </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
 
+            <LinearLayout
+            android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+             android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTestInstraction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test"
+                    android:textColor="@color/main_color"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,20 +107,65 @@
                     android:layout_marginTop="45dp"
                     android:layout_marginBottom="2dp"
                     android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnSelectReportImgRe"
+                    <LinearLayout
+                        android:id="@+id/layoutGallery"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginRight="10dp"
+                         android:gravity="center"
                         android:layout_weight="1"
-                        android:background="@drawable/corner"
-                        android:padding="5dp"
-                        android:text="Select Report Image"
-                        android:textAllCaps="false"
-                        android:textColor="#868686">
+                        android:orientation="vertical"
 
-                    </androidx.appcompat.widget.AppCompatButton>
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/circle"
+                            android:backgroundTint="@color/main_color"
+                            android:gravity="center">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/ic_menu_gallery"
+                                android:backgroundTint="@color/white" />
+
+                        </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gallery">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/layoutPDF"
+                        android:layout_width="match_parent"
+                         android:gravity="center"
+                        android:layout_weight="1"
+
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/circle"
+                            android:backgroundTint="@color/main_color"
+                            android:gravity="center">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/pdf"
+                                android:backgroundTint="@color/white" />
+
+                        </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PDF">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                    </LinearLayout>
+
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnUploadRe"

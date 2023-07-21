@@ -87,9 +87,9 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -120,8 +120,7 @@
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         android:src="@drawable/doctorimage"
-                        app:civ_border_width="2dp"
-                        app:civ_border_color="#9E9999"/>
+                          />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -150,6 +149,77 @@
                                 android:textStyle="bold">
 
                             </androidx.appcompat.widget.AppCompatTextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                             android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+                                <RatingBar
+                                    android:id="@+id/ratingBarDProfilenew"
+                                    style="@style/Widget.AppCompat.RatingBar.Small"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:hapticFeedbackEnabled="true"
+                                    android:numStars="5"
+                                    android:progressTint="#ffc107"
+                                    android:rating="1.0"
+                                    android:stepSize=".2" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tvOverAllRatingnew"
+                                    android:layout_width="30dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="-1dp"
+                                    android:text="0"
+                                    android:textColor="#676565"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold">
+
+                                </androidx.appcompat.widget.AppCompatTextView>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:gravity="end"
+                                  android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tvNoOfratingnew"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="00"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold">
+
+                                </androidx.appcompat.widget.AppCompatTextView>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:text="ratings"
+                                    android:layout_marginEnd="5dp"
+                                    android:textSize="12sp"
+                                    android:textColor="#676565"
+                                    android:textStyle="bold">
+
+                                </androidx.appcompat.widget.AppCompatTextView>
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>

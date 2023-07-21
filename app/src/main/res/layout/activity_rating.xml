@@ -59,8 +59,8 @@
             android:backgroundTintMode="@color/black"
             android:hapticFeedbackEnabled="true"
             android:backgroundTint="@color/black"
-            android:rating="2.0"
-            android:stepSize="1.0" />
+            android:rating="1"
+            android:stepSize=".5" />
     </LinearLayout>
 
     <ScrollView
@@ -246,6 +246,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="25dp"
+                            android:visibility="gone"
                             android:orientation="vertical">
 
                             <androidx.appcompat.widget.AppCompatImageView
@@ -279,7 +280,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:backgroundTint="#9F367A"
-                                android:text="Send Review"
+                                android:text="Submit Review"
                                 android:textAllCaps="false"
                                 app:cornerRadius="8dp">
 

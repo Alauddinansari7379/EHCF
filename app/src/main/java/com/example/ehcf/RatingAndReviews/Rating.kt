@@ -32,7 +32,7 @@ class Rating : AppCompatActivity() {
     lateinit var ratingBar: RatingBar
     lateinit var button: Button
     var meetingId = ""
-    var rating = ""
+    var rating = "1"
     private lateinit var sessionManager: SessionManager
     var progressDialog: ProgressDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,8 +89,10 @@ class Rating : AppCompatActivity() {
                     Log.e("Ala", "${response.body()!!}")
                     Log.e("Ala", "${response.body()!!.status}")
                     if (response.body()!!.status == 1) {
-                        myToast(this@Rating, response.body()!!.message)
+                        myToast(this@Rating, "Review Submitted")
                         progressDialog!!.dismiss()
+                        binding.edtComment.text.clear()
+                       //  binding.btnSendReview.backgroundTintBlendMode.
                         startActivity(Intent(this@Rating, Appointments::class.java))
 
                     } else {

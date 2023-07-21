@@ -22,6 +22,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/TextName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -51,11 +52,13 @@
                     android:layout_marginRight="20dp"
                     >
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTestViewDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Test"
                         android:layout_marginTop="5dp"
                         android:textStyle="bold"
+                        android:textSize="12sp"
                         android:textColor="#686868">
 
                     </androidx.appcompat.widget.AppCompatTextView>

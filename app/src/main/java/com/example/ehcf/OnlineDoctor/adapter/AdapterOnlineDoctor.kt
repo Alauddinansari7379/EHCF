@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.CreateSlot.activity.MyAvailableSlot
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.PaymentMode
 import com.example.ehcf.R
@@ -36,13 +37,35 @@ class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoc
       //  holder.symptomName.text = list.result[position].providing_services.toString()
         holder.consaltaionFee.text = list.result[position].pricing
         holder.addressOnline.text = list.result[position].clinic_address
-      //  Picasso.get().load(list.result[position].profile_image).into(holder.imgProfile)
+       //  Picasso.get().load(list.result[position].profile_image).into(holder.imgProfile)
 //
-        holder.btnViewProfileOnline.setOnClickListener {
+//        holder.btnViewProfileOnline.setOnClickListener {
+//          //  val intent = Intent(context as Activity, PaymentMode::class.java)
+//            val intent = Intent(context as Activity, DoctorProfile::class.java)
+//                .putExtra("doctorId",list.result[position].id.toString())
+//            context.startActivity(intent)
+//        }
+
+        holder.btnTodayAvalible.setOnClickListener {
           //  val intent = Intent(context as Activity, PaymentMode::class.java)
-            val intent = Intent(context as Activity, DoctorProfile::class.java)
+            val intent = Intent(context as Activity, MyAvailableSlot::class.java)
                 .putExtra("doctorId",list.result[position].id.toString())
+                .putExtra("Online","1")
             context.startActivity(intent)
+        }
+
+        when(list.result[position].gender){
+            "1"->{
+                holder.genderOnline.text="Male"
+            }
+            "2"-> {
+                holder.genderOnline.text="FeMale"
+            }
+            else->{
+                holder.genderOnline.text="Other"
+
+            }
+
         }
 
         // Glide.with(hol der.image).load(list[position].url).into(holder.image)
@@ -61,11 +84,13 @@ class AdapterOnlineDoctor(val context: Context, private val list: ModelOnlineDoc
         val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesOnline)
         val qualification: TextView = itemView.findViewById(R.id.tvQualificationOnline)
         val consaltaionFee: TextView = itemView.findViewById(R.id.tvFeeOnline)
-        val addressOnline: TextView = itemView.findViewById(R.id.tvAddressOnline)
-      //  val symptomName: TextView = itemView.findViewById(R.id.tvSymptomNameOnline)
+         val addressOnline: TextView = itemView.findViewById(R.id.tvAddressOnline)
+        val genderOnline: TextView = itemView.findViewById(R.id.tvGenderOnline)
+       //  val symptomName: TextView = itemView.findViewById(R.id.tvSymptomNameOnline)
       //  val language: TextView = itemView.findViewById(R.id.tvLanguageOnline)
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfileOnline)
         val btnViewProfileOnline: Button = itemView.findViewById(R.id.btnViewProfileOnline)
+        val btnTodayAvalible: Button = itemView.findViewById(R.id.btnTodayAvalible)
 
 
     }

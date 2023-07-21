@@ -10,6 +10,8 @@ import android.view.View
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.OnlineDoctor.adapter.AdapterOnlineDoctor
+import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.adapter.AdapterFilteredDoctor
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
@@ -38,6 +40,9 @@ class FilteredDoctor : AppCompatActivity() {
         setContentView(binding.root)
         sessionManager = SessionManager(this)
 
+        if (sessionManager.bookingType!="1"){
+            binding.layoutOnline.visibility=View.GONE
+        }
 
         shimmerFrameLayout = findViewById(R.id.shimmer)
         shimmerFrameLayout!!.startShimmer();
@@ -49,19 +54,24 @@ class FilteredDoctor : AppCompatActivity() {
         Log.e("specialitiesID", "$specialitiesID")
         apiCallFilteredDoctor()
         // apiCallAllDoctor()
-
+        binding.btnOnlineDoctor.setOnClickListener {
+            apiCallOnlineDoctor()
+        }
+        binding.btnAllDoctors.setOnClickListener {
+            apiCallFilteredDoctor1()
+        }
 
     }
 
 
-    private fun apiCallAllDoctor() {
+    private fun apiCallDoctor() {
 
         progressDialog = ProgressDialog(this@FilteredDoctor)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-      //  progressDialog!!.show()
+        //  progressDialog!!.show()
 
         val lat = "435435"
         val lng = "54357"
@@ -102,6 +112,55 @@ class FilteredDoctor : AppCompatActivity() {
 
     }
 
+    private fun apiCallOnlineDoctor() {
+        progressDialog = ProgressDialog(this@FilteredDoctor)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+        ApiClient.apiService.onlineDoctors(specialitiesID, "").enqueue(object :
+            Callback<ModelOnlineDoctor> {
+            @SuppressLint("LogNotTimber")
+            override fun onResponse(
+                call: Call<ModelOnlineDoctor>,
+                response: Response<ModelOnlineDoctor>
+            ) {
+
+                if (response.body()!!.result.isEmpty()) {
+                    myToast(this@FilteredDoctor, "No Online Doctor Found")
+                    binding.shimmer.visibility = View.GONE
+                    progressDialog!!.dismiss()
+                    binding.rvAllDoctor.apply {
+                        shimmerFrameLayout?.startShimmer()
+                        binding.rvAllDoctor.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
+                        progressDialog!!.dismiss()
+                    }
+                } else {
+                    binding.rvAllDoctor.apply {
+                        shimmerFrameLayout?.startShimmer()
+                        binding.rvAllDoctor.visibility = View.VISIBLE
+                        binding.shimmer.visibility = View.GONE
+                        adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<ModelOnlineDoctor>, t: Throwable) {
+                myToast(this@FilteredDoctor, "Something went wrong")
+                progressDialog!!.dismiss()
+
+            }
+
+        })
+    }
+
     private fun apiCallFilteredDoctor() {
 
         progressDialog = ProgressDialog(this@FilteredDoctor)
@@ -109,7 +168,7 @@ class FilteredDoctor : AppCompatActivity() {
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-      //  progressDialog!!.show()
+        //  progressDialog!!.show()
 
         Log.e("specialitiesIDAPI", "$specialitiesID")
 
@@ -121,7 +180,10 @@ class FilteredDoctor : AppCompatActivity() {
                     call: Call<ModelFilteredDoctor>,
                     response: Response<ModelFilteredDoctor>
                 ) {
-                    if (response.body()!!.result.isEmpty()) {
+
+                    try {
+
+                        if (response.body()!!.result.isEmpty()) {
                         myToast(this@FilteredDoctor, "No Doctor Found")
                         binding.shimmer.visibility = View.GONE
 
@@ -136,9 +198,15 @@ class FilteredDoctor : AppCompatActivity() {
                         }
 
                     }
+                    } catch (e: Exception) {
+                        myToast(this@FilteredDoctor, "Something went wrong")
+                        e.printStackTrace()
+                    }
+
                 }
+
                 override fun onFailure(call: Call<ModelFilteredDoctor>, t: Throwable) {
-                    myToast(this@FilteredDoctor,"Something went wrong")
+                    myToast(this@FilteredDoctor, "Something went wrong")
                     binding.shimmer.visibility = View.GONE
 
                     progressDialog!!.dismiss()
@@ -148,14 +216,67 @@ class FilteredDoctor : AppCompatActivity() {
             })
 
     }
+    private fun apiCallFilteredDoctor1() {
+
+        progressDialog = ProgressDialog(this@FilteredDoctor)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+          progressDialog!!.show()
+
+        Log.e("specialitiesIDAPI", "$specialitiesID")
+
+        ApiClient.apiService.filteredDoctor(specialitiesID)
+            .enqueue(object :
+                Callback<ModelFilteredDoctor> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelFilteredDoctor>,
+                    response: Response<ModelFilteredDoctor>
+                ) {
+                    if (response.body()!!.result.isEmpty()) {
+                        myToast(this@FilteredDoctor, "No Doctor Found")
+                        binding.shimmer.visibility = View.GONE
+                        binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
+                            adapter = AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
+                            progressDialog!!.dismiss()
+                        }
+                        progressDialog!!.dismiss()
+                    } else {
+                        binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
+                            adapter = AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
+                            progressDialog!!.dismiss()
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelFilteredDoctor>, t: Throwable) {
+                    myToast(this@FilteredDoctor, "Something went wrong")
+                    binding.shimmer.visibility = View.GONE
+
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+
+    }
+
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->
             if (connected) {
 
                 // myToast(requireActivity(),"Connected")
-            }
-            else {
+            } else {
                 val changeReceiver = NetworkChangeReceiver(context)
                 changeReceiver.build()
                 //  myToast(requireActivity(),"Check Internet")

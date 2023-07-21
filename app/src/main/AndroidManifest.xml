@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ehcf" >
+    package="com.example.ehcf">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -25,18 +26,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
-        tools:targetApi="32" >
+        tools:targetApi="32">
         <activity
-            android:name=".Upload.UploadReportNew"
+            android:name=".Upload.activity.FamilyMemberHistory"
             android:exported="false" />
         <activity
-            android:name=".ResetPassword"
+            android:name=".Upload.activity.ReportList"
+            android:exported="false" />
+        <activity
+            android:name=".Registration.activity.SignaturaPad"
+            android:exported="false" />
+        <activity
+            android:name=".FamailyMember.activity.FamilyList"
+            android:exported="false" />
+        <activity
+            android:name=".Prescription.DownloadPrescription"
+            android:exported="false" />
+        <activity
+            android:name=".Upload.activity.UploadReportNew"
             android:exported="false" />
         <activity
             android:name=".invoices.InvoiceDetail"
-            android:exported="false" />
-        <activity
-            android:name=".Specialities.activity.DoctorProfileNew"
             android:exported="false" />
         <activity
             android:name=".PhoneNumber.Activity.ResetPassword"
@@ -49,9 +59,6 @@
             android:exported="false" />
         <activity
             android:name=".report.activity.ViewReport"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Fragment.test.ImageUpload"
@@ -81,16 +88,10 @@
             android:name=".Testing.NotificationView"
             android:exported="false" />
         <activity
-            android:name=".Testing.Voice_Calling"
-            android:exported="false" />
-        <activity
             android:name=".login.activity.SignIn"
             android:exported="false" />
         <activity
             android:name=".Testing.ApiTesting"
-            android:exported="false" />
-        <activity
-            android:name=".Testing.RazorPay"
             android:exported="false" />
         <activity
             android:name=".Testing.VideoCalling"
@@ -112,7 +113,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".AddNewFamily"
+            android:name=".FamailyMember.activity.AddNewFamily"
             android:exported="false" />
         <activity
             android:name=".Dashboard.activity.Dashboard"
@@ -192,7 +193,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -206,25 +207,25 @@
         <meta-data
             android:name="com.google.gms.wallet.api.enabled"
             android:value="true" />
+
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel"
             android:value="@string/channel_id" />
+
         <service
             android:name=".Testing.MyFirebaseMessagingService"
             android:exported="false">
-
-                <intent-filter>
-                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                </intent-filter>
-
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

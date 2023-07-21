@@ -50,13 +50,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Slots For-"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:textColor="#686868"
             android:textStyle="bold">
 
@@ -113,11 +114,140 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSelectDateFollowUp"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:cardCornerRadius="10dp"
+                android:backgroundTint="#EC4C4C">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Date"
+                        android:layout_marginLeft="15dp"
+                        android:layout_gravity="end"
+                        android:textColor="@color/white"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="@color/white"
+                        android:drawableRight="@drawable/ic_baseline_calendar_month_24"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Booking For"
+                android:layout_marginEnd="5dp"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lLayoutNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/corner"
+            android:minHeight="40dp"
+            android:orientation="horizontal">
+
+            <pl.utkala.searchablespinner.SearchableSpinner
+                android:id="@+id/spinnerFamily"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:autofillHints="sdsd"
+                app:closeText="Close"
+                app:dialogTitle="Select State" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutFamilyMemeber"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Booking For Family Member"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/corner"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSlotTimingFamily"
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+     </LinearLayout>
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSlotTiming"
         android:layout_width="match_parent"
@@ -126,412 +256,11 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-<!--        <androidx.appcompat.widget.AppCompatTextView-->
-<!--            android:id="@+id/tvNoDataFound"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="No Slot Found"-->
-<!--            android:visibility="gone"-->
-<!--            android:gravity="center_horizontal"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="18sp"-->
-<!--            >-->
 
-<!--        </androidx.appcompat.widget.AppCompatTextView>-->
-    </LinearLayout>
+</LinearLayout>
 
 
-    <!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="55dp"-->
-<!--        app:cardCornerRadius="10dp"-->
-<!--        android:layout_margin="15dp">-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:gravity="center"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:textColor="#686868"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:gravity="start"-->
-<!--                    android:text="Timings">-->
-
-<!--                </TextView>-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_gravity="end"-->
-<!--                    android:layout_marginRight="10dp"-->
-<!--                    android:gravity="end"-->
-<!--                    android:layout_height="wrap_content">-->
-<!--                    <TextView-->
-<!--                        android:layout_width="25dp"-->
-<!--                        android:layout_height="25dp"-->
-<!--                        android:backgroundTint="#686868"-->
-<!--                        android:background="@drawable/clock"-->
-<!--                        >-->
-
-<!--                    </TextView>-->
-
-<!--                </LinearLayout>-->
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
-
-<!--    </androidx.cardview.widget.CardView>-->
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        android:visibility="gone"
-        android:layout_margin="15dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#686868"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:text="Timings">
-
-                </androidx.appcompat.widget.AppCompatTextView>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="10dp"
-                    android:gravity="end"
-                    android:layout_height="wrap_content">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:backgroundTint="#686868"
-                        android:background="@drawable/clock"
-                        >
-
-                    </androidx.appcompat.widget.AppCompatTextView>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btnAppointmentTime1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="09:00 AM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="09:30 AM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="10:00 AM">
-                </androidx.appcompat.widget.AppCompatButton>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btnAppointmentTime2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="11:00 AM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="11:30 AM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="12:00 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btnAppointmentTime3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="12:30 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="01:00 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="01:30 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btnAppointmentTime4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="02:00 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="02:30 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="03:00 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btnAppointmentTime5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="03:30 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="04:00 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:drawableTint="@color/white"
-                    android:backgroundTint="#FAC500"
-                    android:drawableRight="@drawable/ic_baseline_lock_24"
-                    android:background="@drawable/corner"
-                    android:text="04:30 PM">
-                </androidx.appcompat.widget.AppCompatButton>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:cardCornerRadius="10dp"-->
-<!--        android:layout_margin="15dp">-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_marginTop="15dp"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:textColor="#686868"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:text="Timings">-->
-
-<!--                </TextView>-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_gravity="end"-->
-<!--                    android:layout_marginRight="10dp"-->
-<!--                    android:gravity="end"-->
-<!--                    android:layout_height="wrap_content">-->
-<!--                    <TextView-->
-<!--                        android:layout_width="25dp"-->
-<!--                        android:layout_height="25dp"-->
-<!--                        android:backgroundTint="#686868"-->
-<!--                        android:background="@drawable/clock"-->
-<!--                        >-->
-
-<!--                    </TextView>-->
-
-<!--                </LinearLayout>-->
-<!--            </LinearLayout>-->
-
-
-<!--        </LinearLayout>-->
-
-<!--    </androidx.cardview.widget.CardView>-->
 </LinearLayout>

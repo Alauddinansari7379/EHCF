@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.adapter.AdapterSpecialities
 import com.example.ehcf.Specialities.model.ModelSplic
@@ -39,6 +40,7 @@ class Specialities : AppCompatActivity() {
 
         bookingType= intent.getStringExtra("bookingType").toString()
         Log.e("BookingType","$bookingType")
+        PrescriptionDetails.FollowUP=""
         apiCall()
 
 

@@ -53,8 +53,134 @@
             android:src="@drawable/ic_baseline_refresh_24">
 
         </androidx.appcompat.widget.AppCompatImageView>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgFilter"
+            android:layout_width="35dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_height="35dp"
+            android:background="?actionBarItemBackground"
+            android:src="@drawable/filter">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgFilterDowan"
+            android:layout_width="35dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:layout_marginStart="5dp"
+            android:layout_height="35dp"
+            android:tint="@color/main_color"
+            android:background="?actionBarItemBackground"
+            android:src="@drawable/arrow_down">
+
+        </androidx.appcompat.widget.AppCompatImageView>
 
     </LinearLayout>
+
+<LinearLayout
+    android:id="@+id/layoutFilter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="Specialist">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="*"
+            android:textColor="#E91E63">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+    </LinearLayout>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+         android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/corner"
+        android:minHeight="40dp"
+        android:orientation="horizontal">
+
+        <pl.utkala.searchablespinner.SearchableSpinner
+            android:id="@+id/spinnerSpecialist"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+             android:autofillHints="sdsd"
+            app:closeText="Close"
+            app:dialogTitle="" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/edtPatientName"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/corner"
+            android:hint="Search By Patient Name"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:textColorHint="@color/black"
+            android:textSize="15dp">
+
+
+        </EditText>
+
+    </LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btnSearchFilter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Search"
+    android:layout_marginStart="25dp"
+    android:layout_marginEnd="25dp"
+    android:textAllCaps="false"
+    android:drawableTint="@color/white"
+    android:gravity="center"
+    app:iconGravity="start"
+    android:drawableEnd="@drawable/baseline_search_24"
+    app:cornerRadius="10sp"
+    android:backgroundTint="@color/main_color">
+
+</com.google.android.material.button.MaterialButton>
+</LinearLayout>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="match_parent"

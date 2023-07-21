@@ -6,22 +6,20 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.Fragment.AddReport
-import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.report.activity.ViewReport
+import com.example.ehcf.report.model.ModelGetTest
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class AdapterViewReport(
     val context: Context,
-    private val list: ModelPrescribed,
+    private val list: ModelGetTest,
 ) :
     RecyclerView.Adapter<AdapterViewReport.MyViewHolder>() {
 
@@ -38,16 +36,19 @@ class AdapterViewReport(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
 
-        //holder.testName.text = list.result[position].date
+        holder.tvTestViewDesc.text = list.result[position].instructions
+        holder.testName.text = list.result[position].test_name
+
+
 //        holder.doctorName.text = list.result[position].doctor_name.toString()
 //        holder.startTime.text = list.result[position].time
 //        holder.tvStatus.text = list.result[position].status_for_customer
 //        holder.consultationType.text = list.result[position].consultation_type
 
-        if (list.result[position].is_test=="0") {
-                holder.cardView.visibility = View.GONE
-
-        }
+//        if (list.result[position].is_test=="0") {
+//                holder.cardView.visibility = View.GONE
+//
+//        }
 
 //        holder.bookingId.text = list.result.upcoming[position].id.toString()
 //        holder.title.text = list.result[position].title.toString()
@@ -67,7 +68,7 @@ class AdapterViewReport(
 
         holder.btnViewReport.setOnClickListener {
             val intent = Intent(context as Activity, ViewReport::class.java)
-                .putExtra("report",list.result[position].report.toString())
+                .putExtra("report",list.result[position].test_report.toString())
             context.startActivity(intent)
         }
 
@@ -97,6 +98,8 @@ class AdapterViewReport(
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val btnViewReport: TextView = itemView.findViewById(R.id.btnViewReportView)
+        val testName: TextView = itemView.findViewById(R.id.TextName)
+        val tvTestViewDesc: TextView = itemView.findViewById(R.id.tvTestViewDesc)
         val cardView: CardView = itemView.findViewById(R.id.cardViewViewRe)
 
 

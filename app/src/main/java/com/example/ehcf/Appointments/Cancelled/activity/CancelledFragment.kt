@@ -104,6 +104,7 @@ class CancelledFragment : Fragment() {
                     if (response.code() == 500) {
                         myToast(requireActivity(), "Server Error")
                         binding.shimmer.visibility = View.GONE
+                        progressDialog!!.dismiss()
                     } else if (response.body()!!.status == 0) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
                         binding.shimmer.visibility = View.GONE
@@ -169,14 +170,17 @@ class CancelledFragment : Fragment() {
                 override fun onResponse(
                     call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
                 ) {
-                    Log.e("Ala", "${response.body()!!}")
-                    Log.e("Ala", "${response.body()!!.status}")
-                    if (response.body()!!.result.isEmpty()){
+                    if (response.code() == 500) {
+                        myToast(requireActivity(), "Server Error")
+                        binding.shimmer.visibility = View.GONE
+                        progressDialog!!.dismiss()
+
+                    }
+                   else if (response.body()!!.result.isEmpty()){
                         binding.tvNoDataFound.visibility = View.VISIBLE
                         binding.shimmer.visibility = View.GONE
                         // myToast(requireActivity(),"No Appointment Found")
                         progressDialog!!.dismiss()
-
                     }else{
                         binding.rvCancled.apply {
                             shimmerFrameLayout?.startShimmer()

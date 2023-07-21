@@ -11,14 +11,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.R
-import com.example.ehcf.Registration.ModelResponse.ModelGender
-import com.example.ehcf.Specialities.model.ModelSplic
+import com.example.ehcf.Upload.activity.FamilyMemberHistory
+import com.example.ehcf.Upload.activity.ReportList
 import com.example.ehcf.Upload.model.ModelGetAllReport
 import com.example.ehcf.report.activity.ViewReport
-import com.squareup.picasso.Picasso
 
 
-class AdapterUploadReport( private val list: ModelGetAllReport,val context: Context,) :
+class AdapterUploadReport(private val list: ModelGetAllReport, val context: Context, private val deleteReport: ReportList) :
     RecyclerView.Adapter<AdapterUploadReport.MyViewHolder>() {
 
 
@@ -29,18 +28,34 @@ class AdapterUploadReport( private val list: ModelGetAllReport,val context: Cont
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-         holder.reportCount.text= "${position+1}"
+        try {
+            holder.tvReportName.text = list.result[position].title
+            holder.tvReportDate.text = list.result[position].date
 
-        holder.btnViewReport.setOnClickListener {
+            if (list.result[position].member_name != null) {
+                holder.tvReportMemberName.text = list.result[position].member_name
+            } else {
+                holder.tvReportMemberName.text = list.result[position].customer_name
 
-            val intent = Intent(context as Activity, ViewReport::class.java)
-                .putExtra("report",list.result[position].report.toString())
-            context.startActivity(intent)
+            }
+
+            holder.btnViewReport.setOnClickListener {
+                val intent = Intent(context as Activity, ViewReport::class.java)
+                    .putExtra("report", list.result[position].report)
+                context.startActivity(intent)
+            }
+
+            holder.imgDelete.setOnClickListener {
+                deleteReport.deleteReport(list.result[position].patient_reports_id.toString())
+
+            }
+
+            // Glide.with(hol der.image).load(list[position].url).into(holder.image)
+
+
+        }catch (e:Exception){
+            e.printStackTrace()
         }
-
-        // Glide.with(hol der.image).load(list[position].url).into(holder.image)
-
-
     }
 
 
@@ -51,8 +66,16 @@ class AdapterUploadReport( private val list: ModelGetAllReport,val context: Cont
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val btnViewReport: TextView = itemView.findViewById(R.id.btnViewReportViewAll)
-            val reportCount: TextView = itemView.findViewById(R.id.tvReportCount)
+            val tvReportMemberName: TextView = itemView.findViewById(R.id.tvReportMemberName)
+            val tvReportName: TextView = itemView.findViewById(R.id.tvReportName)
+            val tvReportDate: TextView = itemView.findViewById(R.id.tvReportDate)
             val cardView: CardView = itemView.findViewById(R.id.cardViewViewRe)
+            val imgDelete: ImageView = itemView.findViewById(R.id.imgDelete)
+
+    }
+    interface DeleteReport{
+        fun deleteReport(id:String)
+
 
     }
 }

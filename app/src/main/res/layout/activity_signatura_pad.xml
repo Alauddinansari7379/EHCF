@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Registration.activity.SignaturaPad">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/newtoolbar"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="55dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Signature"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+         <LinearLayout
+            android:id="@+id/signatureContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_above="@+id/linearButton"
+            android:layout_below="@id/newtoolbar">
+
+
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signaturePad"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_margin="5dp"
+                android:layout_alignParentTop="true"
+                 android:background="@drawable/corner"
+                app:penColor="@android:color/black" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="-18dp"
+                android:background="@color/black">
+
+            </androidx.viewpager.widget.ViewPager>
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="end"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#9F367A"
+            android:text="Clear"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp">
+
+        </com.google.android.material.button.MaterialButton>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/signatureDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              android:text="I have read through the document
+Informed Consent Form and understand and agree with the terms stated within."
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+            <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              />
+
+        <androidx.appcompat.widget.AppCompatTextView
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              android:text="I have read through the document
+Protected Health Information and understand and agree with the terms stated within."
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPrivacyTerms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:text="Read Full Term and Conditions">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="#9F367A"
+        android:text="Register"
+         android:textAllCaps="false"
+        app:cornerRadius="8dp">
+
+    </com.google.android.material.button.MaterialButton>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

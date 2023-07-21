@@ -14,6 +14,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.Cancelled.activity.CancelledFragment
 import com.example.ehcf.Appointments.Consulted.activity.ConsultedFragment
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
+import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAppointmentsBinding
@@ -37,7 +38,7 @@ class Appointments : AppCompatActivity() {
         binding= ActivityAppointmentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.imgBack.setOnClickListener {
-            onBackPressed()
+            startActivity(Intent(this@Appointments, MainActivity::class.java))
         }
         sessionManager= SessionManager(this)
 
@@ -119,6 +120,11 @@ class Appointments : AppCompatActivity() {
         overridePendingTransition(0, 0)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@Appointments, MainActivity::class.java))
+
+    }
     override fun onStart() {
         super.onStart()
         if (isOnline(this)){

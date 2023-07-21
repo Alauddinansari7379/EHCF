@@ -114,8 +114,7 @@
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         android:src="@drawable/doctorimage"
-                        app:civ_border_width="2dp"
-                        app:civ_border_color="#9E9999"/>
+                          />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

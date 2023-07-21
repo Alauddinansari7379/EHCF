@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.Specialities.model.ModelFilteredDoctor
+import com.squareup.picasso.Picasso
 
 
 class AdapterFilteredDoctor(val context: Context, private val list: ModelFilteredDoctor) :
@@ -26,21 +29,35 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-       // holder.id.text= "${position+1}"
-        holder.doctorName.text= list.result[position].doctor_name
-        holder.experience.text = list.result[position].experience
-        holder.qualification.text = list.result[position].qualification
-        holder.tvAddressAllDoctor.text = list.result[position].city
+        // holder.id.text= "${position+1}"
+        try {
+            if (list.result[position].profile_image.isNotEmpty()) {
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+
+              //  Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
+            }
+
+            holder.doctorName.text = list.result[position].doctor_name
+            holder.experience.text = list.result[position].experience
+            holder.qualification.text = list.result[position].qualification
+            holder.tvAddressAllDoctor.text = list.result[position].city
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
-        holder.viewProfile.setOnClickListener {
-            val intent = Intent(context as Activity, DoctorProfile::class.java)
-                .putExtra("doctorId",list.result[position].id.toString())
-            context.startActivity(intent)
+            holder.viewProfile.setOnClickListener {
+                val intent = Intent(context as Activity, DoctorProfile::class.java)
+                    .putExtra("doctorId", list.result[position].id.toString())
+                context.startActivity(intent)
+            }
+            if (list.result[position].overall_ratings != null) {
+                holder.ratingBar.rating = list.result[position].overall_ratings.toFloat()
+                holder.tvRatingReview.text = list.result[position].overall_ratings
+                holder.tvNoOfrating.text = list.result[position].no_of_ratings
+            }
+            // Glide.with(hol der.image).load(list[position].url).into(holder.image)
+
+        }catch (e:Exception){
+            e.printStackTrace()
         }
-
-        // Glide.with(hol der.image).load(list[position].url).into(holder.image)
-
     }
 
 
@@ -56,6 +73,10 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
         val tvAddressAllDoctor: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val viewProfile: Button = itemView.findViewById(R.id.btnViewProfileFilter)
         val cardView: CardView = itemView.findViewById(R.id.cardFilter)
+        val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
+        val tvNoOfrating: TextView = itemView.findViewById(R.id.tvNoOfratingnew)
+        val tvRatingReview: TextView = itemView.findViewById(R.id.tvOverAllRatingnew)
+        val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBarDProfilenew)
 
 
     }

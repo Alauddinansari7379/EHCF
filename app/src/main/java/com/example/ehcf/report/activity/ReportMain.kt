@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.example.ehcf.Fragment.AddReport
 import com.example.ehcf.R
 import com.example.ehcf.activity.ViewPagerAdapter
 import com.example.ehcf.databinding.ActivityMain2Binding
@@ -29,6 +28,9 @@ class ReportMain : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
+        prescriptionId = intent.getStringExtra("id").toString()
+
+
 
 //        binding.btnHelp.setOnClickListener {
 //
@@ -60,6 +62,9 @@ class ReportMain : AppCompatActivity() {
 
 
         tab.setupWithViewPager(pager)
+    }
+    companion object{
+       var prescriptionId=""
     }
     fun refresh() {
         overridePendingTransition(0, 0)

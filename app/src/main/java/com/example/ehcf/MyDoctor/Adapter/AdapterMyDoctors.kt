@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
+import com.squareup.picasso.Picasso
 
 
 class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
@@ -27,19 +29,88 @@ class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
        // holder.id.text= "${position+1}"
        // holder.id.text= list.result[position].id
-        holder.hospitalName.text = list.result[position].doctor_name
-        holder.exprince.text = list.result[position].experience
-        holder.specialities.text = list.result[position].specialist
-       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
+        try {
+            if (list.result[position].profile_image.isNotEmpty()) {
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
 
-        holder.btnBookApp.setOnClickListener {
-            val intent = Intent(context as Activity, DoctorProfile::class.java)
-                .putExtra("doctorId",list.result[position].id)
-            context.startActivity(intent)
+                //  Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
+            }
+
+            holder.hospitalName.text = list.result[position].doctor_name
+            holder.exprince.text = list.result[position].experience
+             // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
+
+            holder.btnBookApp.setOnClickListener {
+                val intent = Intent(context as Activity, DoctorProfile::class.java)
+                    .putExtra("doctorId", list.result[position].id)
+                context.startActivity(intent)
+            }
+
+
+        when (list.result[position].specialist) {
+            "1" -> {
+                holder.specialities.text = "PSYCHOLOGIST"
+            }
+            "2" -> {
+                holder.specialities.text = "SEXOLOGIST"
+            }
+            "3" -> {
+                holder.specialities.text = "DERMATOLOGIST"
+            }
+            "4" -> {
+                holder.specialities.text = "GYNEACOLOGIST"
+            }
+            "5" -> {
+                holder.specialities.text = "GENERAL PHYSICIAN"
+            }
+            "6" -> {
+                holder.specialities.text = "ANESTHESIA"
+            }
+            "7" -> {
+                holder.specialities.text = "GASTROENTEROLOGIST"
+            }
+            "8" -> {
+                holder.specialities.text = "CARDIOLOGIST"
+            }
+            "9" -> {
+                holder.specialities.text = "DENTIST"
+            }
+            "10" -> {
+                holder.specialities.text = "DIABETOLOGIST"
+            }
+            "11" -> {
+                holder.specialities.text = "ENT SPECIALIST"
+            }
+            "12" -> {
+                holder.specialities.text = "GENERAL SURGEON"
+            }
+            "13" -> {
+                holder.specialities.text = "IVF (TEST TUBE BABY)"
+            }
+            "14" -> {
+                holder.specialities.text = "NEPHROLOGIST"
+            }
+            "15" -> {
+                holder.specialities.text = "OPTHALMOLOGIST (EYE SPECIALIST)"
+            }
+            "16" -> {
+                holder.specialities.text = "ORTHOPEDICS"
+            }
+            "17" -> {
+                holder.specialities.text = "PAEDIATRICIAN"
+            }
+            "18" -> {
+                holder.specialities.text = "PHYSIOTHERAPY"
+            }
+            "19" -> {
+                holder.specialities.text = "UROLOGIST"
+            }
         }
 
-        // Glide.with(hol der.image).load(list[position].url).into(holder.image)
-
+            // Glide.with(hol der.image).load(list[position].url).into(holder.image)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
 
@@ -54,6 +125,7 @@ class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
         val exprince: TextView = itemView.findViewById(R.id.tvexprinceAllDoctorN)
         val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor1)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppAllDoctor)
+        val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
 
 
     }

@@ -124,6 +124,7 @@ class Registration : AppCompatActivity() {
 
 
 
+        bloodGroupList.add(SpinnerModel("NA"))
         bloodGroupList.add(SpinnerModel("A+"))
         bloodGroupList.add(SpinnerModel("A-"))
         bloodGroupList.add(SpinnerModel("B+"))
@@ -135,8 +136,7 @@ class Registration : AppCompatActivity() {
 
 
 
-        binding.spinnerBloodGroup.adapter =
-            ArrayAdapter<SpinnerModel>(context, android.R.layout.simple_list_item_1, bloodGroupList)
+        binding.spinnerBloodGroup.adapter = ArrayAdapter<SpinnerModel>(context, android.R.layout.simple_list_item_1, bloodGroupList)
 
 
         binding.edtPhoneNumberWithCode.addTextChangedListener(object : TextWatcher {
@@ -167,7 +167,7 @@ class Registration : AppCompatActivity() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     adapterView: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     i: Int,
                     l: Long
                 ) {
@@ -181,7 +181,7 @@ class Registration : AppCompatActivity() {
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {}
             }
         binding.spinnerGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
                 if (genderList.size > 0) {
 
                     genderValue = genderList[i].value.toString().toInt()
@@ -289,13 +289,22 @@ class Registration : AppCompatActivity() {
             }
         }.start()
     }
-
+companion object{
+   var coustmerNameCom=""
+   var phoneNumberCom=""
+   var phoneNumberWithCodeCom=""
+   var emailCom=""
+   var passwordCom=""
+   var bloodGroupCom=""
+   var genderValueCom=""
+   var fcmTokenCom=""
+}
 
     private fun apiCallRegistration() {
 
         val firstName = binding.edtFirstName.text.toString()
         val lastName = binding.edtLastName.text.toString()
-        val coustmerName = "$firstName $lastName"
+        var coustmerName = "$firstName $lastName"
         phoneNumberWithCode = binding.edtPhoneNumberWithCode.text.toString()
         val email = binding.edtEmail.text.toString()
         bloodGroup = binding.spinnerBloodGroup.selectedItem.toString()
@@ -309,55 +318,66 @@ class Registration : AppCompatActivity() {
         if (password != confirmPassword) {
             binding.edtConfirmPassword.error = "Password Miss Match"
             binding.edtConfirmPassword.requestFocus()
+        } else {
+
+            coustmerNameCom = coustmerName
+            phoneNumberCom = binding.edtPhoneNumberWithCode.text.toString()
+            phoneNumberWithCodeCom = phoneWithCodeNew1
+            emailCom = email
+            passwordCom = password
+            bloodGroupCom = bloodGroup
+            genderValueCom = genderValue.toString()
+            fcmTokenCom = fcmToken
+            startActivity(Intent(this@Registration,SignaturaPad::class.java))
+
         }
-        else {
-
-            progressDialog!!.show()
-
-            ApiClient.apiService.register(
-                coustmerName,
-                binding.edtPhoneNumberWithCode.text.toString(),
-                phoneWithCodeNew1,
-                email,
-                password,
-                bloodGroup,
-                genderValue,
-                fcmToken
-            )
-                .enqueue(object : Callback<RegistationResponse> {
-                    @SuppressLint("LogNotTimber")
-                    override fun onResponse(
-                        call: Call<RegistationResponse>, response: Response<RegistationResponse>
-                    ) {
-
-                        Log.e("Ala", "${response.body()!!.result}")
-                        Log.e("Ala", response.body()!!.message)
-                        Log.e("Ala", "${response.body()!!.status}")
-
-                        if (response.body()!!.status == 1) {
-                            myToast(this@Registration, response.body()!!.message)
-                            subscribed()
-                            progressDialog!!.dismiss()
-                            startActivity(Intent(context, SignIn::class.java))
-
-                        } else {
-                            myToast(this@Registration, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
-
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<RegistationResponse>, t: Throwable) {
-                        myToast(this@Registration, "Something went wrong")
-                        progressDialog!!.dismiss()
-
-                    }
-
-                })
-        }
-
     }
+       //     progressDialog!!.show()
+
+//            ApiClient.apiService.register(
+//                coustmerName,
+//                binding.edtPhoneNumberWithCode.text.toString(),
+//                phoneWithCodeNew1,
+//                email,
+//                password,
+//                bloodGroup,
+//                genderValue,
+//                fcmToken
+//            )
+//                .enqueue(object : Callback<RegistationResponse> {
+//                    @SuppressLint("LogNotTimber")
+//                    override fun onResponse(
+//                        call: Call<RegistationResponse>, response: Response<RegistationResponse>
+//                    ) {
+//
+//                        Log.e("Ala", "${response.body()!!.result}")
+//                        Log.e("Ala", response.body()!!.message)
+//                        Log.e("Ala", "${response.body()!!.status}")
+//
+//                        if (response.body()!!.status == 1) {
+//                            myToast(this@Registration, response.body()!!.message)
+//                            subscribed()
+//                            progressDialog!!.dismiss()
+//                            startActivity(Intent(context, SignIn::class.java))
+//
+//                        } else {
+//                            myToast(this@Registration, "${response.body()!!.message}")
+//                            progressDialog!!.dismiss()
+//
+//                        }
+//
+//                    }
+//
+//                    override fun onFailure(call: Call<RegistationResponse>, t: Throwable) {
+//                        myToast(this@Registration, "Something went wrong")
+//                        progressDialog!!.dismiss()
+//
+//                    }
+//
+//                })
+//        }
+
+  //  }
 
     private fun apiCallOTP(phoneWithCodeNew: String) {
 
@@ -386,6 +406,7 @@ class Registration : AppCompatActivity() {
                         myToast(this@Registration, "OTP Send Successfully")
                         binding.btnSendOTP.text="Resend OTP"
                         binding.btnSendOTP.isClickable = false
+                        binding.edtEnterOTP.requestFocus()
                         binding.btnSendOTP.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.shimmer_color));
                       //  binding.btnSendOTP.setBackgroundColor(Color.parseColor("#9F367A"))
                         timeCounter()

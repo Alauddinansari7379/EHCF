@@ -82,8 +82,7 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:src="@drawable/profile"
-                        app:civ_border_width="2dp"
-                        app:civ_border_color="#FF000000"/>
+                         app:civ_border_color="#FF000000"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,6 +99,22 @@
                             android:orientation="horizontal">
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tvDoctorNamePrescribed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="Name"
+                                android:textColor="@color/black"
+                                android:textStyle="bold">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvPatientNamePrescribed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -174,6 +189,8 @@
                         android:id="@+id/btnAddReportPrescribed"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
+                        android:layout_marginBottom="4dp"
+
                         android:layout_marginRight="10dp"
                         app:cardCornerRadius="25dp"
                         android:drawableTint="@color/white"
@@ -190,6 +207,7 @@
                         android:id="@+id/btnViewPrescriptionPrescribed"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginRight="10dp"
                         app:cardCornerRadius="25dp"
                         android:drawableTint="@color/white"

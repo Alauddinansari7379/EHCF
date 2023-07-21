@@ -304,13 +304,11 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     override fun onResume() {
         super.onResume()
         if (ratingPage) {
-            (activity as Appointments).refresh()
+          //  (activity as Appointments).refresh()
             val intent = Intent(context as Activity, Rating::class.java)
                 .putExtra("meetingId", meetingId)
             (context as Activity).startActivity(intent)
-
-            // startActivity(Intent(requireContext(),Rating::class.java))
-            ratingPage = false
+             ratingPage = false
 
         }
 
@@ -481,6 +479,8 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
                 ) {
                     if (response.code() == 500) {
                         myToast(requireActivity(), "Server error")
+                        progressDialog!!.dismiss()
+
                     }
                     else if (response.body()!!.result.isEmpty()) {
                         binding.tvNoDataFound.visibility = View.VISIBLE

@@ -53,7 +53,7 @@
                             android:id="@+id/imgProfileOnline"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/profile"
+                            android:src="@drawable/doctorimage"
                             app:civ_border_width="2dp"
                             app:civ_border_color="#FF000000"/>
                     </androidx.cardview.widget.CardView>
@@ -122,9 +122,10 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/locatiomfind">
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/main_color"
+                    android:background="@drawable/baseline_currency_rupee_24">
 
                 </androidx.appcompat.widget.AppCompatImageView>
 
@@ -162,6 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -254,6 +256,33 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/baseline_person_24"
+                    android:backgroundTint="@color/main_color">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvGenderOnline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Gender"
+                    android:textStyle="bold"
+                    android:textColor="@color/black">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -262,12 +291,13 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnTodayAvalible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:backgroundTint="#A3C8DF"
-                    android:text="Available From 10:30:30"
+                    android:text="Today's Available Slots"
                     android:textAllCaps="false"
                     android:textColor="@color/white">
 
@@ -278,6 +308,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:visibility="gone"
                     android:backgroundTint="@color/main_color"
                     android:text="Book Now"
                     android:textAllCaps="false"

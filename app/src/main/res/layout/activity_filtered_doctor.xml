@@ -45,6 +45,47 @@
         </androidx.appcompat.widget.AppCompatTextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/layoutOnline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAllDoctors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:layout_weight="1"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/main_color"
+            android:text="View All Doctors"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp">
+
+        </com.google.android.material.button.MaterialButton>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOnlineDoctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+              android:layout_weight="1"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+              android:backgroundTint="#26852D"
+            android:text="View Online Doctors"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp">
+
+        </com.google.android.material.button.MaterialButton>
+
+
+
+
+
+    </LinearLayout>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="match_parent"

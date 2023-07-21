@@ -70,16 +70,14 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/profile"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+         app:civ_border_color="#FF000000"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:layout_marginStart="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical"
+                     android:orientation="vertical"
                     >
 
                     <LinearLayout
@@ -115,8 +113,33 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Session Start Time-"
+                            android:text="Patient Name-"
+                            android:textColor="@color/black"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvPatientNameCom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text=""
                             android:textColor="#686868"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Session Start Time-"
+                            android:textColor="@color/black"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -141,7 +164,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Session End Time-"
-                            android:textColor="#686868"
+                            android:textColor="@color/black"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -166,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Total Amount-"
-                            android:textColor="#686868"
+                            android:textColor="@color/black"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -182,6 +205,32 @@
                         </androidx.appcompat.widget.AppCompatTextView>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Consultation Type-"
+                            android:textColor="@color/black"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvConsultationTypeCan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text=""
+                            android:textColor="#686868"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -207,6 +256,49 @@
                         </androidx.appcompat.widget.AppCompatTextView>
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnViewPrescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone"
+                            android:layout_marginBottom="10dp"
+
+                            android:background="@drawable/corner"
+                            android:backgroundTint="@color/main_color"
+                             android:drawableTint="@color/white"
+                            android:padding="5dp"
+                            android:text="View Prescription"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white">
+
+                        </androidx.appcompat.widget.AppCompatButton>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnSubmitReview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone"
+                            android:background="@drawable/corner"
+                            android:backgroundTint="@color/main_color"
+                             android:drawableTint="@color/white"
+                            android:padding="5dp"
+                            android:text="Submit Review"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white">
+
+                        </androidx.appcompat.widget.AppCompatButton>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 </LinearLayout>
 

@@ -124,36 +124,39 @@ private fun apiCallSearchPrescription(doctorName: String) {
             override fun onResponse(
                 call: Call<ModelPreList>, response: Response<ModelPreList>
             ) {
-                if (response.code() == 500) {
-                    myToast(requireActivity(), "Server Error")
-                    binding.shimmerPrePending.visibility = View.GONE
-                } else if (response.body()!!.status == 0) {
-                    binding.tvNoDataFound.visibility = View.VISIBLE
-                    binding.shimmerPrePending.visibility = View.GONE
-                    binding.edtSearch.text.clear()
-                    myToast(requireActivity(), "${response.body()!!.message}")
-                    progressDialog!!.dismiss()
+                try {
 
-                } else if (response.body()!!.result.isEmpty()) {
-                    binding.recyclerView.adapter =
-                        AdapterPrescriptionPending(requireContext(), response.body()!!)
-                    binding.recyclerView.adapter!!.notifyDataSetChanged()
-                    binding.tvNoDataFound.visibility = View.VISIBLE
-                    binding.shimmerPrePending.visibility = View.GONE
-                    binding.edtSearch.text.clear()
-                    myToast(requireActivity(), "No Prescription Found")
-                    progressDialog!!.dismiss()
 
-                } else {
-                    binding.recyclerView.adapter =
-                        AdapterPrescriptionPending(requireContext(), response.body()!!)
-                    binding.recyclerView.adapter!!.notifyDataSetChanged()
-                    binding.tvNoDataFound.visibility = View.GONE
-                    shimmerFrameLayout?.startShimmer()
-                    binding.recyclerView.visibility = View.VISIBLE
-                    binding.shimmerPrePending.visibility = View.GONE
-                    binding.edtSearch.text.clear()
-                    progressDialog!!.dismiss()
+                    if (response.code() == 500) {
+                        activity?.let { myToast(it, "Server Error") }
+                        binding.shimmerPrePending.visibility = View.GONE
+                    } else if (response.body()!!.status == 0) {
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmerPrePending.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        activity?.let { myToast(it, "${response.body()!!.message}") }
+                        progressDialog!!.dismiss()
+
+                    } else if (response.body()!!.result.isEmpty()) {
+                        binding.recyclerView.adapter =
+                            activity?.let { AdapterPrescriptionPending(it, response.body()!!) }
+                        binding.recyclerView.adapter!!.notifyDataSetChanged()
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        binding.shimmerPrePending.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        activity?.let { myToast(it, "No Prescription Found") }
+                        progressDialog!!.dismiss()
+
+                    } else {
+                        binding.recyclerView.adapter =
+                            activity?.let { AdapterPrescriptionPending(it, response.body()!!) }
+                        binding.recyclerView.adapter!!.notifyDataSetChanged()
+                        binding.tvNoDataFound.visibility = View.GONE
+                        shimmerFrameLayout?.startShimmer()
+                        binding.recyclerView.visibility = View.VISIBLE
+                        binding.shimmerPrePending.visibility = View.GONE
+                        binding.edtSearch.text.clear()
+                        progressDialog!!.dismiss()
 //                        binding.rvManageSlot.apply {
 //                            binding.tvNoDataFound.visibility = View.GONE
 //                            shimmerFrameLayout?.startShimmer()
@@ -164,11 +167,17 @@ private fun apiCallSearchPrescription(doctorName: String) {
 //                            progressDialog!!.dismiss()
 //
 //                        }
-                }
+                    }
+                }catch (e:Exception){
+                    activity?.let { myToast(it, "Something went wrong") }
+                    binding.shimmerPrePending.visibility = View.GONE
+                    progressDialog!!.dismiss()
+                    e.printStackTrace()
+            }
             }
 
             override fun onFailure(call: Call<ModelPreList>, t: Throwable) {
-                myToast(requireActivity(), "Something went wrong")
+                activity?.let { myToast(it, "Something went wrong") }
                 binding.shimmerPrePending.visibility = View.GONE
                 progressDialog!!.dismiss()
 
@@ -194,39 +203,58 @@ private fun apiCallSearchPrescription(doctorName: String) {
                     //   Call<List<model>>
                     call: Call<ModelPreList>, response: Response<ModelPreList>
                 ) {
-                    if (response.body()!!.result.isEmpty()) {
-                        Log.d("okhghghg", "" + response.body());
-                        binding.shimmerPrePending.visibility = View.GONE
-                        myToast(requireActivity(), "No Prescription Found")
-                        progressDialog!!.dismiss()
-
-                    } else  {
-                        binding.recyclerView.apply {
-                            binding.recyclerView.visibility = View.VISIBLE
-                            shimmerFrameLayout?.startShimmer()
-                            binding.recyclerView.visibility = View.VISIBLE
+                    try {
+                        if (response.code() == 500) {
                             binding.shimmerPrePending.visibility = View.GONE
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter =
-                                activity?.let { AdapterPrescriptionPending(it, response.body()!!) }
+                            activity?.let { myToast(it, "Server Error") }
+                        } else if (response.body()!!.result.isEmpty()) {
+                            Log.d("okhghghg", "" + response.body());
+                            binding.shimmerPrePending.visibility = View.GONE
+                            activity?.let { myToast(it, "No Prescription Found") }
+                            binding.recyclerView.apply {
+                                binding.recyclerView.visibility = View.VISIBLE
+                                shimmerFrameLayout?.startShimmer()
+                                binding.recyclerView.visibility = View.VISIBLE
+                                binding.shimmerPrePending.visibility = View.GONE
+                                binding.tvNoDataFound.visibility = View.GONE
+                                adapter =
+                                    activity?.let {
+                                        AdapterPrescriptionPending(
+                                            it,
+                                            response.body()!!
+                                        )
+                                    }
+                                progressDialog!!.dismiss()
+                            }
                             progressDialog!!.dismiss()
+
+                        } else {
+                            binding.recyclerView.apply {
+                                binding.recyclerView.visibility = View.VISIBLE
+                                shimmerFrameLayout?.startShimmer()
+                                binding.recyclerView.visibility = View.VISIBLE
+                                binding.shimmerPrePending.visibility = View.GONE
+                                binding.tvNoDataFound.visibility = View.GONE
+                                adapter =
+                                    activity?.let {
+                                        AdapterPrescriptionPending(
+                                            it,
+                                            response.body()!!
+                                        )
+                                    }
+                                progressDialog!!.dismiss()
+                            }
+
                         }
 
+                    }catch (e:Exception){
+                        e.printStackTrace()
                     }
-                    if (response.code() == 500) {
-                        binding.shimmerPrePending.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Server Error", Toast.LENGTH_SHORT).show()
-                    } else {
-
-
-//
-                    }
-
                 }
 
                 override fun onFailure(call: Call<ModelPreList>, t: Throwable) {
                     // myToast(requireActivity(), "Something went wrong")
-                    Toast.makeText(requireContext(), "${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "${t.message}", Toast.LENGTH_SHORT).show()
                     // myToast(requireActivity(), "${t.message}")
                     progressDialog!!.dismiss()
 
@@ -254,7 +282,7 @@ private fun apiCallSearchPrescription(doctorName: String) {
                     if (response.body()!!.result.isEmpty()) {
                         Log.d("okhghghg", "" + response.body());
                         binding.shimmerPrePending.visibility = View.GONE
-                        myToast(requireActivity(), "No Prescription Found")
+                        activity?.let { myToast(it, "No Prescription Found") }
                         progressDialog!!.dismiss()
 
                     } else  {
@@ -272,7 +300,7 @@ private fun apiCallSearchPrescription(doctorName: String) {
                     }
                     if (response.code() == 500) {
                         binding.shimmerPrePending.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Server Error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show()
                     } else {
 
 
@@ -283,7 +311,7 @@ private fun apiCallSearchPrescription(doctorName: String) {
 
                 override fun onFailure(call: Call<ModelPreList>, t: Throwable) {
                     // myToast(requireActivity(), "Something went wrong")
-                    Toast.makeText(requireContext(), "${t.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "${t.message}", Toast.LENGTH_SHORT).show()
                     // myToast(requireActivity(), "${t.message}")
                     progressDialog!!.dismiss()
 

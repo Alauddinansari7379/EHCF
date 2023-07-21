@@ -72,16 +72,16 @@ class Dashboard : AppCompatActivity() {
         }
 
         binding.btnSignIn.setOnClickListener {
-            if (binding.edtLocation.text!!.isEmpty()) {
-                binding.edtLocation.error = "Enter Location"
-                binding.edtLocation.requestFocus()
-                return@setOnClickListener
-            }
-            if (binding.spinnerSpecialistTest.selectedItem.toString() == "Search By Specialization") {
-                myToast(this@Dashboard, "Please Select Specialization!")
-                binding.spinnerSpecialistTest.requestFocus()
-                return@setOnClickListener
-            }
+//            if (binding.edtLocation.text!!.isEmpty()) {
+//                binding.edtLocation.error = "Enter Location"
+//                binding.edtLocation.requestFocus()
+//                return@setOnClickListener
+//            }
+//            if (binding.spinnerSpecialistTest.selectedItem.toString() == "Search By Specialization") {
+//                myToast(this@Dashboard, "Please Select Specialization!")
+//                binding.spinnerSpecialistTest.requestFocus()
+//                return@setOnClickListener
+//            }
 
             apiCallSearch()
         }

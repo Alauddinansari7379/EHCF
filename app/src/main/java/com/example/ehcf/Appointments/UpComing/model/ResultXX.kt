@@ -10,6 +10,8 @@ data class ResultXX(
     val doctor_id: String,
     val doctor_name: String,
     val email: String,
+    val member_name: String,
+    val customer_name: String,
     val id: String,
     val patient_id: String,
     val payment_mode: String,

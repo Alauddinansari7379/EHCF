@@ -12,17 +12,28 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.CreateSlot.Adapter.AdapterShuduleTimingNew
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
+import com.example.ehcf.FamailyMember.Model.ModelFamilyList
+import com.example.ehcf.FamailyMember.Model.ModelFamilyListJava
+import com.example.ehcf.Helper.Util
+import com.example.ehcf.Helper.changeDateFormat5
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.PaymentMode
+import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityShuduleTimingBinding
 import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.ehcf_doctor.Helper.DatePickerDialogWithMaxMinRange
 import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,33 +44,64 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
+class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog{
     private val context: Context = this@MyAvailableSlot
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
     private var selectedate = ""
     private var dayCode = ""
+    private var calendar: Calendar? = null
+    private var familyList = ModelFamilyListJava()
+
     var day = ""
     var startTime = ""
     var doctorId = ""
+    var online = ""
 
     // private var arrayList = ModelSlotResNew();
     var dialog: Dialog? = null
     private lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivityShuduleTimingBinding
+    private var maxDate: String? = null
+    private var minDate: String? = null
+    private var currentDate: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShuduleTimingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
+        calendar = Calendar.getInstance()
+
         binding.imgBack.setOnClickListener {
             onBackPressed()
             //startActivity(Intent(this, MainActivity::class.java))
         }
+
+
+       // apiCallFamilyList()
         selectedate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val selectedDate1 = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
-        sessionManager.selectedDate=selectedDate1
 
+        sessionManager.selectedDate = selectedDate1
+        apiCallFamilyListNew()
+
+        maxDate= PrescriptionDetails.Maxdate
+
+        currentDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+
+        if (PrescriptionDetails.FollowUP=="1"){
+            binding.cardSelectDateFollowUp.visibility=View.VISIBLE
+            binding.cardSelectDate.visibility=View.GONE
+            binding.layoutFamilyMemeber.visibility=View.GONE
+        }else{
+            binding.layoutFamilyMemeber.visibility=View.VISIBLE
+        }
+
+        binding.cardSelectDateFollowUp.setOnClickListener {
+            openDatePickerWithMaxAndMindate(minDate!!,maxDate!!)
+
+        }
+        minDate = currentDate
         dayCode = SimpleDateFormat("E", Locale.getDefault()).format(Date())
         when (dayCode) {
             "Mon" -> {
@@ -91,11 +133,20 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
 
 
         doctorId = intent.getStringExtra("doctorId").toString()
+        online = intent.getStringExtra("Online").toString()
+
+        if (online == "1") {
+            apiCallOnlineSlot()
+            binding.cardSelectDate.visibility = View.GONE
+            binding.appCompatTextView2.text = "Today's Available Slots"
+        } else {
+            apiCall(selectedate)
+
+        }
+
         Log.e("DoctorId", doctorId)
         Log.e("startTimeNew", startTime)
 
-
-        apiCall()
 
 //        Handler().postDelayed({
 //        apiCall()
@@ -108,18 +159,19 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
         //  tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
 
 
-        binding.btnAppointmentTime1.setOnClickListener {
-            dialog = Dialog(this)
-            val btnOkDialog = view.findViewById<Button>(R.id.btnBookNowDilog)
-            if (view.parent != null) {
-                (view.parent as ViewGroup).removeView(view) // <- fix
-            }
-            dialog!!.setContentView(view)
-            // dialog?.setCancelable(false)
-            // dialog?.setContentView(view)
+//        binding.btnAppointmentTime1.setOnClickListener {
+//            dialog = Dialog(this)
+//            val btnOkDialog = view.findViewById<Button>(R.id.btnBookNowDilog)
+//            if (view.parent != null) {
+//                (view.parent as ViewGroup).removeView(view) // <- fix
+//            }
+//            dialog!!.setContentView(view)
+//            // dialog?.setCancelable(false)
+//            // dialog?.setContentView(view)
+//
+//            dialog?.show()
+//        }
 
-            dialog?.show()
-        }
         btnBookNow.setOnClickListener {
             dialog?.dismiss()
             //  startActivity(Intent(this, PaymentMode::class.java))
@@ -140,8 +192,9 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                 DateFormat.getDateInstance().format(newDate.time)
                 // val Date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(newDate.time)
                 selectedate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(newDate.time)
+                binding.tvDate.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(newDate.time)
                 val selectedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(newDate.time)
-                sessionManager.selectedDate=selectedDate
+                sessionManager.selectedDate = selectedDate
                 dayCode = SimpleDateFormat("E", Locale.getDefault()).format(newDate.time)
 
                 Log.e(ContentValues.TAG, "dayCode: >>>>>>$dayCode")
@@ -169,8 +222,8 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                     }
                 }
 
-                binding.tvDate.text = selectedate
-                apiCall()
+              //  binding.tvDate.text = selectedate
+                apiCall(selectedate)
                 Log.e(ContentValues.TAG, "selectedate:>>$selectedate")
             },
             newCalendar1[Calendar.YEAR],
@@ -183,7 +236,8 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
             datePicker.show()
         }
     }
-//    override fun onBackPressed() {
+
+    //    override fun onBackPressed() {
 //        super.onBackPressed()
 //        sessionManager.bookingType = null
 //
@@ -193,7 +247,206 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
 //        super.onDestroy()
 //        sessionManager.bookingType = null
 //
-//    }
+//    }\
+    private var datePickerListener =
+        DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            calendar?.let {
+                it[Calendar.YEAR] = year
+                it[Calendar.MONTH] = monthOfYear
+                it[Calendar.DAY_OF_MONTH] = dayOfMonth
+            }
+            binding.tvDate!!.text = Util.getDate(calendar!!.time)
+            dayCode = SimpleDateFormat("E", Locale.getDefault()).format(calendar!!.time)
+
+            when (dayCode) {
+                "Mon" -> {
+                    dayCode = "1"
+                }
+                "Tue" -> {
+                    dayCode = "2"
+                }
+                "Wed" -> {
+                    dayCode = "3"
+                }
+                "Thu" -> {
+                    dayCode = "4"
+                }
+                "Fri" -> {
+                    dayCode = "5"
+                }
+                "Sat" -> {
+                    dayCode = "6"
+                }
+                "Sun" -> {
+                    dayCode = "7"
+                }
+            }
+            val selectedDatenew =changeDateFormat5(binding.tvDate!!.text.toString())
+            apiCall(selectedDatenew)
+        }
+
+    private fun openDatePickerWithMaxAndMindate(minDate: String, maxDate: String) {
+
+        try {
+            val minYear: Int
+            val minMonth: Int
+            val minDay: Int
+            val maxYear: Int
+            val maxMonth: Int
+            val maxDay: Int
+//            var emptyInvalidDate = true
+//            emptyInvalidDate = !(! binding.tvSelectMaxDatePicker!!.text.toString().equals("", ignoreCase = true) || binding.tvSelectMinDatePicker!!.text.toString() != null
+//                        && ! binding.tvSelectMinDatePicker!!.text.toString().equals("", ignoreCase = true))
+//            emptyInvalidDate = binding.tvSelectMaxDatePicker!!.text.toString().equals(getString(R.string.lbl_select_date), ignoreCase = true) ||
+//                    binding.tvSelectMinDatePicker!!.text.toString().equals(getString(R.string.lbl_select_date), ignoreCase = true)
+//            if (emptyInvalidDate) {
+//                val alert = AlertDialog.Builder(context!!).apply {
+//                    setTitle(getString(R.string.app_name))
+//                    setMessage(getString(R.string.tv_invalidDateMessage))
+//                    setPositiveButton("Ok") { dialog, which -> }
+//                }.show()
+
+//            } else {
+            minDay = minDate.split("-").toTypedArray()[0].toInt()
+            minMonth = minDate.split("-").toTypedArray()[1].toInt() - 1
+            minYear = minDate.split("-").toTypedArray()[2].toInt()
+            maxDay = maxDate.split("-").toTypedArray()[0].toInt()
+            maxMonth = maxDate.split("-").toTypedArray()[1].toInt() - 1
+            maxYear = maxDate.split("-").toTypedArray()[2].toInt()
+
+            val maxDateCalendar = Calendar.getInstance().also {
+                it[Calendar.YEAR] = maxYear
+                it[Calendar.MONTH] = maxMonth
+                it[Calendar.DAY_OF_MONTH] = maxDay
+            }
+
+            val minDateCalendar = Calendar.getInstance().also {
+                it[Calendar.YEAR] = minYear
+                it[Calendar.MONTH] = minMonth
+                it[Calendar.DAY_OF_MONTH] = minDay
+            }
+
+            if (binding.tvDate!!.text.toString().equals(getString(R.string.lbl_select_date), ignoreCase = true)) {
+                calendar = Calendar.getInstance()
+                Log.e("dfd1",binding.tvDate!!.text.toString())
+
+            } else {
+                val selectedDate = binding.tvDate!!.text.toString()
+                Log.e("dfd2",binding.tvDate!!.text.toString())
+
+                calendar?.let {
+                    it[Calendar.DAY_OF_MONTH] = selectedDate.split("-").toTypedArray()[0].toInt()
+                    it[Calendar.MONTH] = selectedDate.split("-").toTypedArray()[1].toInt() - 1
+                    it[Calendar.YEAR] = selectedDate.split("-").toTypedArray()[2].toInt()
+
+                }
+
+            }
+
+
+
+            if (minDateCalendar.after(calendar)) {
+                DatePickerDialogWithMaxMinRange(
+                    context,
+                    datePickerListener,
+                    minDateCalendar,
+                    maxDateCalendar,
+                    minDateCalendar
+                ).show()
+
+            } else if (maxDateCalendar.before(calendar)) {
+                DatePickerDialogWithMaxMinRange(
+                    context,
+                    datePickerListener,
+                    minDateCalendar,
+                    maxDateCalendar,
+                    maxDateCalendar
+                ).show()
+            } else {
+                DatePickerDialogWithMaxMinRange(
+                    context,
+                    datePickerListener,
+                    minDateCalendar,
+                    maxDateCalendar,
+                    calendar!!
+                ).show()
+            }
+
+        } catch (e: Throwable) {
+            // Have suppressed the exception
+            e.printStackTrace()
+        }
+    }
+
+    private fun apiCallFamilyList() {
+        progressDialog = ProgressDialog(this@MyAvailableSlot)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+
+        ApiClient.apiService.getFamilyListJava(sessionManager.id.toString())
+            .enqueue(object : Callback<ModelFamilyListJava> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelFamilyListJava>, response: Response<ModelFamilyListJava>
+                ) {
+
+
+                    familyList = response.body()!!;
+                    if (familyList != null) {
+
+                        //spinner code start
+                        val items = arrayOfNulls<String>(familyList.result!!.size)
+
+                        for (i in familyList.result!!.indices) {
+                            items[i] = familyList.result!![i].firstName
+                        }
+                        val adapter: ArrayAdapter<String?> =
+                            ArrayAdapter(
+                                this@MyAvailableSlot,
+                                android.R.layout.simple_list_item_1,
+                                items
+                            )
+                        binding.spinnerFamily.adapter = adapter
+                        //   binding.spinnerFamily.setSelection(items.indexOf(relationId));
+                        //   Log.e("relaytion",relationId)
+
+
+                        progressDialog!!.dismiss()
+
+
+                        binding.spinnerFamily.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    adapterView: AdapterView<*>?,
+                                    view: View,
+                                    i: Int,
+                                    l: Long
+                                ) {
+                                    val id = familyList.result!![i].id
+                                    val relationId = id.toString()
+                                    //   Toast.makeText(this@RegirstrationTest, "" + id, Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+                            }
+                    }
+
+
+                }
+
+                override fun onFailure(call: Call<ModelFamilyListJava>, t: Throwable) {
+                    myToast(this@MyAvailableSlot, "Something went wrong")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+    }
+
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->
@@ -208,7 +461,136 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
         }
     }
 
-    private fun apiCall() {
+    private fun apiCall(selectedate: String) {
+
+        progressDialog = ProgressDialog(this@MyAvailableSlot)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+        Log.e(ContentValues.TAG, "dayCode:>>$dayCode")
+        Log.e(ContentValues.TAG, "selectedate:>>${this.selectedate}")
+
+
+        ApiClient.apiService.getTimeSlot(doctorId, dayCode, selectedate, sessionManager.bookingType)
+            .enqueue(object : Callback<ModelSlotResNew> {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelSlotResNew>,
+                    response: Response<ModelSlotResNew>
+                ) {
+                    // binding.rvSlotTiming.invalidate();
+                    if (response.body()!!.status == 0) {
+                        myToast(this@MyAvailableSlot, "${response.body()!!.message}")
+                        progressDialog!!.dismiss()
+
+                    } else if (response.code() == 500) {
+                        myToast(this@MyAvailableSlot, "Server Error")
+                    } else if (response.body()!!.result.isEmpty()) {
+                        binding.rvSlotTiming.apply {
+                            adapter = AdapterShuduleTimingNew(
+                                this@MyAvailableSlot,
+                                response.body()!!,
+                                this@MyAvailableSlot
+                            )
+
+                            progressDialog!!.dismiss()
+                            myToast(this@MyAvailableSlot, "No Slot Found")
+                            binding.layoutFamilyMemeber.visibility=View.GONE
+
+                            progressDialog!!.dismiss()
+                        }
+                    } else {
+                        binding.rvSlotTiming.apply {
+                            //   adapter!!.notifyDataSetChanged();
+                            //myToast(this@ShuduleTiming, response.body()!!.message)
+                            adapter =
+                                AdapterShuduleTimingNew(
+                                    this@MyAvailableSlot,
+                                    response.body()!!,
+                                    this@MyAvailableSlot
+                                )
+                            if (PrescriptionDetails.FollowUP=="1"){
+                                binding.layoutFamilyMemeber.visibility=View.GONE
+
+                            } else{
+                                binding.layoutFamilyMemeber.visibility=View.VISIBLE
+
+                            }
+
+                            progressDialog!!.dismiss()
+                        }
+
+                    }
+                }
+
+
+                override fun onFailure(call: Call<ModelSlotResNew>, t: Throwable) {
+                    progressDialog!!.dismiss()
+                    myToast(this@MyAvailableSlot, "Something went wrong")
+                }
+
+
+            })
+    }
+    private fun apiCallFamilyListNew() {
+
+        progressDialog = ProgressDialog(this@MyAvailableSlot)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+       // progressDialog!!.show()
+
+        Log.e(ContentValues.TAG, "dayCode:>>$dayCode")
+        Log.e(ContentValues.TAG, "selectedate:>>$selectedate")
+
+
+        ApiClient.apiService.getFamilyList(sessionManager.id.toString())
+            .enqueue(object : Callback<ModelFamilyList> {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelFamilyList>,
+                    response: Response<ModelFamilyList>
+                ) {
+                    // binding.rvSlotTiming.invalidate();
+                    if (response.body()!!.status == 0) {
+                        myToast(this@MyAvailableSlot, "${response.body()!!.message}")
+                        progressDialog!!.dismiss()
+                    } else if (response.code() == 500) {
+                        myToast(this@MyAvailableSlot, "Server Error")
+                    } else if (response.body()!!.result.isEmpty()) {
+                        binding.rvSlotTimingFamily.apply {
+                            adapter = AdapterFamilyListView(this@MyAvailableSlot, response.body()!!,)
+                            progressDialog!!.dismiss()
+                         }
+                    } else {
+                        binding.rvSlotTimingFamily.apply {
+                            //   adapter!!.notifyDataSetChanged();
+                            //myToast(this@ShuduleTiming, response.body()!!.message)
+                            adapter = AdapterFamilyListView(this@MyAvailableSlot, response.body()!!)
+                            binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
+                        //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
+
+                            progressDialog!!.dismiss()
+                        }
+
+                    }
+                }
+
+
+                override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
+                    progressDialog!!.dismiss()
+                    myToast(this@MyAvailableSlot, "Something went wrong")
+                }
+
+
+            })
+    }
+
+    private fun apiCallOnlineSlot() {
 
         progressDialog = ProgressDialog(this@MyAvailableSlot)
         progressDialog!!.setMessage("Loading..")
@@ -221,7 +603,7 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
         Log.e(ContentValues.TAG, "selectedate:>>$selectedate")
 
 
-        ApiClient.apiService.getTimeSlot(doctorId, dayCode, selectedate,sessionManager.bookingType)
+        ApiClient.apiService.getOnlineSlot(doctorId, dayCode)
             .enqueue(object : Callback<ModelSlotResNew> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
@@ -229,17 +611,19 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                     response: Response<ModelSlotResNew>
                 ) {
                     // binding.rvSlotTiming.invalidate();
-                    if (response.body()!!.status==0){
+                    if (response.body()!!.status == 0) {
                         myToast(this@MyAvailableSlot, "${response.body()!!.message}")
                         progressDialog!!.dismiss()
 
-                    }
-                    else if (response.code()==500){
+                    } else if (response.code() == 500) {
                         myToast(this@MyAvailableSlot, "Server Error")
-                    }
-                   else if (response.body()!!.result.isEmpty()) {
+                    } else if (response.body()!!.result.isEmpty()) {
                         binding.rvSlotTiming.apply {
-                            adapter = AdapterShuduleTimingNew(this@MyAvailableSlot, response.body()!!, this@MyAvailableSlot)
+                            adapter = AdapterShuduleTimingNew(
+                                this@MyAvailableSlot,
+                                response.body()!!,
+                                this@MyAvailableSlot
+                            )
                             progressDialog!!.dismiss()
                             myToast(this@MyAvailableSlot, "No Slot Found")
                             progressDialog!!.dismiss()
@@ -249,7 +633,11 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
                             //   adapter!!.notifyDataSetChanged();
                             //myToast(this@ShuduleTiming, response.body()!!.message)
                             adapter =
-                                AdapterShuduleTimingNew(this@MyAvailableSlot, response.body()!!, this@MyAvailableSlot)
+                                AdapterShuduleTimingNew(
+                                    this@MyAvailableSlot,
+                                    response.body()!!,
+                                    this@MyAvailableSlot
+                                )
 
                             progressDialog!!.dismiss()
                         }
@@ -268,6 +656,8 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
     }
 
 
+
+
     @SuppressLint("MissingInflatedId")
     override fun showPopup(slotTimeData: String, slotTimeValue: String, slotId: String) {
         val view = layoutInflater.inflate(R.layout.book_dialog, null)
@@ -276,7 +666,13 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog {
         val slotTime = view.findViewById<TextView>(R.id.tvSlotTime)
         val slotDate = view.findViewById<TextView>(R.id.tvSlotDate)
         val price = view.findViewById<TextView>(R.id.tvPrice)
-        price.text=sessionManager.pricing
+        if(PrescriptionDetails.FollowUP=="1"){
+            price.text="Free"
+            sessionManager.pricing="Free"
+        } else{
+            price.text = sessionManager.pricing
+
+        }
         startTime = slotTimeValue
         Log.e("startTimeNew", startTime)
 

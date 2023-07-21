@@ -21,16 +21,15 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="80dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_margin="15dp"
-                android:backgroundTint="#E7EDF5"
-                app:cardCornerRadius="10dp">
+                 app:cardCornerRadius="10dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/cardSpecia"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_gravity="center"
                     >
 

@@ -1,4 +1,4 @@
-package com.example.ehcf.Fragment
+package com.example.ehcf.report.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -18,11 +18,11 @@ import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Fragment.test.*
 import com.example.ehcf.Helper.myToast
-import com.example.ehcf.report.activity.ReportMain
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentViewReportBinding
 import com.example.ehcf.report.adapter.AdapterAppReport
+import com.example.ehcf.report.model.ModelGetTest
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
 import com.google.android.material.snackbar.Snackbar
@@ -62,8 +62,8 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 //        }
 
          imageView= view.findViewById<ImageView>(R.id.imageViewNew)
-
-        apiCallGetPrePending()
+        apiCallGetTest()
+      //  apiCallGetPrePending()
 
 //        binding.cardSubmit.setOnClickListener {
 //            opeinImageChooser()
@@ -72,7 +72,49 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 
     }
 
-    private fun apiCallGetPrePending() {
+//    private fun apiCallGetPrePending() {
+//        progressDialog = ProgressDialog(requireContext())
+//        progressDialog!!.setMessage("Loading..")
+//        progressDialog!!.setTitle("Please Wait")
+//        progressDialog!!.isIndeterminate = false
+//        progressDialog!!.setCancelable(true)
+//        progressDialog!!.show()
+//
+//        ApiClient.apiService.prescribedList(sessionManager.id.toString())
+//            .enqueue(object : Callback<ModelPrescribed> {
+//                @SuppressLint("LogNotTimber")
+//                override fun onResponse(
+//                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
+//                ) {
+//                    if (response.body()!!.result.isEmpty()) {
+//                        binding.tvNoDataFound.visibility = View.VISIBLE
+//                        // myToast(requireActivity(),"No Data Found")
+//                        progressDialog!!.dismiss()
+//
+//                    } else {
+//                        binding.recyclerView.apply {
+//                            binding.tvNoDataFound.visibility = View.GONE
+//                            adapter = activity?.let {
+//                                AdapterAppReport(
+//                                    it, response.body()!!, this@AddReport
+//                                )
+//                            }
+//                            progressDialog!!.dismiss()
+//
+//                        }
+//                    }
+//
+//                }
+//
+//                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
+//                    myToast(requireActivity(), "Something went wrong")
+//                    progressDialog!!.dismiss()
+//
+//                }
+//
+//            })
+//    }
+    private fun apiCallGetTest() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
@@ -80,11 +122,11 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         progressDialog!!.setCancelable(true)
         progressDialog!!.show()
 
-        ApiClient.apiService.prescribedList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelPrescribed> {
+        ApiClient.apiService.getTest(ReportMain.prescriptionId)
+            .enqueue(object : Callback<ModelGetTest> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
-                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
+                    call: Call<ModelGetTest>, response: Response<ModelGetTest>
                 ) {
                     if (response.body()!!.result.isEmpty()) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
@@ -106,7 +148,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 
                 }
 
-                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
+                override fun onFailure(call: Call<ModelGetTest>, t: Throwable) {
                     myToast(requireActivity(), "Something went wrong")
                     progressDialog!!.dismiss()
 
@@ -115,47 +157,6 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
             })
     }
 
-    private fun apiCallGetPrePending1() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-
-        ApiClient.apiService.prescribedList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelPrescribed> {
-                @SuppressLint("LogNotTimber")
-                override fun onResponse(
-                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
-                ) {
-                    if (response.body()!!.result.isEmpty()) {
-                        binding.tvNoDataFound.visibility = View.VISIBLE
-                        // myToast(requireActivity(),"No Data Found")
-                        progressDialog!!.dismiss()
-
-                    } else {
-                        binding.recyclerView.apply {
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter = activity?.let {
-                                AdapterAppReport(
-                                    it, response.body()!!, this@AddReport
-                                )
-                            }
-                            progressDialog!!.dismiss()
-
-                        }
-                    }
-
-                }
-
-                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
-
-                }
-
-            })
-    }
 
     private fun uploadImage(id: String) {
         if (selectedImageUri == null) {
@@ -186,9 +187,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         val body = UploadRequestBody(file, "image", this)
 
 
-        ApiClient.apiService.uploadImage(
-            id, MultipartBody.Part.createFormData("image", file.name, body),
-            "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        ApiClient.apiService.UploadPatientTestReport(id, MultipartBody.Part.createFormData("image", file.name, body), "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         ).enqueue(object : Callback<UploadResponse> {
             override fun onResponse(
                 call: Call<UploadResponse>, response: Response<UploadResponse>
@@ -227,7 +226,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         })
     }
 
-    private fun opeinImageChooser() {
+    private fun opeinImagePDF() {
 //        Intent(Intent.ACTION_PICK).also {
 //            it.type = "image/*"
 //            (MediaStore.ACTION_IMAGE_CAPTURE)
@@ -241,6 +240,22 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
             startActivityForResult(pdfIntent, REQUEST_CODE_IMAGE)
 
      //   }
+    }
+
+    private fun opeinImageChooser() {
+        Intent(Intent.ACTION_PICK).also {
+            it.type = "image/*"
+            (MediaStore.ACTION_IMAGE_CAPTURE)
+            val mimeTypes = arrayOf("image/jpeg", "image/png")
+            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            startActivityForResult(it, REQUEST_CODE_IMAGE)
+
+//            val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+//            pdfIntent.type = "application/pdf"
+//            pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+//            startActivityForResult(pdfIntent, REQUEST_CODE_IMAGE)
+
+     }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -288,6 +303,9 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 
     }
 
+    override fun selectPDF() {
+        opeinImagePDF()
+    }
     override fun selectImage() {
         opeinImageChooser()
     }

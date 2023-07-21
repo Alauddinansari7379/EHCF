@@ -13,8 +13,11 @@ import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentViewReport2Binding
 import com.example.ehcf.databinding.FragmentViewReportBinding
+import com.example.ehcf.report.activity.AddReport
+import com.example.ehcf.report.activity.ReportMain
 import com.example.ehcf.report.adapter.AdapterAppReport
 import com.example.ehcf.report.adapter.AdapterViewReport
+import com.example.ehcf.report.model.ModelGetTest
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
 import retrofit2.Call
@@ -39,10 +42,10 @@ class ViewReportFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentViewReport2Binding.bind(view)
         sessionManager=SessionManager(requireContext())
-        apiCallGetPrePending()
+       // apiCallGetPrePending()
+        apiCallGetTest()
     }
-
-    private fun apiCallGetPrePending() {
+    private fun apiCallGetTest() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
@@ -50,11 +53,11 @@ class ViewReportFragment : Fragment() {
         progressDialog!!.setCancelable(true)
         progressDialog!!.show()
 
-        ApiClient.apiService.prescribedList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelPrescribed> {
+        ApiClient.apiService.getTest(ReportMain.prescriptionId)
+            .enqueue(object : Callback<ModelGetTest> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
-                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
+                    call: Call<ModelGetTest>, response: Response<ModelGetTest>
                 ) {
                     if (response.body()!!.result.isEmpty()) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
@@ -64,8 +67,11 @@ class ViewReportFragment : Fragment() {
                     } else {
                         binding.recyclerView.apply {
                             binding.tvNoDataFound.visibility = View.GONE
-                            adapter = AdapterViewReport(requireContext(), response.body()!!
-                            )
+                            adapter = activity?.let {
+                                AdapterViewReport(
+                                    it, response.body()!!
+                                )
+                            }
                             progressDialog!!.dismiss()
 
                         }
@@ -73,7 +79,7 @@ class ViewReportFragment : Fragment() {
 
                 }
 
-                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
+                override fun onFailure(call: Call<ModelGetTest>, t: Throwable) {
                     myToast(requireActivity(), "Something went wrong")
                     progressDialog!!.dismiss()
 
@@ -81,6 +87,7 @@ class ViewReportFragment : Fragment() {
 
             })
     }
+
 
 
 }

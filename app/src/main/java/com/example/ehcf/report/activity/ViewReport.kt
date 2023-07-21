@@ -22,7 +22,7 @@ import java.io.InputStream
 import java.net.URL
 
 class ViewReport : AppCompatActivity() {
-    private lateinit var binding:ActivityViewReportBinding
+    private lateinit var binding: ActivityViewReportBinding
     private val context: Context = this@ViewReport
     var setView = 1
     var imageView: ImageView? = null
@@ -32,12 +32,12 @@ class ViewReport : AppCompatActivity() {
     var fetchbtn: Button? = null
     var mainHandler = Handler()
     var progressDialog: ProgressDialog? = null
-    var reportData=""
+    var reportData = ""
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityViewReportBinding.inflate(layoutInflater)
+        binding = ActivityViewReportBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.imgBack.setOnClickListener {
@@ -52,26 +52,28 @@ class ViewReport : AppCompatActivity() {
 
 //        String url = etURL.getText().toString();
 
-        reportData=intent.getStringExtra("report").toString()
-        Log.e("reportData",reportData)
-        val baseUrl="https://ehcf.thedemostore.in/uploads/"
+        reportData = intent.getStringExtra("report").toString()
+        Log.e("reportData", reportData)
+        val baseUrl = "https://ehcf.thedemostore.in/uploads/"
 
-        if (reportData=="null"){
-            SweetAlertDialog(this@ViewReport, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("No Report Found")
-                .setConfirmText("Ok")
-                //.setCancelText("Ok")
-                .showCancelButton(true)
-                .setConfirmClickListener { sDialog ->
-                    sDialog.cancel()
-                    onBackPressed()
-                }
-                .setCancelClickListener { sDialog ->
-                    sDialog.cancel()
-                }
-                .show()
+        if (reportData.contains("png") || reportData.contains("jpeg") || reportData.contains("jpg")) {
+            val url="https://ehcf.thedemostore.in/uploads/$reportData"
+             FetchImage(url).start()
+//            SweetAlertDialog(this@ViewReport, SweetAlertDialog.WARNING_TYPE)
+//                .setTitleText("No Report Found")
+//                .setConfirmText("Ok")
+//                //.setCancelText("Ok")
+//                .showCancelButton(true)
+//                .setConfirmClickListener { sDialog ->
+//                    sDialog.cancel()
+//                    onBackPressed()
+//                }
+//                .setCancelClickListener { sDialog ->
+//                    sDialog.cancel()
+//                }
+//                .show()
             // myToast(this,"No Report Found")
-        }else{
+        } else {
             startActivity(
                 // Use 'launchPdfFromPath' if you want to use assets file (enable "fromAssets" flag) / internal directory
                 PdfViewerActivity.launchPdfFromUrl(           //PdfViewerActivity.Companion.launchPdfFromUrl(..   :: incase of JAVA
@@ -79,7 +81,7 @@ class ViewReport : AppCompatActivity() {
                     "https://ehcf.thedemostore.in/uploads/$reportData",                                // PDF URL in String format
                     "Report",                        // PDF Name/Title in String format
                     "pdf directory to save",                  // If nothing specific, Put "" it will save to Downloads
-                    enableDownload = true                    // This param is true by defualt.
+                    enableDownload = false                    // This param is true by defualt.
                 )
             )
 //            val url= baseUrl+reportData

@@ -46,10 +46,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     ) {
         val intent = Intent()
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT
-        )
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = getString(R.string.channel_id)
         val channelName = getString(R.string.channel_name)
@@ -62,6 +59,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        NotificationValue="1"
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.logo)
@@ -73,7 +71,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         notificationManager.notify(0, notificationBuilder.build())
     }
-
+    companion object {
+        var NotificationValue = ""
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun setupNotificationChannels(
         channelId: String,

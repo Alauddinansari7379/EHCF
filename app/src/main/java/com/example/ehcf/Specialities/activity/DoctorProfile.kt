@@ -1,23 +1,21 @@
 package com.example.ehcf.Specialities.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
-import com.example.ehcf.Registration.ModelResponse.ModelGender
+import com.example.ehcf.RatingAndReviews.adapter.AdapterCommentList
 import com.example.ehcf.Specialities.adapter.AdapterDoctorProfile
-import com.example.ehcf.Specialities.adapter.AdapterSpecialities
+import com.example.ehcf.Specialities.model.ModelCommentList
 import com.example.ehcf.Specialities.model.ModelConsaltation
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.databinding.ActivityDoctorProfileBinding
@@ -31,7 +29,7 @@ import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 import java.util.ArrayList
 
-class DoctorProfile : AppCompatActivity() {
+class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
     private lateinit var binding: ActivityDoctorProfileBinding
     var progressDialog: ProgressDialog? = null
     private var context: Context = this@DoctorProfile
@@ -52,6 +50,7 @@ class DoctorProfile : AppCompatActivity() {
         sessionManager = SessionManager(this)
         //         doctorId = intent.getStringExtra("doctorId").toString()
 
+        AdapterFamilyListView.memberID=""
 
         doctorId = intent.getStringExtra("doctorId").toString()
          dashboard = intent.getStringExtra("dashboard").toString()
@@ -135,7 +134,7 @@ class DoctorProfile : AppCompatActivity() {
                                 this@DoctorProfile,
                                 response.body()!!,
                                 this@DoctorProfile
-                            )
+                            ,this@DoctorProfile)
                             progressDialog!!.dismiss()
                         }
 
@@ -145,6 +144,50 @@ class DoctorProfile : AppCompatActivity() {
                 override fun onFailure(call: Call<ModelDoctorProfile>, t: Throwable) {
                     binding.shimmer.visibility = View.GONE
                     myToast(this@DoctorProfile, "Something went wrong")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+
+    }
+    private fun apiCallCommentList() {
+        progressDialog = ProgressDialog(this@DoctorProfile)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+
+        ApiClient.apiService.doctorAllComments(doctorId)
+            .enqueue(object :
+                Callback<ModelCommentList> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelCommentList>,
+                    response: Response<ModelCommentList>
+                ) {
+                    if (response.body()!!.result.isEmpty()) {
+                        binding.shimmer.visibility = View.GONE
+                        myToast(this@DoctorProfile, "No Review Found")
+                        progressDialog!!.dismiss()
+                    } else {
+                        binding.recyclerViewComment.apply {
+                            shimmerFrameLayout?.startShimmer()
+                              adapter = AdapterCommentList(
+                                this@DoctorProfile,
+                                response.body()!!,
+                                this@DoctorProfile
+                            )
+                            progressDialog!!.dismiss()
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelCommentList>, t: Throwable) {
+                     myToast(this@DoctorProfile, "Something went wrong")
                     progressDialog!!.dismiss()
 
                 }
@@ -166,6 +209,10 @@ class DoctorProfile : AppCompatActivity() {
             }
         }
     }
+
+    override fun commentList() {
+        apiCallCommentList()
+     }
 
 //    override fun consaltationType(doctorid: String) {
 //        consaltationList.add(ModelConsaltation("Select Consultation Type ", "0"))

@@ -69,8 +69,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/profile"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+         app:civ_border_color="#FF000000"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,6 +99,31 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="16:15"
+                            android:textColor="#686868"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Patient Name-"
+                            android:textColor="@color/black"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvPatientName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text=""
                             android:textColor="#686868"
                             android:textStyle="bold">
 
@@ -237,7 +261,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_marginRight="10dp"
-                        android:padding="2dp"
+                         android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
                         android:background="@drawable/corner"
                         android:backgroundTint="@color/main_color"
                         android:drawableTint="@color/white"

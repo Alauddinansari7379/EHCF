@@ -89,6 +89,8 @@ class ConsultedFragment : Fragment() {
                     if (response.code() == 500) {
                         myToast(requireActivity(), "Server Error")
                         binding.shimmer.visibility = View.GONE
+                        progressDialog!!.dismiss()
+
                     } else if (response.body()!!.status == 0) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
                         binding.shimmer.visibility = View.GONE
@@ -156,6 +158,8 @@ class ConsultedFragment : Fragment() {
 
                     if (response.code() == 500) {
                         myToast(requireActivity(), "Server Error")
+                        progressDialog!!.dismiss()
+
                     }
                     else if (response.body()!!.result.isEmpty()) {
                         binding.shimmer.visibility = View.GONE

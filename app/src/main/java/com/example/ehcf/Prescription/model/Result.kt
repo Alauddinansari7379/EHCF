@@ -12,6 +12,8 @@ data class Result(
     val doctor_name: String?=null,
     val end_time: String?=null,
     val id: String,
+    val member_name: String,
+    val customer_name: String,
     val patient_id: String,
     val payment_mode: String,
     val phone_number: String,

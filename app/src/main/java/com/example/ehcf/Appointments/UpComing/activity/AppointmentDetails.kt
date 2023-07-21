@@ -60,6 +60,14 @@ class AppointmentDetails : AppCompatActivity() {
                    binding.tvDate.text= response.body()!!.result.date
                    binding.tvTime.text= response.body()!!.result.start_time
                    binding.tvDoctorName.text= response.body()!!.result.doctor_name
+
+                    if (response.body()!!.result.member_name!=null){
+                        binding.tvPatientName.text = response.body()!!.result.member_name
+                    }
+                    else{
+                        binding.tvPatientName.text = response.body()!!.result.customer_name
+
+                    }
                     when(response.body()!!.result.consultation_type){
                         "1"->{
                             binding.tvConsultationType.text="Tele-Consultation"
@@ -77,6 +85,9 @@ class AppointmentDetails : AppCompatActivity() {
                         }
                         "2"->{
                             binding.tvPaymentMode.text="Online"
+                        }
+                        "5"->{
+                            binding.tvPaymentMode.text="Free"
                         }
                     }
                    binding.tvTotalAmount.text= response.body()!!.result.total

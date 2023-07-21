@@ -5,52 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddNewFamily">
-
-    <androidx.appcompat.widget.Toolbar
+    tools:context=".FamailyMember.activity.AddNewFamily">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_gravity="center"
+        android:layout_height="55dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_baseline_arrow_back_24"
-            android:src="?android:attr/selectableItemBackground">
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </androidx.appcompat.widget.AppCompatImageView>
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:text="Add New Family Member"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Add New Family Member"
-                android:textColor="@color/black"
-                android:textStyle="bold">
+        </androidx.appcompat.widget.AppCompatTextView>
 
-            </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="Help"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.903"
+            app:layout_constraintStart_toStartOf="@+id/imgBack"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="Help"
-                android:textColor="@color/main_color"
-                android:textStyle="bold">
+        </androidx.appcompat.widget.AppCompatTextView>
 
-            </androidx.appcompat.widget.AppCompatTextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -66,9 +75,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/importent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -159,6 +170,7 @@
                         android:layout_marginRight="15dp">
 
                         <EditText
+                            android:id="@+id/edtFirstName"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:background="@drawable/corner"
@@ -179,6 +191,7 @@
                         android:layout_marginRight="15dp">
 
                         <EditText
+                            android:id="@+id/edtLastName"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
                             android:background="@drawable/corner"
@@ -262,6 +275,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:padding="10dp"
+                            android:background="?actionBarItemBackground"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="10dp"
                             android:text="Male"
@@ -277,6 +292,8 @@
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="10dp"
                             android:text="Female"
+                            android:background="?actionBarItemBackground"
+                            android:padding="10dp"
                             android:textColor="@color/main_color">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -287,6 +304,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="20dp"
+                            android:padding="10dp"
+                            android:background="?actionBarItemBackground"
                             android:layout_marginLeft="10dp"
                             android:text="Other"
                             android:textColor="@color/main_color">
@@ -314,31 +333,29 @@
                         </androidx.appcompat.widget.AppCompatTextView>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
 
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/corner">
-                        <!--        <EditText-->
-                        <!--            android:layout_width="match_parent"-->
-                        <!--            android:layout_height="45dp"-->
-                        <!--            android:inputType="text"-->
-                        <!--            android:textSize="15dp"-->
-                        <!--            android:padding="10dp"-->
-                        <!--            android:hint="Who In This?"-->
-                        <!--            android:background="@drawable/corner">-->
-
-                        <!--        </EditText>-->
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/spinnerRelation"
+                        <LinearLayout
+                            android:id="@+id/lLayoutNew"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp">
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/corner"
+                            android:minHeight="40dp"
+                            android:orientation="horizontal">
 
-                        </androidx.appcompat.widget.AppCompatSpinner>
-                    </LinearLayout>
+                            <pl.utkala.searchablespinner.SearchableSpinner
+                                android:id="@+id/spinnerFamily"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:autofillHints="sdsd"
+                                app:closeText="Close"
+                                app:dialogTitle="Select State" />
+
+                        </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -352,7 +369,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="10dp"
-                            android:text="Email Address"
+                            android:text="Description"
                             android:textColor="@color/main_color"
                             android:textStyle="bold">
 
@@ -362,20 +379,22 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="10dp"
-                            android:text="Name@email.com"
-                            android:textColor="#A19398"
-                            android:textStyle="bold">
+                        <EditText
+                            android:id="@+id/edtDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:background="@drawable/corner"
+                            android:hint="Description"
+                            android:inputType="textMultiLine"
+                            android:padding="10dp"
+                            android:textSize="15sp">
 
-                        </androidx.appcompat.widget.AppCompatTextView>
+                        </EditText>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -385,6 +404,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCancle"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginLeft="10dp"

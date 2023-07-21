@@ -70,8 +70,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/profile"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+         app:civ_border_color="#FF000000"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,7 +99,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="16:15"
+                            android:text=""
+                            android:textColor="#686868"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Patient Name-"
+                            android:textColor="@color/black"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvPatientNameRej"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text=""
                             android:textColor="#686868"
                             android:textStyle="bold">
 
@@ -116,7 +140,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Session Start Time-"
-                            android:textColor="#686868"
+                            android:textColor="@color/black"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -141,7 +165,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="Session End Time-"
-                            android:textColor="#686868"
+                            android:textColor="@color/black"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
@@ -165,8 +189,34 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Total Amount-"
+                            android:text="Consultation Type-"
+                            android:textColor="@color/black"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvConsultationTypeCan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text=""
                             android:textColor="#686868"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Total Amount-"
+                            android:textColor="@color/black"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>

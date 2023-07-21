@@ -3,10 +3,13 @@ package com.example.ehcf.Specialities.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +18,16 @@ import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.sharedpreferences.SessionManager
+import com.squareup.picasso.Picasso
 
 
 class AdapterDoctorProfile
-    (val context: Context, private val list: ModelDoctorProfile, private val consaltaton:DoctorProfile) :
+    (
+    val context: Context,
+    private val list: ModelDoctorProfile,
+    private val consaltaton: DoctorProfile,
+    val comment:CommentList
+) :
     RecyclerView.Adapter<AdapterDoctorProfile.MyViewHolder>() {
     private lateinit var sessionManager: SessionManager
 
@@ -30,40 +39,111 @@ class AdapterDoctorProfile
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-       // holder.id.text= "${position+1}"
-        holder.doctorName.text= list.result[position].doctor_name
-        holder.exeprince.text= list.result[position].experience
-        holder.qualification.text = list.result[position].qualification
-        holder.location.text = list.result[position].city
-        holder.description.text = list.result[position].description
-        holder.price.text = list.result[position].pricing
-        holder.additionalQualification.text = list.result[position].additional_qualification
-        holder.phoneNumber.text = list.result[position].phone_number
-        sessionManager = SessionManager(context)
+        try {
 
-        when(list.result[position].gender){
-            "1"->{
-                list.result[position].gender="Male"
+            if (list.result[position].profile_image!!.isNotEmpty()){
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
             }
-            "2"->{
-                list.result[position].gender="Female"
+            // holder.id.text= "${position+1}"
+            holder.doctorName.text = list.result[position].doctor_name
+            holder.exeprince.text = list.result[position].experience
+            holder.qualification.text = list.result[position].qualification
+            holder.location.text = list.result[position].city
+            holder.description.text = list.result[position].description
+            holder.price.text = list.result[position].pricing
+            if (list.result[position].overall_ratings != null) {
+                holder.ratingBar.rating = list.result[position].overall_ratings.toFloat()
+                holder.overAllRating.text = list.result[position].overall_ratings.toString()
+                holder.tvNoOfrating.text = list.result[position].no_of_ratings
             }
-            else->{
-                list.result[position].gender="Other"
 
+            sessionManager = SessionManager(context)
+
+            when (list.result[position].gender) {
+                "1" -> {
+                    list.result[position].gender = "Male"
+                }
+                "2" -> {
+                    list.result[position].gender = "Female"
+                }
+                else -> {
+                    list.result[position].gender = "Other"
+
+                }
             }
-        }
-        holder.gender.text = list.result[position].gender
-        holder.email.text = list.result[position].email
-        holder.description.text = list.result[position].description
+            when (list.result[position].specialist) {
+                "1" -> {
+                    holder.specialistDProfile.text = "PSYCHOLOGIST"
+                }
+                "2" -> {
+                    holder.specialistDProfile.text = "SEXOLOGIST"
+                }
+                "3" -> {
+                    holder.specialistDProfile.text = "DERMATOLOGIST"
+                }
+                "4" -> {
+                    holder.specialistDProfile.text = "GYNEACOLOGIST"
+                }
+                "5" -> {
+                    holder.specialistDProfile.text = "GENERAL PHYSICIAN"
+                }
+                "6" -> {
+                    holder.specialistDProfile.text = "ANESTHESIA"
+                }
+                "7" -> {
+                    holder.specialistDProfile.text = "GASTROENTEROLOGIST"
+                }
+                "8" -> {
+                    holder.specialistDProfile.text = "CARDIOLOGIST"
+                }
+                "9" -> {
+                    holder.specialistDProfile.text = "DENTIST"
+                }
+                "10" -> {
+                    holder.specialistDProfile.text = "DIABETOLOGIST"
+                }
+                "11" -> {
+                    holder.specialistDProfile.text = "ENT SPECIALIST"
+                }
+                "12" -> {
+                    holder.specialistDProfile.text = "GENERAL SURGEON"
+                }
+                "13" -> {
+                    holder.specialistDProfile.text = "IVF (TEST TUBE BABY)"
+                }
+                "14" -> {
+                    holder.specialistDProfile.text = "NEPHROLOGIST"
+                }
+                "15" -> {
+                    holder.specialistDProfile.text = "OPTHALMOLOGIST (EYE SPECIALIST)"
+                }
+                "16" -> {
+                    holder.specialistDProfile.text = "ORTHOPEDICS"
+                }
+                "17" -> {
+                    holder.specialistDProfile.text = "PAEDIATRICIAN"
+                }
+                "18" -> {
+                    holder.specialistDProfile.text = "PHYSIOTHERAPY"
+                }
+                "19" -> {
+                    holder.specialistDProfile.text = "UROLOGIST"
+                }
+                else -> {
+                    holder.specialistDProfile.text = "Other"
+
+                }
+            }
+            holder.gender.text = list.result[position].gender
+            holder.description.text = list.result[position].description
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
-        holder.btnBookApp.setOnClickListener {
-            sessionManager.pricing=list.result[position].pricing
-            // val intent = Intent(context as Activity, PaymentMode::class.java)
-            val intent = Intent(context as Activity, MyAvailableSlot::class.java)
-                .putExtra("doctorId",list.result[position].id.toString())
-            context.startActivity(intent)
+            holder.btnBookApp.setOnClickListener {
+                sessionManager.pricing = list.result[position].pricing
+                // val intent = Intent(context as Activity, PaymentMode::class.java)
+                val intent = Intent(context as Activity, MyAvailableSlot::class.java)
+                    .putExtra("doctorId", list.result[position].id.toString())
+                context.startActivity(intent)
 /*
             when(sessionManager.bookingType){
                 "1"->{
@@ -103,10 +183,17 @@ class AdapterDoctorProfile
             }
 */
 
+            }
+
+            // Glide.with(hol der.image).load(list[position].url).into(holder.image)
+
+            holder.tvRatingReview.setOnClickListener {
+                comment.commentList()
+            }
+
+        }catch (e:Exception){
+            e.printStackTrace()
         }
-
-        // Glide.with(hol der.image).load(list[position].url).into(holder.image)
-
     }
 
 
@@ -119,19 +206,23 @@ class AdapterDoctorProfile
         val doctorName: TextView = itemView.findViewById(R.id.tvDoctorDProfile)
         val exeprince: TextView = itemView.findViewById(R.id.tvExprinceDProfile)
         val qualification: TextView = itemView.findViewById(R.id.tvQualificationDProfile)
-        val additionalQualification: TextView = itemView.findViewById(R.id.tvAdditionalQualificationDProfile)
-        val phoneNumber: TextView = itemView.findViewById(R.id.tvPhoneNumberDProfile)
-        val gender: TextView = itemView.findViewById(R.id.tvGenderDProfile)
-        val email: TextView = itemView.findViewById(R.id.tvEmailDProfile)
-        val price: TextView = itemView.findViewById(R.id.tvPriceDProfile)
+        val specialistDProfile: TextView = itemView.findViewById(R.id.tvSpecialistDProfile)
+         val gender: TextView = itemView.findViewById(R.id.tvGenderDProfile)
+         val price: TextView = itemView.findViewById(R.id.tvPriceDProfile)
         val location: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val description: TextView = itemView.findViewById(R.id.tvDescriptionDProfile)
+        val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
+        val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBarDProfile)
+        val overAllRating: TextView = itemView.findViewById(R.id.tvOverAllRating)
+        val tvNoOfrating: TextView = itemView.findViewById(R.id.tvNoOfrating)
+        val tvRatingReview: TextView = itemView.findViewById(R.id.tvRatingReview)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppDProfile)
         val cardView: CardView = itemView.findViewById(R.id.cardDoctorProfile)
 
 
     }
-    interface ConsaltaionTypeInterFace{
-        fun consaltationType(toString: String)
+
+    interface CommentList {
+        fun commentList()
     }
 }

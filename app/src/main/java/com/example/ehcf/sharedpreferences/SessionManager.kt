@@ -17,6 +17,12 @@ class SessionManager(context: Context?) {
         private const val EMAIL="email"
         private const val FCM_TOKEN="fcm_token"
         private const val GENDER="gender"
+        private const val SUBJECTIVE_INFORMATION="subjective_information"
+        private const val OBJECTIVE_INFORMATION="objective_information"
+        private const val ASSESSMENT="assessment"
+        private const val DOCTOR_NOTE="doctor_notes"
+        private const val TEST_NAME="test_name"
+        private const val INSTRUCATIONS="instructions"
         private const val ID="id"
         private const val LAST_ACTIVE_ADDRESS="last_active_address"
         private const val NO_OF_RATINGS="no_of_ratings"
@@ -43,6 +49,40 @@ class SessionManager(context: Context?) {
     fun logout() {
         prefs.edit().clear().apply()
     }
+
+    var subjectiveInformation: String?
+        get() = prefs.getString(SUBJECTIVE_INFORMATION, "")
+        set(subjectiveInformation) {
+            prefs.edit().putString(SUBJECTIVE_INFORMATION, subjectiveInformation).apply()
+        }
+
+    var objectiveInformation: String?
+        get() = prefs.getString(OBJECTIVE_INFORMATION, "")
+        set(objectiveInformation) {
+            prefs.edit().putString(OBJECTIVE_INFORMATION, objectiveInformation).apply()
+        }
+    var assessment: String?
+        get() = prefs.getString(ASSESSMENT, "")
+        set(assessment) {
+            prefs.edit().putString(ASSESSMENT, assessment).apply()
+        }
+    var doctorNotes: String?
+        get() = prefs.getString(DOCTOR_NOTE, "")
+        set(doctorNotes) {
+            prefs.edit().putString(DOCTOR_NOTE, doctorNotes).apply()
+        }
+
+    var instructions: String?
+        get() = prefs.getString(INSTRUCATIONS, "")
+        set(instructions) {
+            prefs.edit().putString(INSTRUCATIONS, instructions).apply()
+        }
+
+    var testName: String?
+        get() = prefs.getString(TEST_NAME, "")
+        set(testName) {
+            prefs.edit().putString(TEST_NAME, testName).apply()
+        }
 
     var fcmToken: String?
         get() = prefs.getString(FCM_TOKEN, "")
@@ -107,11 +147,16 @@ class SessionManager(context: Context?) {
         set(gender) {
             prefs.edit().putString(GENDER, gender).apply()
         }
+
     var selectedDate: String?
         get() = prefs.getString(SELECTED_DATE, "")
         set(selectedDate) {
             prefs.edit().putString(SELECTED_DATE, selectedDate).apply()
         }
-
+    var profilePic: String?
+        get() = prefs.getString(PROFILE_PICTURE, "")
+        set(profilePic) {
+            prefs.edit().putString(PROFILE_PICTURE, profilePic).apply()
+        }
 
 }
