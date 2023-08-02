@@ -66,7 +66,8 @@ interface ApiInterface {
         @Query("fcm_token") fcm_token: String,
         @Part signature: MultipartBody.Part,
         @Part("desc") desc: RequestBody,
-    ): Call<RegistationResponse>
+        @Query("dob") dob: String,
+        ): Call<RegistationResponse>
 
     @FormUrlEncoded
     @POST("forget_password")

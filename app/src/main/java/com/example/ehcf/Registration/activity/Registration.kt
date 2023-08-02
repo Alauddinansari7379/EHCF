@@ -1,12 +1,15 @@
 package com.example.ehcf.Registration.activity
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -36,11 +39,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Registration : AppCompatActivity() {
     private val context: Context = this@Registration
     var loading: LottieAnimationView? = null
+    var mydilaog: Dialog? = null
+    var dateOfBirth = ""
 
     var bloodGroupList = ArrayList<SpinnerModel>()
     var genderList = ArrayList<ModelGender>()
@@ -114,6 +123,30 @@ class Registration : AppCompatActivity() {
 
 
 
+        mydilaog?.setCanceledOnTouchOutside(false)
+        mydilaog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val newCalendar1 = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, monthOfYear, dayOfMonth ->
+                val newDate = Calendar.getInstance()
+                newDate[year, monthOfYear] = dayOfMonth
+                DateFormat.getDateInstance().format(newDate.time)
+                val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(newDate.time)
+                binding.tvDOB.text = date
+                dateOfBirth=dateOfBirth
+                dateOfBirth = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(newDate.time)
+
+                Log.e("selectedDate", dateOfBirth)
+            },
+            newCalendar1[Calendar.YEAR],
+            newCalendar1[Calendar.MONTH],
+            newCalendar1[Calendar.DAY_OF_MONTH]
+        )
+
+        binding.tvDOB.setOnClickListener {
+            datePicker.show()
+        }
 
         genderList.add(ModelGender("Male", 1))
         genderList.add(ModelGender("Female", 2))
@@ -235,6 +268,11 @@ class Registration : AppCompatActivity() {
                 binding.edtConfirmPassword.requestFocus()
                 return@setOnClickListener
             }
+            if (binding.tvDOB.text!!.isEmpty()) {
+                binding.tvDOB.error = "Select Your DOB"
+                binding.tvDOB.requestFocus()
+                return@setOnClickListener
+            }
             if (binding.edtBiography.text.isEmpty()) {
                 binding.edtBiography.error = "Please enter Biography"
                 binding.edtBiography.requestFocus()
@@ -298,6 +336,7 @@ companion object{
    var bloodGroupCom=""
    var genderValueCom=""
    var fcmTokenCom=""
+   var dateOfBirth=""
 }
 
     private fun apiCallRegistration() {

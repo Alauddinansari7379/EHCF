@@ -65,6 +65,7 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
         Log.e("Registration.bloodGroupCom ", Registration.bloodGroupCom)
         Log.e("Registration.genderValueCom ", Registration.genderValueCom)
         Log.e("Registration.fcmTokenCom ", Registration.fcmTokenCom)
+        Log.e("Registration.dateOfBirth ", Registration.dateOfBirth)
 
 
 
@@ -271,8 +272,10 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
             Registration.genderValueCom.toInt(),
             Registration.fcmTokenCom,
             MultipartBody.Part.createFormData("signature", photo!!.name, body),
-            "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        )
+            "json".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            Registration.dateOfBirth,
+
+            )
             .enqueue(object : Callback<RegistationResponse> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
