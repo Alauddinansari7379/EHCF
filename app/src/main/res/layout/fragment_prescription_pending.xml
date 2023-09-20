@@ -28,19 +28,7 @@
 
 
                 </EditText>
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imgSearch"
-                    android:layout_width="35dp"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_height="35dp"
-                    android:background="?actionBarItemBackground"
-                    android:src="@drawable/baseline_search_24">
-
-                </androidx.appcompat.widget.AppCompatImageView>
-                <androidx.appcompat.widget.AppCompatImageView
+                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgRefresh"
                     android:layout_width="35dp"
                     android:layout_gravity="center"
@@ -77,8 +65,6 @@
                         </include>
                         <include layout="@layout/shimmer_effect_pending_prescription">
 
-                        </include>
-                        <include layout="@layout/shimmer_effect_pending_prescription">
 
                         </include>
 
@@ -114,7 +100,7 @@
                                     android:id="@+id/tvNoDataFound"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="No Prescription Found"
+                                    android:text="No Pending Prescription Found"
                                     android:visibility="gone"
                                     android:gravity="center_horizontal"
                                     android:layout_gravity="center_horizontal"
@@ -134,6 +120,25 @@
         </ScrollView>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNotFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="No Pending Prescription Found."
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:textColor="@color/main_color"
+                    android:textSize="18dp"
+                    >
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutNotFound"
@@ -167,23 +172,6 @@
                     android:layout_height="wrap_content"
                     >
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:text="No Prescription Found."
-                                    android:textStyle="bold"
-                                    android:textColor="@color/main_color"
-                                    android:textSize="18dp"
-                                    >
-
-                                </androidx.appcompat.widget.AppCompatTextView>
-
-                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

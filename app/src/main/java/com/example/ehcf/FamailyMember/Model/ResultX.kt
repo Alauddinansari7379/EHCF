@@ -11,6 +11,7 @@ data class ResultX(
     val gender: String,
     val id: String,
     val last_name: String,
+    val profile_picture: String,
     val patient_id: String,
     val relation: String,
     val status: String,

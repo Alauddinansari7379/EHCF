@@ -18,6 +18,7 @@ data class Doctor(
     val id: String,
     val insurances: List<Any>,
     val is_recommended: String,
+    val specialist: String,
     val latitude: String,
     val longitude: String,
     val no_of_ratings: String,

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
+import com.squareup.picasso.Picasso
 
 
 class AdapterFilteredDoctor(val context: Context, private val list: ModelScarchByLocationAndSpc) :
@@ -26,6 +28,9 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelScarchB
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.id.text= "${position+1}"
+        if (list.result[position].profile_image!!.isNotEmpty()){
+            Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+        }
         holder.doctorName.text = list.result[position].doctor_name
         holder.address.text = list.result[position].address
         holder.exeprince.text = list.result[position].experience
@@ -113,6 +118,7 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelScarchB
         val address: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppAllDoctor)
+        val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
 
 
     }

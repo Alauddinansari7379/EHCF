@@ -45,7 +45,7 @@ class FilteredDoctor : AppCompatActivity() {
         }
 
         shimmerFrameLayout = findViewById(R.id.shimmer)
-        shimmerFrameLayout!!.startShimmer();
+        shimmerFrameLayout!!.startShimmer()
 
         binding.imgBack.setOnClickListener {
             onBackPressed()

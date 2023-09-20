@@ -94,7 +94,7 @@
                             android:layout_height="45dp"
                             android:background="@drawable/corner"
                             android:drawableLeft="@drawable/ic_baseline_location_on_24mailcolur"
-                            android:hint="Search By loction"
+                            android:hint="Search By location"
                             android:inputType="text"
                             android:padding="10dp"
                             android:textColorHint="@color/black"

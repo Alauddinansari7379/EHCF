@@ -14,6 +14,7 @@ data class ResultX(
     val no_of_ratings: String,
     val overall_ratings: String,
     val password: String,
+    val test_report: String,
     val patient_id: String,
     val patient_reports_id: String,
     val phone_number: String,

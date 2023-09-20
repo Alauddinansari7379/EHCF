@@ -181,8 +181,7 @@ private fun apiCallSpecialistSpinner() {
 
                         items[i] = specilList.result!![i].categoryName
                     }
-                    val adapter: ArrayAdapter<String?> =
-                        ArrayAdapter(this@Dashboard, android.R.layout.simple_list_item_1, items)
+                    val adapter: ArrayAdapter<String?> = ArrayAdapter(this@Dashboard, android.R.layout.simple_list_item_1, items)
                     var spProvince: SmartMaterialSpinner<String>? = null
                     var spEmptyItem: SmartMaterialSpinner<String>? = null
                     binding.spinnerSpecialistTest.item = items.toMutableList() as List<Any>?

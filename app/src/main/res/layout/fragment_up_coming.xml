@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".Appointments.UpComing.activity.UpComingFragment">
 
-    <LinearLayout
+     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -29,19 +29,7 @@
 
 
         </EditText>
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgSearch"
-            android:layout_width="35dp"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_height="35dp"
-            android:background="?actionBarItemBackground"
-            android:src="@drawable/baseline_search_24">
-
-        </androidx.appcompat.widget.AppCompatImageView>
-        <androidx.appcompat.widget.AppCompatImageView
+         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgRefresh"
             android:layout_width="35dp"
             android:layout_gravity="center"

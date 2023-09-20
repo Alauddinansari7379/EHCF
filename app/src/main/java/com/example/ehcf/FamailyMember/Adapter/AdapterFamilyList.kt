@@ -11,12 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.Appointments.Consulted.activity.ConsultedFragment
 import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
-import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
+ import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.FamailyMember.activity.AddNewFamily
 import com.example.ehcf.R
+import com.example.ehcf.Upload.activity.FamilyMemberHistory
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +42,12 @@ class AdapterFamilyList(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
+        if (list.result[position].profile_picture!=null) {
+            Picasso.get()
+                .load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_picture}")
+                .placeholder(R.drawable.profile).error(R.drawable.profile)
+                .into(holder.imgProfileFamily);
+        }
 
         holder.firstName.text = list.result[position].member_name
          holder.dOB.text = list.result[position].dob
@@ -139,6 +147,23 @@ class AdapterFamilyList(
             context.startActivity(intent)
         }
 
+        holder.btnAppointmentF.setOnClickListener {
+            familyMemberList="1"
+            ConsultedFragment.adapter="2"
+            AdapterFamilyListView.memberID=list.result[position].id
+            val intent = Intent(context as Activity, FamilyMemberHistory::class.java)
+                 .putExtra("id",list.result[position].id)
+            context.startActivity(intent)
+        }
+
+        holder.btnReportF.setOnClickListener {
+            familyMemberList="2"
+            AdapterFamilyListView.memberID=list.result[position].id
+            val intent = Intent(context as Activity, FamilyMemberHistory::class.java)
+                 .putExtra("id",list.result[position].id)
+            context.startActivity(intent)
+        }
+
         holder.imgDeleteFM.setOnClickListener {
             showPopUp.delete(list.result[position].id)
 
@@ -147,7 +172,9 @@ class AdapterFamilyList(
 
 
     }
-
+companion object{
+    var familyMemberList=""
+}
 
     override fun getItemCount(): Int {
         return list.result.size
@@ -160,7 +187,10 @@ class AdapterFamilyList(
         val gender: TextView = itemView.findViewById(R.id.tvGenderFM)
         val relationFM: TextView = itemView.findViewById(R.id.tvRelationFM)
         val emailFM: TextView = itemView.findViewById(R.id.tvEmailFM)
+        val btnReportF: TextView = itemView.findViewById(R.id.btnReportF)
         val imgEditFM: ImageView = itemView.findViewById(R.id.imgEditFM)
+        val btnAppointmentF: Button = itemView.findViewById(R.id.btnAppointmentF)
+        val imgProfileFamily: ImageView = itemView.findViewById(R.id.imgProfileFamily)
         val imgDeleteFM: ImageView = itemView.findViewById(R.id.imgDeleteFM)
 
 

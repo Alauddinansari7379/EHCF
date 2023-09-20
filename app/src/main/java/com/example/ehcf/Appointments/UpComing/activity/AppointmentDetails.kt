@@ -9,9 +9,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentsDetails
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAppointmentDetailsBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -95,6 +97,11 @@ class AppointmentDetails : AppCompatActivity() {
                    binding.tvPhoneNumber.text= response.body()!!.result.phone_number
                    binding.tvBookingId.text= response.body()!!.result.id
                    binding.tvStatus.text= response.body()!!.result.status_for_customer
+                    if (response.body()!!.result.profile_image!=null){
+                        Picasso.get().load("https://ehcf.thedemostore.in/uploads/${response.body()!!.result.profile_image}").placeholder(
+                            R.drawable.profile).error(R.drawable.profile).into(binding.imgProfile);
+                    }
+
                     progressDialog!!.dismiss()
 
 //                    if (response.body()!!.result!=null){

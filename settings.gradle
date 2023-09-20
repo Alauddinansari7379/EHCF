@@ -23,3 +23,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EHCF"
 include ':app'
+include ':ayusynksdk'
+

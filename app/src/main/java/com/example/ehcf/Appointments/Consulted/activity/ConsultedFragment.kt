@@ -3,10 +3,12 @@ package com.example.ehcf.Appointments.Consulted.activity
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Appointments.Cancelled.adapter.AdapterCancelled
 import com.example.ehcf.Appointments.Consulted.adapter.AdapterConsulted
@@ -14,6 +16,7 @@ import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
+import com.example.ehcf.Appointments.UpComing.model.ResultXXX
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -22,6 +25,10 @@ import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,6 +43,7 @@ class ConsultedFragment : Fragment() {
     var progressDialog: ProgressDialog? = null
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
+    private var mainData = ArrayList<ResultXXX>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,28 +58,34 @@ class ConsultedFragment : Fragment() {
         binding = FragmentConsultedBinding.bind(view)
         sessionManager = SessionManager(requireContext())
         shimmerFrameLayout = view.findViewById(R.id.shimmer)
-        shimmerFrameLayout!!.startShimmer();
+      //  shimmerFrameLayout!!.startShimmer();
 
-        apiCallGetConsultationCompleted()
+        adapter="1"
+        Handler().postDelayed({
+            apiCallGetConsultationCompleted()
+        }, 1000)
+
+        binding.imgRefresh.setOnClickListener {
+            apiCallGetConsultationCompletedNew()
+        }
         binding.imgRefresh.setOnClickListener {
             apiCallGetConsultationCompleted()
         }
-        binding.imgRefresh.setOnClickListener {
-            apiCallGetConsultationCompleted()
+        binding.edtSearch.addTextChangedListener {str ->
+            setRecyclerViewAdapter(mainData.filter { it.doctor_name!!.contains(str.toString(),ignoreCase = true)} as ArrayList<ResultXXX>)
         }
-
-        binding.imgSearch.setOnClickListener {
-            if (binding.edtSearch.text.toString().isEmpty()) {
-                binding.edtSearch.error = "Enter Doctor Name"
-                binding.edtSearch.requestFocus()
-            } else {
-                val search = binding.edtSearch.text.toString()
-                apiCallSearchAppointments(search)
-            }
-        }
+//        binding.imgSearch.setOnClickListener {
+//            if (binding.edtSearch.text.toString().isEmpty()) {
+//                binding.edtSearch.error = "Enter Doctor Name"
+//                binding.edtSearch.requestFocus()
+//            } else {
+//                val search = binding.edtSearch.text.toString()
+//                //apiCallSearchAppointments(search)
+//            }
+//        }
 
     }
-    private fun apiCallSearchAppointments(doctorName: String) {
+/*    private fun apiCallSearchAppointments(doctorName: String) {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
@@ -139,10 +153,49 @@ class ConsultedFragment : Fragment() {
                 }
 
             })
-    }
+    }*/
 
 
     private fun apiCallGetConsultationCompleted() {
+        ApiClient.apiService.getConsultation(sessionManager.id.toString(), "completed")
+            .enqueue(object : Callback<ModelAppointmentBySlag> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
+                ) {
+                    try {
+                        if (response.code() == 200){
+                            mainData = response.body()!!.result!!
+
+                        }
+
+                         if(response.code() == 500) {
+                            myToast(requireActivity(), "Server Error")
+
+                        } else if (response.body()!!.result.isEmpty()) {
+                            binding.shimmer.visibility = View.GONE
+                            binding.tvNoDataFound.visibility = View.VISIBLE
+                            // myToast(requireActivity(),"No Appointment Found")
+
+                        } else {
+                            setRecyclerViewAdapter(mainData)
+                             binding.shimmer.visibility = View.GONE
+
+                         }
+
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelAppointmentBySlag>, t: Throwable) {
+                    activity?.let { myToast(it, "Something went wrong") }
+
+                }
+
+            })
+    }
+    private fun apiCallGetConsultationCompletedNew() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
@@ -155,32 +208,30 @@ class ConsultedFragment : Fragment() {
                 override fun onResponse(
                     call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
                 ) {
+                    try {
+                        if (response.code() == 200){
+                            mainData = response.body()!!.result!!
+                            progressDialog!!.dismiss()
+                        }
+                         if(response.code() == 500) {
+                            myToast(requireActivity(), "Server Error")
+                            progressDialog!!.dismiss()
 
-                    if (response.code() == 500) {
-                        myToast(requireActivity(), "Server Error")
-                        progressDialog!!.dismiss()
-
-                    }
-                    else if (response.body()!!.result.isEmpty()) {
-                        binding.shimmer.visibility = View.GONE
-                        binding.tvNoDataFound.visibility = View.VISIBLE
-                        // myToast(requireActivity(),"No Appointment Found")
-                        progressDialog!!.dismiss()
-
-                    } else {
-                        binding.rvCancled.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvCancled.visibility = View.VISIBLE
+                        } else if (response.body()!!.result.isEmpty()) {
                             binding.shimmer.visibility = View.GONE
-                            binding.tvNoDataFound.visibility = View.GONE
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter = AdapterConsulted(requireContext(), response.body()!!)
+                            binding.tvNoDataFound.visibility = View.VISIBLE
+                            // myToast(requireActivity(),"No Appointment Found")
+                            progressDialog!!.dismiss()
+
+                        } else {
+                            setRecyclerViewAdapter(mainData)
                             progressDialog!!.dismiss()
 
                         }
+
+                    }catch (e:Exception){
+                        e.printStackTrace()
                     }
-
-
                 }
 
                 override fun onFailure(call: Call<ModelAppointmentBySlag>, t: Throwable) {
@@ -190,6 +241,20 @@ class ConsultedFragment : Fragment() {
                 }
 
             })
+    }
+    private fun setRecyclerViewAdapter(data: ArrayList<ResultXXX>) {
+        binding.rvCancled.apply {
+            shimmerFrameLayout?.startShimmer()
+            binding.rvCancled.visibility = View.VISIBLE
+            binding.shimmer.visibility = View.GONE
+            binding.tvNoDataFound.visibility = View.GONE
+            binding.tvNoDataFound.visibility = View.GONE
+            adapter = AdapterConsulted(requireContext(), data)
+        }
+    }
+
+    companion object{
+         var adapter=""
     }
 
     /*

@@ -66,6 +66,10 @@ class AdapterViewReport(
 //
 //        }
 
+        if (list.result[position].test_report==null){
+            holder.btnViewReport.visibility=View.GONE
+            holder.tvReportNotUploaded.visibility=View.VISIBLE
+        }
         holder.btnViewReport.setOnClickListener {
             val intent = Intent(context as Activity, ViewReport::class.java)
                 .putExtra("report",list.result[position].test_report.toString())
@@ -100,6 +104,7 @@ class AdapterViewReport(
         val btnViewReport: TextView = itemView.findViewById(R.id.btnViewReportView)
         val testName: TextView = itemView.findViewById(R.id.TextName)
         val tvTestViewDesc: TextView = itemView.findViewById(R.id.tvTestViewDesc)
+        val tvReportNotUploaded: TextView = itemView.findViewById(R.id.tvReportNotUploaded)
         val cardView: CardView = itemView.findViewById(R.id.cardViewViewRe)
 
 

@@ -12,12 +12,13 @@ import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Prescription.model.ModelPreList
 import com.example.ehcf.Prescription.model.My_model
+import com.example.ehcf.Prescription.model.ResultPrePending
 import com.example.ehcf.R
 import com.squareup.picasso.Picasso
 
 
 class AdapterPrescriptionPending(
-    val context: Context, private val list: ModelPreList
+    val context: Context, private val list: ArrayList<ResultPrePending>
 ) :
     RecyclerView.Adapter<AdapterPrescriptionPending.MyViewHolder>() {
 
@@ -34,22 +35,22 @@ class AdapterPrescriptionPending(
         // holder.SrNo.text= "${position+1}"
 
         try {
-            if (list.result[position].profile_image!!.isNotEmpty()){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+            if (list[position].profile_image!!.isNotEmpty()){
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
             }
-            holder.bookingDate.text = list.result[position].date
-            holder.specialitiesName.text = list.result[position].category_name.toString()
-            holder.doctorName.text = list.result[position].doctor_name.toString()
+            holder.bookingDate.text = list[position].date
+            holder.specialitiesName.text = list[position].category_name.toString()
+            holder.doctorName.text = list[position].doctor_name.toString()
 
-            if (list.result[position].member_name != null) {
-                holder.tvPatientNamePending.text = list.result[position].member_name
+            if (list[position].member_name != null) {
+                holder.tvPatientNamePending.text = list[position].member_name
 
             } else {
-                holder.tvPatientNamePending.text = list.result[position].customer_name
+                holder.tvPatientNamePending.text = list[position].customer_name
             }
-            if (list.result[position].start_time.toString() != null) {
-                holder.startTime.text = convertTo12Hour(list.result[position].start_time.toString())
-                holder.endTime.text = convertTo12Hour(list.result[position].end_time.toString())
+            if (list[position].start_time.toString() != null) {
+                holder.startTime.text = convertTo12Hour(list[position].start_time.toString())
+                holder.endTime.text = convertTo12Hour(list[position].end_time.toString())
             }
 
 
@@ -128,7 +129,7 @@ class AdapterPrescriptionPending(
 
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 

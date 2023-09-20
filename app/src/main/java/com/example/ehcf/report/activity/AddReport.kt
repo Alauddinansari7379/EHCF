@@ -7,6 +7,7 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
@@ -25,6 +26,7 @@ import com.example.ehcf.report.adapter.AdapterAppReport
 import com.example.ehcf.report.model.ModelGetTest
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -44,6 +46,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
     var image_viewAddRe: ImageView? = null
     var progressDialog: ProgressDialog? = null
     var imageView: ImageView? = null
+    var selectValue=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -225,6 +228,81 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 
         })
     }
+    private fun uploadImageCamera(id: String) {
+        if (selectedImageUri == null) {
+            binding.layoutRoot.snackbar("Select  Report First")
+            return
+        }
+
+        val parcelFileDescriptor = activity?.contentResolver?.openFileDescriptor(
+            selectedImageUri!!, "r", null
+
+        ) ?: return
+
+        val file: File = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .absolutePath + "/myAppImages/")
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+        val file1: File = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment
+        )
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+
+        val outputStream = FileOutputStream(file1)
+        inputStream.copyTo(outputStream)
+
+        progressDialog = ProgressDialog(activity)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+        // binding.progressBar.progress = 0
+        val body = UploadRequestBody(file1, "image", this)
+
+
+        ApiClient.apiService.UploadPatientTestReport(id, MultipartBody.Part.createFormData("image", file1.name, body), "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        ).enqueue(object : Callback<UploadResponse> {
+            override fun onResponse(
+                call: Call<UploadResponse>, response: Response<UploadResponse>
+            ) {
+                response.body()?.let {
+                 //   binding.layoutRoot.snackbar("Successfully Uploaded")
+                    progressDialog!!.dismiss()
+                    SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Successfully Uploaded")
+                        .setConfirmText("Ok")
+                        .showCancelButton(true)
+                        .setConfirmClickListener { sDialog ->
+                            sDialog.cancel()
+                            (activity as ReportMain).refresh()
+
+                        }
+                        .setCancelClickListener { sDialog ->
+                            sDialog.cancel()
+                        }
+                        .show()
+                   // apiCallGetPrePending1()
+
+                    //  binding.progressBar.progress = 100
+                    progressDialog!!.dismiss()
+
+                }
+            }
+
+            override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
+                binding.layoutRoot.snackbar(t.message!!)
+                // binding.progressBar.progress = 0
+                progressDialog!!.dismiss()
+
+            }
+
+        })
+    }
 
     private fun opeinImagePDF() {
 //        Intent(Intent.ACTION_PICK).also {
@@ -306,12 +384,27 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
     override fun selectPDF() {
         opeinImagePDF()
     }
+
+    override fun camera() {
+        selectValue = "1"
+        ImagePicker.with(this).cameraOnly()
+//                                            .createIntent { intent ->
+//                                startForProfileImageResult.launch(intent)
+//                            }
+            .start(REQUEST_CODE_IMAGE)
+    }
+
     override fun selectImage() {
         opeinImageChooser()
     }
 
     override fun upload(id: String) {
-        uploadImage(id)
+        if (selectValue=="1"){
+            uploadImageCamera(id)
+        }else{
+            uploadImage(id)
+
+        }
     }
 }
 

@@ -110,6 +110,15 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dr "
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvDoctorNameInv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

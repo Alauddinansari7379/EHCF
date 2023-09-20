@@ -11,12 +11,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
+import com.example.ehcf.MyDoctor.Model.ResultMyDoctor
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.squareup.picasso.Picasso
 
 
-class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
+class AdapterMyDoctors(val context: Context, private val list: ArrayList<ResultMyDoctor>) :
     RecyclerView.Adapter<AdapterMyDoctors.MyViewHolder>() {
 
 
@@ -30,24 +31,25 @@ class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
        // holder.id.text= "${position+1}"
        // holder.id.text= list.result[position].id
         try {
-            if (list.result[position].profile_image.isNotEmpty()) {
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+            if (list[position].profile_image.isNotEmpty()) {
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
 
                 //  Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
             }
 
-            holder.hospitalName.text = list.result[position].doctor_name
-            holder.exprince.text = list.result[position].experience
+            holder.hospitalName.text = list[position].doctor_name
+            holder.exprince.text = list[position].experience
              // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
+            holder.tvAdressMyDoctor.text=list[position].address+" " +list[position].city +" " +list[position].state
 
             holder.btnBookApp.setOnClickListener {
                 val intent = Intent(context as Activity, DoctorProfile::class.java)
-                    .putExtra("doctorId", list.result[position].id)
+                    .putExtra("doctorId", list[position].id)
                 context.startActivity(intent)
             }
 
 
-        when (list.result[position].specialist) {
+        when (list[position].specialist) {
             "1" -> {
                 holder.specialities.text = "PSYCHOLOGIST"
             }
@@ -115,15 +117,16 @@ class AdapterMyDoctors(val context: Context, private val list: ModelMyDoctor) :
 
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hospitalName: TextView = itemView.findViewById(R.id.tvHospitalName)
-        val id: TextView = itemView.findViewById(R.id.tvIdAllDoctor)
+      //  val id: TextView = itemView.findViewById(R.id.tvIdAllDoctor)
         val exprince: TextView = itemView.findViewById(R.id.tvexprinceAllDoctorN)
         val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor1)
+        val tvAdressMyDoctor: TextView = itemView.findViewById(R.id.tvAdressMyDoctor)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppAllDoctor)
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
 

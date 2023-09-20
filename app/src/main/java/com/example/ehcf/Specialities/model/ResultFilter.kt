@@ -17,6 +17,7 @@ data class ResultFilter(
     val experience: String,
     val fcm_token: String,
     val gender: String,
+    val state: String,
     val hospital_id: String,
     val id: Int,
     val is_recommended: String,

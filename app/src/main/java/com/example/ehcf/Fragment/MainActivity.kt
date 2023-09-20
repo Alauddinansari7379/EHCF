@@ -32,6 +32,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.ehcf.Appointments.Appointments
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.Dashboard.activity.Dashboard
 import com.example.ehcf.FamailyMember.activity.AddNewFamily
 import com.example.ehcf.FamailyMember.activity.FamilyList
@@ -80,12 +81,12 @@ class MainActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         PrescriptionDetails.FollowUP == ""
         Log.e("PateintId", "${sessionManager.id}")
+
         bottomNav = binding.bottomNavigation1
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.hostFragment)
         val navController = navHostFragment!!.findNavController()
         val popupMenu = PopupMenu(this, null)
         popupMenu.inflate(R.menu.bottom_nav_menu)
-
 
         requestNotificationPermission()
 
@@ -145,6 +146,7 @@ class MainActivity : AppCompatActivity() {
                 else -> "Profile"
             }
         }
+
         binding.drawerClick.setOnClickListener {
             binding.drawerlayout1.openDrawer(GravityCompat.START)
             binding.includedrawar1.tvDashboard.setOnClickListener {
@@ -159,6 +161,11 @@ class MainActivity : AppCompatActivity() {
 //                startActivity(Intent(this, ReportMain::class.java))
 //                drawerLayout.closeDrawer(GravityCompat.START)
 //            }
+
+            binding.includedrawar1.tvAyuSynk.setOnClickListener {
+                startActivity(Intent(this, com.example.ehcf.AyuSynk.MainActivity::class.java))
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
             binding.includedrawar1.tvPrescription.setOnClickListener {
                 startActivity(Intent(this, PrescriptionActivity::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -180,10 +187,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, AddNewFamily::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
-            binding.includedrawar1.familyMemberHistory.setOnClickListener {
-                startActivity(Intent(this, FamilyMemberHistory::class.java))
-                drawerLayout.closeDrawer(GravityCompat.START)
-            }
+//            binding.includedrawar1.familyMemberHistory.setOnClickListener {
+//                startActivity(Intent(this, FamilyMemberHistory::class.java))
+//                drawerLayout.closeDrawer(GravityCompat.START)
+//            }
 
             binding.includedrawar1.orders.setOnClickListener {
                 if (binding.includedrawar1.orderLayout.visibility == View.VISIBLE) {

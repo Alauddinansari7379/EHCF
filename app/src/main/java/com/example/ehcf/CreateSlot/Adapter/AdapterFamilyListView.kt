@@ -1,25 +1,19 @@
 package com.example.ehcf.CreateSlot.Adapter
 
 import android.annotation.SuppressLint
-import android.content.ClipData
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.R
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.properties.Delegates
 
 
 class AdapterFamilyListView(
@@ -32,13 +26,10 @@ class AdapterFamilyListView(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
-            LayoutInflater.from(context)
-                .inflate(R.layout.single_row_family_member_new, parent, false)
-        )
+            LayoutInflater.from(context).inflate(R.layout.single_row_family_member_new, parent, false))
     }
 
-    var currentDate: String? =
-        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+    var currentDate: String? = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
     private var lastCheckedPosition = -1
     private var checkeditem = 0
 

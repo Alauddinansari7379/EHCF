@@ -6,6 +6,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -39,6 +40,26 @@ class AdapterReportHistory(private val list: ModelGetAllReport, val context: Con
 
             }
 
+
+//            if (list.result[position].report!=null){
+//                holder.btnViewReport.visibility=View.VISIBLE
+//                holder.tvReportNotUploaded.visibility=View.GONE
+//            }
+
+//
+//            if (list.result[position].test_report!=null){
+//                holder.btnViewReport.visibility=View.VISIBLE
+//                holder.tvReportNotUploaded.visibility=View.GONE
+//            }
+//            else{
+//                holder.tvReportNotUploaded.visibility=View.VISIBLE
+//                holder.btnViewReport.visibility=View.GONE
+//
+//            }
+
+
+
+
             holder.btnViewReport.setOnClickListener {
                 val intent = Intent(context as Activity, ViewReport::class.java)
                     .putExtra("report", list.result[position].report)
@@ -62,10 +83,11 @@ class AdapterReportHistory(private val list: ModelGetAllReport, val context: Con
     }
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val btnViewReport: TextView = itemView.findViewById(R.id.btnViewReportViewAll)
+            val btnViewReport: Button = itemView.findViewById(R.id.btnViewReportViewAll)
             val tvReportMemberName: TextView = itemView.findViewById(R.id.tvReportMemberName)
             val tvReportName: TextView = itemView.findViewById(R.id.tvReportName)
             val tvReportDate: TextView = itemView.findViewById(R.id.tvReportDate)
+            val tvReportNotUploaded: TextView = itemView.findViewById(R.id.tvReportNotUploaded)
             val cardView: CardView = itemView.findViewById(R.id.cardViewViewRe)
 
     }

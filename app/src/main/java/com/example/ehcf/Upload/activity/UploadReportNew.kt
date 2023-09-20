@@ -13,23 +13,33 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
-import com.example.ehcf.report.activity.AddReport
 import com.example.ehcf.Fragment.test.UploadRequestBody
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.databinding.ActivityUploadReportNewBinding
+import com.example.ehcf.report.activity.AddReport
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -50,10 +60,13 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
     private var selectedImageUri: Uri? = null
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
-    var fileChosser = ""
+    private var fileChosser = ""
     var date = ""
-
+    var fis1: FileInputStream? = null
+    var len1 = 0
+    var pImgFile1: File? = null
     private lateinit var sessionManager: SessionManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +74,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this@UploadReportNew)
-        AdapterFamilyListView.memberID=""
+        AdapterFamilyListView.memberID = ""
         // apiCallGetAllReport()
         binding.imgBack.setOnClickListener {
             onBackPressed()
@@ -74,10 +87,25 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
 //                .cameraOnly()	//User can only capture image using Camera
 //                .start()
 //        }
+
+
+        binding.layoutCamera.setOnClickListener {
+          //  myToast(this, "Work on Progress")
+            fileChosser = "1"
+            ImagePicker.with(this).cameraOnly()
+//                                            .createIntent { intent ->
+//                                startForProfileImageResult.launch(intent)
+//                            }
+                .start(REQUEST_CODE_IMAGE)
+        }
+
         binding.layoutGallery.setOnClickListener {
+            fileChosser = "2"
             openImageChooser()
         }
+
         binding.layoutPDF.setOnClickListener {
+            fileChosser = "3"
             openPDFChooser()
         }
 
@@ -87,7 +115,13 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 binding.edtTitle.requestFocus()
                 return@setOnClickListener
             }
-            uploadImage()
+            if(fileChosser=="1"){
+                uploadImageCamera()
+            } else{
+                uploadImage()
+
+            }
+          //  uploadImage()
 
 
         }
@@ -103,7 +137,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 newDate[year, monthOfYear] = dayOfMonth
                 DateFormat.getDateInstance().format(newDate.time)
                 // val Date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(newDate.time)
-                 date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(newDate.time)
+                date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(newDate.time)
                 binding.tvDate.text = date
                 Log.e(ContentValues.TAG, "onCreate: >>>>>>>>>>>>>>>>>>>>>>$date")
             },
@@ -137,8 +171,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
     }
 
     private fun openImageChooser() {
-        fileChosser = "1"
-        Intent(Intent.ACTION_PICK).also {
+         Intent(Intent.ACTION_PICK).also {
             it.type = "image/*"
             (MediaStore.ACTION_IMAGE_CAPTURE)
             val mimeTypes = arrayOf("image/jpeg", "image/png")
@@ -165,17 +198,68 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val fileUri = data?.data!!
+          //  binding.imageViewNew.setImageURI(fileUri)
+            selectedImageUri = data?.data
+
+
+
+            //  pImgFile1 = File(selectedImageUri!!.path)
+
+//            val file: File = File(
+//                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//                    .getAbsolutePath() + "/myAppImages/"
+//            )
+//            if (!file.exists()) {
+//                file.mkdirs()
+//            }
+//            val file1: File = File(
+//                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment
+//            )
+//
+//           // val fos = FileOutputStream(file1)
+//
+//                val parcelFileDescriptor = contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+//
+//                val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+//               // val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
+//                val outputStream = FileOutputStream(file1)
+//                inputStream.copyTo(outputStream)
+
+
+//                if (pImgFile1 != null) {
+//                    fis1 = FileInputStream(pImgFile1)
+//                    len1 = pImgFile1!!.length().toInt()
+//                }
+
+
+//
+//                ImagePicker.RESULT_ERROR -> {
+//                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+//                }
+//                else -> {
+//                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+//                }
+
             when (requestCode) {
                 REQUEST_CODE_IMAGE -> {
                     selectedImageUri = data?.data
-                    if (fileChosser == "1") {
-                        binding.layoutGalleryGreen.visibility=View.VISIBLE
-                        binding.layoutGalleryNew.visibility=View.GONE
+                    Log.e("filecgose",fileChosser)
+                    when(fileChosser){
+                        "1"->{
+                            binding.layoutCameraGreen.visibility=View.VISIBLE
+                            binding.layoutCameraNew.visibility=View.GONE
+                        }
+                        "2"->{
+                            binding.layoutGalleryGreen.visibility=View.VISIBLE
+                            binding.layoutGalleryNew.visibility=View.GONE
+                        }
+                        "3"->{
+                            binding.layoutPDFGreen.visibility=View.VISIBLE
+                            binding.layoutPDFNew.visibility=View.GONE
 
-                    } else {
-                        binding.layoutPDFGreen.visibility=View.VISIBLE
-                        binding.layoutPDFNew.visibility=View.GONE
-
+                        }
                     }
                     // binding.imageView.setImageURI(selectedImageUri)
                 }
@@ -255,6 +339,51 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
             })
     }
 
+    private val startForProfileImageResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    //Image Uri will not be null for RESULT_OK
+                    // circleImageView.setImageURI(fileUri)
+                    pImgFile1 = File(selectedImageUri!!.path)
+
+                    runBlocking {
+                        val pImg = async {
+                            Compressor.compress(context, File(selectedImageUri!!.path))
+                        }
+                        pImgFile1 = pImg.await()
+
+//
+//                 //   val parcelFileDescriptor = contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return@runBlocking
+//                    val inputStream = FileInputStream(pImgFile1)
+//
+//                    val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
+//                    val outputStream = FileOutputStream(file)
+//                    inputStream.copyTo(outputStream)
+
+                        if (pImgFile1 != null) {
+                            fis1 = FileInputStream(pImgFile1)
+                            len1 = pImgFile1!!.length().toInt()
+                        }
+                        GlobalScope.launch {
+                            // insertData()
+                        }
+                    }
+
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
 
     private fun uploadImage() {
 
@@ -268,8 +397,16 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
             contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
 
 
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
 
+        if (fileChosser == "1") {
+            val inputStream = FileInputStream(pImgFile1)
+            val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+            //   val parcelFileDescriptor = contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return@runBlocking
+        }
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
@@ -286,11 +423,93 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
         //  binding.progressBar.progress = 0
         val body = UploadRequestBody(file, "image", this)
 
-        ApiClient.apiService.uploadReport(sessionManager.id.toString(),
+        ApiClient.apiService.uploadReport(
+            sessionManager.id.toString(),
             binding.edtTitle.text.toString(),
             MultipartBody.Part.createFormData("report", file.name, body),
             RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json"),
-            AdapterFamilyListView.memberID,date
+            AdapterFamilyListView.memberID, date
+        ).enqueue(object :
+            Callback<ModelUploadReport> {
+            override fun onResponse(
+                call: Call<ModelUploadReport>,
+                response: Response<ModelUploadReport>
+            ) {
+                response.body()?.let {
+                    if (response.code() == 500) {
+                        myToast(this@UploadReportNew, "Server Error")
+                        progressDialog!!.dismiss()
+
+                    } else {
+                        myToast(this@UploadReportNew, response.body()!!.message)
+                        refresh()
+//                    binding.layoutRoot.snackbar(it.message)
+//                    binding.progressBar.progress = 100
+                        progressDialog!!.dismiss()
+                    }
+
+                }
+            }
+
+
+            override fun onFailure(call: Call<ModelUploadReport>, t: Throwable) {
+//                binding.layoutRoot.snackbar(t.message!!)
+//                binding.progressBar.progress = 0
+                progressDialog!!.dismiss()
+
+            }
+
+
+        })
+
+
+    }
+
+    private fun uploadImageCamera() {
+
+        if (selectedImageUri == null) {
+            myToast(this@UploadReportNew, "Select Report First")
+            // binding.layoutRoot.snackbar("Select an Image First")
+            return
+        }
+
+        val file: File = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                .absolutePath + "/myAppImages/")
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+        val file1: File = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment
+        )
+
+        // val fos = FileOutputStream(file1)
+
+        val parcelFileDescriptor = contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        // val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
+        val outputStream = FileOutputStream(file1)
+        inputStream.copyTo(outputStream)
+
+        progressDialog = ProgressDialog(this@UploadReportNew)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+
+        progressDialog!!.isIndeterminate = false
+
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+        //  binding.progressBar.progress = 0
+        val body = UploadRequestBody(file1, "image", this)
+
+        ApiClient.apiService.uploadReport(
+            sessionManager.id.toString(),
+            binding.edtTitle.text.toString(),
+            MultipartBody.Part.createFormData("report", file1.name, body),
+            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json"),
+            AdapterFamilyListView.memberID, date
         ).enqueue(object :
             Callback<ModelUploadReport> {
             override fun onResponse(

@@ -38,6 +38,14 @@
 
                 </androidx.appcompat.widget.AppCompatTextView>
                 <androidx.appcompat.widget.AppCompatTextView
+                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dr "
+                    android:textColor="@color/black"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDoctorNameFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -233,6 +241,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -252,6 +261,7 @@
                     android:layout_height="wrap_content"
                     android:text="v"
                     android:textColor="@color/black"
+                    android:layout_marginBottom="5dp"
                     android:textSize="12sp"
                     android:textStyle="bold">
 

@@ -114,11 +114,7 @@ interface ApiInterface {
         @Query("doctor_id") doctor_id: String
     ): Call<ModelCommentList>
 
-    @FormUrlEncoded
-    @POST("get_booking_requests")
-    fun myAppointmentUpComing(
-        @Field("customer_id") customer_id: String,
-    ): Call<ModelUpComingResponse>
+
 
     @FormUrlEncoded
     @POST("get_booking_requests")
@@ -224,6 +220,12 @@ interface ApiInterface {
     ): Call<ModelUpComingNew>
 
     @POST("get_consultations_pat")
+    fun getConsultationAccptedHome(
+        @Query("patient_id") patient_id: String?,
+        @Query("slug") slug: String?,
+    ): Call<ModelUpComingHome>
+
+    @POST("get_consultations_pat")
     fun getConsultation(
         @Query("patient_id") customer_id: String?,
         @Query("slug") slug: String?,
@@ -233,7 +235,7 @@ interface ApiInterface {
     fun memberAppointmentHistory(
         @Query("customer_id") customer_id: String?,
         @Query("member_id") member_id: String?,
-    ): Call<ModelAppointmentBySlag>
+    ): Call<ModelFamily>
 
 
     @Headers("Accept: application/json")
@@ -423,7 +425,8 @@ interface ApiInterface {
     fun deleteFamily(
         @Query("id") id: String?,
     ): Call<ModelDelete>
-
+    @Multipart
+    @Headers("Accept: application/json")
     @POST("add_family")
     fun addFamily(
         @Query("patient_id") patient_id: String?,
@@ -434,6 +437,8 @@ interface ApiInterface {
         @Query("relation") relation: String?,
         @Query("email") email: String?,
         @Query("description") description: String?,
+        @Part profile_picture: MultipartBody.Part,
+        @Part("desc") desc: RequestBody,
     ): Call<ModelFamilyMember>
 
     @POST("edit_family")
@@ -445,8 +450,8 @@ interface ApiInterface {
         @Query("gender") gender: String?,
         @Query("relation") relation: String?,
         @Query("email") email: String?,
-        description: String,
-    ): Call<ModelFamilyMember>
+        @Query("description") description: String?,
+     ): Call<ModelFamilyMember>
 
     @Multipart
     @Headers("Accept: application/json")

@@ -108,6 +108,35 @@
                     android:layout_marginBottom="2dp"
                     android:orientation="horizontal">
                     <LinearLayout
+                        android:id="@+id/layoutCamera"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/circle"
+                            android:backgroundTint="@color/main_color"
+                            android:gravity="center">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/camera"
+                                android:backgroundTint="@color/white" />
+
+                        </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Camera">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/layoutGallery"
                         android:layout_width="match_parent"
                          android:gravity="center"

@@ -30,7 +30,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="250dp"
                 android:layout_height="150dp"
-                android:background="@drawable/logo">
+                android:background="@drawable/logol_large">
 
             </androidx.appcompat.widget.AppCompatImageView>
 
@@ -119,26 +119,26 @@
                 </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/tvMyReport"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:layout_marginTop="20dp">-->
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/tvMyReport"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="20dp"-->
+            <!--                android:layout_marginTop="20dp">-->
 
-<!--                <androidx.appcompat.widget.AppCompatTextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:background="?android:attr/selectableItemBackground"-->
-<!--                    android:drawableLeft="@drawable/myreport"-->
-<!--                    android:padding="5dp"-->
-<!--                    android:text="My Reports"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="15dp"-->
-<!--                    android:textStyle="bold">-->
+            <!--                <androidx.appcompat.widget.AppCompatTextView-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:background="?android:attr/selectableItemBackground"-->
+            <!--                    android:drawableLeft="@drawable/myreport"-->
+            <!--                    android:padding="5dp"-->
+            <!--                    android:text="My Reports"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="15dp"-->
+            <!--                    android:textStyle="bold">-->
 
-<!--                </androidx.appcompat.widget.AppCompatTextView>-->
-<!--            </LinearLayout>-->
+            <!--                </androidx.appcompat.widget.AppCompatTextView>-->
+            <!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/tvInvoice"
@@ -202,11 +202,33 @@
 
                 </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
-             <RelativeLayout
+            <LinearLayout
+                android:id="@+id/tvAyuSynk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="AyuSynk"
+                    android:drawableLeft="@drawable/profilesetting">
+
+                </TextView>
+            </LinearLayout>
+
+            <RelativeLayout
                 android:id="@+id/Report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -220,11 +242,11 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                     android:layout_toEndOf="@id/reportIcon"
-                     android:text="Report"
+                    android:layout_toEndOf="@id/reportIcon"
+                    android:text="Report"
+                    android:textColor="@color/black"
                     android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/reportArrow"
@@ -235,6 +257,7 @@
                     android:src="@drawable/icn_next_arrow" />
 
             </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/reportLayout"
                 android:layout_width="match_parent"
@@ -244,33 +267,69 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/AddReport"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_63sdp"
-                    android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/main_color"
-                    android:textSize="12sp"
-                    android:drawableLeft="@drawable/invoice"
-                    android:text="Add Report"
-                    android:textColor="@color/black" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/reportList"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/invoice"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/AddReport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:text="Add Report"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_63sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/main_color"
-                    android:drawableLeft="@drawable/baseline_format_list_numbered_24"
-                    android:textSize="12sp"
-                    android:gravity="start|center"
-                    android:text="Report List"
-                    android:textColor="@color/black" />
-             </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@drawable/baseline_format_list_numbered_24"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/reportList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:text="Report List"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/orders"
@@ -290,11 +349,11 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                     android:layout_toEndOf="@id/orderIcon"
-                     android:text="Family Member"
+                    android:layout_toEndOf="@id/orderIcon"
+                    android:text="Family Member"
+                    android:textColor="@color/black"
                     android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/orderArrow"
@@ -315,47 +374,67 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/AddFamilyList"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_63sdp"
-                     android:gravity="start|center"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/main_color"
-                    android:textSize="12sp"
-                    android:drawableLeft="@drawable/baseline_person_add_24"
-                    android:text="Add Family Member"
-                    android:textColor="@color/black" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/familyMemberList"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_person_add_24"
+                        android:drawableTint="@color/main_color"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/AddFamilyList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:gravity="center"
+                        android:drawableTint="@color/main_color"
+                        android:text="Add Family Member"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_63sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/main_color"
-                    android:drawableLeft="@drawable/baseline_format_list_numbered_24"
-                    android:textSize="12sp"
-                      android:gravity="start|center"
-                    android:text="Family Member List"
-                    android:textColor="@color/black" />
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/familyMemberHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_63sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textStyle="bold"
-                    android:drawableTint="@color/main_color"
-                    android:drawableLeft="@drawable/baseline_history_24"
-                    android:textSize="12sp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                     android:gravity="start|center"
-                    android:text="Family Member History"
-                    android:textColor="@color/black" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_format_list_numbered_24"
+                        android:drawableTint="@color/main_color"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/familyMemberList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:gravity="center"
+                        android:drawableTint="@color/main_color"
+                        android:text="Family Member List"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/tvPasswordChange"
                 android:layout_width="match_parent"
@@ -400,24 +479,25 @@
                 <!--    </ScrollView>-->
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/tvLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                >
+                android:layout_marginTop="10dp">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
-                    android:textSize="15dp"
-                    android:textColor="@color/black"
-                    android:padding="5dp"
-                    android:textStyle="bold"
+                    android:drawableLeft="@drawable/ic_baseline_logout_24"
                     android:drawableTint="@color/main_color"
+                    android:padding="5dp"
                     android:text="Logout"
-                    android:drawableLeft="@drawable/ic_baseline_logout_24">
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
 
                 </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>

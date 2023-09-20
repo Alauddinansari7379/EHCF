@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ehcf.Appointments.Consulted.adapter.AdapterConsulted
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.FamailyMember.Adapter.AdapterFamilyList
+import com.example.ehcf.FamailyMember.Model.ModelFamily
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.Upload.adapter.AdapterFamilyMember
 import com.example.ehcf.Upload.adapter.AdapterReportHistory
 import com.example.ehcf.Upload.adapter.AdapterUploadReport
 import com.example.ehcf.Upload.model.ModelGetAllReport
@@ -34,28 +37,31 @@ class FamilyMemberHistory : AppCompatActivity() {
         binding = ActivityFamilyMemberHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this@FamilyMemberHistory)
-        apiCallFamilyListNew()
 
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
 
-        binding.btnAppointment.setOnClickListener {
-            if (AdapterFamilyListView.memberID.isEmpty()) {
-                myToast(this@FamilyMemberHistory, "Please Select Family Member")
-            } else {
-                apiCallViewAppointment()
 
-            }
-        }
-        binding.btnReport.setOnClickListener {
-            if (AdapterFamilyListView.memberID.isEmpty()) {
-                myToast(this@FamilyMemberHistory, "Please Select Family Member")
-            } else {
-                apiCallViewReport()
+        if(AdapterFamilyList.familyMemberList=="1"){
+            AdapterFamilyList.familyMemberList=""
+            apiCallViewAppointment()
 
-            }
         }
+
+        if(AdapterFamilyList.familyMemberList=="2"){
+            AdapterFamilyList.familyMemberList=""
+            apiCallViewReport()
+
+        }
+//        binding.btnReport.setOnClickListener {
+//            if (AdapterFamilyListView.memberID.isEmpty()) {
+//                myToast(this@FamilyMemberHistory, "Please Select Family Member")
+//            } else {
+//                apiCallViewReport()
+//
+//            }
+//        }
 
     }
 
@@ -80,15 +86,16 @@ class FamilyMemberHistory : AppCompatActivity() {
                 ) {
                     try {
                         if (response.body()!!.result.isEmpty()) {
-                            binding.tvNoDataFound.visibility = View.VISIBLE
-                            // myToast(requireActivity(),"No Data Found")
+                            binding.tvNoDataFoundApp.visibility = View.GONE
+                            binding.tvNoDataFoundReport.visibility = View.VISIBLE                            // myToast(requireActivity(),"No Data Found")
                             binding.rvCancled.visibility = View.GONE
-                            binding.recyclerView.visibility = View.VISIBLE
-                            progressDialog!!.dismiss()
+                             progressDialog!!.dismiss()
+
 
                         } else {
                             binding.recyclerView.apply {
-                                binding.tvNoDataFound.visibility = View.GONE
+                                binding.tvNoDataFoundApp.visibility = View.GONE
+                                binding.tvNoDataFoundReport.visibility = View.GONE
                                 binding.recyclerView.visibility = View.VISIBLE
                                 binding.rvCancled.visibility = View.GONE
                                 adapter = AdapterReportHistory(response.body()!!, this@FamilyMemberHistory,
@@ -127,10 +134,10 @@ class FamilyMemberHistory : AppCompatActivity() {
             sessionManager.id.toString(),
             AdapterFamilyListView.memberID
         )
-            .enqueue(object : Callback<ModelAppointmentBySlag> {
+            .enqueue(object : Callback<ModelFamily> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
-                    call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
+                    call: Call<ModelFamily>, response: Response<ModelFamily>
                 ) {
                     try {
                         if (response.code() == 500) {
@@ -138,13 +145,12 @@ class FamilyMemberHistory : AppCompatActivity() {
                             progressDialog!!.dismiss()
 
                         } else if (response.body()!!.result.isEmpty()) {
-                            binding.tvNoDataFound.visibility = View.VISIBLE
+                            binding.tvNoDataFoundApp.visibility = View.VISIBLE
+                            binding.tvNoDataFoundReport.visibility = View.GONE
                             // myToast(requireActivity(),"No Appointment Found")
                             binding.rvCancled.apply {
-                                binding.rvCancled.visibility = View.VISIBLE
-                                binding.recyclerView.visibility = View.GONE
-                                adapter =
-                                    AdapterConsulted(this@FamilyMemberHistory, response.body()!!)
+                                 binding.recyclerView.visibility = View.GONE
+                                adapter = AdapterFamilyMember(this@FamilyMemberHistory, response.body()!!)
                                 progressDialog!!.dismiss()
 
                             }
@@ -153,10 +159,11 @@ class FamilyMemberHistory : AppCompatActivity() {
                         } else {
                             binding.rvCancled.apply {
                                 binding.rvCancled.visibility = View.VISIBLE
-                                binding.tvNoDataFound.visibility = View.GONE
+                                binding.tvNoDataFoundApp.visibility = View.GONE
+                                binding.tvNoDataFoundReport.visibility = View.GONE
                                 binding.recyclerView.visibility = View.GONE
                                 adapter =
-                                    AdapterConsulted(this@FamilyMemberHistory, response.body()!!)
+                                    AdapterFamilyMember(this@FamilyMemberHistory, response.body()!!)
                                 progressDialog!!.dismiss()
 
                             }
@@ -171,7 +178,7 @@ class FamilyMemberHistory : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<ModelAppointmentBySlag>, t: Throwable) {
+                override fun onFailure(call: Call<ModelFamily>, t: Throwable) {
                     myToast(this@FamilyMemberHistory, "Something went wrong Pls Try Again")
                     progressDialog!!.dismiss()
 
@@ -180,58 +187,11 @@ class FamilyMemberHistory : AppCompatActivity() {
             })
     }
 
-    private fun apiCallFamilyListNew() {
 
-        progressDialog = ProgressDialog(this@FamilyMemberHistory)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+    override fun onResume() {
+        super.onResume()
+        AdapterFamilyListView.memberID=""
 
-        ApiClient.apiService.getFamilyList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelFamilyList> {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(
-                    call: Call<ModelFamilyList>,
-                    response: Response<ModelFamilyList>
-                ) {
-                    // binding.rvSlotTiming.invalidate();
-                    if (response.body()!!.status == 0) {
-                        myToast(this@FamilyMemberHistory, "${response.body()!!.message}")
-                        progressDialog!!.dismiss()
-                    } else if (response.code() == 500) {
-                        myToast(this@FamilyMemberHistory, "Server Error")
-                    } else if (response.body()!!.result.isEmpty()) {
-                        binding.rvSlotTimingFamily.apply {
-                            adapter =
-                                AdapterFamilyListView(this@FamilyMemberHistory, response.body()!!)
-                            progressDialog!!.dismiss()
-                        }
-                    } else {
-                        binding.rvSlotTimingFamily.apply {
-                            //   adapter!!.notifyDataSetChanged();
-                            //myToast(this@ShuduleTiming, response.body()!!.message)
-                            adapter =
-                                AdapterFamilyListView(this@FamilyMemberHistory, response.body()!!)
-                            binding.rvSlotTimingFamily.layoutManager =
-                                GridLayoutManager(this@FamilyMemberHistory, 3)
-                            //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
-
-                            progressDialog!!.dismiss()
-                        }
-
-                    }
-                }
-
-
-                override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
-                    progressDialog!!.dismiss()
-                    myToast(this@FamilyMemberHistory, "Something went wrong")
-                }
-
-
-            })
     }
 
 }

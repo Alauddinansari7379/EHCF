@@ -14,6 +14,7 @@ data class ResultXXX(
     val member_name: String,
      val customer_name: String?=null,
     val id: String,
+    val profile_picture: String,
     val prescriptionid: String,
     val member_id: String,
     val patient_id: String,

@@ -2,6 +2,7 @@ package com.example.ehcf.Fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
@@ -31,7 +32,9 @@ import com.example.easywaylocation.LocationData
 import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
+import com.example.ehcf.Appointments.UpComing.model.ModelUpComingHome
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
+import com.example.ehcf.CreateSlot.activity.MyAvailableSlot
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Fragment.Model.ModelNearestDoctor
@@ -41,6 +44,7 @@ import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.Specialities.activity.FilteredDoctor
 import com.example.ehcf.Specialities.activity.Specialities
 import com.example.ehcf.databinding.FragmentHomeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
@@ -105,7 +109,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         binding.swipeRefreshLayout.setOnRefreshListener(refreshListener)
 
 
-
 //
 //        CheckInternet().check { connected ->
 //            if (connected) {
@@ -120,13 +123,132 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 //        }
 //        easyWayLocation.startLocation()
 
+        binding.cardChestPain.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "8")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardCough.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "12")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardConstipation.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "7")
+            (context as Activity).startActivity(intent)
+        }
+        binding.cardBackPain.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "7")
+            (context as Activity).startActivity(intent)
+        }
+
+
+        binding.cardBloodPressuse.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "5")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardHeatDisease.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "8")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardJointPain.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "16")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardFever.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "5")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardBerating.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "5")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardMigrane.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "14")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardhairFall.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "3")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardToothAche.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "9")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardSwelling.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "5")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardArrhythma.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "8")
+            (context as Activity).startActivity(intent)
+        }
+
+        binding.cardAlopecia.setOnClickListener{
+        sessionManager.bookingType=""
+            AdapterAllDoctor.dashboard="1"
+            val intent = Intent(context as Activity, FilteredDoctor::class.java)
+                .putExtra("specialitiesID", "3")
+            (context as Activity).startActivity(intent)
+        }
+
 
         getLocationDetail = GetLocationDetail(this, requireContext())
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)
 
 
-        lm =
-            requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+        lm = requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
 
         val current = resources.configuration.locale
 
@@ -144,8 +266,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         }
 
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         getLastLocation()
 
 //        Handler().postDelayed({
@@ -157,19 +278,19 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         //https://bit.ly/2BteuF2
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescription/0420d2cfe028b40be93f3f6a826e0606.png",
+                "https://ehcf.thedemostore.in/uploads/prescription/dafa68d6f10cc3dba833670e242bafe4.png",
                 ""
             )
         )
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescription/78d539ca61f950a4748bc0238bd0de04.png",
+                "https://ehcf.thedemostore.in/uploads/prescription/1e1d20758a5ca79b561a869bc23f90e8.png",
                 ""
             )
         )
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescription/e6a581790c0889d5cf1ef62a04257370.png",
+                "https://ehcf.thedemostore.in/uploads/prescription/942fd6aea4e27bed28d1cc06e27baf5b.png",
                 ""
             )
         )
@@ -199,8 +320,8 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                 // Toast.makeText(requireContext(), "${model.title}", Toast.LENGTH_SHORT).show()
             }
         })
-        binding.imageSlide.startSliding(100) // with new period
-        binding.imageSlide.stopSliding()
+        binding.imageSlide.startSliding(2000) // with new period
+       // binding.imageSlide.stopSliding()
     }
 
 
@@ -391,9 +512,9 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                             //  myToast(requireActivity(), response.body()!!.message.toString())
                             //  progressDialog!!.dismiss()
                         }
-                    }catch (e:Exception){
-                        Log.e("Exception",e.printStackTrace().toString())
-                       e.printStackTrace()
+                    } catch (e: Exception) {
+                        Log.e("Exception", e.printStackTrace().toString())
+                        e.printStackTrace()
                     }
                 }
 
@@ -410,11 +531,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     }
 
     private fun apiCallGetConsultationAccepted() {
-        ApiClient.apiService.getConsultationAccpted(sessionManager.id.toString(), "accepted")
-            .enqueue(object : Callback<ModelUpComingNew> {
+        ApiClient.apiService.getConsultationAccptedHome(sessionManager.id.toString(), "accepted")
+            .enqueue(object : Callback<ModelUpComingHome> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
-                    call: Call<ModelUpComingNew>, response: Response<ModelUpComingNew>
+                    call: Call<ModelUpComingHome>, response: Response<ModelUpComingHome>
                 ) {
                     try {
                         if (response.code() == 500) {
@@ -427,16 +548,17 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                                 shimmerFrameLayout?.startShimmer()
                                 binding.rvAppointment.visibility = View.VISIBLE
                                 binding.shimmer.visibility = View.GONE
-                                adapter = activity?.let { AdapterAppointmentsHome(it, response.body()!!) }
+                                adapter =
+                                    activity?.let { AdapterAppointmentsHome(it, response.body()!!) }
                             }
                         }
 
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
 
-                override fun onFailure(call: Call<ModelUpComingNew>, t: Throwable) {
+                override fun onFailure(call: Call<ModelUpComingHome>, t: Throwable) {
                     activity?.let { myToast(it, "Something went wrong") }
 
                 }

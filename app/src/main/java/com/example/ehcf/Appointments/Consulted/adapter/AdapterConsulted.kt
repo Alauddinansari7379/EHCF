@@ -11,8 +11,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.Appointments.Consulted.activity.ConsultedFragment
 import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
+import com.example.ehcf.Appointments.UpComing.model.ResultXXX
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
@@ -20,8 +22,9 @@ import com.example.ehcf.RatingAndReviews.Rating
 import com.squareup.picasso.Picasso
 
 
-class AdapterConsulted(val context: Context, private val list: ModelAppointmentBySlag) :
+class AdapterConsulted(val context: Context,  private val list: ArrayList<ResultXXX>) :
     RecyclerView.Adapter<AdapterConsulted.MyViewHolder>() {
+   // private val filteredData = ArrayList(list)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -34,45 +37,58 @@ class AdapterConsulted(val context: Context, private val list: ModelAppointmentB
         // holder.SrNo.text= "${position+1}"
 
         try {
-            holder.appointmentDate.text = list.result[position].date
-            holder.doctorName.text = list.result[position].doctor_name.toString()
-            if (list.result[position].profile_image!!.isNotEmpty()){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+            holder.appointmentDate.text = list[position].date
+            holder.doctorName.text = list[position].doctor_name.toString()
+
+
+            if(ConsultedFragment.adapter=="2"){
+                if (list[position].profile_picture!=null){
+                    Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_picture}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+
+                }
+            }
+            if(ConsultedFragment.adapter=="1"){
+                            if (list[position].profile_image!=null){
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
 
             }
+            }
 
-            if (list.result[position].member_name != null) {
-                holder.patientNameCom.text = list.result[position].member_name
+
+
+
+            if (list[position].member_name != null) {
+                holder.patientNameCom.text = list[position].member_name
 
             } else {
-                holder.patientNameCom.text = list.result[position].customer_name
+                holder.patientNameCom.text = list[position].customer_name
             }
 
-            if (list.result[position].start_time != null) {
-                holder.startTime.text = convertTo12Hour(list.result[position].start_time)
-                holder.endTime.text = convertTo12Hour(list.result[position].end_time)
+            if (list[position].start_time != null) {
+                holder.startTime.text = convertTo12Hour(list[position].start_time)
+                holder.endTime.text = convertTo12Hour(list[position].end_time)
             }
-            holder.status.text = list.result[position].status_name
-            holder.amount.text = list.result[position].total
+            holder.status.text = list[position].status_name
+            holder.amount.text = list[position].total
 
-            if (list.result[position].status_name == "Priscribed") {
-                holder.btnViewPrescription.visibility = View.VISIBLE
-            }
+//            if (list.result[position].status_name == "Priscribed") {
+//                holder.btnViewPrescription.visibility = View.VISIBLE
+//            }
             holder.btnViewPrescription.setOnClickListener {
                 val intent = Intent(context as Activity, PrescriptionDetails::class.java)
-                    .putExtra("id", list.result[position].prescriptionid)
-                    .putExtra("doctorName", list.result[position].doctor_name)
-                    .putExtra("customer_name", list.result[position].customer_name)
-                    .putExtra("member_id", list.result[position].member_id)
-                    .putExtra("date", list.result[position].date)
+                    .putExtra("id", list[position].prescriptionid)
+                    .putExtra("doctorName", list[position].doctor_name)
+                    .putExtra("customer_name", list[position].customer_name)
+                    .putExtra("member_id", list[position].member_id)
+                    .putExtra("date", list[position].date)
                 context.startActivity(intent)
             }
 
-            if (list.result[position].rating == "0") {
+            if (list[position].rating == "0") {
                 holder.btnSubmitReview.visibility = View.VISIBLE
             }
 
-            when (list.result[position].consultation_type) {
+            when (list[position].consultation_type) {
                 "1" -> {
                     holder.consultationType.text = "Tele-Consultation"
                 }
@@ -85,7 +101,7 @@ class AdapterConsulted(val context: Context, private val list: ModelAppointmentB
             }
             holder.btnSubmitReview.setOnClickListener {
                 val intent = Intent(context as Activity, Rating::class.java)
-                    .putExtra("meetingId", list.result[position].id.toString())
+                    .putExtra("meetingId", list[position].id.toString())
                 context.startActivity(intent)
             }
 //        holder.btnOkDialog.setOnClickListener {
@@ -99,10 +115,20 @@ class AdapterConsulted(val context: Context, private val list: ModelAppointmentB
             e.printStackTrace()
         }
     }
+//    fun filter(query: String) {
+//        filteredData.clear()
+//        if (query.isEmpty()) {
+//            filteredData.addAll(list)
+//        } else {
+//            val filteredList = list.filter { it.contains(query, ignoreCase = true) }
+//            filteredData.addAll(filteredList)
+//        }
+//        notifyDataSetChanged()
+//    }
 
 
         override fun getItemCount(): Int {
-            return list.result.size
+            return list.size
 
         }
 

@@ -15,6 +15,8 @@ import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
+import com.example.ehcf.Appointments.UpComing.model.ResultXXX
+import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
 import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.R
@@ -25,9 +27,8 @@ import java.util.*
 
 class AdapterAppointments(
     val context: Context,
-    private val list: ModelUpComingNew,
-    val showPopUp: UpComingFragment
-) :
+     private val list: ArrayList<ResultXXXX>,
+    val showPopUp: UpComingFragment) :
     RecyclerView.Adapter<AdapterAppointments.MyViewHolder>() {
 
 
@@ -43,28 +44,28 @@ class AdapterAppointments(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
 
-        holder.appointmentDate.text = list.result[position].date
-        holder.doctorName.text = list.result[position].doctor_name.toString()
+        holder.appointmentDate.text = list[position].date
+        holder.doctorName.text = list[position].doctor_name.toString()
 
-        if (list.result[position].profile_image!!.isNotEmpty()){
-            Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+        if (list[position].profile_image!!.isNotEmpty()){
+            Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
          }
 
-        if (list.result[position].member_name != null) {
-            holder.tvPatientName.text = list.result[position].member_name
+        if (list[position].member_name != null) {
+            holder.tvPatientName.text = list[position].member_name
 
         } else {
-            holder.tvPatientName.text = list.result[position].customer_name
+            holder.tvPatientName.text = list[position].customer_name
         }
         //  holder.startTime.text = list.result[position].start_time
-        if (list.result[position].start_time != null) {
-            holder.startTime.text = convertTo12Hour(list.result[position].start_time.toString())
-            holder.endTime.text = convertTo12Hour(list.result[position].end_time.toString())
+        if (list[position].start_time != null) {
+            holder.startTime.text = convertTo12Hour(list[position].start_time.toString())
+            holder.endTime.text = convertTo12Hour(list[position].end_time.toString())
         }
-        holder.tvStatus.text = list.result[position].status_name
-        holder.consultationType.text = list.result[position].consultation_type
+        holder.tvStatus.text = list[position].status_name
+        holder.consultationType.text = list[position].consultation_type
 
-        when (list.result[position].slug) {
+        when (list[position].slug) {
             "waiting_for_accept" -> {
                 holder.btnCheck.visibility = View.GONE
                 holder.btnJoinMeeting.visibility = View.GONE
@@ -85,7 +86,7 @@ class AdapterAppointments(
 //                holder.btnStart.text = "Done"
 //            }
         }
-        when (list.result[position].consultation_type) {
+        when (list[position].consultation_type) {
             "1" -> {
                 holder.consultationType.text = "Tele-Consultation"
 
@@ -103,24 +104,24 @@ class AdapterAppointments(
             }
         }
         Log.e("currentDate", currentDate)
-        Log.e("startTime", list.result[position].date + " " + list.result[position].time)
+        Log.e("startTime", list[position].date + " " + list[position].time)
 
-        if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted" &&
-            list.result[position].consultation_type == "1"
+        if (list[position].date + " " + list[position].start_time <= currentDate && list[position].slug == "accepted" &&
+            list[position].consultation_type == "1"
         ) {
             holder.btnJoinMeeting.visibility = View.VISIBLE
             holder.btnCheck.visibility = View.GONE
 
         }
-        if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
-            && list.result[position].consultation_type == "2"
+        if (list[position].date + " " + list[position].start_time <= currentDate && list[position].slug == "accepted"
+            && list[position].consultation_type == "2"
         ) {
             holder.btnJoinMeeting.visibility = View.GONE
             holder.btnCheck.visibility = View.GONE
 
         }
-        if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
-            && list.result[position].consultation_type == "3"
+        if (list[position].date + " " + list[position].start_time <= currentDate && list[position].slug == "accepted"
+            && list[position].consultation_type == "3"
         ) {
             holder.btnJoinMeeting.visibility = View.GONE
             holder.btnCheck.visibility = View.GONE
@@ -132,12 +133,12 @@ class AdapterAppointments(
 
         holder.btnCheck.setOnClickListener {
 
-            if (list.result[position].start_time != null) {
-                showPopUp.popupRemainingTime(list.result[position].date?.let { it1 ->
+            if (list[position].start_time != null) {
+                showPopUp.popupRemainingTime(list[position].date?.let { it1 ->
                     changeDateFormatNew(
                         it1
                     )
-                } + " " + list.result[position].start_time)
+                } + " " + list[position].start_time)
 
             }
 
@@ -146,10 +147,7 @@ class AdapterAppointments(
 
         }
         holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(
-                list.result[position].date + " " + list.result[position].start_time,
-                list.result[position].id
-            )
+            showPopUp.videoCall(list[position].date + "EHCF" + list[position].start_time, list[position].id)
 
         }
 
@@ -159,7 +157,7 @@ class AdapterAppointments(
 //        }
         holder.btnView.setOnClickListener {
             val intent = Intent(context as Activity, AppointmentDetails::class.java)
-                .putExtra("bookingId", list.result[position].id.toString())
+                .putExtra("bookingId", list[position].id.toString())
             context.startActivity(intent)
         }
 //        holder.btnOkDialog.setOnClickListener {
@@ -173,7 +171,7 @@ class AdapterAppointments(
 
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 

@@ -2,15 +2,21 @@ package com.example.ehcf.FamailyMember.activity
 
 import android.R
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -18,20 +24,29 @@ import android.widget.ArrayAdapter
 import com.example.ehcf.FamailyMember.Model.ModelFamilyMember
 import com.example.ehcf.FamailyMember.Model.ModelFamilyNew
 import com.example.ehcf.FamailyMember.activity.AddNewFamily.Data.Companion.refreshValue
+import com.example.ehcf.Fragment.test.UploadRequestBody
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.Upload.activity.UploadReportNew
 import com.example.ehcf.databinding.ActivityAddNewFamilyBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddNewFamily : AppCompatActivity() {
+class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback  {
     private val context: Context = this@AddNewFamily
     var mydilaog: Dialog? = null
     var progressDialog: ProgressDialog? = null
@@ -39,6 +54,8 @@ class AddNewFamily : AppCompatActivity() {
     var firstName = ""
     private lateinit var sessionManager: SessionManager
     var lastName = ""
+    private var selectedImageUri: Uri? = null
+
     var dob = ""
     var gender = ""
     var relationId = ""
@@ -64,8 +81,11 @@ class AddNewFamily : AppCompatActivity() {
             binding.btnSave.text = "Confirm"
             //val membername=intent.getStringExtra("first_name").toString()
            // val lasName= membername.split(" ")
-            binding.edtFirstName.setText(intent.getStringExtra("first_name").toString())
-            binding.edtLastName.setText(intent.getStringExtra("first_name").toString())
+            val name=intent.getStringExtra("first_name").toString()
+            val firstName=name.substringBeforeLast(" ")
+            val lastName=name.substringAfterLast(" ")
+            binding.edtFirstName.setText(firstName)
+            binding.edtLastName.setText(lastName)
             binding.edtDescription.setText(intent.getStringExtra("email").toString())
             binding.tvDate.text = intent.getStringExtra("dob").toString()
             relationId = intent.getStringExtra("relation").toString()
@@ -100,6 +120,10 @@ class AddNewFamily : AppCompatActivity() {
 
         binding.btnCancle.setOnClickListener {
             onBackPressed()
+        }
+
+        binding.userProfile.setOnClickListener {
+            openImageChooser()
         }
 
         binding.btnSave.setOnClickListener {
@@ -196,7 +220,60 @@ class AddNewFamily : AppCompatActivity() {
         }
 
     }
+    private fun openImageChooser() {
+         Intent(Intent.ACTION_PICK).also {
+            it.type = "image/*"
+            (MediaStore.ACTION_IMAGE_CAPTURE)
+            val mimeTypes = arrayOf("image/jpeg", "image/png")
+            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            startActivityForResult(it,REQUEST_CODE_IMAGE)
 
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_IMAGE -> {
+                    selectedImageUri = data?.data
+                    Log.e("data?.data", data?.data.toString())
+                    binding.userProfile.setImageURI(selectedImageUri)
+                 }
+            }
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE_IMAGE = 101
+    }
+
+    override fun onProgressUpdate(percentage: Int) {
+        //   binding.progressBar.progress = percentage
+    }
+
+    private fun ContentResolver.getFileName(selectedImageUri: Uri): String {
+        var name = ""
+        val returnCursor = this.query(selectedImageUri, null, null, null, null)
+        if (returnCursor != null) {
+            val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            returnCursor.moveToFirst()
+            name = returnCursor.getString(nameIndex)
+            returnCursor.close()
+
+        }
+
+        return name
+    }
+
+    private fun View.snackbar(message: String) {
+        Snackbar.make(this, message, Snackbar.LENGTH_LONG).also { snackbar ->
+            snackbar.setAction("OK") {
+                snackbar.dismiss()
+            }
+        }.show()
+
+    }
     private fun apiCallGetRelation() {
         progressDialog = ProgressDialog(this@AddNewFamily)
         progressDialog!!.setMessage("Loading..")
@@ -264,16 +341,37 @@ class AddNewFamily : AppCompatActivity() {
     }
 
     private fun apiCallAddMember() {
+
+        if (selectedImageUri == null) {
+            myToast(this@AddNewFamily, "Select Profile Picture")
+            // binding.layoutRoot.snackbar("Select an Image First")
+            return
+        }
+
+        val parcelFileDescriptor =
+            contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
+
         progressDialog = ProgressDialog(this@AddNewFamily)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
+
         progressDialog!!.isIndeterminate = false
+
         progressDialog!!.setCancelable(true)
         progressDialog!!.show()
 
+        //  binding.progressBar.progress = 0
+        val body = UploadRequestBody(file, "profile_picture", this)
+
         ApiClient.apiService.addFamily(
             sessionManager.id.toString(), firstName, lastName,
-            dob, gender, relationId, email,description)
+            dob, gender, relationId, email,description,
+            MultipartBody.Part.createFormData("profile_picture", file.name, body), "json".toRequestBody("multipart/form-data".toMediaTypeOrNull()))
             .enqueue(object : Callback<ModelFamilyMember> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(

@@ -16,6 +16,7 @@ import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
+import com.example.ehcf.Appointments.UpComing.model.ModelUpComingHome
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterAppointmentsHome(val context: Context, private val list: ModelUpComingNew,) :
+class AdapterAppointmentsHome(val context: Context, private val list: ModelUpComingHome,) :
     RecyclerView.Adapter<AdapterAppointmentsHome.MyViewHolder>() {
 
 

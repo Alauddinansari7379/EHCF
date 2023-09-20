@@ -2,21 +2,20 @@ package com.example.ehcf.Prescription
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescribed
-import com.example.ehcf.Prescription.adapter.AdapterPrescriptionPending
-import com.example.ehcf.Prescription.model.ModelPreList
 import com.example.ehcf.Prescription.model.ModelPrescribed
+import com.example.ehcf.Prescription.model.ResultPrePending
+import com.example.ehcf.Prescription.model.ResultPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentPrescribedBinding
 import com.example.ehcf.sharedpreferences.SessionManager
@@ -35,6 +34,7 @@ class PrescribedFragment : Fragment() {
     var doctorName = ""
     var specilistName = ""
     private var specilList = ModelSpecilList();
+    private var mainData = ArrayList<ResultPrescribed>()
 
     var con = true
 
@@ -57,14 +57,17 @@ class PrescribedFragment : Fragment() {
 //
 //        }
 
-        apiCallGetPrePending()
-        apiCallSpecialistSpinner()
+        Handler().postDelayed({
+            apiCallGetPrePending()
+            apiCallSpecialistSpinner()
+                              }, 1000)
 
         binding.imgRefresh.setOnClickListener {
             binding.edtSearch.text.clear()
             binding.layoutFilter.visibility = View.GONE
+            apiCallGetPrePending()
 
-            apiCallGetPrePending1()
+
         }
 
         binding.btnSearchFilter.setOnClickListener {
@@ -105,7 +108,7 @@ class PrescribedFragment : Fragment() {
 
         }
 
-        binding.imgSearch.setOnClickListener {
+      /*  binding.imgSearch.setOnClickListener {
             binding.layoutFilter.visibility = View.GONE
 
             if (binding.edtSearch.text.toString().isEmpty()) {
@@ -116,7 +119,7 @@ class PrescribedFragment : Fragment() {
                 apiCallSearchPrescription(doctorName)
             }
 
-        }
+        }*/
 
     }
 
@@ -162,7 +165,7 @@ class PrescribedFragment : Fragment() {
                                 object : AdapterView.OnItemSelectedListener {
                                     override fun onItemSelected(
                                         adapterView: AdapterView<*>?,
-                                        view: View,
+                                        view: View?,
                                         i: Int,
                                         l: Long
                                     ) {
@@ -189,6 +192,7 @@ class PrescribedFragment : Fragment() {
             })
     }
 
+/*
     private fun apiCallSearchPrescription(doctorName: String) {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
@@ -206,9 +210,10 @@ class PrescribedFragment : Fragment() {
                     try {
                         if (response.code() == 500) {
                             myToast(requireActivity(), "Server Error")
+                            progressDialog!!.dismiss()
                             binding.shimmerPrescribed.visibility = View.GONE
                         } else if (response.body()!!.status == 0) {
-                            binding.tvNoDataFound.visibility = View.VISIBLE
+                            binding.tvNotFound.visibility = View.VISIBLE
                             binding.shimmerPrescribed.visibility = View.GONE
                             binding.edtSearch.text.clear()
                             myToast(requireActivity(), "${response.body()!!.message}")
@@ -218,7 +223,7 @@ class PrescribedFragment : Fragment() {
                             binding.recyclerView.adapter =
                                 AdapterPrescribed(requireContext(), response.body()!!)
                             binding.recyclerView.adapter!!.notifyDataSetChanged()
-                            binding.tvNoDataFound.visibility = View.VISIBLE
+                            binding.tvNotFound.visibility = View.VISIBLE
                             binding.shimmerPrescribed.visibility = View.GONE
                             binding.edtSearch.text.clear()
                             myToast(requireActivity(), "No Prescription Found")
@@ -228,7 +233,7 @@ class PrescribedFragment : Fragment() {
                             binding.recyclerView.adapter =
                                 AdapterPrescribed(requireContext(), response.body()!!)
                             binding.recyclerView.adapter!!.notifyDataSetChanged()
-                            binding.tvNoDataFound.visibility = View.GONE
+                            binding.tvNotFound.visibility = View.GONE
                             shimmerFrameLayout?.startShimmer()
                             binding.recyclerView.visibility = View.VISIBLE
                             binding.shimmerPrescribed.visibility = View.GONE
@@ -262,6 +267,7 @@ class PrescribedFragment : Fragment() {
 
             })
     }
+*/
 
     private fun apiCallFilterPrescription(customer_name: String) {
         progressDialog = ProgressDialog(requireContext())
@@ -278,51 +284,32 @@ class PrescribedFragment : Fragment() {
                     call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
                 ) {
                     try {
+                        if (response.code() == 200){
+                            mainData = response.body()!!.result!!
+
+                        }
+
                         if (response.code() == 500) {
-                            myToast(requireActivity(), "Server Error")
                             binding.shimmerPrescribed.visibility = View.GONE
-                        } else if (response.body()!!.status == 0) {
-                            binding.tvNoDataFound.visibility = View.VISIBLE
-                            binding.shimmerPrescribed.visibility = View.GONE
-                            binding.edtSearch.text.clear()
-                            myToast(requireActivity(), "${response.body()!!.message}")
+                            activity?.let { myToast(it, "Server Error") }
                             progressDialog!!.dismiss()
 
-                        } else if (response.body()!!.result.isEmpty()) {
-                            binding.recyclerView.adapter =
-                                AdapterPrescribed(requireContext(), response.body()!!)
-                            binding.recyclerView.adapter!!.notifyDataSetChanged()
-                            binding.tvNoDataFound.visibility = View.VISIBLE
+                        }
+                        else  if (response.body()!!.result.isEmpty()) {
+
+                            // myToast(requireActivity(),"No Data Found")
                             binding.shimmerPrescribed.visibility = View.GONE
-                            binding.edtSearch.text.clear()
-                            myToast(requireActivity(), "No Prescription Found")
+
                             progressDialog!!.dismiss()
 
                         } else {
-                            binding.recyclerView.adapter =
-                                AdapterPrescribed(requireContext(), response.body()!!)
-                            binding.recyclerView.adapter!!.notifyDataSetChanged()
-                            binding.tvNoDataFound.visibility = View.GONE
-                            shimmerFrameLayout?.startShimmer()
-                            binding.recyclerView.visibility = View.VISIBLE
-                            binding.shimmerPrescribed.visibility = View.GONE
-                            binding.edtSearch.text.clear()
-                            progressDialog!!.dismiss()
-//                        binding.rvManageSlot.apply {
-//                            binding.tvNoDataFound.visibility = View.GONE
-//                            shimmerFrameLayout?.startShimmer()
-//                            binding.rvManageSlot.visibility = View.VISIBLE
-//                            binding.shimmerMySlot.visibility = View.GONE
-//                            // myToast(this@ShuduleTiming, response.body()!!.message)
-//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-//                            progressDialog!!.dismiss()
-//
-//                        }
+
                         }
+
                     } catch (e: Exception) {
-                        myToast(requireActivity(), "Something went wrong")
-                        binding.shimmerPrescribed.visibility = View.GONE
+                        activity?.let { myToast(it, "Something went wrong") }
                         progressDialog!!.dismiss()
+                        binding.shimmerPrescribed.visibility = View.GONE
                         e.printStackTrace()
                     }
                 }
@@ -352,33 +339,31 @@ class PrescribedFragment : Fragment() {
                     call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
                 ) {
                     try {
-                        if (response.body()!!.result.isEmpty()) {
+                        if (response.code() == 200){
+                            mainData = response.body()!!.result!!
+
+                        }
+
+                        if (response.code() == 500) {
+                            binding.shimmerPrescribed.visibility = View.GONE
+                            activity?.let { myToast(it, "Server Error") }
+                            progressDialog!!.dismiss()
+
+                        }
+                       else  if (response.body()!!.result.isEmpty()) {
 
                             // myToast(requireActivity(),"No Data Found")
                             binding.shimmerPrescribed.visibility = View.GONE
-
+                            binding.tvNotFound.visibility = View.VISIBLE
                             progressDialog!!.dismiss()
 
                         } else {
-                            binding.recyclerView.apply {
-                                shimmerFrameLayout?.startShimmer()
-                                binding.recyclerView.visibility = View.VISIBLE
-                                binding.shimmerPrescribed.visibility = View.GONE
-                                binding.tvNoDataFound.visibility = View.GONE
-                                adapter = activity?.let {
-                                    AdapterPrescribed(
-                                        it,
-                                        response.body()!!
-                                    )
-                                }
-                                progressDialog!!.dismiss()
-
-
-                            }
+                            setRecyclerViewAdapter(mainData)
+                            progressDialog!!.dismiss()
                         }
 
                     } catch (e: Exception) {
-                        myToast(requireActivity(), "Something went wrong")
+                        activity?.let { myToast(it, "Something went wrong") }
                         progressDialog!!.dismiss()
                         binding.shimmerPrescribed.visibility = View.GONE
                         e.printStackTrace()
@@ -396,62 +381,18 @@ class PrescribedFragment : Fragment() {
             })
     }
 
-    private fun apiCallGetPrePending1() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+    private fun setRecyclerViewAdapter(data: ArrayList<ResultPrescribed>) {
+        binding.recyclerView.apply {
+            shimmerFrameLayout?.startShimmer()
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.shimmerPrescribed.visibility = View.GONE
+            binding.tvNotFound.visibility = View.GONE
+            adapter = AdapterPrescribed(requireContext(), data)
 
-        ApiClient.apiService.prescribedList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelPrescribed> {
-                @SuppressLint("LogNotTimber")
-                override fun onResponse(
-                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
-                ) { try {
-                    if (response.body()!!.result.isEmpty()) {
-
-                        // myToast(requireActivity(),"No Data Found")
-                        binding.shimmerPrescribed.visibility = View.GONE
-
-                        progressDialog!!.dismiss()
-
-                    } else {
-                        binding.recyclerView.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.recyclerView.visibility = View.VISIBLE
-                            binding.shimmerPrescribed.visibility = View.GONE
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter = activity?.let {
-                                AdapterPrescribed(
-                                    it,
-                                    response.body()!!
-                                )
-                            }
-                            progressDialog!!.dismiss()
+            progressDialog!!.dismiss()
 
 
-                        }
-                    }
-                }catch (e:Exception){
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
-                    binding.shimmerPrescribed.visibility = View.GONE
-                    e.printStackTrace()
-                }
-
-                }
-
-                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
-                    binding.shimmerPrescribed.visibility = View.GONE
-
-
-                }
-
-            })
+        }
     }
 
 

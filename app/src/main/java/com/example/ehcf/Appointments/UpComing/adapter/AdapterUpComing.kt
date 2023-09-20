@@ -10,8 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
-import com.example.ehcf.Appointments.UpComing.model.ModelUpComingResponse
-import com.example.ehcf.R
+ import com.example.ehcf.R
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*

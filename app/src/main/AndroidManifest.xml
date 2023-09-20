@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".AyuSynk.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,6 +28,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
+        <activity
+            android:name=".Testing.Country_A"
+            android:exported="false" />
+        <activity
+            android:name=".AyuSynk.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AyuSynk.NewUI.Recorder"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".Upload.activity.FamilyMemberHistory"
             android:exported="false" />
@@ -192,7 +203,7 @@
             android:name=".PhoneNumber.Activity.PhoneNumber"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen.SplashScreen"
+             android:name=".SplashScreen.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -202,13 +213,25 @@
         </activity>
 
         <meta-data
+            android:name="com.ayudevice.ayusynksdk.clientId"
+            android:value="cyukmtScnhhthcyS" />
+
+        <provider
+            android:name=".AyuSynk.utils.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <meta-data
             android:name="com.razorpay.ApiKey"
             android:value="rzp_test_tnOp3sjGL6gTju" /> <!-- android:value="rzp_test_y6bdIFkJ0IzbOK" -->
         <meta-data
             android:name="com.google.gms.wallet.api.enabled"
             android:value="true" />
-
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />

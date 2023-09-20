@@ -87,6 +87,13 @@ class AdapterAppReport(
 
         }
 
+        holder.layoutCamera.setOnClickListener {
+            uploadAdd.camera()
+            holder.btnUpload.isEnabled = true
+            holder.btnUpload.text = "Upload"
+
+        }
+
         holder.btnUpload.setOnClickListener {
             uploadAdd.upload(list.result[position].id)
 
@@ -122,6 +129,7 @@ class AdapterAppReport(
         val reportStatus: TextView = itemView.findViewById(R.id.reportStatus)
         val layoutGallery: LinearLayout = itemView.findViewById(R.id.layoutGallery)
         val layoutPDF: LinearLayout = itemView.findViewById(R.id.layoutPDF)
+        val layoutCamera: LinearLayout = itemView.findViewById(R.id.layoutCamera)
         val btnUpload: TextView = itemView.findViewById(R.id.btnUploadRe)
         val cardView: CardView = itemView.findViewById(R.id.cardAddReport)
 
@@ -131,6 +139,7 @@ class AdapterAppReport(
     interface UploadImage {
         fun selectImage()
         fun selectPDF()
+        fun camera()
         fun upload(id: String)
         //  fun dismissPopup()
 

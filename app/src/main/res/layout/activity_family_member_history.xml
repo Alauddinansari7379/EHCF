@@ -21,7 +21,6 @@
             android:background="?actionBarItemBackground"
             android:padding="5dp"
             android:layout_marginStart="10dp"
-
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,82 +44,6 @@
         </androidx.appcompat.widget.AppCompatTextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-        android:id="@+id/layoutFamilyMemeber"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Family Member List"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/main_color"
-            android:textStyle="bold"
-            android:textSize="@dimen/_12sdp">
-
-        </androidx.appcompat.widget.AppCompatTextView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:background="@drawable/corner"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSlotTimingFamily"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/layoutFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAppointment"
-             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Appointment"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            android:textSize="12sp"
-            android:textAllCaps="false"
-            android:drawableTint="@color/white"
-            android:gravity="center"
-            app:iconGravity="start"
-             app:cornerRadius="10sp"
-            android:backgroundTint="@color/main_color">
-
-        </com.google.android.material.button.MaterialButton>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnReport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Reports"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            android:textAllCaps="false"
-            android:textSize="12sp"
-            android:drawableTint="@color/white"
-            android:gravity="center"
-            app:iconGravity="start"
-             app:cornerRadius="10sp"
-            android:backgroundTint="@color/main_color">
-
-        </com.google.android.material.button.MaterialButton>
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCancled"
@@ -148,7 +71,26 @@
         android:layout_height="wrap_content"
         >
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvNoDataFound"
+            android:id="@+id/tvNoDataFoundReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Report Found"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNoDataFoundApp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="No Appointment Found"

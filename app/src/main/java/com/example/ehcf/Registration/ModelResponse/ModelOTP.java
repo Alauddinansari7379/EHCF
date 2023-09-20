@@ -38,7 +38,6 @@ public class ModelOTP {
         public void setStatus(Integer status) {
             this.status = status;
 
-
     }
 
     public class Result {

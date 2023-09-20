@@ -39,6 +39,14 @@
                 </androidx.appcompat.widget.AppCompatTextView>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dr "
+                    android:textColor="@color/black"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDoctorDProfile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -370,6 +378,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -386,10 +395,9 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddressAllDoctor"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:gravity="center"
                     android:text="MalakPet"
                     android:textColor="@color/black"
                     android:textSize="12sp"

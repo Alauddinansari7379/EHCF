@@ -26,7 +26,7 @@ class AdapterDoctorProfile
     val context: Context,
     private val list: ModelDoctorProfile,
     private val consaltaton: DoctorProfile,
-    val comment:CommentList
+    val comment: CommentList
 ) :
     RecyclerView.Adapter<AdapterDoctorProfile.MyViewHolder>() {
     private lateinit var sessionManager: SessionManager
@@ -41,14 +41,18 @@ class AdapterDoctorProfile
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         try {
 
-            if (list.result[position].profile_image!!.isNotEmpty()){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+            if (list.result[position].profile_image!!.isNotEmpty()) {
+                Picasso.get()
+                    .load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}")
+                    .placeholder(R.drawable.profile).error(R.drawable.profile)
+                    .into(holder.imgProfile);
             }
             // holder.id.text= "${position+1}"
             holder.doctorName.text = list.result[position].doctor_name
             holder.exeprince.text = list.result[position].experience
             holder.qualification.text = list.result[position].qualification
-            holder.location.text = list.result[position].city
+            holder.location.text =
+                list.result[position].address+" " +list.result[position].city +" " +list.result[position].state
             holder.description.text = list.result[position].description
             holder.price.text = list.result[position].pricing
             if (list.result[position].overall_ratings != null) {
@@ -191,7 +195,7 @@ class AdapterDoctorProfile
                 comment.commentList()
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -207,8 +211,8 @@ class AdapterDoctorProfile
         val exeprince: TextView = itemView.findViewById(R.id.tvExprinceDProfile)
         val qualification: TextView = itemView.findViewById(R.id.tvQualificationDProfile)
         val specialistDProfile: TextView = itemView.findViewById(R.id.tvSpecialistDProfile)
-         val gender: TextView = itemView.findViewById(R.id.tvGenderDProfile)
-         val price: TextView = itemView.findViewById(R.id.tvPriceDProfile)
+        val gender: TextView = itemView.findViewById(R.id.tvGenderDProfile)
+        val price: TextView = itemView.findViewById(R.id.tvPriceDProfile)
         val location: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val description: TextView = itemView.findViewById(R.id.tvDescriptionDProfile)
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)

@@ -42,6 +42,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.google.android.support:wearable:2.9.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     def nav_version = "2.5.2"
 
 
@@ -97,6 +98,7 @@ dependencies {
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.9'
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
     //Lottie
     implementation 'com.airbnb.android:lottie:5.2.0'
     //SplashScreen
@@ -158,9 +160,22 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
 
     implementation 'com.github.gcacace:signature-pad:1.3.1'
+    // Image Picker From Camera
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 
-
-
+//ayusynksdk
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment:2.4.2'
+    implementation 'androidx.navigation:navigation-ui:2.4.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation project(path: ':ayusynksdk')
+    
+    //For screen
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
 
 

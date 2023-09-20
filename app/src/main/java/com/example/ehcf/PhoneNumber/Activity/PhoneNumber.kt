@@ -53,17 +53,14 @@ class PhoneNumber : AppCompatActivity() {
                 binding.edtPhoneNumber.requestFocus()
                 return@setOnClickListener
             }
-            if (binding.edtPhoneNumber.text.length<12) {
-                binding.edtPhoneNumber.error = "Enter Country Code"
-                binding.edtPhoneNumber.requestFocus()
-                return@setOnClickListener
-            }
             apiCallForgotPassword()
         }
     }
 
     private fun apiCallForgotPassword() {
-        phoneNumber = binding.edtPhoneNumber.text.toString()
+      val   phoneNumberNew = binding.edtPhoneNumber.text.toString()
+        val code="91"
+        phoneNumber =code+phoneNumberNew
         progressDialog = ProgressDialog(this@PhoneNumber)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")

@@ -105,19 +105,36 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvDoctorNamePreDetial"
-                            android:layout_width="match_parent"
+                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text=""
+                            android:text="Dr "
                             android:textColor="@color/main_color"
                             android:textSize="15dp"
                             android:textStyle="bold">
 
                         </androidx.appcompat.widget.AppCompatTextView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvDoctorNamePreDetial"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="dfd"
+                            android:textColor="@color/main_color"
+                            android:textSize="15dp"
+                            android:textStyle="bold">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -126,23 +143,13 @@
                             android:layout_marginRight="15dp"
                             android:orientation="horizontal">
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Follow Up"
-                                android:textColor="@color/main_color"
-                                android:textSize="15dp"
-                                android:textStyle="bold">
-
-                            </androidx.appcompat.widget.AppCompatTextView>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="end"
-                                android:text="Till:"
+                                android:text="Next FollowUp Date on:  "
                                 android:textColor="@color/main_color"
                                 android:textSize="15dp"
                                 android:textStyle="bold">
@@ -392,6 +399,7 @@
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="5dp"
                                     android:text="Diagnosis"
+                                    android:layout_marginBottom="5dp"
                                     android:textColor="#000000"
                                     android:inputType="textMultiLine"
                                     android:textSize="15sp"
@@ -454,8 +462,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:orientation="vertical">
+                                 android:orientation="vertical">
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="match_parent"
@@ -464,6 +471,7 @@
                                     android:layout_marginStart="10dp"
                                     android:layout_marginTop="5dp"
                                     android:text="Medicines"
+                                    android:layout_marginBottom="5dp"
                                     android:textColor="#000000"
                                     android:inputType="textMultiLine"
                                     android:textSize="15sp"
@@ -476,9 +484,7 @@
                             <HorizontalScrollView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_5sdp"
-                                android:padding="@dimen/_10sdp"
-                                android:scrollbars="none">
+                                 android:scrollbars="none">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"

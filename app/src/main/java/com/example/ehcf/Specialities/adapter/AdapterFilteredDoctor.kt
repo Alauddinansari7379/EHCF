@@ -32,15 +32,20 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
         // holder.id.text= "${position+1}"
         try {
             if (list.result[position].profile_image.isNotEmpty()) {
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+                Picasso.get()
+                    .load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}")
+                    .placeholder(R.drawable.profile).error(R.drawable.profile)
+                    .into(holder.imgProfile);
 
-              //  Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
+                //  Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
             }
 
             holder.doctorName.text = list.result[position].doctor_name
             holder.experience.text = list.result[position].experience
             holder.qualification.text = list.result[position].qualification
-            holder.tvAddressAllDoctor.text = list.result[position].city
+            holder.tvAddressAllDoctor.text =
+                list.result[position].address+" " +list.result[position].city +" " +list.result[position].state
+
 //       // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 //
             holder.viewProfile.setOnClickListener {
@@ -48,6 +53,7 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
                     .putExtra("doctorId", list.result[position].id.toString())
                 context.startActivity(intent)
             }
+
             if (list.result[position].overall_ratings != null) {
                 holder.ratingBar.rating = list.result[position].overall_ratings.toFloat()
                 holder.tvRatingReview.text = list.result[position].overall_ratings
@@ -55,7 +61,7 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
             }
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

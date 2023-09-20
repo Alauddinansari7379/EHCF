@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.adapter.AdapterCommentList
@@ -53,9 +54,10 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
         AdapterFamilyListView.memberID=""
 
         doctorId = intent.getStringExtra("doctorId").toString()
-         dashboard = intent.getStringExtra("dashboard").toString()
+       //  dashboard = intent.getStringExtra("dashboard").toString()
 
-        if (dashboard == "1") {
+        if (AdapterAllDoctor.dashboard == "1") {
+            AdapterAllDoctor.dashboard == ""
         binding.spinnerBookingType.visibility=View.VISIBLE
         }
         Log.e("doctorId", "$doctorId")

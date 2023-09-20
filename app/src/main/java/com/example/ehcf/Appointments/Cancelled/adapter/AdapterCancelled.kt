@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
+import com.example.ehcf.Appointments.UpComing.model.ResultXXX
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.R
 import com.squareup.picasso.Picasso
 
 
-class AdapterCancelled(val context: Context, private val list:  ModelAppointmentBySlag) :
+class AdapterCancelled(val context: Context,  private val list: ArrayList<ResultXXX>) :
     RecyclerView.Adapter<AdapterCancelled.MyViewHolder>() {
 
 
@@ -39,27 +40,27 @@ class AdapterCancelled(val context: Context, private val list:  ModelAppointment
 //        holder.tvStatus.text = list.result.cancelled[position].status_for_customer
 //        holder.description.text = list.result.cancelled[position].description
 //        holder.totalAmount.text = list.result.cancelled[position].total_amount
-            if (list.result[position].profile_image!!.isNotEmpty()) {
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+            if (list[position].profile_image!!.isNotEmpty()) {
+                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
 
 
             }
-            holder.appointmentDate.text = list.result[position].date
-            holder.doctorName.text = list.result[position].doctor_name
-            if (list.result[position].member_name != null) {
-                holder.tvPatientNameRej.text = list.result[position].member_name
+            holder.appointmentDate.text = list[position].date
+            holder.doctorName.text = list[position].doctor_name
+            if (list[position].member_name != null) {
+                holder.tvPatientNameRej.text = list[position].member_name
 
             } else {
-                holder.tvPatientNameRej.text = list.result[position].customer_name
+                holder.tvPatientNameRej.text = list[position].customer_name
             }
             // holder.doctorName.text = list.result[position].doctor_name.toString()
-            if (list.result[position].start_time != null) {
-                holder.startTime.text = convertTo12Hour(list.result[position].start_time)
-                holder.endTime.text = convertTo12Hour(list.result[position].end_time)
+            if (list[position].start_time != null) {
+                holder.startTime.text = convertTo12Hour(list[position].start_time)
+                holder.endTime.text = convertTo12Hour(list[position].end_time)
             }
 
-            holder.tvStatus.text = list.result[position].status_for_customer
-            holder.totalAmount.text = list.result[position].total
+            holder.tvStatus.text = list[position].status_for_customer
+            holder.totalAmount.text = list[position].total
 
 
 //        when (list.result[position].slug) {
@@ -72,7 +73,7 @@ class AdapterCancelled(val context: Context, private val list:  ModelAppointment
 //            holder.cardView.visibility = View.GONE
 //
 //        }
-            when (list.result[position].consultation_type) {
+            when (list[position].consultation_type) {
                 "1" -> {
                     holder.tvConsultationTypeCan.text = "Tele-Consultation"
                 }
@@ -113,7 +114,7 @@ class AdapterCancelled(val context: Context, private val list:  ModelAppointment
     }
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 

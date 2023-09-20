@@ -61,21 +61,35 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatTextView
+         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dr "
+        android:textColor="@color/main_color"
+        android:textSize="15sp"
+        android:textStyle="bold">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvNameOnline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rana Utban"
-                        android:textColor="@color/main_color"
-                        android:textSize="15sp"
-                        android:textStyle="bold">
+    </androidx.appcompat.widget.AppCompatTextView>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNameOnline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rana Utban"
+        android:textColor="@color/main_color"
+        android:textSize="15sp"
+        android:textStyle="bold">
 
-                    </androidx.appcompat.widget.AppCompatTextView>
+    </androidx.appcompat.widget.AppCompatTextView>
+</LinearLayout>
+
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSpecialitiesOnline"
