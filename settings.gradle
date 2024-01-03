@@ -8,6 +8,10 @@ pluginManagement {
         }
         maven { url 'https://www.jitpack.io'
         }
+        maven {
+            url = "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-snapshots"
+        }
+
     }
 }
 dependencyResolutionManagement {
@@ -18,7 +22,13 @@ dependencyResolutionManagement {
         maven {
             url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
-        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://www.jitpack.io'
+        }
+        maven
+                {
+                   url = "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-snapshots"
+                   // url = "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-android"
+                }
     }
 }
 rootProject.name = "EHCF"

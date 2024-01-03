@@ -65,7 +65,7 @@ class PrescriptionDetails : AppCompatActivity() {
         setContentView(binding.root)
         sessionManager = SessionManager(this@PrescriptionDetails)
         val month = currentDate
-        FollowUPMemberName=""
+        FollowUPMemberName = ""
 
         id = intent.getStringExtra("id").toString()
         doctorName = intent.getStringExtra("doctorName").toString()
@@ -77,6 +77,7 @@ class PrescriptionDetails : AppCompatActivity() {
 
         Log.e("customerName", customerName)
         Log.e("memberName", memberName)
+        Log.e("id", id)
 
         if (customerName != "") {
             binding.tvCoustmorNamePreDet.text = customerName
@@ -132,114 +133,118 @@ class PrescriptionDetails : AppCompatActivity() {
 //                    startActivity(browserIntent)
 
 
-        //  startActivity(Intent(this@PrescriptionDetails,DownloadPrescription::class.java))
+            //  startActivity(Intent(this@PrescriptionDetails,DownloadPrescription::class.java))
+        }
+        binding.tvDoctorNamePreDetial.text = doctorName
+        binding.UHID.text = id
+        val refreshListener = SwipeRefreshLayout.OnRefreshListener {
+            overridePendingTransition(0, 0)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
     }
-    binding.tvDoctorNamePreDetial.text = doctorName
-    binding.UHID.text = id
-    val refreshListener = SwipeRefreshLayout.OnRefreshListener {
-        overridePendingTransition(0, 0)
-        finish()
-        startActivity(intent)
-        overridePendingTransition(0, 0)
+
+    companion object {
+        var Maxdate = ""
+        var FollowUP = ""
+        var FollowUPMemberName = ""
     }
-}
 
-companion object {
-    var Maxdate = ""
-    var FollowUP = ""
-    var FollowUPMemberName = ""
-}
+    private fun changeDateFormatFromAnother(date: String?): String? {
+        @SuppressLint("SimpleDateFormat")
+        val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
 
-private fun changeDateFormatFromAnother(date: String?): String? {
-    @SuppressLint("SimpleDateFormat")
-    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-    @SuppressLint("SimpleDateFormat")
-    val outputFormat: DateFormat = SimpleDateFormat("dd MMMM yyyy")
-    resultDate = ""
-    try {
-        resultDate = outputFormat.format(inputFormat.parse(date))
-    } catch (e: ParseException) {
-        e.printStackTrace()
+        @SuppressLint("SimpleDateFormat")
+        val outputFormat: DateFormat = SimpleDateFormat("dd MMMM yyyy")
+        resultDate = ""
+        try {
+            resultDate = outputFormat.format(inputFormat.parse(date))
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return resultDate
     }
-    return resultDate
-}
 
-private fun apiCallPreDet() {
-    progressDialog = ProgressDialog(this@PrescriptionDetails)
-    progressDialog!!.setMessage("Loading..")
-    progressDialog!!.setTitle("Please Wait")
-    progressDialog!!.isIndeterminate = false
-    progressDialog!!.setCancelable(true)
-    progressDialog!!.show()
+    private fun apiCallPreDet() {
+        progressDialog = ProgressDialog(this@PrescriptionDetails)
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
-    ApiClient.apiService.viewPrescriptionDetial(id)
-        .enqueue(object : Callback<ModelPreDetJava> {
-            @SuppressLint("LogNotTimber")
-            override fun onResponse(
-                call: Call<ModelPreDetJava>, response: Response<ModelPreDetJava>
-            ) {
+        ApiClient.apiService.viewPrescriptionDetial(id)
+            .enqueue(object : Callback<ModelPreDetJava> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelPreDetJava>, response: Response<ModelPreDetJava>
+                ) {
 
 
-                if (response.code() == 500) {
-                    myToast(this@PrescriptionDetails, "Server Error")
-                    progressDialog!!.dismiss()
+                    try {
 
-                } else {
-                    binding.recyclerView.apply {
-                        adapter = AdapterPrescriptionDetial(
-                            this@PrescriptionDetails,
-                            response.body()!!
-                        )
+                        if (response.code() == 500) {
+                            myToast(this@PrescriptionDetails, "Server Error")
+                            progressDialog!!.dismiss()
 
-                        for (i in response.body()!!.doctorNotes) {
-                            doctorNote = i.doctorNotes
-                            date = i.date
-                            assesment = i.assessment
-                            subjectiv = i.subjectiveInformation
-                            objective = i.objectiveInformation
-                            plan = i.plan
-                            doctorId = i.doctor_id
-                            if (i.end_follow_up_date != null) {
-                                followUp = i.end_follow_up_date
-                                Maxdate = followUp
-                            }
-                            val currentDate =
-                                SimpleDateFormat("ddMMyyyy", Locale.getDefault()).format(Date())
-                            val followDate = followUp
-                            val followNew = followDate.replace("-", "")
-                            Log.e("followUp", followNew)
-                            Log.e("currentDate", currentDate)
+                        } else {
+                            binding.recyclerView.apply {
+                                adapter = AdapterPrescriptionDetial(
+                                    this@PrescriptionDetails,
+                                    response.body()!!
+                                )
 
-                            if (followDate < currentDate) {
-                                binding.btnBookAppointmnet.visibility = View.GONE
-                            }
+                                for (i in response.body()!!.doctorNotes) {
+                                    doctorNote = i.doctorNotes
+                                    date = i.date
+                                    assesment = i.assessment
+                                    subjectiv = i.subjectiveInformation
+                                    objective = i.objectiveInformation
+                                    plan = i.plan
+                                    doctorId = i.doctor_id
+                                    if (i.end_follow_up_date != null) {
+                                        followUp = i.end_follow_up_date
+                                        Maxdate = followUp
+                                    }
+                                    val currentDate =
+                                        SimpleDateFormat("ddMMyyyy", Locale.getDefault()).format(
+                                            Date()
+                                        )
+                                    val followDate = followUp
+                                    val followNew = followDate.replace("-", "")
+                                    Log.e("followUp", followNew)
+                                    Log.e("currentDate", currentDate)
+
+                                    if (followDate < currentDate) {
+                                        binding.btnBookAppointmnet.visibility = View.GONE
+                                    }
 //                                 if (followDate=="10072023"){
 //                                    binding.btnBookAppointmnet.visibility=View.VISIBLE
 //                                }
 
 
-                        }
-                        changeDateFormatFromAnother(date)
-                        binding.tvDatePreDetialPreDetial.text = resultDate
-                        binding.tvPublicNote.text = doctorNote
-                        binding.tvSubjective.text = subjectiv
-                        binding.tvObjective.text = objective
-                        binding.Plan.text = plan
-                        binding.Assessment.text = assesment
-                        binding.followUpdate.text = followUp
+                                }
+                                changeDateFormatFromAnother(date)
+                                binding.tvDatePreDetialPreDetial.text = resultDate
+                                binding.tvPublicNote.text = doctorNote
+                                binding.tvSubjective.text = subjectiv
+                                binding.tvObjective.text = objective
+                                binding.Plan.text = plan
+                                binding.Assessment.text = assesment
+                                binding.followUpdate.text = followUp
 
 
-                    }
-                    binding.recyclerViewDiagonosis.apply {
-                        adapter = AdapterPrescriptionDetialDiagonsis(
-                            this@PrescriptionDetails,
-                            response.body()!!
-                        )
+                            }
+                            binding.recyclerViewDiagonosis.apply {
+                                adapter = AdapterPrescriptionDetialDiagonsis(
+                                    this@PrescriptionDetails,
+                                    response.body()!!
+                                )
 
-                        progressDialog!!.dismiss()
+                                progressDialog!!.dismiss()
 
-                    }
+                            }
 //                        binding.recyclerViewNote.apply {
 //                            adapter = AdapterPrescriptionDetialDoctorNote(
 //                                this@PrescriptionDetails,
@@ -248,45 +253,49 @@ private fun apiCallPreDet() {
 //
 //                            progressDialog!!.dismiss()
 
-                    //          }
+                            //          }
 
-                    binding.recyclerViewLabTest.apply {
-                        adapter = AdapterPrescriptionDetialLabTest(
-                            this@PrescriptionDetails,
-                            response.body()!!
-                        )
+                            binding.recyclerViewLabTest.apply {
+                                adapter = AdapterPrescriptionDetialLabTest(
+                                    this@PrescriptionDetails,
+                                    response.body()!!
+                                )
 //
 //                            progressDialog!!.dismiss()
 
+                            }
+
+
+                        }
+
+
+                    }catch (e:java.lang.Exception){
+                        myToast(this@PrescriptionDetails, "Something went wrong")
+                        progressDialog!!.dismiss()
                     }
 
+                }
+                override fun onFailure(call: Call<ModelPreDetJava>, t: Throwable) {
+                    myToast(this@PrescriptionDetails, t.message.toString())
+                    progressDialog!!.dismiss()
 
                 }
 
+            })
+    }
 
+    override fun onStart() {
+        super.onStart()
+        CheckInternet().check { connected ->
+            if (connected) {
+
+                // myToast(requireActivity(),"Connected")
+            } else {
+                val changeReceiver = NetworkChangeReceiver(context)
+                changeReceiver.build()
+                //  myToast(requireActivity(),"Check Internet")
             }
-
-            override fun onFailure(call: Call<ModelPreDetJava>, t: Throwable) {
-                myToast(this@PrescriptionDetails, t.message.toString())
-                progressDialog!!.dismiss()
-
-            }
-
-        })
-}
-
-override fun onStart() {
-    super.onStart()
-    CheckInternet().check { connected ->
-        if (connected) {
-
-            // myToast(requireActivity(),"Connected")
-        } else {
-            val changeReceiver = NetworkChangeReceiver(context)
-            changeReceiver.build()
-            //  myToast(requireActivity(),"Check Internet")
         }
     }
-}
 
 }

@@ -156,17 +156,6 @@ interface ApiInterface {
         @Query("search") search: String?
     ): Call<ModelNearestDoctor>
 
-    @POST("create_consultation")
-    fun createBooking(
-        @Query("patient_id") patient_id: String?,
-        @Query("doctor_id") doctor_id: String?,
-        @Query("start_time") start_time: String?,
-        @Query("title") title: String?,
-        @Query("description") description: String?,
-        @Query("total_amount") total_amount: String?,
-        @Query("payment_mode") payment_mode: String?,
-    ): Call<ModelCreateBooking>
-
     @POST("get_all")
     fun filteredDoctor(
         @Query("specialist") specialist: String?,

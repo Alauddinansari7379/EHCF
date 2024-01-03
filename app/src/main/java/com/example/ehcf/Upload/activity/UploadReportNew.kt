@@ -90,7 +90,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
 
         binding.layoutCamera.setOnClickListener {
-          //  myToast(this, "Work on Progress")
+            //  myToast(this, "Work on Progress")
             fileChosser = "1"
             ImagePicker.with(this).cameraOnly()
 //                                            .createIntent { intent ->
@@ -115,13 +115,13 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 binding.edtTitle.requestFocus()
                 return@setOnClickListener
             }
-            if(fileChosser=="1"){
+            if (fileChosser == "1") {
                 uploadImageCamera()
-            } else{
+            } else {
                 uploadImage()
 
             }
-          //  uploadImage()
+            //  uploadImage()
 
 
         }
@@ -171,7 +171,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
     }
 
     private fun openImageChooser() {
-         Intent(Intent.ACTION_PICK).also {
+        Intent(Intent.ACTION_PICK).also {
             it.type = "image/*"
             (MediaStore.ACTION_IMAGE_CAPTURE)
             val mimeTypes = arrayOf("image/jpeg", "image/png")
@@ -200,9 +200,8 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
         if (resultCode == Activity.RESULT_OK) {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data!!
-          //  binding.imageViewNew.setImageURI(fileUri)
+            //  binding.imageViewNew.setImageURI(fileUri)
             selectedImageUri = data?.data
-
 
 
             //  pImgFile1 = File(selectedImageUri!!.path)
@@ -245,19 +244,19 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
             when (requestCode) {
                 REQUEST_CODE_IMAGE -> {
                     selectedImageUri = data?.data
-                    Log.e("filecgose",fileChosser)
-                    when(fileChosser){
-                        "1"->{
-                            binding.layoutCameraGreen.visibility=View.VISIBLE
-                            binding.layoutCameraNew.visibility=View.GONE
+                    Log.e("filecgose", fileChosser)
+                    when (fileChosser) {
+                        "1" -> {
+                            binding.layoutCameraGreen.visibility = View.VISIBLE
+                            binding.layoutCameraNew.visibility = View.GONE
                         }
-                        "2"->{
-                            binding.layoutGalleryGreen.visibility=View.VISIBLE
-                            binding.layoutGalleryNew.visibility=View.GONE
+                        "2" -> {
+                            binding.layoutGalleryGreen.visibility = View.VISIBLE
+                            binding.layoutGalleryNew.visibility = View.GONE
                         }
-                        "3"->{
-                            binding.layoutPDFGreen.visibility=View.VISIBLE
-                            binding.layoutPDFNew.visibility=View.GONE
+                        "3" -> {
+                            binding.layoutPDFGreen.visibility = View.VISIBLE
+                            binding.layoutPDFNew.visibility = View.GONE
 
                         }
                     }
@@ -303,29 +302,38 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                     call: Call<ModelFamilyList>,
                     response: Response<ModelFamilyList>
                 ) {
-                    // binding.rvSlotTiming.invalidate();
-                    if (response.body()!!.status == 0) {
-                        myToast(this@UploadReportNew, "${response.body()!!.message}")
+
+                    try {
+                        // binding.rvSlotTiming.invalidate();
+                        if (response.body()!!.status == 0) {
+                            myToast(this@UploadReportNew, "${response.body()!!.message}")
+                            progressDialog!!.dismiss()
+                        } else if (response.code() == 500) {
+                            myToast(this@UploadReportNew, "Server Error")
+                        } else if (response.body()!!.result.isEmpty()) {
+                            binding.rvSlotTimingFamily.apply {
+                                adapter =
+                                    AdapterFamilyListView(this@UploadReportNew, response.body()!!)
+                                progressDialog!!.dismiss()
+                            }
+                        } else {
+                            binding.rvSlotTimingFamily.apply {
+                                //   adapter!!.notifyDataSetChanged();
+                                //myToast(this@ShuduleTiming, response.body()!!.message)
+                                adapter =
+                                    AdapterFamilyListView(this@UploadReportNew, response.body()!!)
+                                binding.rvSlotTimingFamily.layoutManager =
+                                    GridLayoutManager(context, 3)
+                                //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
+
+                                progressDialog!!.dismiss()
+                            }
+
+                        }
+                    } catch (e: Exception) {
                         progressDialog!!.dismiss()
-                    } else if (response.code() == 500) {
-                        myToast(this@UploadReportNew, "Server Error")
-                    } else if (response.body()!!.result.isEmpty()) {
-                        binding.rvSlotTimingFamily.apply {
-                            adapter =
-                                AdapterFamilyListView(this@UploadReportNew, response.body()!!)
-                            progressDialog!!.dismiss()
-                        }
-                    } else {
-                        binding.rvSlotTimingFamily.apply {
-                            //   adapter!!.notifyDataSetChanged();
-                            //myToast(this@ShuduleTiming, response.body()!!.message)
-                            adapter = AdapterFamilyListView(this@UploadReportNew, response.body()!!)
-                            binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
-                            //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
-
-                            progressDialog!!.dismiss()
-                        }
-
+                        e.printStackTrace()
+                        myToast(this@UploadReportNew, "Something went wrong")
                     }
                 }
 
@@ -435,18 +443,24 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 call: Call<ModelUploadReport>,
                 response: Response<ModelUploadReport>
             ) {
-                response.body()?.let {
-                    if (response.code() == 500) {
-                        myToast(this@UploadReportNew, "Server Error")
-                        progressDialog!!.dismiss()
+                try {
+                    response.body()?.let {
+                        if (response.code() == 500) {
+                            myToast(this@UploadReportNew, "Server Error")
+                            progressDialog!!.dismiss()
 
-                    } else {
-                        myToast(this@UploadReportNew, response.body()!!.message)
-                        refresh()
+                        } else {
+                            myToast(this@UploadReportNew, response.body()!!.message)
+                            refresh()
 //                    binding.layoutRoot.snackbar(it.message)
 //                    binding.progressBar.progress = 100
-                        progressDialog!!.dismiss()
+                            progressDialog!!.dismiss()
+                        }
+
                     }
+                } catch (e: java.lang.Exception) {
+                    progressDialog!!.dismiss()
+                    e.printStackTrace()
 
                 }
             }
@@ -475,7 +489,8 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
         val file: File = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .absolutePath + "/myAppImages/")
+                .absolutePath + "/myAppImages/"
+        )
         if (!file.exists()) {
             file.mkdirs()
         }
@@ -485,7 +500,8 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
         // val fos = FileOutputStream(file1)
 
-        val parcelFileDescriptor = contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
+        val parcelFileDescriptor =
+            contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
 
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
         // val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
@@ -516,18 +532,25 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 call: Call<ModelUploadReport>,
                 response: Response<ModelUploadReport>
             ) {
-                response.body()?.let {
-                    if (response.code() == 500) {
-                        myToast(this@UploadReportNew, "Server Error")
-                        progressDialog!!.dismiss()
+                try {
+                    response.body()?.let {
+                        if (response.code() == 500) {
+                            myToast(this@UploadReportNew, "Server Error")
+                            progressDialog!!.dismiss()
 
-                    } else {
-                        myToast(this@UploadReportNew, response.body()!!.message)
-                        refresh()
+                        } else {
+                            myToast(this@UploadReportNew, response.body()!!.message)
+                            refresh()
 //                    binding.layoutRoot.snackbar(it.message)
 //                    binding.progressBar.progress = 100
-                        progressDialog!!.dismiss()
+                            progressDialog!!.dismiss()
+                        }
+
                     }
+                } catch (e: java.lang.Exception) {
+                    myToast(this@UploadReportNew, "Something went wrong")
+                    e.printStackTrace()
+                    progressDialog!!.dismiss()
 
                 }
             }

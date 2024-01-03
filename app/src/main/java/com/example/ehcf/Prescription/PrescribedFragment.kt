@@ -51,16 +51,17 @@ class PrescribedFragment : Fragment() {
         shimmerFrameLayout = view.findViewById(R.id.shimmerPrescribed)
         shimmerFrameLayout!!.startShimmer();
         sessionManager = SessionManager(requireContext())
+        mainData = ArrayList<ResultPrescribed>()
 //        binding.btnAddReport.setOnClickListener {
 //            startActivity(Intent(requireContext(),ReportMain::class.java))
 //            sessionManager= SessionManager(requireContext())
 //
 //        }
-
-        Handler().postDelayed({
-            apiCallGetPrePending()
-            apiCallSpecialistSpinner()
-                              }, 1000)
+        apiCallGetPrePending()
+        apiCallSpecialistSpinner()
+//        Handler().postDelayed({
+//
+//                              }, 1000)
 
         binding.imgRefresh.setOnClickListener {
             binding.edtSearch.text.clear()
@@ -180,6 +181,10 @@ class PrescribedFragment : Fragment() {
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
+                        activity?.let { myToast(it, "Something went wrong") }
+
+                        progressDialog!!.dismiss()
+
                     }
                 }
 
@@ -303,6 +308,7 @@ class PrescribedFragment : Fragment() {
                             progressDialog!!.dismiss()
 
                         } else {
+                            mainData = response.body()!!.result!!
 
                         }
 

@@ -5,10 +5,12 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.Fragment.MainActivity
@@ -18,14 +20,24 @@ import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
+import com.google.gson.Gson
+import com.papayacoders.phonepe.ApiUtilities
+import com.phonepe.intent.sdk.api.B2BPGRequestBuilder
+import com.phonepe.intent.sdk.api.PhonePe
+import com.phonepe.intent.sdk.api.PhonePeInitException
 import com.razorpay.Checkout
- import com.razorpay.PaymentResultListener
- import org.json.JSONObject
+import com.razorpay.PaymentResultListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
+import java.nio.charset.Charset
+import java.security.MessageDigest
 
 class PaymentMode : AppCompatActivity(), PaymentResultListener {
     private val context: Context = this@PaymentMode
@@ -39,7 +51,15 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     var title = ""
     var paymentMode = ""
     var description = ""
-   // private val razorpay = Razorpay(this@PaymentMode, "rzp_test_tnOp3sjGL6gTju")
+
+    var apiEndPoint = "/pg/v1/pay"
+    val salt = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399" // salt key
+    val MERCHANT_ID = "PGTESTPAYUAT"  // Merhcant id
+    val MERCHANT_TID = "txnId"
+    val BASE_URL = "https://api-preprod.phonepe.com/"
+
+
+    // private val razorpay = Razorpay(this@PaymentMode, "rzp_test_tnOp3sjGL6gTju")
 
     private lateinit var binding: ActivityPaymentModeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +68,68 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         setContentView(binding.root)
         sessionManager = SessionManager(this)
 
+        PhonePe.init(this@PaymentMode)
+        try {
+            val upiApps = PhonePe.getUpiApps()
+            Log.e("UPIAPPS",upiApps.toString())
+        } catch (exception: PhonePeInitException) {
+            exception.printStackTrace();
+        }
+
+        val data = JSONObject()
+        data.put("merchantTransactionId", MERCHANT_TID)//String. Mandatory
+
+        data.put("merchantId" , MERCHANT_ID) //String. Mandatory
+
+        data.put("amount", sessionManager.pricing!!.toInt() * 100 )//Long. Mandatory
+
+        data.put("mobileNumber", "7908834635") //String. Optional
+        data.put("callbackUrl", "https://webhook.site/6658f3da-60a4-440f-a743-27e3dcdb91a8") //String. Mandatory
+
+        val paymentInstrument = JSONObject()
+        paymentInstrument.put("type", "PAY_PAGE")
+        //  paymentInstrument.put("targetApp", "com.phonepe.simulator")
+
+        data.put("paymentInstrument", paymentInstrument )//OBJECT. Mandatory
 
 
+        val deviceContext = JSONObject()
+        deviceContext.put("deviceOS", "ANDROID")
+        data.put("deviceContext", deviceContext)
+
+
+
+        val payloadBase64 = Base64.encodeToString(
+            data.toString().toByteArray(Charset.defaultCharset()), Base64.NO_WRAP
+        )
+        val checksum = sha256(payloadBase64 + apiEndPoint + salt)+"###1"
+
+       // SHA256(base64 encoded payload + "/pg/v1/pay" + salt key) + ### + salt index
+
+        val b2BPGRequest = B2BPGRequestBuilder()
+            .setData(payloadBase64)
+            .setChecksum(checksum)
+            .setUrl(apiEndPoint)
+            .build()
+
+
+        binding.cardPhonePay.setOnClickListener {
+            Log.e("payloadBase64", "$payloadBase64")
+            Log.e("checksum", "$checksum")
+            try {
+                PhonePe.getImplicitIntent(this, b2BPGRequest, "")
+                    ?.let { startActivityForResult(it, 1) };
+            } catch (e: PhonePeInitException) {
+            }
+
+        }
 
 
         Log.e("memberid", AdapterFamilyListView.memberID)
 
         if (sessionManager.bookingType.toString() == "1" && PrescriptionDetails.FollowUP == "") {
             binding.cardCashOnDelivery.visibility = View.GONE
-            binding.cardFreeOfCost.visibility=View.GONE
+            binding.cardFreeOfCost.visibility = View.GONE
 
         }
 
@@ -91,30 +164,31 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
             }
         }
         if (PrescriptionDetails.FollowUP == "1") {
-            binding.cardFreeOfCost.visibility=View.VISIBLE
-            binding.cardRazorPay.visibility=View.GONE
-            binding.cardCashOnDelivery.visibility=View.GONE
+            binding.cardFreeOfCost.visibility = View.VISIBLE
+            binding.cardRazorPay.visibility = View.GONE
+            binding.cardCashOnDelivery.visibility = View.GONE
 
 
         }
-//        razorpay?.getPaymentMethods(object : PaymentMethodsCallback {
-//            override fun onPaymentMethodsReceived(result: String?) {
-//                /**
-//                 * This returns JSON data
-//                 * The structure of this data can be seen at the following link:
-//                 * https://api.razorpay.com/v1/methods?key_id=rzp_test_1DP5mmOlF5G5ag
-//                 *
-//                 */
-//                Log.d("Result", "" + result)
-//               // inflateLists(result)
-//            }
-//
-//            override fun onError(error: String?) {
-//                if (error != null) {
-//                    Log.e("Get Payment error", error)
-//                }
-//            }
-//        })
+/*        razorpay?.getPaymentMethods(object : PaymentMethodsCallback {
+            override fun onPaymentMethodsReceived(result: String?) {
+                */
+        /**
+         * This returns JSON data
+         * The structure of this data can be seen at the following link:
+         * https://api.razorpay.com/v1/methods?key_id=rzp_test_1DP5mmOlF5G5ag
+         *
+         *//*
+                Log.d("Result", "" + result)
+               // inflateLists(result)
+            }
+
+            override fun onError(error: String?) {
+                if (error != null) {
+                    Log.e("Get Payment error", error)
+                }
+            }
+        })*/
         binding.cardCashOnDelivery.setOnClickListener {
             SweetAlertDialog(this@PaymentMode, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Are you sure want to Confirm?")
@@ -145,13 +219,12 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
 
         binding.cardRazorPay.setOnClickListener {
-            startPaymentOnline()
-           // createWebView()
+            startPaymentOnlineRazorPay()
+            // createWebView()
 
 //            val checkout = Checkout()
 //                .upiTurbo(this@PaymentMode) // mandatory
 //                .setColor("/*color*/ #000000") // optional
-
 
 
 //            val intent = Intent(context as Activity, RazorPay::class.java)
@@ -163,9 +236,65 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         }
 
     }
-//     private fun createWebView() {
-//        razorpay?.setWebView(binding.web)
-//    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            Log.e("Data",data.toString())
+            checkStatus()
+
+           // myToast(this@PaymentMode, "onActivityResult")
+        }
+    }
+    private fun checkStatus() {
+        val xVerify = sha256("/pg/v1/status/$MERCHANT_ID/${MERCHANT_TID}${salt}") + "###1"
+
+        Log.d("phonepe", "xverify : $xVerify")
+
+        val headers = mapOf(
+            "Content-Type" to "application/json",
+            "X-VERIFY" to xVerify,
+            "X-MERCHANT-ID" to MERCHANT_ID,
+        )
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val res = ApiUtilities.getApiInterface().checkStatus(MERCHANT_ID, MERCHANT_TID, headers)
+            withContext(Dispatchers.Main) {
+                Log.d("phonepe", "APIResponse${res.body()}")
+
+                if (res.body() != null && res.body()!!.success) {
+                    Log.d("phonepe", "onCreate: success")
+                    Toast.makeText(this@PaymentMode, res.body()!!.message, Toast.LENGTH_SHORT).show()
+                    if (res.body()!!.code=="PAYMENT_SUCCESS") {
+                        when (sessionManager.bookingType) {
+                            "1" -> {
+                                apiCallCreateBookingOnlineConsultOnline()
+                            }
+                            "2" -> {
+                                apiCallCreateBookingAppointmentOnline()
+                            }
+                            else -> {
+                                apiCallCreateBookingHomeVisitOnline()
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+    }
+
+    private fun sha256(input: String): String {
+        val bytes = input.toByteArray(Charsets.UTF_8)
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
+    }
+
+
     private fun apiCallCreateBookingOnlineConsultOnline() {
         progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading..")
@@ -211,6 +340,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
             })
     }
+
     private fun apiCallCreateBookingOnlineConsultOnlineFree() {
         progressDialog = ProgressDialog(this)
         progressDialog!!.setMessage("Loading..")
@@ -266,7 +396,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         progressDialog!!.setCancelable(false)
         progressDialog!!.show()
         val amount = "1000"
-         paymentMode = "2"
+        paymentMode = "2"
 
         ApiClient.apiService.createConsultation(
             sessionManager.id.toString(),
@@ -302,6 +432,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
             })
     }
+
     private fun apiCallCreateBookingAppointmentOnlineFree() {
 
         progressDialog = ProgressDialog(this)
@@ -311,7 +442,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         progressDialog!!.setCancelable(false)
         progressDialog!!.show()
         val amount = "1000"
-         paymentMode = "5"
+        paymentMode = "5"
 
         ApiClient.apiService.createConsultation(
             sessionManager.id.toString(),
@@ -432,6 +563,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
             })
     }
+
     private fun apiCallCreateBookingHomeVisitOnlineFree() {
 
         progressDialog = ProgressDialog(this)
@@ -535,17 +667,22 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
     }
 
-    private fun startPaymentOnline() {
+    private fun startPaymentOnlineRazorPay() {
         val co = Checkout()
         try {
             val options = JSONObject()
             options.put("name", "EHCF")
             options.put("description", "Payment Description")
             //You can omit the image option to fetch the image from the dashboard
-            options.put("image", "https://ehcf.thedemostore.in/uploads/prescriptions/1689586754.png")
+            options.put(
+                "image",
+                "https://ehcf.thedemostore.in/uploads/prescriptions/1689586754.png"
+            )
             options.put("theme.color", "#9F367A");
             options.put("currency", "INR");
-            options.put("amount", sessionManager.pricing!!.toInt() * 100)//pass amount in currency subunits
+            options.put(
+                "amount", sessionManager.pricing!!.toInt() * 100
+            )//pass amount in currency subunits
             val prefill = JSONObject()
             prefill.put("email", "alauddinansari7379@gmail.com")
             prefill.put("contact", "7379452259")

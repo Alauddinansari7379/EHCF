@@ -62,15 +62,22 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
                 override fun onResponse(
                     call: Call<ModelDeleteRep>, response: Response<ModelDeleteRep>
                 ) {
-                    if (response.body()!!.status == 1) {
-                        myToast(this@ReportList, response.body()!!.message)
-                        progressDialog!!.dismiss()
-                        refresh()
+                    try {
 
-                    } else {
-                        myToast(this@ReportList, response.body()!!.message)
-                        progressDialog!!.dismiss()
 
+                        if (response.body()!!.status == 1) {
+                            myToast(this@ReportList, response.body()!!.message)
+                            progressDialog!!.dismiss()
+                            refresh()
+
+                        } else {
+                            myToast(this@ReportList, response.body()!!.message)
+                            progressDialog!!.dismiss()
+
+                        }
+                    }catch (e:Exception){
+                        myToast(this@ReportList, "Something went wrong")
+                        progressDialog!!.dismiss()
                     }
 
 
@@ -100,21 +107,27 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
                 override fun onResponse(
                     call: Call<ModelGetAllReport>, response: Response<ModelGetAllReport>
                 ) {
-                    if (response.body()!!.result.isEmpty()) {
-                        binding.btbAddMoreReport.text = "Add Report"
-                        binding.tvNoDataFound.visibility = View.VISIBLE
-                        // myToast(requireActivity(),"No Data Found")
-                        progressDialog!!.dismiss()
+                    try {
+                        if (response.body()!!.result.isEmpty()) {
+                            binding.btbAddMoreReport.text = "Add Report"
+                            binding.tvNoDataFound.visibility = View.VISIBLE
+                            // myToast(requireActivity(),"No Data Found")
+                            progressDialog!!.dismiss()
 
-                    } else {
-                        binding.recyclerView.apply {
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter = AdapterUploadReport(
-                                response.body()!!,
-                                this@ReportList, this@ReportList)
+                        } else {
+                            binding.recyclerView.apply {
+                                binding.tvNoDataFound.visibility = View.GONE
+                                adapter = AdapterUploadReport(
+                                    response.body()!!,
+                                    this@ReportList, this@ReportList
+                                )
+                            }
+                            progressDialog!!.dismiss()
+
                         }
+                    }catch (e:Exception){
+                        myToast(this@ReportList, "Something went wrong")
                         progressDialog!!.dismiss()
-
                     }
 
 

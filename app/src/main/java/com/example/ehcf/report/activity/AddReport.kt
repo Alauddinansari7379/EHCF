@@ -205,7 +205,6 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                         .setConfirmClickListener { sDialog ->
                             sDialog.cancel()
                             (activity as ReportMain).refresh()
-
                         }
                         .setCancelClickListener { sDialog ->
                             sDialog.cancel()
@@ -245,9 +244,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         if (!file.exists()) {
             file.mkdirs()
         }
-        val file1: File = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment
-        )
+        val file1: File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment)
 
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
 
@@ -260,7 +257,6 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
         progressDialog!!.show()
-
         // binding.progressBar.progress = 0
         val body = UploadRequestBody(file1, "image", this)
 

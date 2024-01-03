@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentsDetails
+import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAppointmentDetailsBinding
@@ -56,53 +57,63 @@ class AppointmentDetails : AppCompatActivity() {
                 override fun onResponse(
                     call: Call<ModelAppointmentsDetails>, response: Response<ModelAppointmentsDetails>
                 ) {
-                    Log.e("Ala", "${response.body()!!}")
-                    Log.e("Ala", "${response.body()!!.status}")
+                    try {
+                        if (response.code()==500){
+                            myToast(this@AppointmentDetails,"Server error")
+                            progressDialog!!.dismiss()
+                        } else if (response.code()==404){
+                            myToast(this@AppointmentDetails, "Something went wrong")
+                            progressDialog!!.dismiss()
+                        }else
+                        Log.e("Ala", "${response.body()!!}")
+                        Log.e("Ala", "${response.body()!!.status}")
 
-                   binding.tvDate.text= response.body()!!.result.date
-                   binding.tvTime.text= response.body()!!.result.start_time
-                   binding.tvDoctorName.text= response.body()!!.result.doctor_name
+                        binding.tvDate.text = response.body()!!.result.date
+                        binding.tvTime.text = convertTo12Hour(response.body()!!.result.start_time)
+                        binding.tvDoctorName.text = response.body()!!.result.doctor_name
 
-                    if (response.body()!!.result.member_name!=null){
-                        binding.tvPatientName.text = response.body()!!.result.member_name
-                    }
-                    else{
-                        binding.tvPatientName.text = response.body()!!.result.customer_name
+                        if (response.body()!!.result.member_name != null) {
+                            binding.tvPatientName.text = response.body()!!.result.member_name
+                        } else {
+                            binding.tvPatientName.text = response.body()!!.result.customer_name
 
-                    }
-                    when(response.body()!!.result.consultation_type){
-                        "1"->{
-                            binding.tvConsultationType.text="Tele-Consultation"
                         }
-                        "2"->{
-                            binding.tvConsultationType.text="Clinic-Visit"
+                        when (response.body()!!.result.consultation_type) {
+                            "1" -> {
+                                binding.tvConsultationType.text = "Tele-Consultation"
+                            }
+                            "2" -> {
+                                binding.tvConsultationType.text = "Clinic-Visit"
+                            }
+                            "3" -> {
+                                binding.tvConsultationType.text = "Home-Visit"
+                            }
                         }
-                        "3"->{
-                            binding.tvConsultationType.text="Home-Visit"
+                        when (response.body()!!.result.payment_mode) {
+                            "1" -> {
+                                binding.tvPaymentMode.text = "Cash On Delivery"
+                            }
+                            "2" -> {
+                                binding.tvPaymentMode.text = "Online"
+                            }
+                            "5" -> {
+                                binding.tvPaymentMode.text = "Free"
+                            }
                         }
-                    }
-                    when(response.body()!!.result.payment_mode){
-                        "1"->{
-                            binding.tvPaymentMode.text="Cash On Delivery"
+                        binding.tvTotalAmount.text = response.body()!!.result.total
+                        binding.tvEmail.text = response.body()!!.result.email
+                        binding.tvPhoneNumber.text = response.body()!!.result.phone_number
+                        binding.tvBookingId.text = response.body()!!.result.id
+                        binding.tvStatus.text = response.body()!!.result.status_for_customer
+                        if (response.body()!!.result.profile_image != null) {
+                            Picasso.get()
+                                .load("https://ehcf.thedemostore.in/uploads/${response.body()!!.result.profile_image}")
+                                .placeholder(
+                                    R.drawable.profile
+                                ).error(R.drawable.profile).into(binding.imgProfile);
                         }
-                        "2"->{
-                            binding.tvPaymentMode.text="Online"
-                        }
-                        "5"->{
-                            binding.tvPaymentMode.text="Free"
-                        }
-                    }
-                   binding.tvTotalAmount.text= response.body()!!.result.total
-                   binding.tvEmail.text= response.body()!!.result.email
-                   binding.tvPhoneNumber.text= response.body()!!.result.phone_number
-                   binding.tvBookingId.text= response.body()!!.result.id
-                   binding.tvStatus.text= response.body()!!.result.status_for_customer
-                    if (response.body()!!.result.profile_image!=null){
-                        Picasso.get().load("https://ehcf.thedemostore.in/uploads/${response.body()!!.result.profile_image}").placeholder(
-                            R.drawable.profile).error(R.drawable.profile).into(binding.imgProfile);
-                    }
 
-                    progressDialog!!.dismiss()
+                        progressDialog!!.dismiss()
 
 //                    if (response.body()!!.result!=null){
 //                        binding.tvNoDataFound.visibility = View.VISIBLE
@@ -119,6 +130,10 @@ class AppointmentDetails : AppCompatActivity() {
 //                    }
 
 
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                        myToast(this@AppointmentDetails, "Something went wrong")
+                    }
                 }
 
                 override fun onFailure(call: Call<ModelAppointmentsDetails>, t: Throwable) {

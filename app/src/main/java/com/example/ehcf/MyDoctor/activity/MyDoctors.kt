@@ -167,6 +167,8 @@ class MyDoctors : AppCompatActivity() {
                         }
                     }catch (e:Exception){
                         e.printStackTrace()
+                        myToast(this@MyDoctors, "Something went wrong")
+                        progressDialog!!.dismiss()
                     }
                 }
                 override fun onFailure(call: Call<ModelMyDoctor>, t: Throwable) {

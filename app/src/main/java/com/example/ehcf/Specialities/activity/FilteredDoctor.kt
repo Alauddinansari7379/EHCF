@@ -88,17 +88,22 @@ class FilteredDoctor : AppCompatActivity() {
                     call: Call<ModelAllDoctorNew>,
                     response: Response<ModelAllDoctorNew>
                 ) {
-                    if (response.body()!!.status == 1) {
-                        binding.rvAllDoctor.apply {
+                    try {
+                        if (response.body()!!.status == 1) {
+                            binding.rvAllDoctor.apply {
 
-                            adapter = AdapterAllDoctor(this@FilteredDoctor, response.body()!!)
+                                adapter = AdapterAllDoctor(this@FilteredDoctor, response.body()!!)
+                                progressDialog!!.dismiss()
+                            }
+                        } else {
+                            myToast(this@FilteredDoctor, response.body()!!.message.toString())
                             progressDialog!!.dismiss()
-                        }
-                    } else {
-                        myToast(this@FilteredDoctor, response.body()!!.message.toString())
-                        progressDialog!!.dismiss()
-                        binding.shimmer.visibility = View.GONE
+                            binding.shimmer.visibility = View.GONE
 
+                        }
+                    }catch (e:Exception){
+                        myToast(this@FilteredDoctor,"Something went wrong")
+                        progressDialog!!.dismiss()
                     }
                 }
 
@@ -128,26 +133,32 @@ class FilteredDoctor : AppCompatActivity() {
                 response: Response<ModelOnlineDoctor>
             ) {
 
-                if (response.body()!!.result.isEmpty()) {
-                    myToast(this@FilteredDoctor, "No Online Doctor Found")
-                    binding.shimmer.visibility = View.GONE
-                    progressDialog!!.dismiss()
-                    binding.rvAllDoctor.apply {
-                        shimmerFrameLayout?.startShimmer()
-                        binding.rvAllDoctor.visibility = View.VISIBLE
-                        binding.shimmer.visibility = View.GONE
-                        adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
-                        progressDialog!!.dismiss()
-                    }
-                } else {
-                    binding.rvAllDoctor.apply {
-                        shimmerFrameLayout?.startShimmer()
-                        binding.rvAllDoctor.visibility = View.VISIBLE
-                        binding.shimmer.visibility = View.GONE
-                        adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
-                        progressDialog!!.dismiss()
-                    }
+                try {
 
+                    if (response.body()!!.result.isEmpty()) {
+                        myToast(this@FilteredDoctor, "No Online Doctor Found")
+                        binding.shimmer.visibility = View.GONE
+                        progressDialog!!.dismiss()
+                        binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
+                            adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
+                            progressDialog!!.dismiss()
+                        }
+                    } else {
+                        binding.rvAllDoctor.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            binding.shimmer.visibility = View.GONE
+                            adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
+                            progressDialog!!.dismiss()
+                        }
+
+                    }
+                }catch (e:Exception){
+                    myToast(this@FilteredDoctor,"Something went wrong")
+                    progressDialog!!.dismiss()
                 }
 
             }
@@ -201,6 +212,8 @@ class FilteredDoctor : AppCompatActivity() {
                     } catch (e: Exception) {
                         myToast(this@FilteredDoctor, "Something went wrong")
                         e.printStackTrace()
+                         progressDialog!!.dismiss()
+
                     }
 
                 }
@@ -235,6 +248,7 @@ class FilteredDoctor : AppCompatActivity() {
                     call: Call<ModelFilteredDoctor>,
                     response: Response<ModelFilteredDoctor>
                 ) {
+                    try{
                     if (response.body()!!.result.isEmpty()) {
                         myToast(this@FilteredDoctor, "No Doctor Found")
                         binding.shimmer.visibility = View.GONE
@@ -255,6 +269,11 @@ class FilteredDoctor : AppCompatActivity() {
                             progressDialog!!.dismiss()
                         }
 
+                    }
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                        myToast(this@FilteredDoctor,"Something went wrong")
+                        progressDialog!!.dismiss()
                     }
                 }
 

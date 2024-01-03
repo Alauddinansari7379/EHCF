@@ -1,10 +1,12 @@
 package com.example.ehcf.Specialities.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -123,23 +125,29 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
                     call: Call<ModelDoctorProfile>,
                     response: Response<ModelDoctorProfile>
                 ) {
-                    if (response.body()!!.result.isEmpty()) {
-                        binding.shimmer.visibility = View.GONE
-                        myToast(this@DoctorProfile, "No Doctor Found")
-                        progressDialog!!.dismiss()
-                    } else {
-                        binding.rvAllDoctor.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvAllDoctor.visibility = View.VISIBLE
+                    try {
+                        if (response.body()!!.result.isEmpty()) {
                             binding.shimmer.visibility = View.GONE
-                            adapter = AdapterDoctorProfile(
-                                this@DoctorProfile,
-                                response.body()!!,
-                                this@DoctorProfile
-                            ,this@DoctorProfile)
+                            myToast(this@DoctorProfile, "No Doctor Found")
                             progressDialog!!.dismiss()
-                        }
+                        } else {
+                            binding.rvAllDoctor.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAllDoctor.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                adapter = AdapterDoctorProfile(
+                                    this@DoctorProfile,
+                                    response.body()!!,
+                                    this@DoctorProfile, this@DoctorProfile
+                                )
+                                progressDialog!!.dismiss()
+                            }
 
+                        }
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                        myToast(this@DoctorProfile,"Something went wrong")
+                        progressDialog!!.dismiss()
                     }
                 }
 
@@ -170,21 +178,27 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
                     call: Call<ModelCommentList>,
                     response: Response<ModelCommentList>
                 ) {
-                    if (response.body()!!.result.isEmpty()) {
-                        binding.shimmer.visibility = View.GONE
-                        myToast(this@DoctorProfile, "No Review Found")
-                        progressDialog!!.dismiss()
-                    } else {
-                        binding.recyclerViewComment.apply {
-                            shimmerFrameLayout?.startShimmer()
-                              adapter = AdapterCommentList(
-                                this@DoctorProfile,
-                                response.body()!!,
-                                this@DoctorProfile
-                            )
+                    try {
+                        if (response.body()!!.result.isEmpty()) {
+                            binding.shimmer.visibility = View.GONE
+                            myToast(this@DoctorProfile, "No Review Found")
                             progressDialog!!.dismiss()
-                        }
+                        } else {
+                            binding.recyclerViewComment.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                adapter = AdapterCommentList(
+                                    this@DoctorProfile,
+                                    response.body()!!,
+                                    this@DoctorProfile
+                                )
+                                progressDialog!!.dismiss()
+                            }
 
+                        }
+                    } catch (e:Exception){
+                        e.printStackTrace()
+                        myToast(this@DoctorProfile,"Something went wrong")
+                        progressDialog!!.dismiss()
                     }
                 }
 

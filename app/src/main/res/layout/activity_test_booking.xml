@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Diagnostic.TestBooking">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/_10sdp"
+            android:text="Your test booking with EHCF"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutBoking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:gravity="end">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:background="@drawable/ic_clear_black_24dp">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:gravity="end">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selected test (2)"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:orientation="horizontal"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1.HbA1c"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="₹  350"
+            android:gravity="end"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_weight="1"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:orientation="horizontal"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2.Insulin Fasting Blood"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="₹  450"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:gravity="end">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Read Test Preparation"
+            android:textColor="@color/grey"
+             android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:gravity="end">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="E-Reports in 2 days"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@color/grey">
+
+    </androidx.viewpager.widget.ViewPager>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:backgroundTint="@color/main_color"
+            android:background="@drawable/add">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ADD MORE TESTS"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
+             android:textColor="@color/main_color"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:orientation="horizontal"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Total"
+            android:layout_weight="1"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="₹  800"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:orientation="horizontal"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sample Pickup charge"
+            android:layout_weight="1"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="₹  200"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:orientation="horizontal"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total ₹ 1000 "
+            android:layout_weight="1"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="bold"
+            >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_weight="1"
+            android:background="@drawable/corner"
+            android:backgroundTint="@color/main_color"
+             android:drawablePadding="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:drawableTint="@color/white"
+            android:inputType="text"
+             android:text="Continue"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp">
+
+        </androidx.appcompat.widget.AppCompatButton>
+
+    </LinearLayout>
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/_40sdp"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:background="@drawable/sucees"
+            android:layout_gravity="center">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textSize="@dimen/_10sdp"
+            android:text="Your Payment was successful. \n A receipt for this purchase has \n been sent to your email">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.appcompat.widget.AppCompatButton
+             android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_25sdp"
+             android:background="@drawable/corner"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_color"
+            android:drawablePadding="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:drawableTint="@color/white"
+            android:inputType="text"
+            android:text="Home"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp">
+
+        </androidx.appcompat.widget.AppCompatButton>
+
+    </LinearLayout>
+</LinearLayout>
+
+
+
+
+</LinearLayout>
+

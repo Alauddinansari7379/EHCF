@@ -24,9 +24,9 @@ import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 
 class Specialities : AppCompatActivity() {
-   private var progressDialog: ProgressDialog? =null
+    private var progressDialog: ProgressDialog? = null
     private val context: Context = this@Specialities
-    var bookingType=""
+    var bookingType = ""
     var shimmerFrameLayout: ShimmerFrameLayout? = null
 
     private lateinit var binding: ActivitySpecialitiesBinding
@@ -38,9 +38,9 @@ class Specialities : AppCompatActivity() {
         shimmerFrameLayout = findViewById(R.id.shimmer_specialities)
         shimmerFrameLayout!!.startShimmer();
 
-        bookingType= intent.getStringExtra("bookingType").toString()
-        Log.e("BookingType","$bookingType")
-        PrescriptionDetails.FollowUP=""
+        bookingType = intent.getStringExtra("bookingType").toString()
+        Log.e("BookingType", "$bookingType")
+        PrescriptionDetails.FollowUP = ""
         apiCall()
 
 
@@ -65,14 +65,14 @@ class Specialities : AppCompatActivity() {
         }
     }
 
-    private fun apiCall(){
+    private fun apiCall() {
 
         progressDialog = ProgressDialog(this@Specialities)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setCancelable(true)
-    //    progressDialog!!.show()
+        //    progressDialog!!.show()
 
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -84,41 +84,47 @@ class Specialities : AppCompatActivity() {
         retrofitData.enqueue(object : Callback<ModelSplic> {
             override fun onResponse(
                 call: Call<ModelSplic>,
-                response: Response<ModelSplic>)
-            {
-                if (response.code()==200) {
-                    val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewSpeci)
-                    recyclerView.apply {
-                        shimmerFrameLayout?.startShimmer()
-                        binding.recyclerViewSpeci.visibility = View.VISIBLE
-                        binding.shimmerSpecialities.visibility = View.GONE
-                        adapter = AdapterSpecialities(context, response.body()!!,DoctorProfile())
-                        progressDialog!!.dismiss()
-                    }
-                }else if (response.code()==500){
-                    myToast(this@Specialities,"Server Error")
-                } else{
-                    myToast(this@Specialities,"Something went wrong")
+                response: Response<ModelSplic>
+            ) {
+                try {
+                    if (response.code() == 200) {
+                        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewSpeci)
+                        recyclerView.apply {
+                            shimmerFrameLayout?.startShimmer()
+                            binding.recyclerViewSpeci.visibility = View.VISIBLE
+                            binding.shimmerSpecialities.visibility = View.GONE
+                            adapter =
+                                AdapterSpecialities(context, response.body()!!, DoctorProfile())
+                            progressDialog!!.dismiss()
+                        }
+                    } else if (response.code() == 500) {
+                        myToast(this@Specialities, "Server Error")
+                    } else {
+                        myToast(this@Specialities, "Something went wrong")
 
+                    }
+                } catch (e: Exception) {
+                    myToast(this@Specialities, "Something went wrong")
+                    progressDialog!!.dismiss()
                 }
             }
 
             override fun onFailure(call: Call<ModelSplic>, t: Throwable) {
-                myToast(this@Specialities,"Something went wrong")
-                    progressDialog!!.dismiss()
+                myToast(this@Specialities, "Something went wrong")
+                progressDialog!!.dismiss()
 
 
             }
         })
     }
+
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->
             if (connected) {
 
                 // myToast(requireActivity(),"Connected")
-            }
-            else {
+            } else {
                 val changeReceiver = NetworkChangeReceiver(context)
                 changeReceiver.build()
                 //  myToast(requireActivity(),"Check Internet")

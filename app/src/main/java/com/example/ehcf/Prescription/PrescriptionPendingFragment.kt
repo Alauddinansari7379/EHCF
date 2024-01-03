@@ -202,6 +202,8 @@ class PrescriptionPendingFragment : Fragment() {
 
                     }catch (e:Exception){
                         e.printStackTrace()
+                        progressDialog!!.dismiss()
+
                     }
 
                 }

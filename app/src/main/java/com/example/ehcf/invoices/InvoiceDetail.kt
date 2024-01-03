@@ -150,26 +150,29 @@ class InvoiceDetail : AppCompatActivity() {
                     call: Call<ModelInvoiceDetial>,
                     response: Response<ModelInvoiceDetial>
                 ) {
-                    if (response.code() == 500) {
-                        myToast(this@InvoiceDetail, "Server Error")
-                    } else if (response.body()!!.status == 0) {
 
-                        myToast(this@InvoiceDetail, "${response.body()!!.message}")
-                        progressDialog!!.dismiss()
+                    try {
+                        if (response.code() == 500) {
+                            myToast(this@InvoiceDetail, "Server Error")
+                        } else if (response.body()!!.status == 0) {
 
-                    } else if (response.body()!!.result.isEmpty()) {
-                        binding.rvManageSlot.adapter = AdapterInvoiceDetial(this@InvoiceDetail, response.body()!!)
-                        binding.rvManageSlot.adapter!!.notifyDataSetChanged()
-                        progressDialog!!.dismiss()
+                            myToast(this@InvoiceDetail, "${response.body()!!.message}")
+                            progressDialog!!.dismiss()
 
-                    } else {
+                        } else if (response.body()!!.result.isEmpty()) {
+                            binding.rvManageSlot.adapter =
+                                AdapterInvoiceDetial(this@InvoiceDetail, response.body()!!)
+                            binding.rvManageSlot.adapter!!.notifyDataSetChanged()
+                            progressDialog!!.dismiss()
+
+                        } else {
 
 
-                        binding.rvManageSlot.adapter =
-                            AdapterInvoiceDetial(this@InvoiceDetail, response.body()!!)
-                        binding.rvManageSlot.adapter!!.notifyDataSetChanged()
-                        binding.rvManageSlot.visibility = View.VISIBLE
-                        progressDialog!!.dismiss()
+                            binding.rvManageSlot.adapter =
+                                AdapterInvoiceDetial(this@InvoiceDetail, response.body()!!)
+                            binding.rvManageSlot.adapter!!.notifyDataSetChanged()
+                            binding.rvManageSlot.visibility = View.VISIBLE
+                            progressDialog!!.dismiss()
 //                        binding.rvManageSlot.apply {
 //                            binding.tvNoDataFound.visibility = View.GONE
 //                            shimmerFrameLayout?.startShimmer()
@@ -180,6 +183,10 @@ class InvoiceDetail : AppCompatActivity() {
 //                            progressDialog!!.dismiss()
 //
 //                        }
+                        }
+                    }catch (e:Exception){
+                        myToast(this@InvoiceDetail, "Something went wrong")
+                         progressDialog!!.dismiss()
                     }
                 }
 

@@ -60,10 +60,11 @@ class ConsultedFragment : Fragment() {
         shimmerFrameLayout = view.findViewById(R.id.shimmer)
       //  shimmerFrameLayout!!.startShimmer();
 
+
+        apiCallGetConsultationCompleted()
+
         adapter="1"
-        Handler().postDelayed({
-            apiCallGetConsultationCompleted()
-        }, 1000)
+
 
         binding.imgRefresh.setOnClickListener {
             apiCallGetConsultationCompletedNew()

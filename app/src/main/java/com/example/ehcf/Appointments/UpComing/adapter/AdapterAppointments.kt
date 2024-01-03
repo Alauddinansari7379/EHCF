@@ -134,10 +134,7 @@ class AdapterAppointments(
         holder.btnCheck.setOnClickListener {
 
             if (list[position].start_time != null) {
-                showPopUp.popupRemainingTime(list[position].date?.let { it1 ->
-                    changeDateFormatNew(
-                        it1
-                    )
+                showPopUp.popupRemainingTime(list[position].date?.let { it1 -> changeDateFormatNew(it1)
                 } + " " + list[position].start_time)
 
             }

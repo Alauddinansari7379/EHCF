@@ -54,10 +54,9 @@ class CancelledFragment : Fragment() {
         shimmerFrameLayout = view.findViewById(R.id.shimmer)
         shimmerFrameLayout!!.startShimmer();
        // apiCall()
+        apiCallGetConsultationRejected()
 
-        Handler().postDelayed({
-            apiCallGetConsultationRejected()
-        }, 2000)
+
 //        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
 //        val btnCheck = view.findViewById<Button>(R.id.btnCheck)
 //        tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)

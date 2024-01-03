@@ -59,24 +59,29 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
                 override fun onResponse(
                     call: Call<ModelFamilyList>, response: Response<ModelFamilyList>
                 ) {
-                    if (response.code() == 500) {
-                        myToast(this@FamilyList, "Server error")
-                    } else if (response.body()!!.result.isEmpty()) {
-                        binding.tvNoDataFound.visibility = View.VISIBLE
-                        binding.shimmer.visibility = View.GONE
-                        // myToast(requireActivity(),"No Data Found")
-                        progressDialog!!.dismiss()
-                    } else {
-                        binding.recyclerView.apply {
-                            binding.tvNoDataFound.visibility = View.GONE
+                    try {
+                        if (response.code() == 500) {
+                            myToast(this@FamilyList, "Server error")
+                        } else if (response.body()!!.result.isEmpty()) {
+                            binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmer.visibility = View.GONE
-                            adapter = AdapterFamilyList(
-                                this@FamilyList,
-                                response.body()!!,
-                                this@FamilyList
-                            )
+                            // myToast(requireActivity(),"No Data Found")
                             progressDialog!!.dismiss()
+                        } else {
+                            binding.recyclerView.apply {
+                                binding.tvNoDataFound.visibility = View.GONE
+                                binding.shimmer.visibility = View.GONE
+                                adapter = AdapterFamilyList(
+                                    this@FamilyList,
+                                    response.body()!!,
+                                    this@FamilyList
+                                )
+                                progressDialog!!.dismiss()
+                            }
                         }
+                    }catch (e:Exception){
+                        myToast(this@FamilyList, "Something went wrong")
+                        progressDialog!!.dismiss()
                     }
 
                 }
@@ -105,20 +110,25 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
                 override fun onResponse(
                     call: Call<ModelDelete>, response: Response<ModelDelete>
                 ) {
-                    if (response.code() == 500) {
-                        myToast(this@FamilyList, "Server error")
-                        progressDialog!!.dismiss()
+                    try {
+                        if (response.code() == 500) {
+                            myToast(this@FamilyList, "Server error")
+                            progressDialog!!.dismiss()
 
-                    } else if (response.body()!!.status == 1) {
-                        myToast(this@FamilyList, response.body()!!.message)
-                        progressDialog!!.dismiss()
-                        refresh()
-                    } else {
-                        myToast(this@FamilyList, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        } else if (response.body()!!.status == 1) {
+                            myToast(this@FamilyList, response.body()!!.message)
+                            progressDialog!!.dismiss()
+                            refresh()
+                        } else {
+                            myToast(this@FamilyList, response.body()!!.message)
+                            progressDialog!!.dismiss()
 
+                        }
+
+                    }catch (e:Exception){
+                        myToast(this@FamilyList, "Something went wrong")
+                        progressDialog!!.dismiss()
                     }
-
 
                 }
 

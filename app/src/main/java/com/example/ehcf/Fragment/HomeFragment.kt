@@ -109,6 +109,10 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         binding.swipeRefreshLayout.setOnRefreshListener(refreshListener)
 
 
+        binding.test.setOnClickListener {
+           // startActivity(Intent(requireContext(), com.example.ehcf.phonepesdk.MainActivity::class.java))
+        }
+
 //
 //        CheckInternet().check { connected ->
 //            if (connected) {
@@ -568,6 +572,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
     override fun onResume() {
         super.onResume()
-        easyWayLocation.startLocation()
+       // easyWayLocation.startLocation()
     }
 }

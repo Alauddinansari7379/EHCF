@@ -312,6 +312,7 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
     private fun changePassDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_password_change, null)
         dialog = Dialog(requireContext())
+
         val btnChange = view!!.findViewById<Button>(R.id.btnChangeDialogPass)
         val newPass = view!!.findViewById<EditText>(R.id.edtNewPasswordDialogPass)
         val confirmPass = view!!.findViewById<EditText>(R.id.edtConfirmPasswordDialogPass)

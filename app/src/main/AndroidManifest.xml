@@ -29,7 +29,26 @@
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
         <activity
-            android:name=".Testing.Country_A"
+            android:name=".Medicine.ProductDetail"
+            android:exported="false" />
+
+        <activity
+            android:name=".phonepesdk.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Medicine.ProductListing"
+            android:exported="false" />
+        <activity
+            android:name=".Medicine.BrowseMedicine"
+            android:exported="false" />
+        <activity
+            android:name=".Diagnostic.TestBooking"
+            android:exported="false" />
+        <activity
+            android:name=".Diagnostic.CallForTest"
+            android:exported="false" />
+        <activity
+            android:name=".Diagnostic.Diagnostic"
             android:exported="false" />
         <activity
             android:name=".AyuSynk.MainActivity"
@@ -88,7 +107,9 @@
             android:exported="false" />
         <activity
             android:name=".Appointments.Appointments"
-            android:exported="false" />
+            android:configChanges="keyboard|orientation"
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".CreateSlot.activity.MyAvailableSlot"
             android:exported="false" />
@@ -203,14 +224,45 @@
             android:name=".PhoneNumber.Activity.PhoneNumber"
             android:exported="false" />
         <activity
-             android:name=".SplashScreen.SplashScreen"
+            android:name=".SplashScreen.SplashScreen"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="dsredsdfsfsfrer" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+
+
+         </activity>
+
+
+        <!-- Keep it true in UAT environment for both the flags-->
+        <meta-data
+            android:name="com.phonepe.android.sdk.isUAT"
+            android:value="true"/>
+        <meta-data
+            android:name="com.phonepe.android.sdk.isSimulator"
+            android:value="true"/>
+
+        <!-- The value will be the MID-->
+        <meta-data
+            android:name="com.phonepe.android.sdk.MerchantId"
+            android:value="PGTESTPAYUAT"/>
+
+        <!-- For UAT, App Id is not required.
+        Make sure to add the following and you get the APP Id for Production after UAT Sign-off -->
+        <!--        <meta-data-->
+        <!--            android:name="com.phonepe.android.sdk.AppId"-->
+        <!--            android:value="<your app id given by PhonePe>"/>-->
+
 
         <meta-data
             android:name="com.ayudevice.ayusynksdk.clientId"
@@ -226,6 +278,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+
+
+
+
         <meta-data
             android:name="com.razorpay.ApiKey"
             android:value="rzp_test_tnOp3sjGL6gTju" /> <!-- android:value="rzp_test_y6bdIFkJ0IzbOK" -->
@@ -239,6 +295,7 @@
             android:name="com.google.firebase.messaging.default_notification_channel"
             android:value="@string/channel_id" />
 
+
         <service
             android:name=".Testing.MyFirebaseMessagingService"
             android:exported="false">
@@ -249,6 +306,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+
+
     </application>
 
 </manifest>

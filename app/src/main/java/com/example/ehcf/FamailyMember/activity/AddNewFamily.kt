@@ -288,49 +288,50 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback  {
                 @SuppressLint("LogNotTimber", "SuspiciousIndentation")
                 override fun onResponse(
                     call: Call<ModelFamilyNew>, response: Response<ModelFamilyNew>
-                )
+                ) {
+                    try {
+                        relationListNew = response.body()!!;
+                        if (relationListNew != null) {
 
-                {
+                            //spinner code start
+                            val items = arrayOfNulls<String>(relationListNew.result!!.size)
 
-
-                    relationListNew = response.body()!!;
-                    if (relationListNew != null) {
-
-                        //spinner code start
-                        val items = arrayOfNulls<String>(relationListNew.result!!.size)
-
-                        for (i in relationListNew.result!!.indices) {
-                            items[i] = relationListNew.result!![i].name
-                        }
-                        val adapter: ArrayAdapter<String?> =
-                            ArrayAdapter(this@AddNewFamily, R.layout.simple_list_item_1, items)
-                        binding.spinnerFamily.adapter = adapter
+                            for (i in relationListNew.result!!.indices) {
+                                items[i] = relationListNew.result!![i].name
+                            }
+                            val adapter: ArrayAdapter<String?> =
+                                ArrayAdapter(this@AddNewFamily, R.layout.simple_list_item_1, items)
+                            binding.spinnerFamily.adapter = adapter
                             binding.spinnerFamily.setSelection(items.indexOf(relationId));
-                        Log.e("relaytion",relationId)
+                            Log.e("relaytion", relationId)
 
 
-                        progressDialog!!.dismiss()
+                            progressDialog!!.dismiss()
 
 
-                        binding.spinnerFamily.onItemSelectedListener =
-                            object : AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(
-                                    adapterView: AdapterView<*>?,
-                                    view: View,
-                                    i: Int,
-                                    l: Long
-                                ) {
-                                    val id = relationListNew.result!![i].stateId
-                                    relationId = id.toString()
-                                    //   Toast.makeText(this@RegirstrationTest, "" + id, Toast.LENGTH_SHORT).show()
+                            binding.spinnerFamily.onItemSelectedListener =
+                                object : AdapterView.OnItemSelectedListener {
+                                    override fun onItemSelected(
+                                        adapterView: AdapterView<*>?,
+                                        view: View,
+                                        i: Int,
+                                        l: Long
+                                    ) {
+                                        val id = relationListNew.result!![i].stateId
+                                        relationId = id.toString()
+                                        //   Toast.makeText(this@RegirstrationTest, "" + id, Toast.LENGTH_SHORT).show()
+                                    }
+
+                                    override fun onNothingSelected(adapterView: AdapterView<*>?) {}
                                 }
 
-                                override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-                            }
-
+                        }
+                    }catch (e:Exception){
+                        myToast(this@AddNewFamily, "Something went wrong")
+                        progressDialog!!.dismiss()
                     }
-                }
 
+                }
                 override fun onFailure(call: Call<ModelFamilyNew>, t: Throwable) {
                     myToast(this@AddNewFamily, "Something went wrong")
                     progressDialog!!.dismiss()
@@ -377,16 +378,21 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback  {
                 override fun onResponse(
                     call: Call<ModelFamilyMember>, response: Response<ModelFamilyMember>
                 ) {
+                    try {
 
-                    if (response.body()!!.status == 1) {
-                        myToast(this@AddNewFamily, response.body()!!.message)
+                        if (response.body()!!.status == 1) {
+                            myToast(this@AddNewFamily, response.body()!!.message)
+                            progressDialog!!.dismiss()
+                            refresh()
+
+                        } else {
+                            myToast(this@AddNewFamily, "${response.body()!!.message}")
+                            progressDialog!!.dismiss()
+
+                        }
+                    }catch (e:java.lang.Exception){
+                        myToast(this@AddNewFamily, "Something went wrong")
                         progressDialog!!.dismiss()
-                        refresh()
-
-                    } else {
-                        myToast(this@AddNewFamily, "${response.body()!!.message}")
-                        progressDialog!!.dismiss()
-
                     }
 
                 }
@@ -414,18 +420,23 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback  {
                 override fun onResponse(
                     call: Call<ModelFamilyMember>, response: Response<ModelFamilyMember>
                 ) {
+                    try {
 
-                    if (response.body()!!.status == 1) {
-                        myToast(this@AddNewFamily, response.body()!!.message)
+                        if (response.body()!!.status == 1) {
+                            myToast(this@AddNewFamily, response.body()!!.message)
+                            progressDialog!!.dismiss()
+                            refreshValue = "1"
+                            onBackPressed()
+                            //refresh()
+
+                        } else {
+                            myToast(this@AddNewFamily, "${response.body()!!.message}")
+                            progressDialog!!.dismiss()
+
+                        }
+                    }catch (e:Exception){
+                        myToast(this@AddNewFamily, "Something went wrong")
                         progressDialog!!.dismiss()
-                        refreshValue="1"
-                        onBackPressed()
-                        //refresh()
-
-                    } else {
-                        myToast(this@AddNewFamily, "${response.body()!!.message}")
-                        progressDialog!!.dismiss()
-
                     }
 
                 }
