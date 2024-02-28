@@ -450,7 +450,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     }
 
     override fun locationCancelled() {
-        
+
      }
 
     @SuppressLint("LogNotTimber")
