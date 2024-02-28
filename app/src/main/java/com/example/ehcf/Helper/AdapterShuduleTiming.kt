@@ -28,6 +28,7 @@ class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew,
         holder.startTime.text= arraylist.result[position].start_time
         holder.endTime.text= arraylist.result[position].end_time
         holder.slotId.text= arraylist.result[position].id.toString()
+        holder.tvSlotAddress.text= arraylist.result[position].address.toString()
 
         holder.cardView.setOnClickListener {
             showBookPopUp.showPopup(
@@ -49,7 +50,8 @@ class AdapterShuduleTiming( var context: Context,var arraylist: ModelSlotResNew,
      //   var date:TextView  =itemview.findViewById(R.id.tvtDateSTime);
         var startTime:TextView  =itemview.findViewById(R.id.tvStartTimeStime);
         var endTime:TextView  =itemview.findViewById(R.id.tvEndTimeStime);
-        var slotId:TextView  =itemview.findViewById(R.id.tvSlotIdSTime);
+        var slotId:TextView  =itemview.findViewById(R.id.tvSlotIdSTime)
+        var tvSlotAddress:TextView  =itemview.findViewById(R.id.tvSlotAddress)
         var cardView:CardView  =itemview.findViewById(R.id.cardSpecia);
 
     }

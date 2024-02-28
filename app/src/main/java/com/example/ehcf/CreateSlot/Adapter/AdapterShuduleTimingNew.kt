@@ -50,6 +50,9 @@ class AdapterShuduleTimingNew(
         holder.startTime.text = convertTo12Hour(list.result[position].start_time)
         holder.endTime.text = convertTo12Hour(list.result[position].end_time)
         holder.slotId.text = list.result[position].id.toString()
+        if (list.result[position].address!=null){
+            holder.tvSlotAddress.text = list.result[position].address.toString()
+        }
 
 
         if (list.result[position].end_time < time && currentDate == sessionManager.selectedDate.toString()) {
@@ -97,6 +100,7 @@ class AdapterShuduleTimingNew(
         var startTime: TextView = itemView.findViewById(R.id.tvStartTimeStime);
         var endTime: TextView = itemView.findViewById(R.id.tvEndTimeStime);
         var slotId: TextView = itemView.findViewById(R.id.tvSlotIdSTime);
+        var tvSlotAddress: TextView = itemView.findViewById(R.id.tvSlotAddress);
         var cardView: CardView = itemView.findViewById(R.id.cardViewSTime);
 
     }

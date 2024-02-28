@@ -22,7 +22,7 @@ class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.single_row_all_doctor, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.single_row_all_doctor_home, parent, false)
         )
     }
 

@@ -3,7 +3,6 @@ package com.example.ehcf.Diagnostic
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityDiagnosticBinding
 
 class Diagnostic : AppCompatActivity() {
@@ -19,7 +18,7 @@ class Diagnostic : AppCompatActivity() {
             }
 
             cardBook.setOnClickListener {
-                startActivity(Intent(this@Diagnostic,CallForTest::class.java))
+                startActivity(Intent(this@Diagnostic,TestList::class.java))
             }
         }
     }

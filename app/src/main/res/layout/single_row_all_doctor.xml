@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -143,6 +143,31 @@
 
                     </androidx.appcompat.widget.AppCompatTextView>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="end"
+                     >
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnJoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="2dp"
+                        android:paddingEnd="10dp"
+                         android:background="@drawable/corner"
+                        android:backgroundTint="@color/main_color"
+                        android:drawableLeft="@drawable/ic_baseline_add_24"
+                        android:drawableTint="@color/white"
+                        android:text="Join Meeting"
+                        android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white">
+
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                </LinearLayout>
+
 
 
             </LinearLayout>

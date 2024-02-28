@@ -38,6 +38,7 @@ class SessionManager(context: Context?) {
         private const val BOOKING_TYPE="bookingType"
         private const val PRICE="pricing"
         private const val SELECTED_DATE="selected_date"
+        private const val IMAGEURL="imgeurl"
     }
 
     var isLogin: Boolean
@@ -70,6 +71,12 @@ class SessionManager(context: Context?) {
         get() = prefs.getString(DOCTOR_NOTE, "")
         set(doctorNotes) {
             prefs.edit().putString(DOCTOR_NOTE, doctorNotes).apply()
+        }
+
+    var imageurl: String?
+        get() = prefs.getString(IMAGEURL, "")
+        set(imageurl) {
+            prefs.edit().putString(IMAGEURL, imageurl).apply()
         }
 
     var instructions: String?

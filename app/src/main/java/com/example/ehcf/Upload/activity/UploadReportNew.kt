@@ -322,8 +322,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                                 //myToast(this@ShuduleTiming, response.body()!!.message)
                                 adapter =
                                     AdapterFamilyListView(this@UploadReportNew, response.body()!!)
-                                binding.rvSlotTimingFamily.layoutManager =
-                                    GridLayoutManager(context, 3)
+                                binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
                                 //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
                                 progressDialog!!.dismiss()

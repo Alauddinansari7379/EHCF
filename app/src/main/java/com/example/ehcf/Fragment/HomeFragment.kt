@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -29,18 +28,10 @@ import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.example.easywaylocation.LocationData
-import com.example.ehcf.Appointments.Appointments
-import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
-import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingHome
-import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
-import com.example.ehcf.CreateSlot.activity.MyAvailableSlot
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
-import com.example.ehcf.Fragment.Model.ModelNearestDoctor
-import com.example.ehcf.Fragment.adapter.AdapterAllDoctorHome
 import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
-import com.example.ehcf.Fragment.test.ImageUpload
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -52,10 +43,6 @@ import com.example.myrecyview.apiclient.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -92,14 +79,14 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(com.example.ehcf.R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
         shimmerFrameLayout = view.findViewById(R.id.shimmer)
-        shimmerFrameLayout!!.startShimmer();
+        shimmerFrameLayout!!.startShimmer()
 
 
         val refreshListener = SwipeRefreshLayout.OnRefreshListener {
@@ -110,7 +97,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
 
         binding.test.setOnClickListener {
-           // startActivity(Intent(requireContext(), com.example.ehcf.phonepesdk.MainActivity::class.java))
+            // startActivity(Intent(requireContext(), com.example.ehcf.phonepesdk.MainActivity::class.java))
         }
 
 //
@@ -129,7 +116,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         binding.cardChestPain.setOnClickListener {
             sessionManager.bookingType = ""
-            AdapterAllDoctor.dashboard="1"
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "8")
             (context as Activity).startActivity(intent)
@@ -137,7 +124,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         binding.cardCough.setOnClickListener {
             sessionManager.bookingType = ""
-            AdapterAllDoctor.dashboard="1"
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "12")
             (context as Activity).startActivity(intent)
@@ -145,14 +132,14 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         binding.cardConstipation.setOnClickListener {
             sessionManager.bookingType = ""
-            AdapterAllDoctor.dashboard="1"
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "7")
             (context as Activity).startActivity(intent)
         }
         binding.cardBackPain.setOnClickListener {
             sessionManager.bookingType = ""
-            AdapterAllDoctor.dashboard="1"
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "7")
             (context as Activity).startActivity(intent)
@@ -161,87 +148,87 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         binding.cardBloodPressuse.setOnClickListener {
             sessionManager.bookingType = ""
-            AdapterAllDoctor.dashboard="1"
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "5")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardHeatDisease.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardHeatDisease.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "8")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardJointPain.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardJointPain.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "16")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardFever.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardFever.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "5")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardBerating.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardBerating.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "5")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardMigrane.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardMigrane.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "14")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardhairFall.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardhairFall.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "3")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardToothAche.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardToothAche.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "9")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardSwelling.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardSwelling.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "5")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardArrhythma.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardArrhythma.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "8")
             (context as Activity).startActivity(intent)
         }
 
-        binding.cardAlopecia.setOnClickListener{
-        sessionManager.bookingType=""
-            AdapterAllDoctor.dashboard="1"
+        binding.cardAlopecia.setOnClickListener {
+            sessionManager.bookingType = ""
+            AdapterAllDoctor.dashboard = "1"
             val intent = Intent(context as Activity, FilteredDoctor::class.java)
                 .putExtra("specialitiesID", "3")
             (context as Activity).startActivity(intent)
@@ -252,7 +239,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         easyWayLocation = EasyWayLocation(requireContext(), false, false, this)
 
 
-        lm = requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+        lm =requireContext().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
 
         val current = resources.configuration.locale
 
@@ -270,7 +257,8 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
         }
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
         getLastLocation()
 
 //        Handler().postDelayed({
@@ -308,13 +296,15 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
                 when (position) {
                     0 -> {
-                        sessionManager.bookingType = "1"
+                         sessionManager.bookingType = "1"
                         startActivity(Intent(requireContext(), Specialities::class.java))
                     }
+
                     1 -> {
                         sessionManager.bookingType = "2"
                         startActivity(Intent(requireContext(), Specialities::class.java))
                     }
+
                     else -> {
                         sessionManager.bookingType = "3"
                         startActivity(Intent(requireContext(), Specialities::class.java))
@@ -325,7 +315,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
             }
         })
         binding.imageSlide.startSliding(2000) // with new period
-       // binding.imageSlide.stopSliding()
+        // binding.imageSlide.stopSliding()
     }
 
 
@@ -366,7 +356,9 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
                             currentAddress = "$subLocality, $locality, $countryName"
 
-                            binding.tvLocation.text = currentAddress
+                           // binding.tvLocation.text = currentAddress
+                            binding.tvLocation.text = addresses?.get(0)?.getAddressLine(0)
+
 
                             Log.e(ContentValues.TAG, "locality-$locality")
                             Log.e(ContentValues.TAG, "countryName-$countryName")
@@ -438,7 +430,8 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     }
 
     override fun locationOn() {
-
+        getLastLocation()
+       // easyWayLocation.startLocation()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -451,13 +444,14 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         GlobalScope.launch {
             // getLocationDetail.getAddress(location.latitude, location.longitude, "xyz")
             getLocationDetail.getAddress(location.latitude, location.longitude, "AAA")
+            //getLastLocation()
         }
 
     }
 
     override fun locationCancelled() {
-        TODO("Not yet implemented")
-    }
+        
+     }
 
     @SuppressLint("LogNotTimber")
     override fun locationData(locationData: LocationData?) {
@@ -501,7 +495,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                 ) {
                     try {
                         if (response.code() == 500) {
-                            myToast(requireActivity(), "Unable to fetch nearest doctor")
+                           // myToast(requireActivity(), "Unable to fetch nearest doctor")
                         } else if (response.body()!!.status == 1) {
                             binding.rvAllDoctor.apply {
                                 shimmerFrameLayout?.startShimmer()
@@ -572,6 +566,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
     override fun onResume() {
         super.onResume()
-       // easyWayLocation.startLocation()
+         easyWayLocation.startLocation()
     }
 }

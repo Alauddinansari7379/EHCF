@@ -32,22 +32,19 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.ehcf.Appointments.Appointments
-import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.Dashboard.activity.Dashboard
-import com.example.ehcf.Diagnostic.Diagnostic
+import com.example.ehcf.Diagnostic.TestList
 import com.example.ehcf.FamailyMember.activity.AddNewFamily
 import com.example.ehcf.FamailyMember.activity.FamilyList
 import com.example.ehcf.Helper.isOnline
-import com.example.ehcf.Medicine.BrowseMedicine
-import com.example.ehcf.MyDoctor.MyDoctors
+import com.example.ehcf.Pharmacy.activity.BrowseMedicine
+import com.example.ehcf.MyDoctor.activity.MyDoctors
 import com.example.ehcf.PhoneNumber.Activity.ResetPassword
 import com.example.ehcf.Prescription.PrescriptionActivity
 import com.example.ehcf.Prescription.PrescriptionDetails
-import com.example.ehcf.Prescription.model.Diagnosi
 import com.example.ehcf.PrivacyPolicies
 import com.example.ehcf.R
 import com.example.ehcf.Setting
-import com.example.ehcf.Upload.activity.FamilyMemberHistory
 import com.example.ehcf.Upload.activity.ReportList
 import com.example.ehcf.Upload.activity.UploadReportNew
 import com.example.ehcf.databinding.ActivityMainBinding
@@ -92,6 +89,10 @@ class MainActivity : AppCompatActivity() {
         popupMenu.inflate(R.menu.bottom_nav_menu)
 
         requestNotificationPermission()
+
+        if (sessionManager.imageurl!!.isEmpty()){
+            sessionManager.imageurl="https://ehcf.thedemostore.in/uploads/"
+        }
 
 
          when {
@@ -192,7 +193,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.includedrawar1.tvDiagnostic.setOnClickListener {
-                startActivity(Intent(this, Diagnostic::class.java))
+                startActivity(Intent(this, TestList::class.java))
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
 

@@ -5,18 +5,26 @@ import com.example.ehcf.Address.ModelResponse.AddressListResponse
 import com.example.ehcf.Appointments.Cancelled.model.ModelCancelled
 import com.example.ehcf.Appointments.Consulted.model.ModelConsultedResponse
 import com.example.ehcf.Appointments.UpComing.model.*
-import com.example.ehcf.CreateSlot.model.ModelCreateBooking
 import com.example.ehcf.CreateSlot.model.ModelSlotResNew
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
+import com.example.ehcf.Diagnostic.model.ModelTestList
 import com.example.ehcf.FamailyMember.Model.*
 import com.example.ehcf.Fragment.Model.ModelNearestDoctor
 import com.example.ehcf.Fragment.test.UploadResponse
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
+import com.example.ehcf.Pharmacy.model.ModelAddAddress
+import com.example.ehcf.Pharmacy.model.ModelAddToCart
+import com.example.ehcf.Pharmacy.model.ModelMedicine
+import com.example.ehcf.Pharmacy.model.ModelOrder
+import com.example.ehcf.Pharmacy.model.ModelOrderDetMed
+import com.example.ehcf.Pharmacy.model.ModelOrderDetail
+import com.example.ehcf.Pharmacy.model.ModelOrderList
+import com.example.ehcf.Pharmacy.model.ModelTestODet
 import com.example.ehcf.PhoneNumber.ModelReponse.ModelForgotPass
 import com.example.ehcf.Prescription.model.*
 import com.example.ehcf.Profile.modelResponse.ModelProfilePic
@@ -67,7 +75,7 @@ interface ApiInterface {
         @Part signature: MultipartBody.Part,
         @Part("desc") desc: RequestBody,
         @Query("dob") dob: String,
-        ): Call<RegistationResponse>
+    ): Call<RegistationResponse>
 
     @FormUrlEncoded
     @POST("forget_password")
@@ -113,7 +121,6 @@ interface ApiInterface {
     fun doctorAllComments(
         @Query("doctor_id") doctor_id: String
     ): Call<ModelCommentList>
-
 
 
     @FormUrlEncoded
@@ -414,6 +421,7 @@ interface ApiInterface {
     fun deleteFamily(
         @Query("id") id: String?,
     ): Call<ModelDelete>
+
     @Multipart
     @Headers("Accept: application/json")
     @POST("add_family")
@@ -427,8 +435,20 @@ interface ApiInterface {
         @Query("email") email: String?,
         @Query("description") description: String?,
         @Part profile_picture: MultipartBody.Part,
-        @Part("desc") desc: RequestBody,
-    ): Call<ModelFamilyMember>
+     ): Call<ModelFamilyMember>
+
+     @Headers("Accept: application/json")
+    @POST("add_family")
+    fun addFamilyWithOutImg(
+        @Query("patient_id") patient_id: String?,
+        @Query("first_name") first_name: String?,
+        @Query("last_name") last_name: String?,
+        @Query("dob") dob: String?,
+        @Query("gender") gender: String?,
+        @Query("relation") relation: String?,
+        @Query("email") email: String?,
+        @Query("description") description: String?,
+     ): Call<ModelFamilyMember>
 
     @POST("edit_family")
     fun editFamily(
@@ -440,7 +460,7 @@ interface ApiInterface {
         @Query("relation") relation: String?,
         @Query("email") email: String?,
         @Query("description") description: String?,
-     ): Call<ModelFamilyMember>
+    ): Call<ModelFamilyMember>
 
     @Multipart
     @Headers("Accept: application/json")
@@ -450,4 +470,125 @@ interface ApiInterface {
         @Part image: MultipartBody.Part,
         @Part("desc") desc: RequestBody,
     ): Call<ModelProfilePic>
+
+    @Headers("Accept: application/json")
+    @POST("all_products")
+    fun allMedicine(
+    ): Call<ModelMedicine>
+
+//    @Headers("Accept: application/json")
+//    @POST("vendor_products")
+//    fun productsDetailNEw(
+//        @Query("vendor_id") vendor_id :String,
+//        @Query("sub_category_id") sub_category_id :String,
+//    ): Call<ModelMedicine>
+
+    @Headers("Accept: application/json")
+    @POST("vendor_products_by_id")
+    fun productsDetail(
+        @Query("id") id: String,
+    ): Call<ModelMedicine>
+
+    @Headers("Accept: application/json")
+    @POST("add_to_cart")
+    fun addToCart(
+        @Query("product_id") product_id: String,
+        @Query("customer_id") customer_id: String,
+        @Query("quantity") quantity: String,
+        @Query("slug") slug: String,
+     ): Call<ModelAddToCart>
+
+    @Headers("Accept: application/json")
+    @POST("remove_from_cart")
+    fun removeToCart(
+        @Query("id") cart_id: String,
+        @Query("customer_id") customer_id: String,
+        @Query("slug") slug: String,
+    ): Call<ModelAddToCart>
+
+    @Headers("Accept: application/json")
+    @POST("cart_list")
+    fun cartList(
+        @Query("customer_id") customer_id: String,
+        @Query("slug") slug: String,
+     ): Call<ModelMedicine>
+
+    @Headers("Accept: application/json")
+    @POST("cart_list_for_test")
+    fun cartListTest(
+        @Query("customer_id") customer_id: String,
+        @Query("slug") slug: String,
+     ): Call<ModelMedicine>
+
+    @Headers("Accept: application/json")
+    @POST("pharmacy_order")
+    fun createOrder(
+        @Query("customer_id") customer_id: String,
+        @Query("totalCost") totalCost: String,
+        @Query("payment_mode") payment_mode: String,
+        @Query("address_id") address_id: String,
+        @Query("slug") slug: String,
+        @Query("family_id") family_id: String,
+    ): Call<ModelOrder>
+
+    @Headers("Accept: application/json")
+    @POST("get_address")
+    fun getAddress(
+        @Query("customer_id") customer_id: String,
+    ): Call<ModelMedicine>
+
+    @Headers("Accept: application/json")
+    @POST("add_address")
+    fun addAddress(
+        @Query("customer_id") customer_id: String,
+        @Query("address") address: String,
+        @Query("landmark") landmark: String,
+        @Query("city") city: String,
+        @Query("pincode") pincode: String,
+    ): Call<ModelAddAddress>
+
+    @Headers("Accept: application/json")
+    @POST("Order_by_patient_id")
+    fun orderList(
+        @Query("patient_id") patient_id: String,
+        @Query("slug") slug: String,
+    ): Call<ModelOrderList>
+
+    @Headers("Accept: application/json")
+    @POST("Order_by_patient_id")
+    fun orderListTest(
+        @Query("patient_id") patient_id: String,
+        @Query("slug") slug: String,
+    ): Call<ModelOrderList>
+
+    @Headers("Accept: application/json")
+    @POST("Order_by_order_id")
+    fun orderDetail(
+        @Query("id") id: String,
+        @Query("slug") slug: String,
+    ): Call<ModelOrderDetMed>
+
+    @Headers("Accept: application/json")
+    @POST("Order_by_order_id")
+    fun orderDetailTest(
+        @Query("id") id: String,
+        @Query("slug") slug: String,
+    ): Call<ModelOrderDetMed>
+
+    @Headers("Accept: application/json")
+    @POST("incrementQuantity")
+    fun incrementQuantity(
+        @Query("id") id: String,
+     ): Call<ModelAddToCart>
+
+    @Headers("Accept: application/json")
+    @POST("decreamentQuantity")
+    fun decreamentQuantity(
+        @Query("id") id: String,
+     ): Call<ModelAddToCart>
+
+    @Headers("Accept: application/json")
+    @POST("test_list")
+    fun testList(
+    ): Call<ModelTestList>
 }

@@ -7,14 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
 
             <!--    <ScrollView-->
@@ -27,13 +20,21 @@
 
             <!--        </LinearLayout>-->
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="250dp"
-                android:layout_height="150dp"
-                android:background="@drawable/logol_large">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="230dp"
+        android:layout_height="180dp"
+        android:background="@drawable/logonew">
 
-            </androidx.appcompat.widget.AppCompatImageView>
+    </androidx.appcompat.widget.AppCompatImageView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/tvDashboard"
                 android:layout_width="match_parent"
@@ -214,7 +215,7 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:drawableLeft="@drawable/refunds"
                     android:padding="5dp"
-                    android:text="Medicine"
+                    android:text="Pharmacy"
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     android:textStyle="bold">
@@ -250,7 +251,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"
                 >
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
@@ -261,7 +262,7 @@
                     android:text="AyuSynk"
                     android:drawableLeft="@drawable/profilesetting">
 
-                </TextView>
+                </androidx.appcompat.widget.AppCompatTextView>
             </LinearLayout>
 
             <RelativeLayout
@@ -290,10 +291,10 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/reportArrow"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:layout_marginEnd="25dp"
                     android:src="@drawable/icn_next_arrow" />
 
             </RelativeLayout>
@@ -397,10 +398,10 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/orderArrow"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:layout_marginEnd="25dp"
                     android:src="@drawable/icn_next_arrow" />
 
             </RelativeLayout>

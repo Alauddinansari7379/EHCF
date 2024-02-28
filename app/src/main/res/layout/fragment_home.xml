@@ -133,25 +133,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:iss_auto_cycle="true"
-                        app:iss_image_scaleType="fitCenter"
+                         app:iss_image_scaleType="fitXY"
                         app:iss_delay="0"
                         app:iss_period="1000" />
 
                 </androidx.cardview.widget.CardView>
-
-                <!--<androidx.cardview.widget.CardView-->
-                <!--    android:layout_width="match_parent"-->
-                <!--    android:layout_height="150dp"-->
-                <!--    app:cardCornerRadius="10dp"-->
-                <!--    android:layout_margin="15dp">-->
-
-                <!--<ImageView-->
-                <!--    android:layout_width="match_parent"-->
-                <!--    android:layout_height="match_parent"-->
-                <!--    android:background="@drawable/cardview">-->
-
-                <!--</ImageView>-->
-                <!--</androidx.cardview.widget.CardView>-->
 
 
                 <androidx.appcompat.widget.AppCompatTextView

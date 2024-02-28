@@ -3,13 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ehcf">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -22,30 +34,41 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/circulelogo"
+        android:icon="@drawable/logonew"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logonew"
         android:supportsRtl="true"
         android:theme="@style/Theme.EHCF"
         tools:targetApi="32">
         <activity
-            android:name=".Medicine.ProductDetail"
+            android:name=".Pharmacy.activity.OrderDetail"
             android:exported="false" />
-
+        <activity
+            android:name=".Pharmacy.activity.Orders"
+            android:exported="false" />
+        <activity
+            android:name=".Pharmacy.activity.ProductDetail"
+            android:exported="false" />
         <activity
             android:name=".phonepesdk.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Medicine.ProductListing"
+            android:name=".Pharmacy.activity.CartMedicine"
             android:exported="false" />
         <activity
-            android:name=".Medicine.BrowseMedicine"
+            android:name=".Diagnostic.CartDiagnostic"
+            android:exported="false" />
+        <activity
+            android:name=".Pharmacy.activity.ProductListing"
+            android:exported="false" />
+        <activity
+            android:name=".Pharmacy.activity.BrowseMedicine"
             android:exported="false" />
         <activity
             android:name=".Diagnostic.TestBooking"
             android:exported="false" />
         <activity
-            android:name=".Diagnostic.CallForTest"
+            android:name=".Diagnostic.TestList"
             android:exported="false" />
         <activity
             android:name=".Diagnostic.Diagnostic"
@@ -85,7 +108,7 @@
             android:name=".Prescription.PrescriptionActivity"
             android:exported="false" />
         <activity
-            android:name=".MyDoctor.MyDoctors"
+            android:name=".MyDoctor.activity.MyDoctors"
             android:exported="false" />
         <activity
             android:name=".report.activity.ViewReport"
@@ -239,31 +262,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-         </activity>
-
-
-        <!-- Keep it true in UAT environment for both the flags-->
+        </activity> <!-- Keep it true in UAT environment for both the flags -->
         <meta-data
             android:name="com.phonepe.android.sdk.isUAT"
-            android:value="true"/>
+            android:value="true" />
         <meta-data
             android:name="com.phonepe.android.sdk.isSimulator"
-            android:value="true"/>
-
-        <!-- The value will be the MID-->
+            android:value="true" /> <!-- The value will be the MID -->
         <meta-data
             android:name="com.phonepe.android.sdk.MerchantId"
-            android:value="PGTESTPAYUAT"/>
-
-        <!-- For UAT, App Id is not required.
-        Make sure to add the following and you get the APP Id for Production after UAT Sign-off -->
-        <!--        <meta-data-->
-        <!--            android:name="com.phonepe.android.sdk.AppId"-->
-        <!--            android:value="<your app id given by PhonePe>"/>-->
-
-
+            android:value="PGTESTPAYUAT" />
+        <!--
+ For UAT, App Id is not required.
+        Make sure to add the following and you get the APP Id for Production after UAT Sign-off
+        -->
+        <!-- <meta-data -->
+        <!-- android:name="com.phonepe.android.sdk.AppId" -->
+        <!-- android:value="<your app id given by PhonePe>"/> -->
         <meta-data
             android:name="com.ayudevice.ayusynksdk.clientId"
             android:value="cyukmtScnhhthcyS" />
@@ -278,23 +293,20 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-
-
-
-
         <meta-data
             android:name="com.razorpay.ApiKey"
             android:value="rzp_test_tnOp3sjGL6gTju" /> <!-- android:value="rzp_test_y6bdIFkJ0IzbOK" -->
         <meta-data
             android:name="com.google.gms.wallet.api.enabled"
             android:value="true" />
+
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel"
             android:value="@string/channel_id" />
-
 
         <service
             android:name=".Testing.MyFirebaseMessagingService"
@@ -306,9 +318,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-
-
     </application>
 
 </manifest>

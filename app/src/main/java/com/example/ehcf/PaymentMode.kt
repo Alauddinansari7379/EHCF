@@ -13,14 +13,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView.Companion.memberID
 import com.example.ehcf.Fragment.MainActivity
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.Pharmacy.activity.BrowseMedicine
+ import com.example.ehcf.Pharmacy.model.ModelOrder
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
-import com.google.gson.Gson
 import com.papayacoders.phonepe.ApiUtilities
 import com.phonepe.intent.sdk.api.B2BPGRequestBuilder
 import com.phonepe.intent.sdk.api.PhonePe
@@ -51,6 +54,9 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     var title = ""
     var paymentMode = ""
     var description = ""
+    var medicine = ""
+    var slug = ""
+     var addressId = ""
 
     var apiEndPoint = "/pg/v1/pay"
     val salt = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399" // salt key
@@ -67,11 +73,15 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         binding = ActivityPaymentModeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
+        medicine = intent.getStringExtra("Medicine").toString()
+        slug = intent.getStringExtra("slug").toString()
+        addressId = intent.getStringExtra("addressId").toString()
+        Log.d("TAGNEw","err")
 
         PhonePe.init(this@PaymentMode)
         try {
             val upiApps = PhonePe.getUpiApps()
-            Log.e("UPIAPPS",upiApps.toString())
+            Log.e("UPIAPPS", upiApps.toString())
         } catch (exception: PhonePeInitException) {
             exception.printStackTrace();
         }
@@ -79,18 +89,21 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         val data = JSONObject()
         data.put("merchantTransactionId", MERCHANT_TID)//String. Mandatory
 
-        data.put("merchantId" , MERCHANT_ID) //String. Mandatory
+        data.put("merchantId", MERCHANT_ID) //String. Mandatory
 
-        data.put("amount", sessionManager.pricing!!.toInt() * 100 )//Long. Mandatory
+        data.put("amount", sessionManager.pricing!!.toInt() * 100)//Long. Mandatory
 
         data.put("mobileNumber", "7908834635") //String. Optional
-        data.put("callbackUrl", "https://webhook.site/6658f3da-60a4-440f-a743-27e3dcdb91a8") //String. Mandatory
+        data.put(
+            "callbackUrl",
+            "https://webhook.site/6658f3da-60a4-440f-a743-27e3dcdb91a8"
+        ) //String. Mandatory
 
         val paymentInstrument = JSONObject()
         paymentInstrument.put("type", "PAY_PAGE")
         //  paymentInstrument.put("targetApp", "com.phonepe.simulator")
 
-        data.put("paymentInstrument", paymentInstrument )//OBJECT. Mandatory
+        data.put("paymentInstrument", paymentInstrument)//OBJECT. Mandatory
 
 
         val deviceContext = JSONObject()
@@ -98,13 +111,12 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         data.put("deviceContext", deviceContext)
 
 
-
         val payloadBase64 = Base64.encodeToString(
             data.toString().toByteArray(Charset.defaultCharset()), Base64.NO_WRAP
         )
-        val checksum = sha256(payloadBase64 + apiEndPoint + salt)+"###1"
+        val checksum = sha256(payloadBase64 + apiEndPoint + salt) + "###1"
 
-       // SHA256(base64 encoded payload + "/pg/v1/pay" + salt key) + ### + salt index
+        // SHA256(base64 encoded payload + "/pg/v1/pay" + salt key) + ### + salt index
 
         val b2BPGRequest = B2BPGRequestBuilder()
             .setData(payloadBase64)
@@ -155,9 +167,11 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 "1" -> {
                     apiCallCreateBookingOnlineConsultOnlineFree()
                 }
+
                 "2" -> {
                     apiCallCreateBookingAppointmentOnlineFree()
                 }
+
                 else -> {
                     apiCallCreateBookingHomeVisitOnlineFree()
                 }
@@ -170,9 +184,9 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
 
         }
-/*        razorpay?.getPaymentMethods(object : PaymentMethodsCallback {
-            override fun onPaymentMethodsReceived(result: String?) {
-                */
+        /*        razorpay?.getPaymentMethods(object : PaymentMethodsCallback {
+                    override fun onPaymentMethodsReceived(result: String?) {
+                        */
         /**
          * This returns JSON data
          * The structure of this data can be seen at the following link:
@@ -197,15 +211,21 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 .showCancelButton(true)
                 .setConfirmClickListener { sDialog ->
                     sDialog.cancel()
-                    when (sessionManager.bookingType) {
-                        "1" -> {
-                            apiCallCreateBookingOnlineConsultOnline()
-                            apiCallCreateBookingAppointment()
-                        }
-                        else -> {
-                            apiCallCreateBookingHomeVisit()
-                        }
+                    if (medicine == "1") {
+                        apiCallCreateOrderMedicine("1")
 
+                    } else {
+                        when (sessionManager.bookingType) {
+                            "1" -> {
+                                apiCallCreateBookingOnlineConsultOnline()
+                                apiCallCreateBookingAppointment()
+                            }
+
+                            else -> {
+                                apiCallCreateBookingHomeVisit()
+                            }
+
+                        }
                     }
                 }
                 .setCancelClickListener { sDialog ->
@@ -241,12 +261,13 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
-            Log.e("Data",data.toString())
+            Log.e("Data", data.toString())
             checkStatus()
 
-           // myToast(this@PaymentMode, "onActivityResult")
+            // myToast(this@PaymentMode, "onActivityResult")
         }
     }
+
     private fun checkStatus() {
         val xVerify = sha256("/pg/v1/status/$MERCHANT_ID/${MERCHANT_TID}${salt}") + "###1"
 
@@ -265,17 +286,24 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
                 if (res.body() != null && res.body()!!.success) {
                     Log.d("phonepe", "onCreate: success")
-                    Toast.makeText(this@PaymentMode, res.body()!!.message, Toast.LENGTH_SHORT).show()
-                    if (res.body()!!.code=="PAYMENT_SUCCESS") {
-                        when (sessionManager.bookingType) {
-                            "1" -> {
-                                apiCallCreateBookingOnlineConsultOnline()
-                            }
-                            "2" -> {
-                                apiCallCreateBookingAppointmentOnline()
-                            }
-                            else -> {
-                                apiCallCreateBookingHomeVisitOnline()
+                    Toast.makeText(this@PaymentMode, res.body()!!.message, Toast.LENGTH_SHORT)
+                        .show()
+                    if (res.body()!!.code == "PAYMENT_SUCCESS") {
+                        if (medicine == "1") {
+                            apiCallCreateOrderMedicine("2")
+                        } else {
+                            when (sessionManager.bookingType) {
+                                "1" -> {
+                                    apiCallCreateBookingOnlineConsultOnline()
+                                }
+
+                                "2" -> {
+                                    apiCallCreateBookingAppointmentOnline()
+                                }
+
+                                else -> {
+                                    apiCallCreateBookingHomeVisitOnline()
+                                }
                             }
                         }
                     }
@@ -296,12 +324,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
 
     private fun apiCallCreateBookingOnlineConsultOnline() {
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         paymentMode = "2"
 
@@ -321,19 +344,77 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 override fun onResponse(
                     call: Call<ModelCreateConsultation>, response: Response<ModelCreateConsultation>
                 ) {
-                    if (response.code() == 500) {
-                        myToast(this@PaymentMode, "Server Error")
-                    } else if (response.code() == 200) {
-                        popUpConsultOnline()
-                        progressDialog!!.dismiss()
-                    } else {
-                        myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
-                    }
+                    try {
+                        if (response.code() == 500) {
+                            myToast(this@PaymentMode, "Server Error")
+                            AppProgressBar.hideLoaderDialog()
 
+                        } else if (response.code() == 200) {
+                            popUpConsultOnline()
+                            AppProgressBar.hideLoaderDialog()
+                        } else {
+                            myToast(this@PaymentMode, response.body()!!.message)
+                            AppProgressBar.hideLoaderDialog()
+                        }
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+                    AppProgressBar.hideLoaderDialog()
+
+                }
+
+
+            })
+    }
+
+    private fun apiCallCreateOrderMedicine(paymentMode: String) {
+        AppProgressBar.showLoaderDialog(context)
+        ApiClient.apiService.createOrder(
+            sessionManager.id.toString(), sessionManager.pricing!!,
+            paymentMode,
+            addressId,slug,memberID
+
+        )
+            .enqueue(object : Callback<ModelOrder> {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelOrder>, response: Response<ModelOrder>
+                ) {
+                    try {
+                        if (response.code() == 500) {
+                            myToast(this@PaymentMode, "Server Error")
+                            AppProgressBar.hideLoaderDialog()
+                        } else if (response.code() == 404) {
+                            myToast(this@PaymentMode, "Something went wrong")
+                            AppProgressBar.hideLoaderDialog()
+                        } else if (response.body()!!.message.contains("Order placed successfully")) {
+                            myToast(this@PaymentMode, response.body()!!.message)
+                            BrowseMedicine.cartQty = "0"
+                            addressId=""
+                            popUpConsultOnline()
+                            AppProgressBar.hideLoaderDialog()
+                        } else {
+                            myToast(this@PaymentMode, response.body()!!.message)
+                            AppProgressBar.hideLoaderDialog()
+                        }
+
+                    } catch (e: Exception) {
+                        myToast(this@PaymentMode, "Something went wrong")
+                        e.printStackTrace()
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelOrder>, t: Throwable) {
+                    myToast(this@PaymentMode, "Something went wrong")
+                    AppProgressBar.hideLoaderDialog()
 
                 }
 
@@ -697,18 +778,25 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
     override fun onPaymentSuccess(p0: String?) {
         Toast.makeText(this, "Payment Successful: ", Toast.LENGTH_LONG).show()
-        when (sessionManager.bookingType) {
-            "1" -> {
-                apiCallCreateBookingOnlineConsultOnline()
+        if (medicine == "1") {
+            apiCallCreateOrderMedicine("2")
+        } else
+            when (sessionManager.bookingType) {
+                "1" -> {
+                    apiCallCreateBookingOnlineConsultOnline()
+                }
+
+                "2" -> {
+                    apiCallCreateBookingAppointmentOnline()
+                }
+
+                else -> {
+                    apiCallCreateBookingHomeVisitOnline()
+                }
             }
-            "2" -> {
-                apiCallCreateBookingAppointmentOnline()
-            }
-            else -> {
-                apiCallCreateBookingHomeVisitOnline()
-            }
-        }
     }
+
+
 
     override fun onPaymentError(p0: Int, p1: String?) {
         Toast.makeText(this, "Payment Field ", Toast.LENGTH_LONG).show()

@@ -46,7 +46,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     ) {
         val intent = Intent()
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
 
         val channelId = getString(R.string.channel_id)
         val channelName = getString(R.string.channel_name)
@@ -62,7 +63,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         NotificationValue="1"
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.logo)
+            .setSmallIcon(R.drawable.logonew)
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)

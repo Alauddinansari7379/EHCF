@@ -261,7 +261,6 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
 
     private fun videoCallFun(startTime: String, id: String) {
          meetingId = id
-
         val jitsiMeetUserInfo = JitsiMeetUserInfo()
         jitsiMeetUserInfo.displayName = sessionManager.customerName
         jitsiMeetUserInfo.email = sessionManager.email
@@ -299,7 +298,6 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
                 .putExtra("meetingId", meetingId)
             (context as Activity).startActivity(intent)
             ratingPage = false
-
         }
 
     }
