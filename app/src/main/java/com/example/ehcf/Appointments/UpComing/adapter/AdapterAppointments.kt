@@ -11,12 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.activity.AppointmentDetails
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Appointments.UpComing.model.ModelAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Appointments.UpComing.model.ResultXXX
 import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
+import com.example.ehcf.Fragment.HomeFragment
 import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.R
@@ -28,7 +30,7 @@ import java.util.*
 class AdapterAppointments(
     val context: Context,
      private val list: ArrayList<ResultXXXX>,
-    val showPopUp: UpComingFragment) :
+    val showPopUp: ShowPopUp) :
     RecyclerView.Adapter<AdapterAppointments.MyViewHolder>() {
 
 
@@ -161,6 +163,14 @@ class AdapterAppointments(
 //            showPopUp.dismissPopup()
 //
 //        }
+
+        if (HomeFragment.homeCall=="1"){
+            holder.itemView.setOnClickListener {
+                val intent = Intent(context as Activity, Appointments::class.java)
+                    .putExtra("bookingId", list[position].id.toString())
+                context.startActivity(intent)
+            }
+        }
 
         // Glide.with(hol der.image).load(list[position].url).into(holder.image)
 

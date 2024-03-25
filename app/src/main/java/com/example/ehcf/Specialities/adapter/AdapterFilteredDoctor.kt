@@ -60,6 +60,69 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
                 holder.tvNoOfrating.text = list.result[position].no_of_ratings
             }
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
+            when (list.result[position].specialist.toString()) {
+                "1" -> {
+                    holder.specialities.text = "PSYCHOLOGIST"
+                }
+                "2" -> {
+                    holder.specialities.text = "SEXOLOGIST"
+                }
+                "3" -> {
+                    holder.specialities.text = "DERMATOLOGIST"
+                }
+                "4" -> {
+                    holder.specialities.text = "GYNEACOLOGIST"
+                }
+                "5" -> {
+                    holder.specialities.text = "GENERAL PHYSICIAN"
+                }
+                "6" -> {
+                    holder.specialities.text = "ANESTHESIA"
+                }
+                "7" -> {
+                    holder.specialities.text = "GASTROENTEROLOGIST"
+                }
+                "8" -> {
+                    holder.specialities.text = "CARDIOLOGIST"
+                }
+                "9" -> {
+                    holder.specialities.text = "DENTIST"
+                }
+                "10" -> {
+                    holder.specialities.text = "DIABETOLOGIST"
+                }
+                "11" -> {
+                    holder.specialities.text = "ENT SPECIALIST"
+                }
+                "12" -> {
+                    holder.specialities.text = "GENERAL SURGEON"
+                }
+                "13" -> {
+                    holder.specialities.text = "IVF (TEST TUBE BABY)"
+                }
+                "14" -> {
+                    holder.specialities.text = "NEPHROLOGIST"
+                }
+                "15" -> {
+                    holder.specialities.text = "OPTHALMOLOGIST (EYE SPECIALIST)"
+                }
+                "16" -> {
+                    holder.specialities.text = "ORTHOPEDICS"
+                }
+                "17" -> {
+                    holder.specialities.text = "PAEDIATRICIAN"
+                }
+                "18" -> {
+                    holder.specialities.text = "PHYSIOTHERAPY"
+                }
+                "19" -> {
+                    holder.specialities.text = "UROLOGIST"
+                }
+                else -> {
+                    holder.specialities.text = "Other"
+
+                }
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -82,6 +145,7 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelFiltere
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
         val tvNoOfrating: TextView = itemView.findViewById(R.id.tvNoOfratingnew)
         val tvRatingReview: TextView = itemView.findViewById(R.id.tvOverAllRatingnew)
+        val specialities: TextView = itemView.findViewById(R.id.tvSpecialist)
         val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBarDProfilenew)
 
 

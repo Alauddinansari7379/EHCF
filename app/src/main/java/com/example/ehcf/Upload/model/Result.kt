@@ -5,5 +5,6 @@ data class Result(
     val id: Int,
     val patient_id: String,
     val report: String,
-    val updated_at: String
+    val updated_at: String,
+    val ayusynk_report: String
 )

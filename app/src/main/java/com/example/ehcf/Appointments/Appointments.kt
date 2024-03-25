@@ -83,9 +83,18 @@ class Appointments : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 pager.currentItem = tab.position
                 when(tab.position) {
-                    0 -> tabs.setSelectedTabIndicatorColor(Color.parseColor("#45369F"))
-                    1 -> tabs.setSelectedTabIndicatorColor(Color.parseColor("#3A97C5"))
-                    2 -> tabs.setSelectedTabIndicatorColor(Color.parseColor("#FF0413"))
+                    0 -> {
+                        tabs.setSelectedTabIndicatorColor(Color.parseColor("#45369F"))
+                        tabIndex=tab.position
+                    }
+                    1 -> {
+                        tabs.setSelectedTabIndicatorColor(Color.parseColor("#3A97C5"))
+                        tabIndex=tab.position
+                    }
+                    2 -> {
+                        tabs.setSelectedTabIndicatorColor(Color.parseColor("#FF0413"))
+                        tabIndex=tab.position
+                    }
                 }
 
 //                if (tab.position == 0) {
@@ -145,5 +154,13 @@ class Appointments : AppCompatActivity() {
 //                //  myToast(requireActivity(),"Check Internet")
 //            }
 //        }
+    }
+    companion object{
+       var tabIndex=1
+    }
+
+    override fun onResume() {
+        super.onResume()
+       // refresh()
     }
 }

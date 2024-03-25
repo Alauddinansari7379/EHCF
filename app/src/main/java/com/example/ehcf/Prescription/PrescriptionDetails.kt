@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetialDiagonsis
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetialDoctorNote
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetialLabTest
 import com.example.ehcf.Prescription.model.ModelPreDetJava
+import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.databinding.ActivityPrescriptionDetailsBinding
 import com.example.ehcf.sharedpreferences.SessionManager
@@ -41,7 +43,6 @@ class PrescriptionDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPrescriptionDetailsBinding
     var progressDialog: ProgressDialog? = null
     private val context: Context = this@PrescriptionDetails
-
     var id = ""
     var doctorName = ""
     var date = ""
@@ -84,8 +85,6 @@ class PrescriptionDetails : AppCompatActivity() {
         } else {
             FollowUPMemberName = intent.getStringExtra("member_id").toString()
             Log.e("FollowUPMemberNameID", FollowUPMemberName)
-
-
         }
 
         //  specialitiesID = intent.getStringExtra("specialitiesID").toString()
@@ -176,7 +175,7 @@ class PrescriptionDetails : AppCompatActivity() {
 
         ApiClient.apiService.viewPrescriptionDetial(id)
             .enqueue(object : Callback<ModelPreDetJava> {
-                @SuppressLint("LogNotTimber")
+                @SuppressLint("LogNotTimber", "ResourceAsColor")
                 override fun onResponse(
                     call: Call<ModelPreDetJava>, response: Response<ModelPreDetJava>
                 ) {
@@ -216,8 +215,10 @@ class PrescriptionDetails : AppCompatActivity() {
                                     Log.e("followUp", followNew)
                                     Log.e("currentDate", currentDate)
 
-                                    if (followDate < currentDate) {
+                                    if (currentDate.toInt() > followNew.toInt()) {
                                         binding.btnBookAppointmnet.visibility = View.GONE
+                                         binding.followUpdate.setTextColor(Color.parseColor("#F44336"))
+
                                     }
 //                                 if (followDate=="10072023"){
 //                                    binding.btnBookAppointmnet.visibility=View.VISIBLE

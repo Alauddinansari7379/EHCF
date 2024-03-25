@@ -38,9 +38,7 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
     private var context: Context = this@DoctorProfile
     var doctorId = ""
     var dashboard = ""
-    var consultationTypeId = ""
     var dialog: Dialog? = null
-    var consaltationList = ArrayList<ModelConsaltation>()
 
 
     private lateinit var sessionManager: SessionManager
@@ -51,38 +49,34 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
         binding = ActivityDoctorProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
+        if (DoctorProfile.consaltationList.size==0){
+            DoctorProfile.consaltationList.add(ModelConsaltation("Tele Consultation", "1"))
+            DoctorProfile.consaltationList.add(ModelConsaltation("Clinic Visit ", "2"))
+            DoctorProfile.consaltationList.add(ModelConsaltation("Home Visit", "3"))
+        }
+
         //         doctorId = intent.getStringExtra("doctorId").toString()
 
-        AdapterFamilyListView.memberID=""
+        AdapterFamilyListView.memberID = ""
 
         doctorId = intent.getStringExtra("doctorId").toString()
-       //  dashboard = intent.getStringExtra("dashboard").toString()
+        //  dashboard = intent.getStringExtra("dashboard").toString()
 
-        if (AdapterAllDoctor.dashboard == "1") {
-            AdapterAllDoctor.dashboard == ""
-        binding.spinnerBookingType.visibility=View.VISIBLE
-        }
+//
+//        if (AdapterAllDoctor.dashboard == "1") {
+//            AdapterAllDoctor.dashboard == ""
+//            binding.spinnerBookingType.visibility = View.VISIBLE
+//        }
         Log.e("doctorId", "$doctorId")
         Log.e("dashboard", "$dashboard")
         shimmerFrameLayout = findViewById(R.id.shimmer)
         shimmerFrameLayout!!.startShimmer();
 
-        apiCallDoctorProfile()
-        binding.imgBack.setOnClickListener {
-            onBackPressed()
-        }
-//        binding.bt.setOnClickListener{
-//            val intent = Intent(context as Activity, ShuduleTiming::class.java)
-//                .putExtra("doctorId",doctorId)
-//            context.startActivity(intent)
-//        }
-        consaltationList.add(ModelConsaltation("Tele Consultation", "1"))
-        consaltationList.add(ModelConsaltation("Clinic Visit ", "2"))
-        consaltationList.add(ModelConsaltation("Home Visit", "3"))
+
         binding.spinnerBookingType.adapter = ArrayAdapter<ModelConsaltation>(
             context,
             android.R.layout.simple_list_item_1,
-            consaltationList
+            DoctorProfile.consaltationList
         )
 
 
@@ -94,17 +88,34 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
                     i: Int,
                     l: Long
                 ) {
-                    if (consaltationList.size > 0) {
-                        consultationTypeId = consaltationList[i].id
+                    if (DoctorProfile.consaltationList.size > 0) {
+                        consultationTypeId = DoctorProfile.consaltationList[i].id
                         sessionManager.bookingType = consultationTypeId
-                        Log.e(ContentValues.TAG, "bloodGroup: $consultationTypeId")
+                        Log.e(ContentValues.TAG, "consultationTypeId: $consultationTypeId")
                     }
                 }
 
                 override fun onNothingSelected(adapterView: AdapterView<*>?) {}
             }
-    }
 
+
+
+        apiCallDoctorProfile()
+        binding.imgBack.setOnClickListener {
+            onBackPressed()
+        }
+//        binding.bt.setOnClickListener{
+//            val intent = Intent(context as Activity, ShuduleTiming::class.java)
+//                .putExtra("doctorId",doctorId)
+//            context.startActivity(intent)
+//        }
+    }
+companion object{
+    var consaltationList = ArrayList<ModelConsaltation>()
+
+    var consultationTypeId = ""
+
+}
 
     private fun apiCallDoctorProfile() {
 
@@ -131,6 +142,8 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
                             myToast(this@DoctorProfile, "No Doctor Found")
                             progressDialog!!.dismiss()
                         } else {
+
+
                             binding.rvAllDoctor.apply {
                                 shimmerFrameLayout?.startShimmer()
                                 binding.rvAllDoctor.visibility = View.VISIBLE
@@ -142,6 +155,7 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
                                 )
                                 progressDialog!!.dismiss()
                             }
+
 
                         }
                     }catch (e:Exception){

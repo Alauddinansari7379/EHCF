@@ -100,13 +100,25 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_ble"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_marginStart="15dp"
+         android:layout_marginStart="15dp"
         app:cardCornerRadius="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
         android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -228,6 +240,83 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Report For Self"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
+            android:textSize="12sp">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkSelf"
+            android:layout_width="wrap_content"
+            android:checked="true"
+            android:clickable="false"
+            android:layout_height="wrap_content">
+
+        </androidx.appcompat.widget.AppCompatCheckBox>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutFamilyMemeber"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Report For Family Member"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/main_color"
+                    android:textStyle="bold"
+                    android:textSize="12sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/corner"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSlotTimingFamily"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
     <androidx.cardview.widget.CardView
         android:id="@+id/cardHeart"
          android:layout_width="match_parent"
@@ -355,7 +444,7 @@
         android:elevation="15dp"
         android:backgroundTint="#2196f3"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
@@ -475,5 +564,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
         app:layout_constraintVertical_bias="0.0"
         app:navGraph="@navigation/nav_graph" />
+        </LinearLayout>
+    </ScrollView>
  </LinearLayout>
 

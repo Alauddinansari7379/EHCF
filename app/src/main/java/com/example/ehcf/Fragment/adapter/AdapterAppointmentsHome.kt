@@ -20,13 +20,14 @@ import com.example.ehcf.Appointments.UpComing.model.ModelUpComingHome
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
+import com.example.ehcf.MyDoctor.Adapter.AdapterMyDoctors
 import com.example.ehcf.R
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AdapterAppointmentsHome(val context: Context, private val list: ModelUpComingHome,) :
+class AdapterAppointmentsHome(val context: Context, private val list: ModelUpComingHome, val videoCall: ShowPopUp ) :
     RecyclerView.Adapter<AdapterAppointmentsHome.MyViewHolder>() {
 
 
@@ -97,32 +98,57 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
 
                 }
             }
-            Log.e("currentDate", currentDate)
-            Log.e("startTime", list.result[position].date + " " + list.result[position].time)
+//            Log.e("currentDate", currentDate)
+//            Log.e("startTime", list.result[position].date + " " + list.result[position].time)
+//            if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted" &&
+//                list.result[position].consultation_type == "1"
+//            ) {
+//
+//            }
+//            if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
+//                && list.result[position].consultation_type == "2"
+//            ) {
+//
+//            }
+//            if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
+//                && list.result[position].consultation_type == "3"
+//            ) {
+//            }
+
+
             if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted" &&
                 list.result[position].consultation_type == "1"
             ) {
+                holder.btnJoinMeeting.visibility = View.VISIBLE
+               // holder.btnCheck.visibility = View.GONE
 
             }
             if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
                 && list.result[position].consultation_type == "2"
             ) {
+                holder.btnJoinMeeting.visibility = View.GONE
+               //holder.btnCheck.visibility = View.GONE
 
             }
             if (list.result[position].date + " " + list.result[position].start_time <= currentDate && list.result[position].slug == "accepted"
                 && list.result[position].consultation_type == "3"
             ) {
+                holder.btnJoinMeeting.visibility = View.GONE
+              //  holder.btnCheck.visibility = View.GONE
             }
+
+
+
 //        holder.bookingId.text = list.result.upcoming[position].id.toString()
 //        holder.title.text = list.result[position].title.toString()
 //        holder.status.text = list.result[position].status_name.toString()
-            //   Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
+//               Picasso.get().load(list.result.upcoming[position].profile_image).into(holder.profile)
 
 
-//        holder.btnJoinMeeting.setOnClickListener {
-//            showPopUp.videoCall(list.result[position].time)
-//
-//        }
+            holder.btnJoinMeeting.setOnClickListener {
+                videoCall.videoCall(list.result[position].date + "EHCF" + list.result[position].start_time, list.result[position].id)
+
+            }
             holder.btnView.setOnClickListener {
                 val intent = Intent(context as Activity, AppointmentDetails::class.java)
                     .putExtra("bookingId", list.result[position].id.toString())
@@ -162,6 +188,7 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
           val consultationType: TextView = itemView.findViewById(R.id.tvConsultationType)
           val profile: ImageView = itemView.findViewById(R.id.imgProfile)
         val btnView: Button = itemView.findViewById(R.id.btnViewUpcomingHome)
+        val btnJoinMeeting: Button = itemView.findViewById(R.id.btnJoinMeeting)
         val cardAppointmentHome: CardView = itemView.findViewById(R.id.cardAppointmentHome)
 
         //  val btnOkDialog: Button = itemView.findViewById(R.id.btnOkDialog)
@@ -175,7 +202,7 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
         fun popupRemainingTime(startTime: String)
 
         fun videoCall(startTime: String, id: String)
-      //  fun dismissPopup()
+        fun dismissPopup()
 
     }
 }

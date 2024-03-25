@@ -59,7 +59,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tele Consaltation"
+                        android:text="Tele Consultation"
                         android:textColor="@color/main_color"
                         android:textSize="15sp"
                         android:textStyle="bold">

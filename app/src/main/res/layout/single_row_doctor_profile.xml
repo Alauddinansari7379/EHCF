@@ -355,19 +355,42 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
-                android:gravity="end"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
+                  android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/layspinnerBookingTypeNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                     android:layout_weight="1"
+                    android:visibility="gone"
+                    android:background="@drawable/corner"
+                    android:layout_marginRight="10dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerBookingTypeNew"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                         android:padding="10dp"
+                        android:textSize="15dp">
+
+                    </Spinner>
+
+                </LinearLayout>
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvRatingReview"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="10dp"
-                    android:text="View Rating &amp; Reviews"
+                    android:gravity="end"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                     android:text="View Rating &amp; Reviews"
                     android:background="?actionBarItemBackground"
                     android:textColor="@color/main_color"
                     android:textStyle="bold">

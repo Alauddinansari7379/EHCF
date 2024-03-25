@@ -35,7 +35,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterAddress.AddressID{
+class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterAddress.AddressID,AdapterFamilyListView.CheckBox{
     private var context = this@CartDiagnostic
     val binding by lazy {
         ActivityCartDiagnosticBinding.inflate(layoutInflater)
@@ -152,13 +152,13 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                        // myToast(this@MyAvailableSlot, "Server Error")
                     } else if (response.body()!!.result.isEmpty()) {
                         binding.recyclerViewFamily.apply {
-                            adapter = AdapterFamilyListView(context, response.body()!!,)
+                            adapter = AdapterFamilyListView(context, response.body()!!,this@CartDiagnostic)
                          }
                     } else {
                         binding.recyclerViewFamily.apply {
                             //   adapter!!.notifyDataSetChanged();
                             //myToast(this@ShuduleTiming, response.body()!!.message)
-                            adapter = AdapterFamilyListView(context, response.body()!!)
+                            adapter = AdapterFamilyListView(context, response.body()!!,this@CartDiagnostic)
                             binding.recyclerViewFamily.layoutManager = GridLayoutManager(context, 3)
                             //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
@@ -458,6 +458,10 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
     override fun addressId(id: String) {
 
         addressId=id
+
+    }
+
+    override fun checkBox(id: Int) {
 
     }
 

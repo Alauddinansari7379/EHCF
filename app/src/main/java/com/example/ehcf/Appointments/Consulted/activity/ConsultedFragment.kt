@@ -73,8 +73,11 @@ class ConsultedFragment : Fragment() {
             apiCallGetConsultationCompleted()
         }
         binding.edtSearch.addTextChangedListener {str ->
-            setRecyclerViewAdapter(mainData.filter { it.doctor_name!!.contains(str.toString(),ignoreCase = true)} as ArrayList<ResultXXX>)
+            setRecyclerViewAdapter(mainData.filter {
+                it.doctor_name!!.contains(str.toString(),ignoreCase = true)
+            } as ArrayList<ResultXXX>)
         }
+
 //        binding.imgSearch.setOnClickListener {
 //            if (binding.edtSearch.text.toString().isEmpty()) {
 //                binding.edtSearch.error = "Enter Doctor Name"
@@ -232,6 +235,7 @@ class ConsultedFragment : Fragment() {
 
                     }catch (e:Exception){
                         e.printStackTrace()
+                        progressDialog!!.dismiss()
                     }
                 }
 

@@ -199,12 +199,13 @@
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnUploadRe"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/corner"
                         android:backgroundTint="@color/main_color"
                         android:padding="5dp"
-                        android:text="Disabled"
+                        android:text="Upload"
+                        android:textSize="12sp"
                         android:textAllCaps="false"
                         android:textColor="@color/white">
 

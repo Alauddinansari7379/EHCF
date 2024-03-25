@@ -6,20 +6,28 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.postDelayed
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
+import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.adapter.AdapterFilteredDoctor
+import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
+import com.example.ehcf.Fragment.HomeFragment
+import com.example.ehcf.Fragment.Model.ModelNearByDoctor
+import com.example.ehcf.Fragment.Model.ResultX
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.model.My_model
 import com.example.ehcf.R
@@ -38,6 +46,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
+ import kotlin.collections.ArrayList
 
 class Dashboard : AppCompatActivity() {
     private lateinit var binding: ActivityDashboard2Binding
@@ -46,6 +55,7 @@ class Dashboard : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     var specilistId = ""
+    var mainData = ArrayList<ResultX>()
 
     private var specilList = ModelSpecilList();
 
@@ -61,12 +71,28 @@ class Dashboard : AppCompatActivity() {
             onBackPressed()
         }
 
+
+        try {
+            binding.edtLocation.addTextChangedListener { str ->
+                setRecyclerViewAdapter(mainData.filter {
+                    it.clinic_address != null && it.clinic_address!!.contains(
+                        str.toString(),
+                        ignoreCase = true
+                    )
+                } as ArrayList<ResultX>)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+        }
+
         sessionManager = SessionManager(this)
 
         Handler(Looper.getMainLooper()).postDelayed(200) {
-            apiCallAllDoctor()
+           // apiCallAllDoctor()
            // apiCallSpecialistSpinner()
             apiCallSpecialistSpinner1()
+            apiCallNearByDoctor()
 
 
         }
@@ -127,7 +153,7 @@ class Dashboard : AppCompatActivity() {
                     var spEmptyItem: SmartMaterialSpinner<String>? = null
                     binding.spinnerSpecialistTest.item = items.toMutableList() as List<Any>?
 
-                    progressDialog!!.dismiss()
+//                    progressDialog!!.dismiss()
 
                     binding.spinnerSpecialistTest.onItemSelectedListener =
                         object : AdapterView.OnItemSelectedListener {
@@ -270,6 +296,16 @@ private fun apiCallSearch() {
 
 }
 
+    private fun setRecyclerViewAdapter(data: ArrayList<ResultX>) {
+        binding.rvAllDoctor.apply {
+            shimmerFrameLayout?.startShimmer()
+            binding.rvAllDoctor.visibility = View.VISIBLE
+            binding.shimmer.visibility = View.GONE
+            adapter = AdapterNearByDoctor(this@Dashboard, data)
+
+         }
+    }
+
 /*
         private fun apiCallSearch() {
             progressDialog = ProgressDialog(this@Dashboard)
@@ -322,7 +358,57 @@ override fun onStart() {
     }
 }
 
-private fun apiCallAllDoctor() {
+    private fun apiCallNearByDoctor() {
+//
+//        progressDialog = ProgressDialog(requireContext())
+//        progressDialog!!.setMessage("Loading..")
+//        progressDialog!!.setTitle("Please Wait")
+//        progressDialog!!.isIndeterminate = false
+//        progressDialog!!.setCancelable(true)
+        //  progressDialog!!.show()
+
+        ApiClient.apiService.getNearByDoctor(
+            HomeFragment.postalCodeNew,
+
+            ).enqueue(object :
+            Callback<ModelNearByDoctor> {
+            @SuppressLint("LogNotTimber", "SuspiciousIndentation")
+            override fun onResponse(
+                call: Call<ModelNearByDoctor>,
+                response: Response<ModelNearByDoctor>
+            ) {
+                try {
+                    if (response.code() == 500) {
+                        myToast(this@Dashboard, "Unable to fetch nearest doctor")
+                    } else if (response.body()!!.status == 1) {
+                        mainData=response.body()!!.result
+                        setRecyclerViewAdapter(mainData)
+                    } else {
+                        binding.shimmer.visibility = View.GONE
+
+                        myToast(this@Dashboard, response.body()!!.message.toString())
+                        //  progressDialog!!.dismiss()
+                    }
+                } catch (e: Exception) {
+                    Log.e("Exception", e.printStackTrace().toString())
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(call: Call<ModelNearByDoctor>, t: Throwable) {
+                binding.shimmer.visibility = View.GONE
+                myToast(this@Dashboard,"${t.message}")
+                // progressDialog!!.dismiss()
+//>>>>>>>>>>:17.4595688
+//                                                                                                    78.3681035
+            }
+
+        })
+
+    }
+
+
+    private fun apiCallAllDoctor() {
 
     progressDialog = ProgressDialog(this@Dashboard)
     progressDialog!!.setMessage("Loading..")

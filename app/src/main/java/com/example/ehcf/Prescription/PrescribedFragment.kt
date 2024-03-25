@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Helper.myToast
@@ -74,7 +75,14 @@ class PrescribedFragment : Fragment() {
         binding.btnSearchFilter.setOnClickListener {
             apiCallFilterPrescription(binding.edtPatientName.text.toString().trim())
         }
-
+        binding.edtSearch.addTextChangedListener { str ->
+            setRecyclerViewAdapter(mainData.filter {
+                it.doctor_name!!.contains(
+                    str.toString(),
+                    ignoreCase = true
+                )
+            } as ArrayList<ResultPrescribed>)
+        }
 
         binding.imgFilter.setOnClickListener {
             if (con) {

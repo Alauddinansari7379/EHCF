@@ -90,50 +90,65 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         data.put("merchantTransactionId", MERCHANT_TID)//String. Mandatory
 
         data.put("merchantId", MERCHANT_ID) //String. Mandatory
-
-        data.put("amount", sessionManager.pricing!!.toInt() * 100)//Long. Mandatory
-
-        data.put("mobileNumber", "7908834635") //String. Optional
-        data.put(
-            "callbackUrl",
-            "https://webhook.site/6658f3da-60a4-440f-a743-27e3dcdb91a8"
-        ) //String. Mandatory
-
-        val paymentInstrument = JSONObject()
-        paymentInstrument.put("type", "PAY_PAGE")
-        //  paymentInstrument.put("targetApp", "com.phonepe.simulator")
-
-        data.put("paymentInstrument", paymentInstrument)//OBJECT. Mandatory
+        if (PrescriptionDetails.FollowUP == "1") {
+            binding.cardFreeOfCost.visibility = View.VISIBLE
+            binding.cardRazorPay.visibility = View.GONE
+            binding.cardCashOnDelivery.visibility = View.GONE
+            binding.cardPhonePay.visibility = View.GONE
 
 
-        val deviceContext = JSONObject()
-        deviceContext.put("deviceOS", "ANDROID")
-        data.put("deviceContext", deviceContext)
+        }
+        if (sessionManager.pricing=="Free"){
+            sessionManager.pricing= "0".toInt().toString()
+        }
+        if (sessionManager.pricing!!.isEmpty()){
+            sessionManager.pricing= "0".toInt().toString()
+        }
+        if (sessionManager.pricing!="Free") {
+            data.put("amount", sessionManager.pricing!!.toInt() * 100)//Long. Mandatory
+
+            data.put("mobileNumber", "7908834635") //String. Optional
+            data.put(
+                "callbackUrl",
+                "https://webhook.site/6658f3da-60a4-440f-a743-27e3dcdb91a8"
+            ) //String. Mandatory
+
+            val paymentInstrument = JSONObject()
+            paymentInstrument.put("type", "PAY_PAGE")
+            //  paymentInstrument.put("targetApp", "com.phonepe.simulator")
+
+            data.put("paymentInstrument", paymentInstrument)//OBJECT. Mandatory
 
 
-        val payloadBase64 = Base64.encodeToString(
-            data.toString().toByteArray(Charset.defaultCharset()), Base64.NO_WRAP
-        )
-        val checksum = sha256(payloadBase64 + apiEndPoint + salt) + "###1"
-
-        // SHA256(base64 encoded payload + "/pg/v1/pay" + salt key) + ### + salt index
-
-        val b2BPGRequest = B2BPGRequestBuilder()
-            .setData(payloadBase64)
-            .setChecksum(checksum)
-            .setUrl(apiEndPoint)
-            .build()
+            val deviceContext = JSONObject()
+            deviceContext.put("deviceOS", "ANDROID")
+            data.put("deviceContext", deviceContext)
 
 
-        binding.cardPhonePay.setOnClickListener {
-            Log.e("payloadBase64", "$payloadBase64")
-            Log.e("checksum", "$checksum")
-            try {
-                PhonePe.getImplicitIntent(this, b2BPGRequest, "")
-                    ?.let { startActivityForResult(it, 1) };
-            } catch (e: PhonePeInitException) {
+            val payloadBase64 = Base64.encodeToString(
+                data.toString().toByteArray(Charset.defaultCharset()), Base64.NO_WRAP
+            )
+            val checksum = sha256(payloadBase64 + apiEndPoint + salt) + "###1"
+
+            // SHA256(base64 encoded payload + "/pg/v1/pay" + salt key) + ### + salt index
+
+            val b2BPGRequest = B2BPGRequestBuilder()
+                .setData(payloadBase64)
+                .setChecksum(checksum)
+                .setUrl(apiEndPoint)
+                .build()
+
+
+            binding.cardPhonePay.setOnClickListener {
+                Log.e("payloadBase64", "$payloadBase64")
+                Log.e("checksum", "$checksum")
+                try {
+                    PhonePe.getImplicitIntent(this, b2BPGRequest, "")
+                        ?.let { startActivityForResult(it, 1) };
+                } catch (e: PhonePeInitException) {
+                }
+
             }
-
         }
 
 
@@ -177,13 +192,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 }
             }
         }
-        if (PrescriptionDetails.FollowUP == "1") {
-            binding.cardFreeOfCost.visibility = View.VISIBLE
-            binding.cardRazorPay.visibility = View.GONE
-            binding.cardCashOnDelivery.visibility = View.GONE
 
-
-        }
         /*        razorpay?.getPaymentMethods(object : PaymentMethodsCallback {
                     override fun onPaymentMethodsReceived(result: String?) {
                         */

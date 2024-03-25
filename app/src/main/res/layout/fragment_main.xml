@@ -51,6 +51,7 @@
         </androidx.appcompat.widget.AppCompatTextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -65,11 +66,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageConnected"
-                    android:layout_width="@dimen/value_25dp"
-                    android:layout_height="@dimen/value_25dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:visibility="gone"
                     android:background="@drawable/check">
 

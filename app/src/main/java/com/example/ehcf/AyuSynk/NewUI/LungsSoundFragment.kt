@@ -38,7 +38,9 @@ import com.example.ehcf.AyuSynk.utils.GenUtil
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentLungsSoundBinding
 import com.example.ehcf.AyuSynk.NewUI.RecordHeartSound.FragmentValue.Companion.recordHeartSound
- import java.io.File
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.sharedpreferences.SessionManager
+import java.io.File
 import java.io.IOException
 import java.util.*
 
@@ -51,6 +53,7 @@ class LungsSoundFragment :Fragment(), AyuDeviceListener, AdapterView.OnItemSelec
     private var recordID = -1
     var progressDialog : ProgressDialog?=null
 
+    lateinit var sessionManager: SessionManager
     private var isRecordingPaused = false
     val usb=1
     private var isPlayingRecordedSound = false
@@ -65,7 +68,13 @@ class LungsSoundFragment :Fragment(), AyuDeviceListener, AdapterView.OnItemSelec
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLungsSoundBinding.bind(view)
-
+        sessionManager=SessionManager(requireContext())
+        if (AdapterFamilyListView.memberName != "") {
+            binding!!.tvPatientName.text = "Patient Name- ${AdapterFamilyListView.memberName}"
+            AdapterFamilyListView.memberName=""
+        } else {
+            binding!!.tvPatientName.text = "Patient Name- ${sessionManager.customerName}"
+        }
 
         binding.tvAortic.setTextColor(Color.parseColor("#9F367A"))
         binding.viewAortic.setBackgroundColor(Color.parseColor("#9F367A"))

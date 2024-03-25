@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +20,9 @@ import java.util.*
 class AdapterFamilyListView(
     val context: Context,
     private val list: ModelFamilyList,
-    //val select: SelectInterFace
+    val checkBox: CheckBox,
 ) :
     RecyclerView.Adapter<AdapterFamilyListView.MyViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -32,6 +32,7 @@ class AdapterFamilyListView(
     var currentDate: String? = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
     private var lastCheckedPosition = -1
     private var checkeditem = 0
+
 
     override fun onBindViewHolder(
         holder: MyViewHolder,
@@ -54,11 +55,15 @@ class AdapterFamilyListView(
                 holder.cardViewViewMember.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 lastCheckedPosition=100
                 memberID=""
+                memberName=""
+                checkBox.checkBox(1)
             }
            else{
                 memberID = list.result[position].id
+                memberName = list.result[position].member_name
                 lastCheckedPosition = position
                 notifyItemRangeChanged(0, list.result.size)
+                checkBox.checkBox(0)
             }
 
         }
@@ -77,12 +82,15 @@ class AdapterFamilyListView(
         val familyMember: TextView = itemView.findViewById(R.id.familyMember)
         val cardViewViewMember: CardView = itemView.findViewById(R.id.cardViewViewMember)
         //val btnClerFamily: Button = itemView.findViewById(R.id.btnClerFamily)
-
-
     }
 
     companion object {
         var memberID = ""
+        var memberName = ""
+    }
+
+    interface CheckBox {
+        fun checkBox(id:Int)
     }
 
 }

@@ -36,6 +36,7 @@
             android:gravity="center"
             android:text="Report List"
             android:textColor="@color/black"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -117,6 +118,52 @@
             </androidx.appcompat.widget.AppCompatButton>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/corner"
+                android:hint="Search By Member Name"
+                android:inputType="text"
+                android:padding="10dp"
+                 android:textColorHint="@color/black"
+                android:textSize="15dp">
+
+
+            </androidx.appcompat.widget.AppCompatEditText>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lLayoutNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:background="@drawable/corner"
+            android:minHeight="40dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerFamily"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

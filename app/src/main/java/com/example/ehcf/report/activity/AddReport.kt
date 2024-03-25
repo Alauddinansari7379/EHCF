@@ -74,49 +74,49 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 
 
     }
+/*
+    private fun apiCallGetPrePending() {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
 
-//    private fun apiCallGetPrePending() {
-//        progressDialog = ProgressDialog(requireContext())
-//        progressDialog!!.setMessage("Loading..")
-//        progressDialog!!.setTitle("Please Wait")
-//        progressDialog!!.isIndeterminate = false
-//        progressDialog!!.setCancelable(true)
-//        progressDialog!!.show()
-//
-//        ApiClient.apiService.prescribedList(sessionManager.id.toString())
-//            .enqueue(object : Callback<ModelPrescribed> {
-//                @SuppressLint("LogNotTimber")
-//                override fun onResponse(
-//                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
-//                ) {
-//                    if (response.body()!!.result.isEmpty()) {
-//                        binding.tvNoDataFound.visibility = View.VISIBLE
-//                        // myToast(requireActivity(),"No Data Found")
-//                        progressDialog!!.dismiss()
-//
-//                    } else {
-//                        binding.recyclerView.apply {
-//                            binding.tvNoDataFound.visibility = View.GONE
-//                            adapter = activity?.let {
-//                                AdapterAppReport(
-//                                    it, response.body()!!, this@AddReport
-//                                )
-//                            }
-//                            progressDialog!!.dismiss()
-//
-//                        }
-//                    }
-//
-//                }
-//
-//                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-//                    myToast(requireActivity(), "Something went wrong")
-//                    progressDialog!!.dismiss()
-//
-//                }
-//
-//            })
-//    }
+        ApiClient.apiService.prescribedList(sessionManager.id.toString())
+            .enqueue(object : Callback<ModelPrescribed> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
+                ) {
+                    if (response.body()!!.result.isEmpty()) {
+                        binding.tvNoDataFound.visibility = View.VISIBLE
+                        // myToast(requireActivity(),"No Data Found")
+                        progressDialog!!.dismiss()
+
+                    } else {
+                        binding.recyclerView.apply {
+                            binding.tvNoDataFound.visibility = View.GONE
+                            adapter = activity?.let {
+                                AdapterAppReport(
+                                    it, response.body()!!, this@AddReport
+                                )
+                            }
+                            progressDialog!!.dismiss()
+
+                        }
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
+                    myToast(requireActivity(), "Something went wrong")
+                    progressDialog!!.dismiss()
+
+                }
+
+            })
+    }*/
     private fun apiCallGetTest() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog!!.setMessage("Loading..")
@@ -131,7 +131,11 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                 override fun onResponse(
                     call: Call<ModelGetTest>, response: Response<ModelGetTest>
                 ) {
-                    if (response.body()!!.result.isEmpty()) {
+                    if (response.code()==500){
+                         myToast(requireActivity(),"Server Error")
+                        progressDialog!!.dismiss()
+                    }
+                    else if (response.body()!!.result.isEmpty()) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
                         // myToast(requireActivity(),"No Data Found")
                         progressDialog!!.dismiss()
@@ -395,11 +399,14 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
     }
 
     override fun upload(id: String) {
-        if (selectValue=="1"){
-            uploadImageCamera(id)
-        }else{
-            uploadImage(id)
-
+        if (selectedImageUri==null){
+            myToast(requireActivity(),"Select Report first")
+        }else {
+            if (selectValue == "1") {
+                uploadImageCamera(id)
+            } else {
+                uploadImage(id)
+            }
         }
     }
 }

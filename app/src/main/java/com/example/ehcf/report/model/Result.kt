@@ -5,7 +5,7 @@ data class Result(
     val created_at: String,
     val instructions: String,
     val prescriptionid: String,
-    val id: String,
+    val id: String?,
     val test_name: String,
-    val test_report: String?=null
+    val test_report: String?
 )

@@ -3,6 +3,7 @@ package com.example.ehcf.Fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -16,25 +17,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.afdhal_fa.imageslider.`interface`.ItemClickListener
 import com.afdhal_fa.imageslider.model.SlideUIModel
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.GetLocationDetail
 import com.example.easywaylocation.Listener
 import com.example.easywaylocation.LocationData
+import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingHome
+import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
+import com.example.ehcf.Fragment.Model.ModelNearByDoctor
+import com.example.ehcf.Fragment.Model.ResultX
 import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.RatingAndReviews.Rating
 import com.example.ehcf.Specialities.activity.FilteredDoctor
 import com.example.ehcf.Specialities.activity.Specialities
 import com.example.ehcf.databinding.FragmentHomeBinding
@@ -44,15 +52,23 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.*
+import org.jitsi.meet.sdk.JitsiMeetActivity
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
+import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
-class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
+class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterAppointments.ShowPopUp {
     lateinit var easyWayLocation: EasyWayLocation
     lateinit var getLocationDetail: GetLocationDetail
     var progressDialog: ProgressDialog? = null
@@ -68,9 +84,25 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
     var address = ""
     var getLocation: Button? = null
     private val REQUEST_CODE = 100
-    private lateinit var binding: FragmentHomeBinding
+     private lateinit var binding: FragmentHomeBinding
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
+    var mainData = ArrayList<ResultX>()
+    var meetingId =""
+    private var mainDataNew = ArrayList<ResultXXXX>()
+    var ratingPage = false
+    var dialog: Dialog? = null
+    private var currentTime = ""
+    var endTime = ""
+    var hours = ""
+    var minutes = ""
+    var secondsNew = ""
+    private var diffTime: Long? = null
+    private var diffTimeSeconds: Long? = null
+    var bookingId = ""
+    var d1: Date? = null
+    var d2: Date? = null
+
 
 
     // val container = view?.findViewById(com.example.ehcf.R.id.shimmer) as ShimmerFrameLayout
@@ -252,7 +284,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("FetchContact89", "fetchContacts: coroutine start")
 
-            apiCallAllDoctor()
             apiCallGetConsultationAccepted()
 
         }
@@ -260,6 +291,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
         getLastLocation()
+
 
 //        Handler().postDelayed({
 //
@@ -350,11 +382,13 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                             val locality = addresses?.get(0)?.locality
                             val countryName = addresses?.get(0)?.countryName
                             val countryCode = addresses?.get(0)?.countryCode
-                            val postalCode = addresses?.get(0)?.postalCode
+                            val postalCode = addresses?.get(0)?.postalCode.toString()
                             val subLocality = addresses?.get(0)?.subLocality
                             val subAdminArea = addresses?.get(0)?.subAdminArea
-
                             currentAddress = "$subLocality, $locality, $countryName"
+                            postalCodeNew=postalCode
+                            apiCallNearByDoctor(postalCode)
+
 
                            // binding.tvLocation.text = currentAddress
                             binding.tvLocation.text = addresses?.get(0)?.getAddressLine(0)
@@ -471,6 +505,64 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
         }
     }
 
+    private fun apiCallNearByDoctor(postalCode: String) {
+//
+//        progressDialog = ProgressDialog(requireContext())
+//        progressDialog!!.setMessage("Loading..")
+//        progressDialog!!.setTitle("Please Wait")
+//        progressDialog!!.isIndeterminate = false
+//        progressDialog!!.setCancelable(true)
+        //  progressDialog!!.show()
+
+         ApiClient.apiService.getNearByDoctor(
+             postalCode,
+
+        ).enqueue(object :
+                Callback<ModelNearByDoctor> {
+                @SuppressLint("LogNotTimber", "SuspiciousIndentation")
+                override fun onResponse(
+                    call: Call<ModelNearByDoctor>,
+                    response: Response<ModelNearByDoctor>
+                ) {
+                    try {
+                        if (response.code() == 500) {
+                            myToast(requireActivity(), "Unable to fetch nearest doctor")
+                        } else if (response.body()!!.status == 1) {
+                            binding.rvAllDoctor.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAllDoctor.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                 mainData = response.body()!!.result
+
+                                adapter = activity?.let {
+                                    AdapterNearByDoctor(it,mainData )
+                                }
+                                //  progressDialog!!.dismiss()
+                            }
+                        } else {
+                            binding.shimmer.visibility = View.GONE
+
+                              myToast(requireActivity(), response.body()!!.message.toString())
+                            //  progressDialog!!.dismiss()
+                        }
+                    } catch (e: Exception) {
+                        Log.e("Exception", e.printStackTrace().toString())
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelNearByDoctor>, t: Throwable) {
+                    binding.shimmer.visibility = View.GONE
+                     myToast(requireActivity(),"${t.message}")
+                    // progressDialog!!.dismiss()
+//>>>>>>>>>>:17.4595688
+//                                                                                                    78.3681035
+                }
+
+            })
+
+    }
+/*
     private fun apiCallAllDoctor() {
 //
 //        progressDialog = ProgressDialog(requireContext())
@@ -485,29 +577,30 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
             sessionManager.latitude,
             sessionManager.longitude,
             searchNew
-        )
-            .enqueue(object :
+        ).enqueue(object :
                 Callback<ModelAllDoctorNew> {
-                @SuppressLint("LogNotTimber")
+                @SuppressLint("LogNotTimber", "SuspiciousIndentation")
                 override fun onResponse(
                     call: Call<ModelAllDoctorNew>,
                     response: Response<ModelAllDoctorNew>
                 ) {
                     try {
                         if (response.code() == 500) {
-                           // myToast(requireActivity(), "Unable to fetch nearest doctor")
+                            myToast(requireActivity(), "Unable to fetch nearest doctor")
                         } else if (response.body()!!.status == 1) {
                             binding.rvAllDoctor.apply {
                                 shimmerFrameLayout?.startShimmer()
                                 binding.rvAllDoctor.visibility = View.VISIBLE
                                 binding.shimmer.visibility = View.GONE
-                                adapter = activity?.let { AdapterAllDoctor(it, response.body()!!) }
+                                adapter = activity?.let {
+                                    AdapterAllDoctor(it, response.body()!!)
+                                }
                                 //  progressDialog!!.dismiss()
                             }
                         } else {
                             binding.shimmer.visibility = View.GONE
 
-                            //  myToast(requireActivity(), response.body()!!.message.toString())
+                              myToast(requireActivity(), response.body()!!.message.toString())
                             //  progressDialog!!.dismiss()
                         }
                     } catch (e: Exception) {
@@ -518,15 +611,16 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
                 override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
                     binding.shimmer.visibility = View.GONE
-
-                    // myToast(requireActivity(),"${t.message}")
+                     myToast(requireActivity(),"${t.message}")
                     // progressDialog!!.dismiss()
-
+//>>>>>>>>>>:17.4595688
+//                                                                                                    78.3681035
                 }
 
             })
 
     }
+*/
 
     private fun apiCallGetConsultationAccepted() {
         ApiClient.apiService.getConsultationAccptedHome(sessionManager.id.toString(), "accepted")
@@ -542,13 +636,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
                             binding.shimmer.visibility = View.GONE
                             // myToast(requireActivity(),"No Data Found")
                         } else {
-                            binding.rvAppointment.apply {
-                                shimmerFrameLayout?.startShimmer()
-                                binding.rvAppointment.visibility = View.VISIBLE
-                                binding.shimmer.visibility = View.GONE
-                                adapter =
-                                    activity?.let { AdapterAppointmentsHome(it, response.body()!!) }
-                            }
+                            homeCall="1"
+                            mainDataNew=response.body()!!.result
+                            setRecyclerViewAdapter(mainDataNew)
+                            binding.shimmer.visibility = View.GONE
+                            progressDialog!!.dismiss()
                         }
 
                     } catch (e: Exception) {
@@ -563,9 +655,150 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack {
 
             })
     }
+    private fun setRecyclerViewAdapter(data: ArrayList<ResultXXXX>) {
+        binding.rvAppointment.apply {
+            shimmerFrameLayout?.startShimmer()
+            binding.rvAppointment.visibility = View.VISIBLE
+            binding.shimmer.visibility = View.GONE
+            adapter = AdapterAppointments(requireContext(), data, this@HomeFragment)
+        }
+    }
+    companion object{
+        var postalCodeNew=""
+        var homeCall=""
+    }
+    private fun videoCallFun(startTime: String, id: String) {
+        meetingId = id
+        val jitsiMeetUserInfo = JitsiMeetUserInfo()
+        jitsiMeetUserInfo.displayName = sessionManager.customerName
+        jitsiMeetUserInfo.email = sessionManager.email
+        try {
+            val defaultOptions: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
+                .setServerURL(URL("https://jvc.ethicalhealthcare.in/"))
+                .setRoom(startTime)
+                .setAudioMuted(false)
+                .setVideoMuted(true)
+                .setAudioOnly(false)
+                .setUserInfo(jitsiMeetUserInfo)
+                .setConfigOverride("enableInsecureRoomNameWarning", false)
+                .setFeatureFlag("readOnlyName", true)
+                .setFeatureFlag("prejoinpage.enabled", false)
+                //  .setFeatureFlag("lobby-mode.enabled", false)
+                // .setToken("123") // Set the meeting password
+                //.setFeatureFlag("autoKnockLobby", false) // Disable lobby mode
+                //.setFeatureFlag("disableModeratorIndicator", false)
+                //.setFeatureFlag("chat.enabled",false)
+                .setConfigOverride("requireDisplayName", true)
+                .build()
+            JitsiMeetActivity.launch(requireContext(), defaultOptions)
+            ratingPage = true
+            //  startActivity(Intent(requireContext(),Rating::class.java))
+        } catch (e: MalformedURLException) {
+            e.printStackTrace();
+        }
+    }
 
     override fun onResume() {
         super.onResume()
          easyWayLocation.startLocation()
+        if (ratingPage) {
+            //  (activity as Appointments).refresh()
+            val intent = Intent(context as Activity, Rating::class.java)
+                .putExtra("meetingId", meetingId)
+            (context as Activity).startActivity(intent)
+            ratingPage = false
+        }
     }
+
+    override fun popupRemainingTime(startTime: String) {
+        var view = layoutInflater.inflate(R.layout.time_dialognew, null)
+        dialog = Dialog(requireContext())
+        endTime = startTime
+        val btnOkDialog = view!!.findViewById<Button>(R.id.btnOkDialogNew)
+        val hour = view!!.findViewById<TextView>(R.id.tvHourTime)
+        val minute = view!!.findViewById<TextView>(R.id.tvMinuteTime)
+        val second = view!!.findViewById<TextView>(R.id.tvSecondTime)
+        dialog = Dialog(requireContext())
+
+        currentTime = SimpleDateFormat("yy/MM/dd HH:m:ss", Locale.getDefault()).format(Date())
+
+        if (view.parent != null) {
+            (view.parent as ViewGroup).removeView(view) // <- fix
+        }
+        dialog!!.setContentView(view)
+        dialog?.setCancelable(true)
+        // dialog?.setContentView(view)
+        // val d1 = format.parse("2023/03/29 11:04:00")
+//        Log.e("currentDate", currentTime)
+//        Log.e("EndTime", startTime)
+
+        remainingTime()
+        fun timeCalculator(seconds: Long) {
+            print(seconds)
+            hours = (seconds / 3600).toInt().toString()
+            minutes = (seconds % 3600 / 60).toInt().toString()
+            secondsNew = (seconds % 3600 % 60).toInt().toString()
+
+            hour.text = hours
+            minute.text = minutes
+            second.text = secondsNew
+
+            if (second.text.contains("-")){
+                apiCallGetConsultationAccepted()
+
+            }
+            println("Hours: $hours")
+            println("Minutes: $minutes")
+            println("Seconds: $seconds")
+        }
+
+        timeCalculator(diffTimeSeconds!!)
+
+        dialog?.show()
+        btnOkDialog.setOnClickListener {
+            dialog?.dismiss()
+        }
+    }
+
+    private fun remainingTime() {
+        val format = SimpleDateFormat("yy/MM/dd HH:m:ss")
+
+        try {
+            d1  = format.parse(currentTime)
+            d2 = format.parse(endTime)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        Log.e("d1", d1!!.time.toString())
+        Log.e("d2", d2!!.time.toString())
+
+        diffTime = (d2!!.time - d1!!.time)
+        diffTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(diffTime!!)
+
+        Log.e("minnew1", diffTimeSeconds.toString())
+
+    }
+    override fun videoCall(startTime: String, id: String) {
+        SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Are you sure want to Join Meeting?")
+            .setCancelText("No")
+            .setConfirmText("Yes")
+            .showCancelButton(true)
+            .setConfirmClickListener { sDialog ->
+                sDialog.cancel()
+//                val intent = Intent(applicationContext, SignIn::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                finish()
+//                startActivity(intent)
+
+                videoCallFun(startTime, id)
+            }
+            .setCancelClickListener { sDialog ->
+                sDialog.cancel()
+            }
+            .show()
+    }
+
+
+
 }

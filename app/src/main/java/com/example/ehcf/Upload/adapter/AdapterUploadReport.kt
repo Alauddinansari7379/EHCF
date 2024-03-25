@@ -3,21 +3,22 @@ package com.example.ehcf.Upload.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.R
-import com.example.ehcf.Upload.activity.FamilyMemberHistory
 import com.example.ehcf.Upload.activity.ReportList
-import com.example.ehcf.Upload.model.ModelGetAllReport
+import com.example.ehcf.Upload.model.ResultX
 import com.example.ehcf.report.activity.ViewReport
 
 
-class AdapterUploadReport(private val list: ModelGetAllReport, val context: Context, private val deleteReport: ReportList) :
+class AdapterUploadReport(private val list: ArrayList<ResultX>, val context: Context, private val deleteReport: ReportList) :
     RecyclerView.Adapter<AdapterUploadReport.MyViewHolder>() {
 
 
@@ -29,24 +30,30 @@ class AdapterUploadReport(private val list: ModelGetAllReport, val context: Cont
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         try {
-            holder.tvReportName.text = list.result[position].title
-            holder.tvReportDate.text = list.result[position].date
+            holder.tvReportName.text = list[position].title
+            holder.tvReportDate.text = list[position].date
 
-            if (list.result[position].member_name != null) {
-                holder.tvReportMemberName.text = list.result[position].member_name
+            if (list[position].member_name != null) {
+                holder.tvReportMemberName.text = list[position].member_name
             } else {
-                holder.tvReportMemberName.text = list.result[position].customer_name
+                holder.tvReportMemberName.text = list[position].customer_name
 
             }
 
             holder.btnViewReport.setOnClickListener {
-                val intent = Intent(context as Activity, ViewReport::class.java)
-                    .putExtra("report", list.result[position].report)
-                context.startActivity(intent)
+                if (list[position].title=="AyuSynk Report"){
+                    val browserIntent =
+                        Intent(Intent.ACTION_VIEW, Uri.parse("${list[position].ayusynk_report}"))
+                    context.startActivity(browserIntent)
+                }else {
+                    val intent = Intent(context as Activity, ViewReport::class.java)
+                        .putExtra("report", list[position].report)
+                    context.startActivity(intent)
+               }
             }
 
             holder.imgDelete.setOnClickListener {
-                deleteReport.deleteReport(list.result[position].patient_reports_id.toString())
+                deleteReport.deleteReport(list[position].patient_reports_id.toString())
 
             }
 
@@ -60,7 +67,7 @@ class AdapterUploadReport(private val list: ModelGetAllReport, val context: Cont
 
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 

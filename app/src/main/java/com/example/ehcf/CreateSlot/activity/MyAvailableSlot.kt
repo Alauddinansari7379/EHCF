@@ -44,7 +44,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog{
+class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog,AdapterFamilyListView.CheckBox{
     private val context: Context = this@MyAvailableSlot
     var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
@@ -85,9 +85,8 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog{
         sessionManager.selectedDate = selectedDate1
         apiCallFamilyListNew()
 
-        maxDate= PrescriptionDetails.Maxdate
 
-        currentDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+       // currentDate =
 
         if (PrescriptionDetails.FollowUP=="1"){
             binding.cardSelectDateFollowUp.visibility=View.VISIBLE
@@ -97,11 +96,12 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog{
             binding.layoutFamilyMemeber.visibility=View.VISIBLE
         }
 
-        binding.cardSelectDateFollowUp.setOnClickListener {
-            openDatePickerWithMaxAndMindate(minDate!!,maxDate!!)
 
+        binding.cardSelectDateFollowUp.setOnClickListener {
+            maxDate= PrescriptionDetails.Maxdate
+            minDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+            openDatePickerWithMaxAndMindate(minDate!!,maxDate!!)
         }
-        minDate = currentDate
         dayCode = SimpleDateFormat("E", Locale.getDefault()).format(Date())
         when (dayCode) {
             "Mon" -> {
@@ -563,14 +563,14 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog{
                         myToast(this@MyAvailableSlot, "Server Error")
                     } else if (response.body()!!.result.isEmpty()) {
                         binding.rvSlotTimingFamily.apply {
-                            adapter = AdapterFamilyListView(this@MyAvailableSlot, response.body()!!,)
+                            adapter = AdapterFamilyListView(this@MyAvailableSlot, response.body()!!,this@MyAvailableSlot)
                             progressDialog!!.dismiss()
                          }
                     } else {
                         binding.rvSlotTimingFamily.apply {
                             //   adapter!!.notifyDataSetChanged();
                             //myToast(this@ShuduleTiming, response.body()!!.message)
-                            adapter = AdapterFamilyListView(this@MyAvailableSlot, response.body()!!)
+                            adapter = AdapterFamilyListView(this@MyAvailableSlot, response.body()!!,this@MyAvailableSlot)
                             binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
                         //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
@@ -694,6 +694,15 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog{
                 .putExtra("slotId", slotId)
             context.startActivity(intent)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PrescriptionDetails.FollowUP=""
+    }
+
+    override fun checkBox(id: Int) {
+
     }
 
 }

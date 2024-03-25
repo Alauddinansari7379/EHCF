@@ -27,6 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Doctor Name- "
+                    android:textSize="12sp"
                     android:textColor="@color/black"
                     android:textStyle="bold">
 
@@ -35,6 +36,7 @@
                      android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dr "
+                    android:textSize="12sp"
                     android:textColor="@color/black"
                     android:textStyle="bold">
 
@@ -44,6 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rana Utban"
+                    android:textSize="12sp"
                     android:textColor="@color/black"
                     android:textStyle="bold">
 
@@ -62,6 +65,7 @@
                         android:layout_gravity="end"
                         android:gravity="end"
                         android:text="Exp "
+                        android:textSize="12sp"
                         android:textColor="@color/main_color"
                         android:textStyle="bold">
 
@@ -74,6 +78,7 @@
                         android:layout_marginRight="15dp"
                         android:gravity="end"
                         android:text="9.5"
+                        android:textSize="12sp"
                         android:textColor="@color/main_color"
                         android:textStyle="bold">
 
@@ -128,6 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="Specialities-"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:textStyle="bold">
 
@@ -138,6 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="Test"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:textStyle="bold">
 
@@ -159,8 +166,8 @@
                         android:backgroundTint="@color/main_color"
                         android:drawableLeft="@drawable/ic_baseline_add_24"
                         android:drawableTint="@color/white"
-                        android:text="Join Meeting"
-                        android:textSize="12sp"
+                        android:text="Connect with Doctor"
+                        android:textSize="11sp"
                         android:textAllCaps="false"
                         android:textColor="@color/white">
 
@@ -218,7 +225,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBookAppAllDoctor"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -228,6 +235,7 @@
                 android:backgroundTint="@color/main_color"
                 android:drawableTint="@color/white"
                 android:padding="5dp"
+                android:textSize="12sp"
                 android:text="View Profile"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

@@ -1,24 +1,34 @@
 package com.example.ehcf.Specialities.adapter
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RatingBar
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.CreateSlot.activity.MyAvailableSlot
+import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
+import com.example.ehcf.Specialities.activity.DoctorProfile.Companion.consaltationList
+import com.example.ehcf.Specialities.activity.DoctorProfile.Companion.consultationTypeId
+import com.example.ehcf.Specialities.model.ModelConsaltation
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
+import java.util.ArrayList
 
 
 class AdapterDoctorProfile
@@ -40,6 +50,7 @@ class AdapterDoctorProfile
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         try {
+
 
             if (list.result[position].profile_image!!.isNotEmpty()) {
                 Picasso.get()
@@ -187,6 +198,17 @@ class AdapterDoctorProfile
             }
 */
 
+
+
+//                holder.spinnerBookingType.adapter = ArrayAdapter<ModelConsaltation>(
+//                    context,
+//                    android.R.layout.simple_list_item_1,
+//                    consaltationListNew
+//                )
+
+
+
+
             }
 
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
@@ -198,6 +220,32 @@ class AdapterDoctorProfile
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        if (AdapterAllDoctor.dashboard == "1") {
+            AdapterAllDoctor.dashboard =""
+            holder.layspinnerBookingTypeNew.visibility = View.VISIBLE
+        }
+        holder.spinnerBookingType.adapter = ArrayAdapter<ModelConsaltation>(
+            context, R.layout.spinner_layout,
+            DoctorProfile.consaltationList
+        )
+        holder.spinnerBookingType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View,
+                    i: Int,
+                    l: Long
+                ) {
+                    if (consaltationList.size > 0) {
+                        consultationTypeId = consaltationList[i].id
+                        sessionManager.bookingType = consultationTypeId
+                        Log.e(ContentValues.TAG, "consultationTypeId: $consultationTypeId")
+                    }
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+            }
     }
 
 
@@ -222,6 +270,8 @@ class AdapterDoctorProfile
         val tvRatingReview: TextView = itemView.findViewById(R.id.tvRatingReview)
         val btnBookApp: Button = itemView.findViewById(R.id.btnBookAppDProfile)
         val cardView: CardView = itemView.findViewById(R.id.cardDoctorProfile)
+        val spinnerBookingType: Spinner = itemView.findViewById(R.id.spinnerBookingTypeNew)
+        val layspinnerBookingTypeNew: LinearLayout = itemView.findViewById(R.id.layspinnerBookingTypeNew)
 
 
     }

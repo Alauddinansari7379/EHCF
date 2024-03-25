@@ -32,17 +32,17 @@ class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew
             if (list.result.doctor_list[position].profile_image!=null){
                 Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result.doctor_list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
             }
-             holder.hospitalName.text = list.result.doctor_list[position].hospital_name
-         //   holder.specialities.text = list.result.doctor_list[position].specialist
+            holder.hospitalName.text = list.result.doctor_list[position].hospital_name
+            //   holder.specialities.text = list.result.doctor_list[position].specialist
             holder.tvAddressAllDoctor.text = list.result.doctor_list[position].address
             holder.exeprince.text = list.result.doctor_list[position].experience
 
             // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
 
             holder.btnBookApp.setOnClickListener {
+                dashboard="1"
                 val intent = Intent(context as Activity, DoctorProfile::class.java)
                     .putExtra("doctorId", list.result.doctor_list[position].admin_user_id)
-                dashboard="1"
                 context.startActivity(intent)
             }
 
@@ -120,9 +120,10 @@ class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew
         }
 
     }
-companion object{
-   var dashboard=""
-}
+    companion object{
+        var dashboard=""
+    }
+
 
     override fun getItemCount(): Int {
         return list.result.doctor_list.size
@@ -131,7 +132,7 @@ companion object{
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val hospitalName: TextView = itemView.findViewById(R.id.tvHospitalName)
-         val profile_image: ImageView = itemView.findViewById(R.id.imgProfile)
+        val profile_image: ImageView = itemView.findViewById(R.id.imgProfile)
         val specialities: TextView = itemView.findViewById(R.id.tvSpecialitiesAllDoctor1)
         val tvAddressAllDoctor: TextView = itemView.findViewById(R.id.tvAddressAllDoctor)
         val exeprince: TextView = itemView.findViewById(R.id.tvexprinceAllDoctorN)

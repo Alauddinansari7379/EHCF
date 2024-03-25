@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.support.wearable.view.RecyclerViewMergeAdapter
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
+import com.example.ehcf.Fragment.HomeFragment
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -30,6 +32,9 @@ import com.example.ehcf.databinding.FragmentUpComingBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jitsi.meet.sdk.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,11 +65,12 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     var d1: Date? = null
     var d2: Date? = null
     var ratingPage = false
+    var refresh = false
     private var tvTimeCounter: TextView? = null
     var meetingId = ""
     var mergeAdapter = RecyclerViewMergeAdapter()
     var shimmerFrameLayout: ShimmerFrameLayout? = null
-
+    private val handler = Handler()
     private var mainData = ArrayList<ResultXXXX>()
 
     //    private val broadcastReceiver = object : BroadcastReceiver(requireContext()) {
@@ -89,10 +95,17 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         shimmerFrameLayout!!.startShimmer();
 
         apiCallGetConsultationAccepted()
+       // handler.post(updateTimeRunnable)
 
-//        GlobalScope.launch { // launch a new coroutine in background and continue
-//            delay(1000L) // non-blocking delay for 1 second (default time unit is ms)
+//        GlobalScope.launch {
+//            // Run the function every 5 seconds
+//            while (true) {
+//                apiCallGetConsultationAccepted()
+//                delay(5000) // Delay for 5 seconds
+//            }
 //        }
+
+
 
         val btnCheck = view.findViewById<Button>(R.id.btnCheck)
         // tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
@@ -108,12 +121,11 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         }
         binding.edtSearch.addTextChangedListener { str ->
             setRecyclerViewAdapter(mainData.filter {
-                it.doctor_name!!.contains(
-                    str.toString(),
-                    ignoreCase = true
-                )
+                it.doctor_name!!.contains(str.toString(), ignoreCase = true)
             } as ArrayList<ResultXXXX>)
         }
+
+
 //
 //        binding.imgSearch.setOnClickListener {
 //            if (binding.edtSearch.text.toString().isEmpty()) {
@@ -125,7 +137,13 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
 //            }
 //        }
     }
+    private val updateTimeRunnable = object : Runnable {
+        override fun run() {
+       apiCallGetConsultationAccepted()
+            handler.postDelayed(this, 10000) // Update every 1000 milliseconds (1 second)
+        }
 
+    }
 
     private fun remainingTime() {
         val format = SimpleDateFormat("yy/MM/dd HH:m:ss")
@@ -179,6 +197,10 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
             minute.text = minutes
             second.text = secondsNew
 
+            if (second.text.contains("-")){
+                apiCallGetConsultationAccepted()
+
+            }
             println("Hours: $hours")
             println("Minutes: $minutes")
             println("Seconds: $seconds")
@@ -293,13 +315,28 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     override fun onResume() {
         super.onResume()
         if (ratingPage) {
+            apiCallGetConsultationAccepted()
             //  (activity as Appointments).refresh()
             val intent = Intent(context as Activity, Rating::class.java)
                 .putExtra("meetingId", meetingId)
             (context as Activity).startActivity(intent)
             ratingPage = false
         }
+        if (refresh){
+            refresh=false
+           // myToast(requireActivity(),"ONResume")
+            if (Appointments.tabIndex==0){
+                apiCallGetConsultationAccepted()
+            }
 
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        refresh=true
+      //  myToast(requireActivity(),"ONStop")
     }
 
     override fun videoCall(startTime: String, id: String) {
@@ -481,6 +518,7 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
                             // myToast(requireActivity(),"No Data Found")
                             progressDialog!!.dismiss()
                         } else {
+                            HomeFragment.homeCall=""
                             setRecyclerViewAdapter(mainData)
                             binding.shimmer.visibility = View.GONE
                             progressDialog!!.dismiss()

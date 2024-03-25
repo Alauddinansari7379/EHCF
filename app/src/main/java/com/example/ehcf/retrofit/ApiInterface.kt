@@ -12,6 +12,7 @@ import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
 import com.example.ehcf.Diagnostic.model.ModelTestList
 import com.example.ehcf.FamailyMember.Model.*
+import com.example.ehcf.Fragment.Model.ModelNearByDoctor
 import com.example.ehcf.Fragment.Model.ModelNearestDoctor
 import com.example.ehcf.Fragment.test.UploadResponse
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
@@ -155,6 +156,11 @@ interface ApiInterface {
         @Query("lng") lng: String?,
         @Query("search") search: String?
     ): Call<ModelAllDoctorNew>
+
+    @POST("nearby_doctors")
+    fun getNearByDoctor(
+        @Query("postal_code") postal_code: String?,
+    ): Call<ModelNearByDoctor>
 
     @POST("get_nearest_doctors")
     fun getAllDoctorNew(
@@ -326,6 +332,16 @@ interface ApiInterface {
         @Part("desc") desc: RequestBody,
         @Query("member_id") member_id: String,
         @Query("date") date: String,
+    ): Call<ModelUploadReport>
+
+    @Headers("Accept: application/json")
+    @POST("create_report")
+    fun uploadAyusynkReport(
+        @Query("patient_id") patient_id: String,
+        @Query("title") tile: String,
+         @Query("member_id") member_id: String,
+        @Query("date") date: String,
+        @Query("ayusynk_report") ayusynk_report: String,
     ): Call<ModelUploadReport>
 
     @POST("get_lo_spc")

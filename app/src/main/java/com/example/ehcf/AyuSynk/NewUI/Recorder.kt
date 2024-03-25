@@ -1,5 +1,7 @@
 package com.example.ehcf.AyuSynk.NewUI
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.ayudevice.ayusynksdk.AyuSynk
 import com.ayudevice.ayusynksdk.ble.constants.DeviceConnectionState
 import com.ayudevice.ayusynksdk.ble.constants.DeviceStrength
@@ -19,13 +22,24 @@ import com.ayudevice.ayusynksdk.playback.listener.RecorderListener
 import com.ayudevice.ayusynksdk.report.SoundFile
 import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener
 import com.ayudevice.ayusynksdk.utils.logs.AyuLogsListener
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.FamailyMember.Model.ModelFamilyList
+import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityRecorderBinding
+import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.myrecyview.apiclient.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListener,
     View.OnClickListener, RecorderListener, OnlineLiveStreamListener, DiagnosisReportUpdateListener,
-    AyuLogsListener {
+    AyuLogsListener,AdapterFamilyListView.CheckBox  {
     private lateinit var binding: ActivityRecorderBinding
+    var progressDialog: ProgressDialog? = null
+    lateinit var sessionManager:SessionManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +53,8 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUiForRecording()
+        sessionManager= SessionManager(requireContext())
+        apiCallFamilyListNew()
         binding.cardHeart.setOnClickListener {
             NavHostFragment.findNavController(this@Recorder).navigate(R.id.RecordHeart)
         }
@@ -91,6 +107,64 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     }
 
 
+    private fun apiCallFamilyListNew() {
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Loading..")
+        progressDialog!!.setTitle("Please Wait")
+        progressDialog!!.isIndeterminate = false
+        progressDialog!!.setCancelable(true)
+        progressDialog!!.show()
+
+        ApiClient.apiService.getFamilyList(sessionManager.id.toString())
+            .enqueue(object : Callback<ModelFamilyList> {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(
+                    call: Call<ModelFamilyList>,
+                    response: Response<ModelFamilyList>
+                ) {
+
+                    try {
+                        // binding.rvSlotTiming.invalidate();
+                        if (response.body()!!.status == 0) {
+                            myToast(requireActivity(), "${response.body()!!.message}")
+                            progressDialog!!.dismiss()
+                        } else if (response.code() == 500) {
+                            myToast(requireActivity(), "Server Error")
+                        } else if (response.body()!!.result.isEmpty()) {
+                            binding.rvSlotTimingFamily.apply {
+                                adapter =
+                                    AdapterFamilyListView(requireActivity(), response.body()!!,this@Recorder)
+                                progressDialog!!.dismiss()
+                            }
+                        } else {
+                            binding.rvSlotTimingFamily.apply {
+                                //   adapter!!.notifyDataSetChanged();
+                                //myToast(this@ShuduleTiming, response.body()!!.message)
+
+                                adapter = AdapterFamilyListView(requireActivity(), response.body()!!,this@Recorder)
+                                binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
+                                //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
+
+                                progressDialog!!.dismiss()
+                            }
+
+                        }
+                    } catch (e: Exception) {
+                        progressDialog!!.dismiss()
+                        e.printStackTrace()
+                        myToast(requireActivity(), "Something went wrong")
+                    }
+                }
+
+
+                override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
+                    progressDialog!!.dismiss()
+                    myToast(requireActivity(), "Something went wrong")
+                }
+
+
+            })
+    }
 
 
     override fun onResume() {
@@ -261,5 +335,15 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     override fun onDestroy() {
         super.onDestroy()
         AyuSynk.getBleInstance().close()
+    }
+
+    override fun checkBox(id: Int) {
+        if (id==1) {
+            binding.checkSelf.isChecked=true
+            AdapterFamilyListView.memberID=""
+            //Do Whatever you want in isChecked
+        }else{
+            binding.checkSelf.isChecked=false
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -53,7 +54,17 @@ class AdapterShuduleTimingNew(
         if (list.result[position].address!=null){
             holder.tvSlotAddress.text = list.result[position].address.toString()
         }
-
+        when (sessionManager.bookingType) {
+            "1" -> {
+                 holder.layoutAddress.visibility=View.GONE
+            }
+            "2" -> {
+                 holder.layoutAddress.visibility=View.VISIBLE
+            }
+            "3" -> {
+                 holder.layoutAddress.visibility=View.VISIBLE
+            }
+        }
 
         if (list.result[position].end_time < time && currentDate == sessionManager.selectedDate.toString()) {
             holder.cardView.isEnabled = false
@@ -92,16 +103,16 @@ class AdapterShuduleTimingNew(
 
     override fun getItemCount(): Int {
         return list.result.size
-
     }
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // var date:TextView  =itemView.findViewById(R.id.tvtDateSTime);
-        var startTime: TextView = itemView.findViewById(R.id.tvStartTimeStime);
-        var endTime: TextView = itemView.findViewById(R.id.tvEndTimeStime);
-        var slotId: TextView = itemView.findViewById(R.id.tvSlotIdSTime);
-        var tvSlotAddress: TextView = itemView.findViewById(R.id.tvSlotAddress);
-        var cardView: CardView = itemView.findViewById(R.id.cardViewSTime);
+        var startTime: TextView = itemView.findViewById(R.id.tvStartTimeStime)
+        var endTime: TextView = itemView.findViewById(R.id.tvEndTimeStime)
+        var slotId: TextView = itemView.findViewById(R.id.tvSlotIdSTime)
+        var tvSlotAddress: TextView = itemView.findViewById(R.id.tvSlotAddress)
+        var cardView: CardView = itemView.findViewById(R.id.cardViewSTime)
+        var layoutAddress: LinearLayout = itemView.findViewById(R.id.layoutAddress)
 
     }
 

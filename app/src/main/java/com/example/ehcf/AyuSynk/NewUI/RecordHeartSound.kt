@@ -37,23 +37,33 @@ import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener
 import com.ayudevice.ayusynksdk.utils.logs.AyuLogsListener
 import com.example.ehcf.AyuSynk.NewUI.RecordHeartSound.FragmentValue.Companion.recordHeartSound
 import com.example.ehcf.AyuSynk.utils.GenUtil
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.Helper.currentDate
+import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.databinding.FragmentRecordHeartSoundBinding
- import java.io.File
+import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.myrecyview.apiclient.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 import java.io.IOException
 import java.util.*
 
 
-class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListener,
+class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListener,
     View.OnClickListener, RecorderListener, OnlineLiveStreamListener, DiagnosisReportUpdateListener,
     AyuLogsListener {
     private lateinit var binding: FragmentRecordHeartSoundBinding
     private var lastRecordedData: ShortArray? = null
     private var recordID = -1
-    var progressDialog : ProgressDialog?=null
+    var progressDialog: ProgressDialog? = null
     private var waitTimer: CountDownTimer? = null
     private var isRecordingPaused = false
-    val usb=1
+    val usb = 1
+    lateinit var sessionManager:SessionManager
     private var isPlayingRecordedSound = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,13 +76,22 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRecordHeartSoundBinding.bind(view)
+        sessionManager= SessionManager(requireContext())
+
+
+        if (AdapterFamilyListView.memberName != "") {
+            binding!!.tvPatientName.text = "Patient Name- ${AdapterFamilyListView.memberName}"
+            AdapterFamilyListView.memberName=""
+        } else {
+            binding!!.tvPatientName.text = "Patient Name- ${sessionManager.customerName}"
+        }
 
         binding.tvAortic.setTextColor(Color.parseColor("#9F367A"))
         binding.viewAortic.setBackgroundColor(Color.parseColor("#9F367A"))
         binding.layoutAortic.setOnClickListener {
-             binding.tvAortic.setTextColor(Color.parseColor("#9F367A"))
-             binding.viewAortic.setBackgroundColor(Color.parseColor("#9F367A"))
-             binding.ayuVisualizerView.setBackgroundResource(R.drawable.aortic)
+            binding.tvAortic.setTextColor(Color.parseColor("#9F367A"))
+            binding.viewAortic.setBackgroundColor(Color.parseColor("#9F367A"))
+            binding.ayuVisualizerView.setBackgroundResource(R.drawable.aortic)
 
             binding.tvTricuspid.setTextColor(Color.parseColor("#FF000000"))
             binding.viewTricuspid.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
@@ -83,9 +102,9 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 
         }
         binding.layoutTricuspid.setOnClickListener {
-             binding.tvTricuspid.setTextColor(Color.parseColor("#9F367A"))
-             binding.viewTricuspid.setBackgroundColor(Color.parseColor("#9F367A"))
-             binding.ayuVisualizerView.setBackgroundResource(R.drawable.tricuspid)
+            binding.tvTricuspid.setTextColor(Color.parseColor("#9F367A"))
+            binding.viewTricuspid.setBackgroundColor(Color.parseColor("#9F367A"))
+            binding.ayuVisualizerView.setBackgroundResource(R.drawable.tricuspid)
 
             binding.tvAortic.setTextColor(Color.parseColor("#FF000000"))
             binding.viewAortic.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
@@ -96,9 +115,9 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 
         }
         binding.layoutPulmonary.setOnClickListener {
-             binding.tvPulmonary.setTextColor(Color.parseColor("#9F367A"))
-             binding.viewPulmonary.setBackgroundColor(Color.parseColor("#9F367A"))
-             binding.ayuVisualizerView.setBackgroundResource(R.drawable.pulmonary)
+            binding.tvPulmonary.setTextColor(Color.parseColor("#9F367A"))
+            binding.viewPulmonary.setBackgroundColor(Color.parseColor("#9F367A"))
+            binding.ayuVisualizerView.setBackgroundResource(R.drawable.pulmonary)
 
 
 
@@ -110,13 +129,11 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
             binding.viewMetral.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
 
 
-
-
         }
         binding.layoutMetral.setOnClickListener {
-             binding.tvMetral.setTextColor(Color.parseColor("#9F367A"))
-             binding.viewMetral.setBackgroundColor(Color.parseColor("#9F367A"))
-             binding.ayuVisualizerView.setBackgroundResource(R.drawable.metral)
+            binding.tvMetral.setTextColor(Color.parseColor("#9F367A"))
+            binding.viewMetral.setBackgroundColor(Color.parseColor("#9F367A"))
+            binding.ayuVisualizerView.setBackgroundResource(R.drawable.metral)
 
 
             binding.tvAortic.setTextColor(Color.parseColor("#FF000000"))
@@ -153,7 +170,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
                     sDialog.cancel()
                     val soundData = SoundData(fileFromLastRecordedAudio, LocationType.unknown)
                     soundData.audioFile.delete()
-                 }
+                }
                 .setCancelClickListener { sDialog ->
                     sDialog.cancel()
                 }
@@ -168,7 +185,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 //
 //        }
 
-          AyuSynk.getBleInstance().showLogs(false);
+        AyuSynk.getBleInstance().showLogs(false);
         binding!!.btnConnect.setOnClickListener { view1: View? ->
             if (binding!!.btnConnect.tag as Int == 2) AyuSynk.getBleInstance()
                 .disconnect() else navigateToConnectScreen(this@RecordHeartSound, view)
@@ -182,7 +199,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
         binding!!.btnOnlineStream.text = getString(R.string.onlineLiveText, "Start")
         binding!!.btnOnlineStream.setOnClickListener(this)
         binding!!.btnShareUrl.setOnClickListener(this)
-       // binding!!.notifications.movementMethod = ScrollingMovementMethod()
+        // binding!!.notifications.movementMethod = ScrollingMovementMethod()
         AyuSynk.getBleInstance().setOnlineStreamerListener(this)
         AyuSynk.getBleInstance().setLogsListener(this)
         AyuSynk.getBleInstance().showLogs(true)
@@ -191,14 +208,16 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 //        binding!!.btnShareLogs.setOnClickListener(this)
 //        binding!!.btnUpdateDevice.setOnClickListener(this)
     }
+
     class FragmentValue {
-         companion object {
+        companion object {
             var recordHeartSound = ""
             val companyLocation = ""
         }
     }
+
     fun navigateToConnectScreen(fragment: Fragment?, view: View?) {
-        recordHeartSound="1"
+        recordHeartSound = "1"
         // Check if Location services are on because they are required to make scanning work for SDK < 31
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             if (checkLocationServices()) {
@@ -206,7 +225,8 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
                     .requestBluetoothPermission(
                         activity, 11
                     ) else {
-                    NavHostFragment.findNavController(fragment!!).navigate(R.id.action_BLEFragment_to_ConnectFragment)
+                    NavHostFragment.findNavController(fragment!!)
+                        .navigate(R.id.action_BLEFragment_to_ConnectFragment)
                 }
             }
         } else {
@@ -214,19 +234,50 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
                 .requestBluetoothPermission(
                     activity, 11
                 ) else {
-                 NavHostFragment.findNavController(fragment!!)
+                NavHostFragment.findNavController(fragment!!)
                     .navigate(R.id.action_BLEFragment_to_ConnectFragment)
             }
         }
     }
 
+    private fun apiCallAyuSynkUploaded(link: StringBuilder) {
+        ApiClient.apiService.uploadAyusynkReport(sessionManager.id.toString(),"AyuSynk Report",AdapterFamilyListView.memberID,
+            currentDate,link.toString())
+            .enqueue(object : Callback<ModelUploadReport> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelUploadReport>, response: Response<ModelUploadReport>
+                ) {
+                    try {
+                        if(response.code() == 500) {
+                            myToast(requireActivity(), "Server Error")
+
+                        } else if (response.body()!!.message.contains("Success")) {
+                            myToast(requireActivity(),"Report Uploaded Sucessfully")
+
+                        } else {
+                            myToast(requireActivity(), response.message())
+                        }
+
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun onFailure(call: Call<ModelUploadReport>, t: Throwable) {
+                    activity?.let { myToast(it, "Something went wrong") }
+
+                }
+
+            })
+    }
 
     private fun timeCounter() {
-        waitTimer = object : CountDownTimer(12000, 1000){
+        waitTimer = object : CountDownTimer(12000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 //called every 300 milliseconds, which could be used to
                 //send messages or some other action
-                binding.timeCounter.text = "00"+":" + millisUntilFinished / 1000 +"S"
+                binding.timeCounter.text = "00" + ":" + millisUntilFinished / 1000 + "S"
 
             }
 
@@ -307,12 +358,11 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 
     private fun setDeviceStrength(strength: DeviceStrength) {
         if (binding != null) {
-            if (strength == DeviceStrength.DEVICE_SIGNAL_WEAK){
+            if (strength == DeviceStrength.DEVICE_SIGNAL_WEAK) {
                 binding.deviceStrength.setTextColor(Color.parseColor("#FFB71C1C"))
                 binding!!.deviceStrength.text =
                     getString(R.string.device_strength, "weak")
-            }
-            else{
+            } else {
                 binding.deviceStrength.setTextColor(Color.parseColor("#FF1B5E20"))
                 binding!!.deviceStrength.text =
                     getString(R.string.device_strength, "strong")
@@ -323,7 +373,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
     private fun onDeviceConnected() {
         setDeviceStrength(AyuSynk.getBleInstance().deviceStrength)
         deviceBatteryUpdate(AyuSynk.getBleInstance().currentBatteryLevel)
-        binding!!.btnRecord.isEnabled = true
+        binding.btnRecord.isEnabled = true
         binding!!.btnOnlineStream.isEnabled = true
 //        binding!!.btnUpdateDevice.isEnabled = true
         binding!!.customBatteryMeter.visibility = View.VISIBLE
@@ -346,14 +396,14 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
     }
 
     private fun setUiForRecording() {
-        if(waitTimer != null) {
+        if (waitTimer != null) {
             waitTimer?.cancel()
             waitTimer = null
         }
         if (!isRecordingPaused) binding!!.ayuVisualizerView.clear() // Clear visualizer view before starting new recording
         binding!!.btnRecord.isEnabled = false
-        binding.btnPause.visibility=View.VISIBLE
-        binding.btnRecord.visibility=View.GONE
+        binding.btnPause.visibility = View.VISIBLE
+        binding.btnRecord.visibility = View.GONE
         binding!!.btnShare.isEnabled = false
         binding!!.btnPlay1x.isEnabled = false
         binding!!.btnReport.isEnabled = false
@@ -370,11 +420,12 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 
     private fun setUIForPlayingComplete() {
         isPlayingRecordedSound = false
-        binding.btnRecord.visibility=View.VISIBLE
-        binding.btnPause.visibility=View.GONE
-        binding.layoutPlay.visibility=View.VISIBLE
-       // binding.layoutRecord.visibility=View.GONE
-        binding!!.btnRecord.isEnabled = AyuSynk.getBleInstance().isDeviceConnected == DeviceConnectionState.DEVICE_CONNECTED
+        binding.btnRecord.visibility = View.VISIBLE
+        binding.btnPause.visibility = View.GONE
+        binding.layoutPlay.visibility = View.VISIBLE
+        // binding.layoutRecord.visibility=View.GONE
+        binding!!.btnRecord.isEnabled =
+            AyuSynk.getBleInstance().isDeviceConnected == DeviceConnectionState.DEVICE_CONNECTED
         binding!!.btnPause.isEnabled = false
         binding!!.btnShare.isEnabled = true
         binding!!.btnPlay1x.isEnabled = true
@@ -412,7 +463,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
     private val fileFromLastRecordedAudio: File?
         private get() {
             if (lastRecordedData != null) {
-                 val file = File(GenUtil.getSaveDir("1", context), "recorded.wav")
+                val file = File(GenUtil.getSaveDir("1", context), "recorded.wav")
                 try {
                     return AyuFileGenerator.saveFile(lastRecordedData, file)
                 } catch (e: IOException) {
@@ -453,6 +504,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
                 AyuSynk.getBleInstance().startRecording()
                 setUiForRecording()
             }
+
             R.id.btn_pause -> {
                 if (isPlayingRecordedSound) {
                     AyuSynk.getBleInstance().pausePlayback() // Pause playing
@@ -464,15 +516,17 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
                 if (lastRecordedData != null) setUIForPlayingComplete() else {
                     binding!!.btnRecord.isEnabled = true
                     binding!!.btnPause.isEnabled = false
-                    binding.btnRecord.visibility=View.VISIBLE
-                    binding.btnPause.visibility=View.GONE
+                    binding.btnRecord.visibility = View.VISIBLE
+                    binding.btnPause.visibility = View.GONE
                 }
             }
+
             R.id.btn_play1x -> playLastRecordedData()
             R.id.btn_share -> {
                 val file = fileFromLastRecordedAudio
                 shareFile(file)
             }
+
             R.id.btn_report -> {
                 progressDialog = ProgressDialog(requireContext())
                 progressDialog!!.setMessage("Generating Report")
@@ -482,12 +536,13 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
                 progressDialog!!.show()
 
                 binding!!.btnReport.isEnabled = false
-              //  binding!!.progressBarReport.visibility = View.VISIBLE
+                //  binding!!.progressBarReport.visibility = View.VISIBLE
                 binding!!.btnReportShare.isEnabled = false
                 val soundData = SoundData(fileFromLastRecordedAudio, LocationType.unknown)
                 AyuSynk.getBleInstance().generateDiagnosisReport(SoundFile(soundData, SoundType.HEART))
             }
-             R.id.btn_shareUrl -> shareMessage(AyuSynk.getBleInstance().liveStreamUrl)
+
+            R.id.btn_shareUrl -> shareMessage(AyuSynk.getBleInstance().liveStreamUrl)
             R.id.btn_reportShare -> shareReports(binding!!.btnReportShare.tag as SoundFile)
             R.id.btn_onlineStream -> {
                 binding!!.progressBarStream.visibility = View.VISIBLE
@@ -507,7 +562,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 //                binding!!.btnLogs.text = getString(R.string.logsText, "Enable")
 //                AyuSynk.getBleInstance().showLogs(false)
 //            }
-     //       R.id.btn_shareLogs -> shareMessage(AyuSynk.getBleInstance().logs)
+            //       R.id.btn_shareLogs -> shareMessage(AyuSynk.getBleInstance().logs)
         }
     }
 
@@ -517,6 +572,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
             link.append(reportLink)
             link.append("\n")
         }
+
         shareMessage(link.toString())
     }
 
@@ -565,7 +621,7 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
 
     override fun reportGenerated(soundFile: SoundFile) {
         binding!!.btnReport.isEnabled = true
-     //   binding!!.progressBarReport.visibility = View.GONE
+        //   binding!!.progressBarReport.visibility = View.GONE
         binding!!.btnReportShare.isEnabled = true
         binding!!.btnReportShare.tag = soundFile
         binding!!.btnReportShare.backgroundTintList =
@@ -573,11 +629,18 @@ class RecordHeartSound :Fragment(), AyuDeviceListener, AdapterView.OnItemSelecte
         progressDialog!!.dismiss()
 
         Toast.makeText(context, "Reports generated", Toast.LENGTH_SHORT).show()
+        val link = StringBuilder()
+        for (reportLink in soundFile.reports) {
+            link.append(reportLink)
+            link.append("\n")
+        }
+
+        apiCallAyuSynkUploaded(link)
     }
 
     override fun onReportGenerationError(error: String) {
         binding!!.btnReport.isEnabled = true
-       // binding!!.progressBarReport.visibility = View.GONE
+        // binding!!.progressBarReport.visibility = View.GONE
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 

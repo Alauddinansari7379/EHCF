@@ -1,5 +1,7 @@
 package com.example.ehcf_doctor.AyuSynk.usb
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -26,10 +28,25 @@ import com.ayudevice.ayusynksdk.report.constants.LocationType
 import com.ayudevice.ayusynksdk.report.constants.SoundType
 import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener
 import com.ayudevice.ayusynksdk.utils.logs.AyuLogsListener
+import com.example.ehcf.Appointments.UpComing.model.ModelAppointmentBySlag
 import com.example.ehcf.AyuSynk.utils.GenUtil
+import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.Fragment.test.UploadRequestBody
+import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
+import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.databinding.FragmentMainBinding
+import com.example.ehcf.sharedpreferences.SessionManager
+import com.example.myrecyview.apiclient.ApiClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
@@ -42,6 +59,7 @@ class MainUsbFragment : Fragment(), AdapterView.OnItemSelectedListener, View.OnC
     val usb=0
     private var isRecordingPaused = false
     private var isPlayingRecordedSound = false
+    lateinit var sessionManager:SessionManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +71,7 @@ class MainUsbFragment : Fragment(), AdapterView.OnItemSelectedListener, View.OnC
         return binding!!.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ArrayAdapter.createFromResource(
@@ -64,6 +83,7 @@ class MainUsbFragment : Fragment(), AdapterView.OnItemSelectedListener, View.OnC
         binding!!.spinnerFilter.onItemSelectedListener = this
         AyuSynk.getUsbInstance().setAyuVisualizerView(binding!!.ayuVisualizerView)
         AyuSynk.getUsbInstance().setRecordingTimeLimit(10)
+        sessionManager= SessionManager(requireContext())
 
         if (usb==0){
             binding!!.appCompatTextView2.text="USB"
@@ -71,6 +91,8 @@ class MainUsbFragment : Fragment(), AdapterView.OnItemSelectedListener, View.OnC
             binding!!.appCompatTextView2.text="Bluetooth"
 
         }
+
+
 
 
         binding!!.imgBack.setOnClickListener {
@@ -298,6 +320,8 @@ class MainUsbFragment : Fragment(), AdapterView.OnItemSelectedListener, View.OnC
         }
         shareMessage(link.toString())
     }
+
+
 
     override fun onOnlineStreamChangeListener(isStreaming: Boolean) {
         if (isStreaming) {

@@ -53,8 +53,9 @@ import java.io.FileOutputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
+class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,AdapterFamilyListView.CheckBox {
     private lateinit var binding: ActivityUploadReportNewBinding
     private val context: Context = this@UploadReportNew
     private var selectedImageUri: Uri? = null
@@ -287,7 +288,6 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
 
     private fun apiCallFamilyListNew() {
-
         progressDialog = ProgressDialog(this@UploadReportNew)
         progressDialog!!.setMessage("Loading..")
         progressDialog!!.setTitle("Please Wait")
@@ -313,15 +313,15 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvSlotTimingFamily.apply {
                                 adapter =
-                                    AdapterFamilyListView(this@UploadReportNew, response.body()!!)
+                                    AdapterFamilyListView(this@UploadReportNew, response.body()!!,this@UploadReportNew)
                                 progressDialog!!.dismiss()
                             }
                         } else {
                             binding.rvSlotTimingFamily.apply {
                                 //   adapter!!.notifyDataSetChanged();
                                 //myToast(this@ShuduleTiming, response.body()!!.message)
-                                adapter =
-                                    AdapterFamilyListView(this@UploadReportNew, response.body()!!)
+
+                                adapter = AdapterFamilyListView(this@UploadReportNew, response.body()!!,this@UploadReportNew)
                                 binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
                                 //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
@@ -460,6 +460,10 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 } catch (e: java.lang.Exception) {
                     progressDialog!!.dismiss()
                     e.printStackTrace()
+                    progressDialog!!.dismiss()
+                    myToast(this@UploadReportNew, "Something Went Wrong")
+
+
 
                 }
             }
@@ -469,6 +473,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
 //                binding.layoutRoot.snackbar(t.message!!)
 //                binding.progressBar.progress = 0
                 progressDialog!!.dismiss()
+                myToast(this@UploadReportNew, "Something Went Wrong")
 
             }
 
@@ -617,4 +622,13 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback {
         }.show()
 
     }
+
+    override fun checkBox(id:Int) {
+             if (id==1) {
+                binding.checkSelf.isChecked=true
+                //Do Whatever you want in isChecked
+            }else{
+                binding.checkSelf.isChecked=false
+            }
+     }
 }

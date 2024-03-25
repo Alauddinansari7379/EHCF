@@ -23,6 +23,7 @@ data class ResultX(
     val profile_picture: String,
     val report: String,
     val title: String,
+    val ayusynk_report: String,
     val report_1: Any,
     val report_2: Any,
     val report_3: String,
