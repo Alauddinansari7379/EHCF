@@ -10,8 +10,6 @@ import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.databinding.ActivitySplashScreenBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.ehcf_doctor.Notofication.MyFirebaseMessagingService
-import com.example.ehcf_doctor.Notofication.MyFirebaseMessagingService.Companion.NotificationValue
 
 
 class SplashScreen : AppCompatActivity() {
@@ -27,15 +25,15 @@ class SplashScreen : AppCompatActivity() {
         sessionManager=SessionManager(this@SplashScreen)
 
         Handler().postDelayed({
-            Log.e("",NotificationValue)
-            Log.e("",sessionManager.isLogin.toString())
-            if (sessionManager.isLogin && NotificationValue =="1"){
-                NotificationValue =""
-                startActivity(Intent(this@SplashScreen, Appointments::class.java))
-            } else{
+//            Log.e("",NotificationValue)
+//            Log.e("",sessionManager.isLogin.toString())
+//            if (sessionManager.isLogin && NotificationValue =="1"){
+//              //  NotificationValue =""
+//                startActivity(Intent(this@SplashScreen, Appointments::class.java))
+//            } else{
                 startActivity(Intent(this, SignIn::class.java))
 
-            }
+           // }
             finish()
         }, 2000)
     }

@@ -427,23 +427,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
     override fun onStart() {
         super.onStart()
         if (isOnline(requireContext())) {
-            //  myToast(requireActivity(), "Connected")
-        } else {
+         } else {
             val changeReceiver = NetworkChangeReceiver(context)
             changeReceiver.build()
-            //  myToast(requireActivity(), "Not C")
 
         }
-//        CheckInternet().check { connected ->
-//            if (connected) {
-//             //    myToast(requireActivity(),"Connected")
-//            }
-//            else {
-//                val changeReceiver = NetworkChangeReceiver(context)
-//                changeReceiver.build()
-//                //  myToast(requireActivity(),"Check Internet")
-//            }
-//        }
     }
 
     override fun onRequestPermissionsResult(

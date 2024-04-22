@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -29,6 +30,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission
+        android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        tools:ignore="ProtectedPermissions" />
     <application
         android:name=".AyuSynk.MyApplication"
         android:allowBackup="true"
@@ -137,19 +141,17 @@
             android:name=".CreateSlot.activity.MyAvailableSlot"
             android:exported="false" />
         <activity
-            android:name=".Testing.CalanderTest"
+            android:name=".Notification.Activity.CalanderTest"
             android:exported="false" />
-        <activity
-            android:name=".Testing.NotificationView"
-            android:exported="false" />
+
         <activity
             android:name=".login.activity.SignIn"
             android:exported="false" />
         <activity
-            android:name=".Testing.ApiTesting"
+            android:name=".Notification.Activity.ApiTesting"
             android:exported="false" />
         <activity
-            android:name=".Testing.VideoCalling"
+            android:name=".Notification.Activity.VideoCalling"
             android:exported="false" />
         <activity
             android:name=".report.ReportFile"
@@ -303,14 +305,32 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" />
+            android:resource="@drawable/logonew" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel"
             android:value="@string/channel_id" />
 
+        <receiver
+            android:name=".Notification.Reciver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="action_id" />
+            </intent-filter>
+        </receiver>
         <service
-            android:name=".Testing.MyFirebaseMessagingService"
+            android:name=".Notification.NotificationListener"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            tools:ignore="MissingClass" />
+
+        <service android:name=".Notification.SoundService" />
+
+        <service
+            android:name=".Notification.MyFirebaseMessagingService"
             android:exported="false">
+
+
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

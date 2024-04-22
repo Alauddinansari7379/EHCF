@@ -4,6 +4,7 @@ package com.example.ehcf.Fragment
 import android.Manifest
 import android.app.Activity
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -310,7 +311,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     var hasNotificationPermissionGranted = false
-
+    private val isNotificationListenerEnabled: Boolean
+        private get() {
+            val pkgName = packageName
+            val cn = ComponentName(pkgName, "$pkgName.NotificationListener")
+            val flat = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+            return flat != null && flat.contains(cn.flattenToString())
+        }
     private fun showSettingDialog() {
         MaterialAlertDialogBuilder(this, com.google.android.material.R.style.MaterialAlertDialog_Material3)
             .setTitle("Notification Permission")

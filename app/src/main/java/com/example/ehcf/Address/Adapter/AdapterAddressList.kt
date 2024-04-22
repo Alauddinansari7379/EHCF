@@ -4,13 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Address.ModelResponse.AddressListResponse
 import com.example.ehcf.R
-import com.example.ehcf.Testing.Model.ModelPhotos
-import com.squareup.picasso.Picasso
 
 class AdapterAddressList(val context: Context, private val list: AddressListResponse) :
     RecyclerView.Adapter<AdapterAddressList.MyViewHolder>() {

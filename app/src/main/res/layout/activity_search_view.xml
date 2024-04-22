@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".Testing.Country_A">
+    tools:context=".Notification.Country_A">
     <LinearLayout
         android:id="@+id/rl_tool"
         android:layout_width="match_parent"

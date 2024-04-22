@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Testing.VideoCalling">
+    tools:context=".Notification.Activity.VideoCalling">
 
     <EditText
         android:id="@+id/edtEnterRoomID"

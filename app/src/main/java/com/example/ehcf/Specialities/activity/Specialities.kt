@@ -12,7 +12,7 @@ import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.adapter.AdapterSpecialities
 import com.example.ehcf.Specialities.model.ModelSplic
-import com.example.ehcf.Testing.Interface.apiInterface
+import com.example.ehcf.Notification.Interface.apiInterface
 import com.example.ehcf.databinding.ActivitySpecialitiesBinding
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call

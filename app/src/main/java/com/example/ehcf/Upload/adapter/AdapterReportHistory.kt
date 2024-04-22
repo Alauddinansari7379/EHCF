@@ -3,6 +3,7 @@ package com.example.ehcf.Upload.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,14 +60,24 @@ class AdapterReportHistory(private val list: ModelGetAllReport, val context: Con
 
 
 
+//
+//            holder.btnViewReport.setOnClickListener {
+//                val intent = Intent(context as Activity, ViewReport::class.java)
+//                    .putExtra("report", list.result[position].report)
+//                context.startActivity(intent)
+//            }
 
             holder.btnViewReport.setOnClickListener {
-                val intent = Intent(context as Activity, ViewReport::class.java)
-                    .putExtra("report", list.result[position].report)
-                context.startActivity(intent)
+                if (list.result[position].title=="AyuSynk Report"){
+                    val browserIntent =
+                        Intent(Intent.ACTION_VIEW, Uri.parse("${list.result[position].ayusynk_report}"))
+                    context.startActivity(browserIntent)
+                }else {
+                    val intent = Intent(context as Activity, ViewReport::class.java)
+                        .putExtra("report", list.result[position].report)
+                    context.startActivity(intent)
+                }
             }
-
-
 
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
 
