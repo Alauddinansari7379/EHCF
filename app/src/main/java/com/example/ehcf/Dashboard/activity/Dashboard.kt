@@ -47,7 +47,6 @@ class Dashboard : AppCompatActivity() {
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     var specilistId = ""
     var mainData = ArrayList<ResultX>()
-
     private var specilList = ModelSpecilList();
 
 

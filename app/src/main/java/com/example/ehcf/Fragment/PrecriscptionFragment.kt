@@ -27,9 +27,7 @@ class PrecriscptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         binding = FragmentNewsBinding.inflate(inflater)
-
         pager = binding.viewPager
         tab = binding.tabs
 

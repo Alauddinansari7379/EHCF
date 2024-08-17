@@ -107,7 +107,6 @@ class OTPVerification : AppCompatActivity() {
                 override fun onResponse(
                     call: Call<ModelForgotPass>, response: Response<ModelForgotPass>
                 ) {
-
                     // Log.e("Ala","${response.body()!!.result}")
                     Log.e("Ala","${response.body()!!.message}")
                     Log.e("Ala","${response.body()!!.status}")
@@ -123,11 +122,8 @@ class OTPVerification : AppCompatActivity() {
                     else{
                         myToast(this@OTPVerification,"${response.body()!!.message}")
                         progressDialog!!.dismiss()
-
                     }
-
                 }
-
                 override fun onFailure(call: Call<ModelForgotPass>, t: Throwable) {
                     myToast(this@OTPVerification,"Something went wrong")
                     progressDialog!!.dismiss()

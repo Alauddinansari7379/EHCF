@@ -37,8 +37,7 @@ class SelectModuleFragment : Fragment() {
         }
         binding!!.btnUsb.setOnClickListener { v: View? ->
 
-            NavHostFragment.findNavController(this@SelectModuleFragment)
-                .navigate(R.id.action_SelectModuleFragment_to_USBFragment)
+            NavHostFragment.findNavController(this@SelectModuleFragment).navigate(R.id.action_SelectModuleFragment_to_USBFragment)
         }
         binding!!.imgBack.setOnClickListener {
             SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)

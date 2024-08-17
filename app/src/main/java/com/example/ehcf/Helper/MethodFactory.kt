@@ -67,6 +67,13 @@ fun convertTo12Hour(Time: String): String? {
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
+
+
+
+
+
+
+
 fun isOnline(context: Context): Boolean {
     val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

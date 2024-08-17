@@ -58,6 +58,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     var slug = ""
      var addressId = ""
 
+
     var apiEndPoint = "/pg/v1/pay"
     val salt = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399" // salt key
     val MERCHANT_ID = "PGTESTPAYUAT"  // Merhcant id
