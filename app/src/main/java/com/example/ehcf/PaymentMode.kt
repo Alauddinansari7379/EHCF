@@ -24,7 +24,7 @@ import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
-import com.papayacoders.phonepe.ApiUtilities
+import com.example.ehcf.phonepesdk.ApiUtilities
 import com.phonepe.intent.sdk.api.B2BPGRequestBuilder
 import com.phonepe.intent.sdk.api.PhonePe
 import com.phonepe.intent.sdk.api.PhonePeInitException
@@ -144,8 +144,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 Log.e("payloadBase64", "$payloadBase64")
                 Log.e("checksum", "$checksum")
                 try {
-                    PhonePe.getImplicitIntent(this, b2BPGRequest, "")
-                        ?.let { startActivityForResult(it, 1) };
+                    PhonePe.getImplicitIntent(this, b2BPGRequest, "")?.let { startActivityForResult(it, 1) };
                 } catch (e: PhonePeInitException) {
                 }
 
