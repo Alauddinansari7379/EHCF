@@ -97,15 +97,6 @@ class Appointments : AppCompatActivity() {
                     }
                 }
 
-//                if (tab.position == 0) {
-//                    tabs.setSelectedTabIndicatorColor(Color.parseColor("#45369F"))
-//                }
-//                else if (tab.position == 1) {
-//                    tabs.setSelectedTabIndicatorColor(Color.parseColor("#3A97C5"))
-//                }
-//                else {
-//                    tabs.setSelectedTabIndicatorColor(Color.parseColor("#FF0413"))
-//                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -144,16 +135,7 @@ class Appointments : AppCompatActivity() {
             //  myToast(requireActivity(), "Not C")
 
         }
-//        CheckInternet().check { connected ->
-//            if (connected) {
-//             //    myToast(requireActivity(),"Connected")
-//            }
-//            else {
-//                val changeReceiver = NetworkChangeReceiver(context)
-//                changeReceiver.build()
-//                //  myToast(requireActivity(),"Check Internet")
-//            }
-//        }
+
     }
     companion object{
        var tabIndex=1

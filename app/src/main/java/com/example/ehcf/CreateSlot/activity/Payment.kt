@@ -40,20 +40,6 @@ class Payment : AppCompatActivity() {
         Log.e("startTime","$startTime")
 
         binding.btnPayment.setOnClickListener {
-//            if (binding.edtTitle.text.isEmpty()){
-//                binding.edtTitle.error="Title Required"
-//                binding.edtTitle.requestFocus()
-//                return@setOnClickListener
-//            }
-//            if (binding.edtDescription.text.isEmpty()){
-//                binding.edtDescription.error="Description Required"
-//                binding.edtDescription.requestFocus()
-//                return@setOnClickListener
-//            }
-//            val title= binding.edtTitle.text.toString().trim()
-//            val description= binding.edtDescription.text.toString().trim()
-
-       //     val intent = Intent(context as Activity, RazorPay::class.java)
             val intent = Intent(context as Activity, PaymentMode::class.java)
                 .putExtra("doctorId",doctorId)
                 .putExtra("selecteDate",selectedate)

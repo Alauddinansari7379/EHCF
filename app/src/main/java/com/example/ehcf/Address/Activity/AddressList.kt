@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Address.Adapter.AdapterAddressList
 import com.example.ehcf.Address.ModelResponse.AddAddressResponse
 import com.example.ehcf.Address.ModelResponse.AddressListResponse
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAddressListBinding
@@ -24,10 +25,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AddressList : AppCompatActivity() {
     private val context: Context = this@AddressList
-    var progressDialog: ProgressDialog? = null
-    private var recyclerView: RecyclerView? = null
+     private var recyclerView: RecyclerView? = null
     private lateinit var sessionManager: SessionManager
-
+var count=0
+var countR=0
   //  private var addressList = AddressListResponse("",0)
 
     private lateinit var binding: ActivityAddressListBinding
@@ -36,13 +37,6 @@ class AddressList : AppCompatActivity() {
         binding = ActivityAddressListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
-
-
-        progressDialog = ProgressDialog(this@AddressList)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
 
         apiCallGetAddressList()
 
@@ -82,11 +76,8 @@ class AddressList : AppCompatActivity() {
     private fun apiCallAddAddress() {
         val address = binding.edtEnterAddress.text.toString()
         val landmark = binding.edtLandmark.text.toString()
-        val coustmer_id = 20
-        val lat = "1234566555"
-        val lng = "987654321"
 
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://ehcf.thedemostore.in/api/customer/")
@@ -104,7 +95,7 @@ class AddressList : AppCompatActivity() {
                     Log.e("Ala", "${response.body()!!.status}")
 
                     if (response.body()!!.status == 1) {
-
+                        countR=0
                         myToast(this@AddressList, response.body()!!.message)
                         binding.layoutAddress.visibility = View.GONE
                         binding.tvArrowHide.visibility = View.GONE
@@ -112,29 +103,32 @@ class AddressList : AppCompatActivity() {
                         apiCallGetAddressList()
                         binding.edtEnterAddress.text.clear()
                         binding.edtLandmark.text.clear()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     } else {
                         myToast(this@AddressList, "${response.body()!!.message}")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
 
                 }
 
                 override fun onFailure(call: Call<AddAddressResponse>, t: Throwable) {
-                    myToast(this@AddressList, t.message.toString())
-                    progressDialog!!.dismiss()
+                    countR++
+                    if (countR <= 3) {
+                        apiCallAddAddress()
+                    } else {
+                        myToast(this@AddressList, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
     private fun apiCallGetAddressList() {
 
-        val coustmer_id = 20
-
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://ehcf.thedemostore.in/api/customer/")
@@ -146,17 +140,25 @@ class AddressList : AppCompatActivity() {
             object : Callback<AddressListResponse> {
                 override fun onResponse(
                     call: Call<AddressListResponse>, response: Response<AddressListResponse>) {
+                    count=0
                         val recyclerView = findViewById<RecyclerView>(R.id.rvAddressList)
                         recyclerView.apply {
                             adapter = AdapterAddressList(context, response.body()!!)
 
                         }
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
                 }
 
                 override fun onFailure(call: Call<AddressListResponse>, t: Throwable) {
-                    myToast(this@AddressList, t.message.toString())
-                    progressDialog!!.dismiss()
+                      count++
+                    if (count <= 3) {
+                        apiCallGetAddressList()
+                    } else {
+                        myToast(this@AddressList, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
+                    AppProgressBar.hideLoaderDialog()
 
                 }
 

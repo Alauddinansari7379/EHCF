@@ -19,7 +19,7 @@ import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Pharmacy.adapter.AdapterAddress
- import com.example.ehcf.Pharmacy.model.ModelAddAddress
+import com.example.ehcf.Pharmacy.model.ModelAddAddress
 import com.example.ehcf.Pharmacy.model.ModelAddToCart
 import com.example.ehcf.Pharmacy.model.ModelMedicine
 import com.example.ehcf.PaymentMode
@@ -35,12 +35,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterAddress.AddressID,AdapterFamilyListView.CheckBox{
+class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart, AdapterAddress.AddressID,
+    AdapterFamilyListView.CheckBox {
     private var context = this@CartDiagnostic
     val binding by lazy {
         ActivityCartDiagnosticBinding.inflate(layoutInflater)
     }
-     var dialog: Dialog? = null
+    var count = 0
+    var countN = 0
+    var countN1 = 0
+    var countN2 = 0
+    var countN3 = 0
+    var dialog: Dialog? = null
 
     lateinit var sessionManager: SessionManager
     var totalPriceValue = ""
@@ -62,18 +68,17 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
             }
 
             btnGoToCheckout.setOnClickListener {
-                if (addressId.isEmpty()){
+                if (addressId.isEmpty()) {
                     myToast(context, "Please Select Devivery Address")
                     return@setOnClickListener
-                }
-                else if (totalPriceValue.isNotEmpty()) {
-                    sessionManager.bookingType=""
+                } else if (totalPriceValue.isNotEmpty()) {
+                    sessionManager.bookingType = ""
                     PrescriptionDetails.FollowUP = ""
                     val intent = Intent(context as Activity, PaymentMode::class.java)
                         .putExtra("Medicine", "1")
                         .putExtra("slug", "test")
                         .putExtra("addressId", addressId)
-                     context.startActivity(intent)
+                    context.startActivity(intent)
                 } else {
                     myToast(context, "Cart Empty")
                     return@setOnClickListener
@@ -137,6 +142,7 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
         }
 
     }
+
     private fun apiCallFamilyListNew() {
         ApiClient.apiService.getFamilyList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelFamilyList> {
@@ -148,28 +154,36 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                     // binding.rvSlotTiming.invalidate();
                     if (response.body()!!.status == 0) {
                         //myToast(context, "${response.body()!!.message}")
-                     } else if (response.code() == 500) {
-                       // myToast(this@MyAvailableSlot, "Server Error")
+                    } else if (response.code() == 500) {
+                        // myToast(this@MyAvailableSlot, "Server Error")
                     } else if (response.body()!!.result.isEmpty()) {
                         binding.recyclerViewFamily.apply {
-                            adapter = AdapterFamilyListView(context, response.body()!!,this@CartDiagnostic)
-                         }
+                            adapter = AdapterFamilyListView(
+                                context,
+                                response.body()!!,
+                                this@CartDiagnostic
+                            )
+                        }
                     } else {
                         binding.recyclerViewFamily.apply {
                             //   adapter!!.notifyDataSetChanged();
                             //myToast(this@ShuduleTiming, response.body()!!.message)
-                            adapter = AdapterFamilyListView(context, response.body()!!,this@CartDiagnostic)
+                            adapter = AdapterFamilyListView(
+                                context,
+                                response.body()!!,
+                                this@CartDiagnostic
+                            )
                             binding.recyclerViewFamily.layoutManager = GridLayoutManager(context, 3)
                             //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
-                         }
+                        }
 
                     }
                 }
 
 
                 override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
-                     myToast(context, "Something went wrong")
+                    myToast(context, "Something went wrong")
                 }
 
 
@@ -180,9 +194,11 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
         AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.cartListTest(
-            sessionManager.id.toString(),"test")
+            sessionManager.id.toString(), "test"
+        )
             .enqueue(object : Callback<ModelMedicine> {
-                 override fun onResponse(call: Call<ModelMedicine>, response: Response<ModelMedicine>
+                override fun onResponse(
+                    call: Call<ModelMedicine>, response: Response<ModelMedicine>
                 ) {
                     try {
                         if (response.code() == 500) {
@@ -196,7 +212,11 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                             myToast(context, "No Product Found")
 
                             binding.recyclerView.apply {
-                                adapter = AdapterCartDiagnostic(context, response.body()!!, this@CartDiagnostic)
+                                adapter = AdapterCartDiagnostic(
+                                    context,
+                                    response.body()!!,
+                                    this@CartDiagnostic
+                                )
                                 binding.totalQty.text = response.body()!!.result.size.toString()
                                 val price = ArrayList<Float>()
                                 response.body()!!.result.forEach {
@@ -206,7 +226,7 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                                 binding.delivery.text = "₹ 100"
                                 val sum = price.sum() + 100
                                 binding.totalPrice.text = "₹ $sum".toString()
-                                sessionManager.pricing= sum.toInt().toString()
+                                sessionManager.pricing = sum.toInt().toString()
                                 totalPriceValue = sum.toString()
                                 AppProgressBar.hideLoaderDialog()
 
@@ -214,12 +234,16 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                                 response.body()!!.result.forEach {
                                     qty.add(it.quantity.toInt())
                                 }
-                             }
+                            }
                             AppProgressBar.hideLoaderDialog()
 
                         } else {
                             binding.recyclerView.apply {
-                                adapter = AdapterCartDiagnostic(context, response.body()!!, this@CartDiagnostic)
+                                adapter = AdapterCartDiagnostic(
+                                    context,
+                                    response.body()!!,
+                                    this@CartDiagnostic
+                                )
                                 binding.totalQty.text = response.body()!!.result.size.toString()
                                 val price = ArrayList<Float>()
                                 response.body()!!.result.forEach {
@@ -229,7 +253,7 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                                 binding.delivery.text = "₹ 100"
                                 val sum = price.sum() + 100
                                 binding.totalPrice.text = "₹ $sum".toString()
-                                sessionManager.pricing= sum.toInt().toString()
+                                sessionManager.pricing = sum.toInt().toString()
                                 totalPriceValue = sum.toString()
                                 AppProgressBar.hideLoaderDialog()
 
@@ -237,7 +261,7 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                                 response.body()!!.result.forEach {
                                     qty.add(it.quantity.toInt())
                                 }
-                             }
+                            }
                         }
                     } catch (e: Exception) {
                         Log.e("Exception", e.printStackTrace().toString())
@@ -247,10 +271,15 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    count++
+                    if (count <= 3) {
+                        apiCallTestCartList()
+                    } else {
+                        myToast(this@CartDiagnostic, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
+                    AppProgressBar.hideLoaderDialog()
                 }
 
             })
@@ -292,7 +321,8 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
 
                         } else {
                             binding.recyclerViewAddress.apply {
-                                adapter = AdapterAddress(context, response.body()!!,this@CartDiagnostic)
+                                adapter =
+                                    AdapterAddress(context, response.body()!!, this@CartDiagnostic)
                                 AppProgressBar.hideLoaderDialog()
 
                             }
@@ -305,9 +335,15 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
+                    countN++
+                    if (countN <= 3) {
+                        apiCallAddressList()
+                    } else {
+                        myToast(this@CartDiagnostic, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                     AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
 
                 }
 
@@ -361,9 +397,19 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                 }
 
                 override fun onFailure(call: Call<ModelAddAddress>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN1++
+                    if (countN1 <= 3) {
+                        apiCallAddAddress(
+                            address,
+                            landmark,
+                            city,
+                            pinCode,
+                        )
+                    } else {
+                        myToast(this@CartDiagnostic, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
@@ -374,7 +420,7 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
     override fun addToCart(id: String) {
         AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.addToCart(
-            id, sessionManager.id.toString(), "1","test"
+            id, sessionManager.id.toString(), "1", "test"
         )
             .enqueue(object :
                 Callback<ModelAddToCart> {
@@ -405,8 +451,14 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN2++
+                    if (countN2 <= 3) {
+                        addToCart(id)
+                    } else {
+                        myToast(this@CartDiagnostic, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
@@ -416,9 +468,9 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
     override fun removeToCart(id: String) {
         AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.removeToCart(
-            id, sessionManager.id.toString(),"test"
+            id, sessionManager.id.toString(), "test"
 
-            )
+        )
             .enqueue(object :
                 Callback<ModelAddToCart> {
                 @SuppressLint("LogNotTimber")
@@ -448,8 +500,14 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN3++
+                    if (countN3 <= 3) {
+                        removeToCart(id)
+                    } else {
+                        myToast(this@CartDiagnostic, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
@@ -457,7 +515,7 @@ class CartDiagnostic : AppCompatActivity(), AdapterCartDiagnostic.Cart ,AdapterA
 
     override fun addressId(id: String) {
 
-        addressId=id
+        addressId = id
 
     }
 

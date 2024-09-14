@@ -24,6 +24,7 @@ import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
 import com.example.ehcf.Appointments.UpComing.model.ModelUpComingNew
 import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
 import com.example.ehcf.Fragment.HomeFragment
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -52,12 +53,13 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     private lateinit var binding: FragmentUpComingBinding
     private lateinit var sessionManager: SessionManager
     var mydilaog: Dialog? = null
-    var progressDialog: ProgressDialog? = null
-    var dialog: Dialog? = null
+     var dialog: Dialog? = null
     private var currentTime = ""
+    val context=this@UpComingFragment
     var endTime = ""
     var hours = ""
     var minutes = ""
+    var count = 0
     var secondsNew = ""
     private var diffTime: Long? = null
     private var diffTimeSeconds: Long? = null
@@ -68,16 +70,10 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     var refresh = false
     private var tvTimeCounter: TextView? = null
     var meetingId = ""
-    var mergeAdapter = RecyclerViewMergeAdapter()
-    var shimmerFrameLayout: ShimmerFrameLayout? = null
+     var shimmerFrameLayout: ShimmerFrameLayout? = null
     private val handler = Handler()
     private var mainData = ArrayList<ResultXXXX>()
 
-    //    private val broadcastReceiver = object : BroadcastReceiver(requireContext()) {
-////        override fun onReceive(context: this?, intent: Intent?) {
-////            onBroadcastReceived(intent)
-////        }
-//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -95,25 +91,9 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         shimmerFrameLayout!!.startShimmer();
 
         apiCallGetConsultationAccepted()
-       // handler.post(updateTimeRunnable)
 
-//        GlobalScope.launch {
-//            // Run the function every 5 seconds
-//            while (true) {
-//                apiCallGetConsultationAccepted()
-//                delay(5000) // Delay for 5 seconds
-//            }
-//        }
-
-
-
-        val btnCheck = view.findViewById<Button>(R.id.btnCheck)
-        // tvTimeCounter = view.findViewById<TextView>(R.id.tvTimeCounter)
 
         binding.imgRefresh.setOnClickListener {
-            // apiCall()
-            //  apiCallAppointmentsWaiting()
-            //  apiCallGetConsultationAccepted()
             (activity as Appointments).refresh()
         }
         binding.imgRefresh.setOnClickListener {
@@ -125,17 +105,6 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
             } as ArrayList<ResultXXXX>)
         }
 
-
-//
-//        binding.imgSearch.setOnClickListener {
-//            if (binding.edtSearch.text.toString().isEmpty()) {
-//                binding.edtSearch.error = "Enter Doctor Name"
-//                binding.edtSearch.requestFocus()
-//            } else {
-//                val search = binding.edtSearch.text.toString()
-//                apiCallSearchAppointments(search)
-//            }
-//        }
     }
     private val updateTimeRunnable = object : Runnable {
         override fun run() {
@@ -181,10 +150,7 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         }
         dialog!!.setContentView(view)
         dialog?.setCancelable(true)
-        // dialog?.setContentView(view)
-        // val d1 = format.parse("2023/03/29 11:04:00")
-//        Log.e("currentDate", currentTime)
-//        Log.e("EndTime", startTime)
+
 
         remainingTime()
         fun timeCalculator(seconds: Long) {
@@ -213,73 +179,7 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
             dialog?.dismiss()
         }
     }
-//    private fun apiCallSearchAppointments(doctorName: String) {
-//        progressDialog = ProgressDialog(requireContext())
-//        progressDialog!!.setMessage("Loading..")
-//        progressDialog!!.setTitle("Please Wait")
-//        progressDialog!!.isIndeterminate = false
-//        progressDialog!!.setCancelable(true)
-//        progressDialog!!.show()
-//
-//
-//        ApiClient.apiService.searchAppointments(sessionManager.id.toString(),doctorName,"accepted")
-//            .enqueue(object : Callback<ModelUpComingNew> {
-//                @SuppressLint("LogNotTimber")
-//                override fun onResponse(
-//                    call: Call<ModelUpComingNew>, response: Response<ModelUpComingNew>
-//                ) {
-//                    if (response.code() == 500) {
-//                        myToast(requireActivity(), "Server Error")
-//                        binding.shimmer.visibility = View.GONE
-//                    } else if (response.body()!!.status == 0) {
-//                        binding.tvNoDataFound.visibility = View.VISIBLE
-//                        binding.shimmer.visibility = View.GONE
-//                        binding.edtSearch.text.clear()
-//                        myToast(requireActivity(), "${response.body()!!.message}")
-//                        progressDialog!!.dismiss()
-//
-//                    } else if (response.body()!!.result.isEmpty()) {
-//                        binding.rvCancled.adapter =
-//                            activity?.let { AdapterAppointments(it, response.body()!!,this@UpComingFragment) }
-//                        binding.rvCancled.adapter!!.notifyDataSetChanged()
-//                        binding.tvNoDataFound.visibility = View.VISIBLE
-//                        binding.shimmer.visibility = View.GONE
-//                        binding.edtSearch.text.clear()
-//                        myToast(requireActivity(), "No Appointment Found")
-//                        progressDialog!!.dismiss()
-//
-//                    } else {
-//                        binding.rvCancled.adapter =
-//                            activity?.let { AdapterAppointments(it, response.body()!!,this@UpComingFragment) }
-//                        binding.rvCancled.adapter!!.notifyDataSetChanged()
-//                        binding.tvNoDataFound.visibility = View.GONE
-//                        shimmerFrameLayout?.startShimmer()
-//                        binding.rvCancled.visibility = View.VISIBLE
-//                        binding.shimmer.visibility = View.GONE
-//                        binding.edtSearch.text.clear()
-//                        progressDialog!!.dismiss()
-////                        binding.rvManageSlot.apply {
-////                            binding.tvNoDataFound.visibility = View.GONE
-////                            shimmerFrameLayout?.startShimmer()
-////                            binding.rvManageSlot.visibility = View.VISIBLE
-////                            binding.shimmerMySlot.visibility = View.GONE
-////                            // myToast(this@ShuduleTiming, response.body()!!.message)
-////                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-////                            progressDialog!!.dismiss()
-////
-////                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ModelUpComingNew>, t: Throwable) {
-//                    myToast(requireActivity(), "Something went wrong")
-//                    binding.shimmer.visibility = View.GONE
-//                    progressDialog!!.dismiss()
-//
-//                }
-//
-//            })
-//    }
+
 
     private fun videoCallFun(startTime: String, id: String) {
          meetingId = id
@@ -361,12 +261,6 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
     }
 
 
-//    override fun dismissPopup(){
-//        val view = layoutInflater.inflate(R.layout.time_dialognew, null)
-//        val btnOkDialog = view.findViewById<Button>(R.id.btnOkDialog)
-//        btnOkDialog.setOnClickListener {
-//            dialog?.dismiss()
-//        }
 
 
     private fun timeCounter() {
@@ -385,116 +279,10 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         }.start()
     }
 
-    /*    private fun apiCall(){
 
-            progressDialog = ProgressDialog(requireContext())
-            progressDialog!!.setMessage("Loading..")
-            progressDialog!!.setTitle("Please Wait")
-            progressDialog!!.isIndeterminate = false
-            progressDialog!!.setCancelable(true)
-            progressDialog!!.show()
-            val id="20"
-
-            val retrofitBuilder = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                //.baseUrl("https://jsonplaceholder.typicode.com/")
-                .baseUrl("https://ehcf.thedemostore.in/api/customer/")
-                .build()
-                .create(ApiInterface::class.java)
-
-            val retrofitData = retrofitBuilder.myAppointmentUpComing(sessionManager.id.toString())
-            retrofitData.enqueue(object : Callback<ModelUpComingResponse> {
-                override fun onResponse(
-                    call: Call<ModelUpComingResponse>,
-                    response: Response<ModelUpComingResponse>
-                )
-                {
-                    if (response.body()!!.result.upcoming.isEmpty()){
-                        binding.tvNoDataFound.visibility = View.VISIBLE
-                       // myToast(requireActivity(),"No Appointment Found")
-                        progressDialog!!.dismiss()
-
-                    }else{
-                        binding.rvCancled.apply {
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter = AdapterUpComing(requireContext(), response.body()!!,this@UpComingFragment)
-                            progressDialog!!.dismiss()
-
-                        }
-                    }
-
-                }
-
-                override fun onFailure(call: Call<ModelUpComingResponse>, t: Throwable) {
-                    t.message?.let { myToast(requireActivity(), it)
-                        progressDialog!!.dismiss()
-
-                    }
-                }
-            })
-        }*/
-//    private fun apiCallAppointmentsWaiting() {
-//
-//
-//        ApiClient.apiService.getConsultation(sessionManager.id.toString(), "waiting_for_accept")
-//            .enqueue(object : Callback<ModelAppointmentBySlag> {
-//                @SuppressLint("LogNotTimber")
-//                override fun onResponse(
-//                    call: Call<ModelAppointmentBySlag>, response: Response<ModelAppointmentBySlag>
-//                ) {
-//                    Log.e("Ala", "${response.body()!!}")
-//                    Log.e("Ala", "${response.body()!!.status}")
-//                    if (response.code() == 500) {
-//                        myToast(requireActivity(), "Server error")
-//                    } else if (response.body()!!.result.isEmpty()) {
-//                        // myToast(requireActivity(),"No Data Found")
-//                    } else {
-//                        mergeAdapter.removeAdapter(
-//                            AdapterAppointments(
-//                                requireContext(),
-//                                response.body()!!,
-//                                this@UpComingFragment
-//                            )
-//                        )
-//
-//                        val adapter1 = AdapterAppointments(
-//                            requireContext(),
-//                            response.body()!!,
-//                            this@UpComingFragment
-//                        )
-//
-//                        // Setting the Adapter with the recyclerview
-//                        // binding.rvUpcoming.adapter = adapter
-//
-//                        mergeAdapter.addAdapter(adapter1)
-////                        binding.rvUpcoming.apply {
-////                            binding.tvNoDataFound.visibility = View.GONE
-////                            adapter = AdapterUpComing(requireContext(), response.body()!!,this@UpComingFragment)
-////                            progressDialog!!.dismiss()
-////
-////                        }
-//                    }
-//
-//
-//                }
-//
-//                override fun onFailure(call: Call<ModelAppointmentBySlag>, t: Throwable) {
-//                    myToast(requireActivity(), "Something went wrong")
-//                    progressDialog!!.dismiss()
-//
-//                }
-//
-//            })
-//    }
 
     private fun apiCallGetConsultationAccepted() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
-
+       AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.getConsultationAccpted(sessionManager.id.toString(), "accepted")
             .enqueue(object : Callback<ModelUpComingNew> {
@@ -505,23 +293,22 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
                     try {
                         if (response.code() == 200) {
                             mainData = response.body()!!.result!!
-                            progressDialog!!.dismiss()
-
+                            AppProgressBar.hideLoaderDialog()
                         }
                         if (response.code() == 500) {
                             myToast(requireActivity(), "Server error")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmer.visibility = View.GONE
                             // myToast(requireActivity(),"No Data Found")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         } else {
                             HomeFragment.homeCall=""
                             setRecyclerViewAdapter(mainData)
                             binding.shimmer.visibility = View.GONE
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
 
@@ -531,8 +318,15 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
                 }
 
                 override fun onFailure(call: Call<ModelUpComingNew>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
+                    count++
+                    if (count <= 3) {
+                        apiCallGetConsultationAccepted()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
+                    AppProgressBar.hideLoaderDialog()
 
                 }
 
@@ -550,89 +344,18 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         }
     }
 
-    /*//    private fun apiCallAppointments() {
-    //        progressDialog = ProgressDialog(requireContext())
-    //        progressDialog!!.setMessage("Loading...")
-    //        progressDialog!!.setTitle("Please Wait")
-    //        progressDialog!!.isIndeterminate = false
-    //        progressDialog!!.setCancelable(true)
-    //        progressDialog!!.show()
-    //
-    //        ApiClient.apiService.appointments(sessionManager.id.toString())
-    //            .enqueue(object : Callback<ModelAppointments> {
-    //                @SuppressLint("LogNotTimber")
-    //                override fun onResponse(
-    //                    call: Call<ModelAppointments>, response: Response<ModelAppointments>
-    //                ) {
-    //                    Log.e("Ala", "${response.body()!!}")
-    //                    Log.e("Ala", "${response.body()!!.status}")
-    //                    if (response.body()!!.result.isEmpty()){
-    //                        binding.tvNoDataFound.visibility = View.VISIBLE
-    //                        // myToast(requireActivity(),"No Appointment Found")
-    //                        progressDialog!!.dismiss()
-    //
-    //                    }else if (response.code()==500){
-    //                        myToast(requireActivity(),"Server Error")
-    //                        progressDialog!!.dismiss()
-    //                    }
-    //
-    //                    else{
-    //                        binding.rvCancled.apply {
-    //                            binding.tvNoDataFound.visibility = View.GONE
-    //                            adapter = AdapterAppointments(requireContext(), response.body()!!,this@UpComingFragment)
-    //                            progressDialog!!.dismiss()
-
-
-        //                        binding.rvCancled.apply {
-    ////                            binding.rvUpcoming.adapter = null;
-    //                            shimmerFrameLayout?.startShimmer()
-    //                            binding.rvCancled.visibility = View.VISIBLE
-    //                            binding.shimmer.visibility = View.GONE
-    //                            binding.tvNoDataFound.visibility = View.GONE
-    //                            val adapter = AdapterAppointmentsAccepted(requireContext(), response.body()!!, this@UpComingFragment)
-    //
-    //                            mergeAdapter?.addAdapter(adapter)
-    //                            //binding.rvUpcoming.adapter = adapter
-    //
-    //                            binding.rvCancled.adapter = mergeAdapter
-        //   progressDialog!!.dismiss()
-        // adapter = mergeAdapter
-    //
-    //                        }
-    //                    }
-    //
-    //
-    //                }
-    //
-    //                override fun onFailure(call: Call<ModelAppointments>, t: Throwable) {
-    //                    myToast(requireActivity(), "Something went wrong")
-    //                    progressDialog!!.dismiss()
-    //
-    //                }
-    //
-    //            })
-    //    }*/
-    @RequiresApi(Build.VERSION_CODES.M)
+     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStart() {
         super.onStart()
         if (isOnline(requireContext())) {
             //  myToast(requireActivity(), "Connected")
         } else {
-            val changeReceiver = NetworkChangeReceiver(context)
+            val changeReceiver = NetworkChangeReceiver(requireContext())
             changeReceiver.build()
             //  myToast(requireActivity(), "Not C")
 
         }
-//        CheckInternet().check { connected ->
-//            if (connected) {
-//             //    myToast(requireActivity(),"Connected")
-//            }
-//            else {
-//                val changeReceiver = NetworkChangeReceiver(context)
-//                changeReceiver.build()
-//                //  myToast(requireActivity(),"Check Internet")
-//            }
-//        }
+
     }
 
 
