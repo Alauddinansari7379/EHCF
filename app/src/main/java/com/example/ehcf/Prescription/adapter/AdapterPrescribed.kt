@@ -18,6 +18,7 @@ import com.example.ehcf.report.activity.ReportMain
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.Prescription.model.ResultPrescribed
 import com.example.ehcf.R
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
@@ -25,7 +26,7 @@ class AdapterPrescribed(
     val context: Context, private val list: ArrayList<ResultPrescribed>
 ) :
     RecyclerView.Adapter<AdapterPrescribed.MyViewHolder>() {
-
+lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -36,6 +37,7 @@ class AdapterPrescribed(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         try {
+            sessionManager= SessionManager(context)
             // holder.SrNo.text= "${position+1}"
             var custmorName = ""
             if (list[position].start_time != null) {
@@ -43,7 +45,7 @@ class AdapterPrescribed(
                 holder.endTime.text = convertTo12Hour(list[position].end_time.toString())
             }
             if (list[position].profile_image!!.isNotEmpty()){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
+                Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
              }
             if (list[position].member_name != null) {
                 custmorName = list[position].member_name

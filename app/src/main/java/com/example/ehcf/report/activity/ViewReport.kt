@@ -27,6 +27,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityViewReportBinding
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.rajat.pdfviewer.PdfViewerActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -53,14 +54,14 @@ class ViewReport : AppCompatActivity() {
     var progressDialog: ProgressDialog? = null
     var reportData = ""
     private val PERMISSION_REQUEST_CODE = 1
-
+lateinit var sessionManager: SessionManager
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityViewReportBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+sessionManager= SessionManager(context)
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
@@ -83,10 +84,9 @@ class ViewReport : AppCompatActivity() {
 
         reportData = intent.getStringExtra("report").toString()
         Log.e("reportData", reportData)
-        val baseUrl = "https://ehcf.thedemostore.in/uploads/"
 
         if (reportData.contains("png") || reportData.contains("jpeg") || reportData.contains("jpg")) {
-            val url="https://ehcf.thedemostore.in/uploads/$reportData"
+            val url="${sessionManager.imageurl}$reportData"
              FetchImage(url).start()
 //            SweetAlertDialog(this@ViewReport, SweetAlertDialog.WARNING_TYPE)
 //                .setTitleText("No Report Found")
@@ -107,7 +107,7 @@ class ViewReport : AppCompatActivity() {
                 // Use 'launchPdfFromPath' if you want to use assets file (enable "fromAssets" flag) / internal directory
                 PdfViewerActivity.launchPdfFromUrl(           //PdfViewerActivity.Companion.launchPdfFromUrl(..   :: incase of JAVA
                     context,
-                    "https://ehcf.thedemostore.in/uploads/$reportData",                                // PDF URL in String format
+                    "${sessionManager.imageurl}$reportData",                                // PDF URL in String format
                     "Report",                        // PDF Name/Title in String format
                     "pdf directory to save",                  // If nothing specific, Put "" it will save to Downloads
                     enableDownload = true                    // This param is true by defualt.
@@ -119,8 +119,7 @@ class ViewReport : AppCompatActivity() {
         }
 
 
-        // url1 = "https://ehcf.thedemostore.in/uploads/prescriptions/1679551088.jpg"
-    }
+     }
 
     internal inner class FetchImage(var URL: String) : Thread() {
         private var bitmap: Bitmap? = null

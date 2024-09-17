@@ -20,6 +20,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.Registration.ModelResponse.ModelGender
@@ -46,7 +47,7 @@ import kotlin.collections.ArrayList
 
 
 class Registration : AppCompatActivity() {
-    private val context: Context = this@Registration
+    private val context = this@Registration
     var loading: LottieAnimationView? = null
     var mydilaog: Dialog? = null
 
@@ -54,11 +55,11 @@ class Registration : AppCompatActivity() {
     var genderList = ArrayList<ModelGender>()
     private var bloodGroup = ""
     private var phoneNumberWithCode = ""
-    var progressDialog: ProgressDialog? = null
-    private var phoneNumberWithCodeNew = ""
+     private var phoneNumberWithCodeNew = ""
     private var countryCode = ""
     private var fcmToken = ""
     private var genderValue = 0
+    private var count2 = 0
     private var responseOTP = "0"
     private var varifyed = false
 
@@ -72,11 +73,6 @@ class Registration : AppCompatActivity() {
         Log.e("Alla,", "genderValue$genderValue")
         Log.e("Alla,", "bloodGroup$bloodGroup")
 
-        progressDialog = ProgressDialog(this@Registration)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
 
         getToken()
         binding.spinnerCountryCode.setOnCountryChangeListener {
@@ -381,61 +377,11 @@ class Registration : AppCompatActivity() {
 
         }
     }
-    //     progressDialog!!.show()
 
-//            ApiClient.apiService.register(
-//                coustmerName,
-//                binding.edtPhoneNumberWithCode.text.toString(),
-//                phoneWithCodeNew1,
-//                email,
-//                password,
-//                bloodGroup,
-//                genderValue,
-//                fcmToken
-//            )
-//                .enqueue(object : Callback<RegistationResponse> {
-//                    @SuppressLint("LogNotTimber")
-//                    override fun onResponse(
-//                        call: Call<RegistationResponse>, response: Response<RegistationResponse>
-//                    ) {
-//
-//                        Log.e("Ala", "${response.body()!!.result}")
-//                        Log.e("Ala", response.body()!!.message)
-//                        Log.e("Ala", "${response.body()!!.status}")
-//
-//                        if (response.body()!!.status == 1) {
-//                            myToast(this@Registration, response.body()!!.message)
-//                            subscribed()
-//                            progressDialog!!.dismiss()
-//                            startActivity(Intent(context, SignIn::class.java))
-//
-//                        } else {
-//                            myToast(this@Registration, "${response.body()!!.message}")
-//                            progressDialog!!.dismiss()
-//
-//                        }
-//
-//                    }
-//
-//                    override fun onFailure(call: Call<RegistationResponse>, t: Throwable) {
-//                        myToast(this@Registration, "Something went wrong")
-//                        progressDialog!!.dismiss()
-//
-//                    }
-//
-//                })
-//        }
-
-    //  }
 
     private fun apiCallOTP(phoneWithCodeNew: String) {
 
-        progressDialog = ProgressDialog(this@Registration)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+       AppProgressBar.showLoaderDialog(context)
 
 
         ApiClient.apiService.checkPhone(phoneWithCodeNew)
@@ -448,7 +394,7 @@ class Registration : AppCompatActivity() {
                 ) {
                     if (response.code() == 500) {
                         myToast(this@Registration, "Server Error")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else if (response.body()!!.status == 1) {
                         responseOTP = response.body()!!.result.otp
                         myToast(this@Registration, "OTP Send Successfully")
@@ -459,20 +405,25 @@ class Registration : AppCompatActivity() {
                             ColorStateList.valueOf(resources.getColor(R.color.shimmer_color));
                         //  binding.btnSendOTP.setBackgroundColor(Color.parseColor("#9F367A"))
                         timeCounter()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
 
                         myToast(this@Registration, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
 
                     }
                 }
 
                 override fun onFailure(call: Call<ModelOTP>, t: Throwable) {
-                    myToast(this@Registration, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    count2++
+                    if (count2 <= 3) {
+                        apiCallOTP(phoneWithCodeNew)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.Appointments.Appointments
 import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.model.ModelRating
@@ -27,15 +28,15 @@ import xyz.teamgravity.checkinternet.CheckInternet
 
 
 class Rating : AppCompatActivity() {
-    private val context: Context = this@Rating
+    private val context = this@Rating
     private lateinit var binding: ActivityRatingBinding
     lateinit var ratingBar: RatingBar
     lateinit var button: Button
     var meetingId = ""
     var rating = "1"
+    var countN = 0
     private lateinit var sessionManager: SessionManager
-    var progressDialog: ProgressDialog? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
+     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -73,12 +74,7 @@ class Rating : AppCompatActivity() {
 
     private fun apiCallRating() {
         val comment =binding.edtComment.text.toString()
-        progressDialog = ProgressDialog(this@Rating)
-        progressDialog!!.setMessage("Loading...")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+      AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.rating(meetingId, rating, comment)
             .enqueue(object : Callback<ModelRating> {
@@ -90,13 +86,13 @@ class Rating : AppCompatActivity() {
                     Log.e("Ala", "${response.body()!!.status}")
                     if (response.body()!!.status == 1) {
                         myToast(this@Rating, "Review Submitted")
-                        progressDialog!!.dismiss()
+                       AppProgressBar.hideLoaderDialog()
                         binding.edtComment.text.clear()
                        //  binding.btnSendReview.backgroundTintBlendMode.
                         startActivity(Intent(this@Rating, Appointments::class.java))
 
                     } else {
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                         myToast(this@Rating, response.body()!!.message)
 
                     }
@@ -105,9 +101,14 @@ class Rating : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelRating>, t: Throwable) {
-                    myToast(this@Rating,"Something went wrong")
-                    progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallRating()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -126,41 +127,6 @@ class Rating : AppCompatActivity() {
             }
         }
     }
-//    private fun printerSdk() {
-//        mPrinterList = java.util.ArrayList()
-//        mFilterOption = FilterOption()
-//        mFilterOption.deviceType = Discovery.TYPE_PRINTER
-//        mFilterOption.epsonFilter = Discovery.FILTER_NAME
-//        mFilterOption.usbDeviceName = Discovery.TRUE
-//
-//        try {
-//            printerIpaddress.clear()
-//            Discovery.start(this, mFilterOption, mDiscoveryListener)
-//        } catch (e: Exception) {
-//            Log.e("SettingError", e.message.toString())
-//            e.printStackTrace()
-//        }
-//
-//    }
-//
-//    val mDiscoveryListener = DiscoveryListener { deviceInfo ->
-//        this.runOnUiThread {
-//            val item = HashMap<String, String>()
-//            item["PrinterName"] = deviceInfo.deviceName
-//            item["Target"] = deviceInfo.target
-//            item["IP_Address"] = deviceInfo.ipAddress
-//
-//            if (item["Target"]!!.contains("[local_printer]")) {
-//                target = deviceInfo.target.replace("[local_printer]", "")
-//            } else {
-//                target = deviceInfo.target
-//            }
-//            printerIpaddress.add(PrinterIPAddress(deviceInfo.ipAddress, target))
-//            mPrinterList!!.add(item)
-//            Log.e("CheckTarget",target)
-//            Log.e("xceltecip", printerIpaddress.toString())
-//            Log.e("xcelteclist", mPrinterList.toString())
-//        }
-//    }
+
 
 }

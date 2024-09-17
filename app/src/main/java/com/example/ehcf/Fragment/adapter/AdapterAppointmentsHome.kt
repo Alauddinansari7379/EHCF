@@ -22,6 +22,7 @@ import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.MyDoctor.Adapter.AdapterMyDoctors
 import com.example.ehcf.R
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,7 +30,7 @@ import java.util.*
 
 class AdapterAppointmentsHome(val context: Context, private val list: ModelUpComingHome, val videoCall: ShowPopUp ) :
     RecyclerView.Adapter<AdapterAppointmentsHome.MyViewHolder>() {
-
+lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -40,11 +41,11 @@ class AdapterAppointmentsHome(val context: Context, private val list: ModelUpCom
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-
+sessionManager= SessionManager(context)
         try {
             if (list.result[position].profile_image!!.isNotEmpty()){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.profile)
-                Log.e("pofile","https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}")
+                Picasso.get().load("${sessionManager.imageurl}${list.result[position].profile_image}").into(holder.profile)
+                Log.e("pofile","${sessionManager.imageurl}${list.result[position].profile_image}")
             }
 
             holder.appointmentDate.text = list.result[position].date

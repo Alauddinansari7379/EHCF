@@ -6,6 +6,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.OnlineDoctor.adapter.AdapterOnlineDoctor
@@ -19,9 +21,9 @@ import xyz.teamgravity.checkinternet.CheckInternet
 
 class OnlineDoctor : AppCompatActivity() {
     private lateinit var binding: ActivityFindYourDoctor1Binding
-    private val context: Context = this@OnlineDoctor
-    var progressDialog: ProgressDialog? = null
-    var specialitiesID=""
+    private val context = this@OnlineDoctor
+     var specialitiesID=""
+    var countN=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFindYourDoctor1Binding.inflate(layoutInflater)
@@ -38,12 +40,7 @@ class OnlineDoctor : AppCompatActivity() {
         }
     }
     private fun apiCallOnlineDoctor(){
-        progressDialog = ProgressDialog(this@OnlineDoctor)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+       AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.onlineDoctors(specialitiesID,"").enqueue(object :
             Callback<ModelOnlineDoctor> {
@@ -55,11 +52,11 @@ class OnlineDoctor : AppCompatActivity() {
 
                 if (response.body()!!.result.isEmpty()) {
                     myToast(this@OnlineDoctor, "No Doctor Found")
-                    progressDialog!!.dismiss()
+                   AppProgressBar.hideLoaderDialog()
                 } else {
                     binding.rvAllDoctor.apply {
                         adapter = AdapterOnlineDoctor(this@OnlineDoctor, response.body()!!)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
@@ -67,8 +64,14 @@ class OnlineDoctor : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ModelOnlineDoctor>, t: Throwable) {
-                myToast(this@OnlineDoctor,"Something went wrong")
-                progressDialog!!.dismiss()
+                countN++
+                if (countN <= 3) {
+                    apiCallOnlineDoctor()
+                } else {
+                    myToast(context, t.message.toString())
+                     AppProgressBar.hideLoaderDialog()
+
+                }
 
             }
 

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityInvoiceBinding
@@ -32,12 +33,13 @@ import kotlin.collections.ArrayList
 
 class Invoice : AppCompatActivity() {
     private lateinit var binding: ActivityInvoiceBinding
-    private val context: Context = this@Invoice
-    var progressDialog: ProgressDialog? = null
+    private val context = this@Invoice
     var relationList = ArrayList<String>()
-    var search=""
+    var search = ""
+    var count = 0
+    var count1 = 0
     var mydilaog: Dialog? = null
-    var selectedDate=""
+    var selectedDate = ""
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     private lateinit var sessionManager: SessionManager
 
@@ -59,11 +61,11 @@ class Invoice : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
         binding.imgSearch.setOnClickListener {
-            if (binding.edtSearch.text.toString().isEmpty()){
-                binding.edtSearch.error="Enter Patient Name"
+            if (binding.edtSearch.text.toString().isEmpty()) {
+                binding.edtSearch.error = "Enter Patient Name"
                 binding.edtSearch.requestFocus()
-            }else{
-                selectedDate=""
+            } else {
+                selectedDate = ""
                 search = binding.edtSearch.text.toString()
                 apiCallFilterInvoiceList(search, selectedDate)
             }
@@ -88,7 +90,7 @@ class Invoice : AppCompatActivity() {
                     SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(newDate.time)
                 val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(newDate.time)
                 binding.tvDate.text = date
-                search=""
+                search = ""
                 apiCallFilterInvoiceList(search, selectedDate)
                 Log.e(ContentValues.TAG, "onCreate: >>>>>>>>>>>>>>>>>>>>>>$date")
                 Log.e(ContentValues.TAG, "selectedDate: >>$selectedDate")
@@ -102,13 +104,9 @@ class Invoice : AppCompatActivity() {
 
         }
     }
+
     private fun apiCallInvoiceList() {
-        progressDialog = ProgressDialog(this@Invoice)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        // progressDialog!!.show()
+
 
         ApiClient.apiService.invoiceList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelInvoice> {
@@ -126,7 +124,6 @@ class Invoice : AppCompatActivity() {
                             binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmerInvoice.visibility = View.GONE
                             myToast(this@Invoice, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvManageSlot.adapter =
@@ -135,7 +132,6 @@ class Invoice : AppCompatActivity() {
                             binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmerInvoice.visibility = View.GONE
                             myToast(this@Invoice, "No Invoice Found")
-                            progressDialog!!.dismiss()
 
                         } else {
                             binding.rvManageSlot.adapter =
@@ -145,44 +141,35 @@ class Invoice : AppCompatActivity() {
                             shimmerFrameLayout?.startShimmer()
                             binding.rvManageSlot.visibility = View.VISIBLE
                             binding.shimmerInvoice.visibility = View.GONE
-                            progressDialog!!.dismiss()
-//                        binding.rvManageSlot.apply {
-//                            binding.tvNoDataFound.visibility = View.GONE
-//                            shimmerFrameLayout?.startShimmer()
-//                            binding.rvManageSlot.visibility = View.VISIBLE
-//                            binding.shimmerMySlot.visibility = View.GONE
-//                            // myToast(this@ShuduleTiming, response.body()!!.message)
-//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-//                            progressDialog!!.dismiss()
-//
-//                        }
+
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@Invoice, "Something went wrong")
                         binding.shimmerInvoice.visibility = View.GONE
-                        progressDialog!!.dismiss()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelInvoice>, t: Throwable) {
                     myToast(this@Invoice, "Something went wrong")
                     binding.shimmerInvoice.visibility = View.GONE
-                    progressDialog!!.dismiss()
+                    count++
+                    if (count <= 3) {
+                        apiCallInvoiceList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
             })
     }
-    private fun apiCallFilterInvoiceList(search: String, date: String?) {
-        progressDialog = ProgressDialog(this@Invoice)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
 
-        ApiClient.apiService.searchDoctorByDate(sessionManager.id.toString(),search, date)
+    private fun apiCallFilterInvoiceList(search: String, date: String?) {
+        AppProgressBar.showLoaderDialog(context)
+
+        ApiClient.apiService.searchDoctorByDate(sessionManager.id.toString(), search, date)
             .enqueue(object : Callback<ModelInvoice> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
@@ -198,7 +185,7 @@ class Invoice : AppCompatActivity() {
                             binding.shimmerInvoice.visibility = View.GONE
                             binding.edtSearch.text.clear()
                             myToast(this@Invoice, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvManageSlot.adapter =
@@ -208,7 +195,7 @@ class Invoice : AppCompatActivity() {
                             binding.shimmerInvoice.visibility = View.GONE
                             binding.edtSearch.text.clear()
                             myToast(this@Invoice, "No Invoice Found")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
                             binding.rvManageSlot.adapter =
@@ -219,30 +206,26 @@ class Invoice : AppCompatActivity() {
                             binding.rvManageSlot.visibility = View.VISIBLE
                             binding.shimmerInvoice.visibility = View.GONE
                             binding.edtSearch.text.clear()
-                            progressDialog!!.dismiss()
-//                        binding.rvManageSlot.apply {
-//                            binding.tvNoDataFound.visibility = View.GONE
-//                            shimmerFrameLayout?.startShimmer()
-//                            binding.rvManageSlot.visibility = View.VISIBLE
-//                            binding.shimmerMySlot.visibility = View.GONE
-//                            // myToast(this@ShuduleTiming, response.body()!!.message)
-//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-//                            progressDialog!!.dismiss()
-//
-//                        }
+                            AppProgressBar.hideLoaderDialog()
+
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@Invoice, "Something went wrong")
                         binding.shimmerInvoice.visibility = View.GONE
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelInvoice>, t: Throwable) {
-                    myToast(this@Invoice, "Something went wrong")
                     binding.shimmerInvoice.visibility = View.GONE
-                    progressDialog!!.dismiss()
+                    count1++
+                    if (count1 <= 3) {
+                        apiCallFilterInvoiceList(search, date)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 

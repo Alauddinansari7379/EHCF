@@ -23,6 +23,7 @@ import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Fragment.test.UploadRequestBody
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.PrivacyPolicies
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
@@ -43,11 +44,10 @@ import java.io.*
 
 class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
     private lateinit var binding: ActivitySignaturaPadBinding
-    var progressDialog: ProgressDialog? = null
     private var selectedImageUri: Uri? = null
     private var photo: File? = null
-
-
+    val context = this@SignaturaPad
+    var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignaturaPadBinding.inflate(layoutInflater)
@@ -109,25 +109,10 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 val signatureBitmap = binding.signaturePad.signatureBitmap
                 if (addJpgSignatureToGallery(signatureBitmap)) {
                     apiCallRegister()
-
-
-                    //   myToast(this@SignaturaPad, "Signature save in Gallery")
-//                Toast.makeText(this@SignaturaPad, "Tanda tangan disimpan ke dalam Galeri",
-//                    Toast.LENGTH_SHORT).show()
                 } else {
                     apiCallRegister()
-
-                    //   myToast(this@SignaturaPad, "signature save in Gallery")
-//                Toast.makeText(this@SignaturaPad, "Tidak dapat menyimpan Tanda Tangan",
-//                    Toast.LENGTH_SHORT).show()
                 }
-//            if (addSvgSignatureToGallery(binding.signaturePad.signatureSvg)) {
-//                Toast.makeText(this@SignaturaPad, "Tandi tangan SVG disimpan ke dalam Galeri",
-//                    Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(this@SignaturaPad, "Tidak dapat menyimpan Tanda Tangan SVG",
-//                    Toast.LENGTH_SHORT).show()
-//            }
+
             }
         }
 
@@ -142,7 +127,7 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
         if (requestCode == REQUEST_EXTERNAL_STORAGE) {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(
-                    this@SignaturaPad, "Tidak dapat menulis gambar ke Media Penyimpanan",
+                    this@SignaturaPad, "Permission required",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -240,27 +225,8 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
             // binding.layoutRoot.snackbar("Select an Image First")
             return
         }
-//
-//        val parcelFileDescriptor =
-//            contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
-//
-//
-//        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-//
-//        val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
-//        val outputStream = FileOutputStream(file)
-//        inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(this@SignaturaPad)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-
-        progressDialog!!.isIndeterminate = false
-
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
-
-        //  binding.progressBar.progress = 0
+        AppProgressBar.showLoaderDialog(context)
         val body = UploadRequestBody(photo!!, "image", this)
         ApiClient.apiService.register(
             Registration.coustmerNameCom,
@@ -281,7 +247,7 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 override fun onResponse(
                     call: Call<RegistationResponse>, response: Response<RegistationResponse>
                 ) {
-
+                    AppProgressBar.hideLoaderDialog()
                     Log.e("Ala", "${response.body()!!.result}")
                     Log.e("Ala", response.body()!!.message)
                     Log.e("Ala", "${response.body()!!.status}")
@@ -289,7 +255,7 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
                     if (response.body()!!.status == 1) {
                         myToast(this@SignaturaPad, response.body()!!.message)
                         subscribed()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                         val intent = Intent(applicationContext, SignIn::class.java)
                         intent.flags =
@@ -299,13 +265,19 @@ class SignaturaPad : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
                     } else {
                         myToast(this@SignaturaPad, "${response.body()!!.message}")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
                 }
 
                 override fun onFailure(call: Call<RegistationResponse>, t: Throwable) {
-                    myToast(this@SignaturaPad, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    count++
+                    if (count <= 3) {
+                        apiCallRegister()
+                    } else {
+                        myToast(this@SignaturaPad, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 

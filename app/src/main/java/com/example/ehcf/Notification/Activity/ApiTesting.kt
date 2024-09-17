@@ -27,7 +27,7 @@ class ApiTesting : AppCompatActivity() {
             val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             //.baseUrl("https://jsonplaceholder.typicode.com/")
-            .baseUrl("https://ehcf.thedemostore.in/api/customer/")
+            .baseUrl("https://ehcf.in/api/customer/")
             .build()
             .create(apiInterface::class.java)
 

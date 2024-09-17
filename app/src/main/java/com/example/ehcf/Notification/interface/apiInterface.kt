@@ -12,7 +12,7 @@ import retrofit2.http.*
 interface apiInterface {
 
     //https://jsonplaceholder.typicode.com/users
-    //https://ehcf.thedemostore.in/api/customer/register
+    //https://ehcf.in/api/customer/register
     @GET("users")
     fun getUser(): Call<List<User>>
 

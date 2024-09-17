@@ -18,6 +18,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Fragment.test.*
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
@@ -44,9 +45,11 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
     private var selectedImageUri: Uri? = null
     private lateinit var sessionManager: SessionManager
     var image_viewAddRe: ImageView? = null
-    var progressDialog: ProgressDialog? = null
     var imageView: ImageView? = null
-    var selectValue=""
+    var selectValue = ""
+    var countR2 = 0
+    var countR3 = 0
+    var countR4 = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,70 +63,16 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         binding = FragmentViewReportBinding.bind(view)
 
         sessionManager = SessionManager(requireContext())
-//        binding.btnSelectImage.setOnClickListener {
-//            startActivity(Intent(requireContext(), ImageUpload::class.java))
-//        }
 
-         imageView= view.findViewById<ImageView>(R.id.imageViewNew)
+
+        imageView = view.findViewById<ImageView>(R.id.imageViewNew)
         apiCallGetTest()
-      //  apiCallGetPrePending()
-
-//        binding.cardSubmit.setOnClickListener {
-//            opeinImageChooser()
-//        }
 
 
     }
-/*
-    private fun apiCallGetPrePending() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
 
-        ApiClient.apiService.prescribedList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelPrescribed> {
-                @SuppressLint("LogNotTimber")
-                override fun onResponse(
-                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
-                ) {
-                    if (response.body()!!.result.isEmpty()) {
-                        binding.tvNoDataFound.visibility = View.VISIBLE
-                        // myToast(requireActivity(),"No Data Found")
-                        progressDialog!!.dismiss()
-
-                    } else {
-                        binding.recyclerView.apply {
-                            binding.tvNoDataFound.visibility = View.GONE
-                            adapter = activity?.let {
-                                AdapterAppReport(
-                                    it, response.body()!!, this@AddReport
-                                )
-                            }
-                            progressDialog!!.dismiss()
-
-                        }
-                    }
-
-                }
-
-                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
-
-                }
-
-            })
-    }*/
     private fun apiCallGetTest() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.getTest(ReportMain.prescriptionId)
             .enqueue(object : Callback<ModelGetTest> {
@@ -131,14 +80,13 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                 override fun onResponse(
                     call: Call<ModelGetTest>, response: Response<ModelGetTest>
                 ) {
-                    if (response.code()==500){
-                         myToast(requireActivity(),"Server Error")
-                        progressDialog!!.dismiss()
-                    }
-                    else if (response.body()!!.result.isEmpty()) {
+                    if (response.code() == 500) {
+                        myToast(requireActivity(), "Server Error")
+                        AppProgressBar.hideLoaderDialog()
+                    } else if (response.body()!!.result.isEmpty()) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
                         // myToast(requireActivity(),"No Data Found")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     } else {
                         binding.recyclerView.apply {
@@ -148,7 +96,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                                     it, response.body()!!, this@AddReport
                                 )
                             }
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
                     }
@@ -156,8 +104,14 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                 }
 
                 override fun onFailure(call: Call<ModelGetTest>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR2++
+                    if (countR2 <= 3) {
+                        apiCallGetTest()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
@@ -183,25 +137,23 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(activity)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
 
         // binding.progressBar.progress = 0
         val body = UploadRequestBody(file, "image", this)
 
 
-        ApiClient.apiService.UploadPatientTestReport(id, MultipartBody.Part.createFormData("image", file.name, body), "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        ApiClient.apiService.UploadPatientTestReport(
+            id,
+            MultipartBody.Part.createFormData("image", file.name, body),
+            "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         ).enqueue(object : Callback<UploadResponse> {
             override fun onResponse(
                 call: Call<UploadResponse>, response: Response<UploadResponse>
             ) {
                 response.body()?.let {
-                 //   binding.layoutRoot.snackbar("Successfully Uploaded")
-                    progressDialog!!.dismiss()
+                    //   binding.layoutRoot.snackbar("Successfully Uploaded")
+                    AppProgressBar.hideLoaderDialog()
                     SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Successfully Uploaded")
                         .setConfirmText("Ok")
@@ -214,23 +166,29 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                             sDialog.cancel()
                         }
                         .show()
-                   // apiCallGetPrePending1()
+                    // apiCallGetPrePending1()
 
                     //  binding.progressBar.progress = 100
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
 
                 }
             }
 
             override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
-                binding.layoutRoot.snackbar(t.message!!)
-                // binding.progressBar.progress = 0
-                progressDialog!!.dismiss()
+                countR3++
+                if (countR3 <= 3) {
+                    uploadImage(id)
+                } else {
+                    binding.layoutRoot.snackbar(t.message!!)
+                    AppProgressBar.hideLoaderDialog()
+
+                }
 
             }
 
         })
     }
+
     private fun uploadImageCamera(id: String) {
         if (selectedImageUri == null) {
             binding.layoutRoot.snackbar("Select  Report First")
@@ -244,35 +202,35 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 
         val file: File = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .absolutePath + "/myAppImages/")
+                .absolutePath + "/myAppImages/"
+        )
         if (!file.exists()) {
             file.mkdirs()
         }
-        val file1: File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment)
+        val file1: File =
+            File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment)
 
         val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
 
         val outputStream = FileOutputStream(file1)
         inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(activity)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
         // binding.progressBar.progress = 0
         val body = UploadRequestBody(file1, "image", this)
 
 
-        ApiClient.apiService.UploadPatientTestReport(id, MultipartBody.Part.createFormData("image", file1.name, body), "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        ApiClient.apiService.UploadPatientTestReport(
+            id,
+            MultipartBody.Part.createFormData("image", file1.name, body),
+            "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         ).enqueue(object : Callback<UploadResponse> {
             override fun onResponse(
                 call: Call<UploadResponse>, response: Response<UploadResponse>
             ) {
                 response.body()?.let {
-                 //   binding.layoutRoot.snackbar("Successfully Uploaded")
-                    progressDialog!!.dismiss()
+                    //   binding.layoutRoot.snackbar("Successfully Uploaded")
+                    AppProgressBar.hideLoaderDialog()
                     SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Successfully Uploaded")
                         .setConfirmText("Ok")
@@ -286,18 +244,23 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                             sDialog.cancel()
                         }
                         .show()
-                   // apiCallGetPrePending1()
+                    // apiCallGetPrePending1()
 
                     //  binding.progressBar.progress = 100
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
 
                 }
             }
 
             override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
-                binding.layoutRoot.snackbar(t.message!!)
-                // binding.progressBar.progress = 0
-                progressDialog!!.dismiss()
+                countR4++
+                if (countR4 <= 3) {
+                    uploadImage(id)
+                } else {
+                    binding.layoutRoot.snackbar(t.message!!)
+                    AppProgressBar.hideLoaderDialog()
+
+                }
 
             }
 
@@ -312,12 +275,12 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 //            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
 //            startActivityForResult(it, REQUEST_CODE_IMAGE)
 
-            val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
-            pdfIntent.type = "application/pdf"
-            pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
-            startActivityForResult(pdfIntent, REQUEST_CODE_IMAGE)
+        val pdfIntent = Intent(Intent.ACTION_GET_CONTENT)
+        pdfIntent.type = "application/pdf"
+        pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(pdfIntent, REQUEST_CODE_IMAGE)
 
-     //   }
+        //   }
     }
 
     private fun opeinImageChooser() {
@@ -333,7 +296,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
 //            pdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
 //            startActivityForResult(pdfIntent, REQUEST_CODE_IMAGE)
 
-     }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -344,7 +307,7 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
                     selectedImageUri = data?.data
                     Log.e("data?.data", data?.data.toString())
                     binding.imageViewNew.visibility = View.VISIBLE
-                 //   imageView?.setImageURI(selectedImageUri)
+                    //   imageView?.setImageURI(selectedImageUri)
                 }
             }
         }
@@ -399,9 +362,9 @@ class AddReport : Fragment(), UploadRequestBody.UploadCallback, AdapterAppReport
     }
 
     override fun upload(id: String) {
-        if (selectedImageUri==null){
-            myToast(requireActivity(),"Select Report first")
-        }else {
+        if (selectedImageUri == null) {
+            myToast(requireActivity(), "Select Report first")
+        } else {
             if (selectValue == "1") {
                 uploadImageCamera(id)
             } else {

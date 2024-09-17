@@ -423,10 +423,6 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog,
                                 )
                             if (PrescriptionDetails.FollowUP == "1") {
                                 binding.layoutFamilyMemeber.visibility = View.GONE
-
-                            } else {
-                                binding.layoutFamilyMemeber.visibility = View.VISIBLE
-
                             }
 
                             AppProgressBar.hideLoaderDialog()
@@ -471,6 +467,7 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog,
                     if (response.body()!!.status == 0) {
                         myToast(this@MyAvailableSlot, "${response.body()!!.message}")
                         AppProgressBar.hideLoaderDialog()
+                        binding.layoutFamilyMemeber.visibility = View.GONE
                     } else if (response.code() == 500) {
                         myToast(this@MyAvailableSlot, "Server Error")
                     } else if (response.body()!!.result.isEmpty()) {
@@ -481,6 +478,8 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog,
                                 this@MyAvailableSlot
                             )
                             AppProgressBar.hideLoaderDialog()
+                            binding.layoutFamilyMemeber.visibility=View.GONE
+
                         }
                     } else {
                         countN = 0
@@ -493,7 +492,7 @@ class MyAvailableSlot : AppCompatActivity(), AdapterShuduleTimingNew.dilog,
                                 this@MyAvailableSlot
                             )
                             binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
-                            //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
+
                             countR=0
                             AppProgressBar.hideLoaderDialog()
                         }

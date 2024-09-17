@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionPending
 import com.example.ehcf.Prescription.model.ModelPreList
@@ -25,11 +26,11 @@ import retrofit2.Response
 
 class PrescriptionPendingFragment : Fragment() {
     private lateinit var binding: FragmentPrescriptionPendingBinding
-    var progressDialog: ProgressDialog? = null
-    private lateinit var sessionManager: SessionManager
+     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     var doctorName = ""
-    private var mainData = ArrayList<ResultPrePending>()
+    var countR1 = 0
+     private var mainData = ArrayList<ResultPrePending>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,96 +60,10 @@ class PrescriptionPendingFragment : Fragment() {
                 )
             } as ArrayList<ResultPrePending>)
         }
-//        binding.imgSearch.setOnClickListener {
-//            if (binding.edtSearch.text.toString().isEmpty()) {
-//                binding.edtSearch.error = "Enter Doctor Name"
-//                binding.edtSearch.requestFocus()
-//            } else {
-//                doctorName = binding.edtSearch.text.toString()
-//                apiCallSearchPrescription(doctorName)
-//            }
-//
-//        }
+
 
     }
 
-    /*
-        private fun apiCallSearchPrescription(doctorName: String) {
-            progressDialog = ProgressDialog(requireContext())
-            progressDialog!!.setMessage("Loading..")
-            progressDialog!!.setTitle("Please Wait")
-            progressDialog!!.isIndeterminate = false
-            progressDialog!!.setCancelable(true)
-            progressDialog!!.show()
-
-            ApiClient.apiService.searchPrescription(sessionManager.id.toString(), doctorName)
-                .enqueue(object : Callback<ModelPreList> {
-                    @SuppressLint("LogNotTimber")
-                    override fun onResponse(
-                        call: Call<ModelPreList>, response: Response<ModelPreList>
-                    ) {
-                        try {
-
-
-                            if (response.code() == 500) {
-                                activity?.let { myToast(it, "Server Error") }
-                                binding.shimmerPrePending.visibility = View.GONE
-                            } else if (response.body()!!.status == 0) {
-                                binding.tvNoDataFound.visibility = View.VISIBLE
-                                binding.shimmerPrePending.visibility = View.GONE
-                                binding.edtSearch.text.clear()
-                                activity?.let { myToast(it, "${response.body()!!.message}") }
-                                progressDialog!!.dismiss()
-
-                            } else if (response.body()!!.result.isEmpty()) {
-                                binding.recyclerView.adapter =
-                                    activity?.let { AdapterPrescriptionPending(it, response.body()!!) }
-                                binding.recyclerView.adapter!!.notifyDataSetChanged()
-                                binding.tvNoDataFound.visibility = View.VISIBLE
-                                binding.shimmerPrePending.visibility = View.GONE
-                                binding.edtSearch.text.clear()
-                                //activity?.let { myToast(it, "No Prescription Found") }
-                                progressDialog!!.dismiss()
-
-                            } else {
-                                binding.recyclerView.adapter =
-                                    activity?.let { AdapterPrescriptionPending(it, response.body()!!) }
-                                binding.recyclerView.adapter!!.notifyDataSetChanged()
-                                binding.tvNoDataFound.visibility = View.GONE
-                                shimmerFrameLayout?.startShimmer()
-                                binding.recyclerView.visibility = View.VISIBLE
-                                binding.shimmerPrePending.visibility = View.GONE
-                                binding.edtSearch.text.clear()
-                                progressDialog!!.dismiss()
-    //                        binding.rvManageSlot.apply {
-    //                            binding.tvNoDataFound.visibility = View.GONE
-    //                            shimmerFrameLayout?.startShimmer()
-    //                            binding.rvManageSlot.visibility = View.VISIBLE
-    //                            binding.shimmerMySlot.visibility = View.GONE
-    //                            // myToast(this@ShuduleTiming, response.body()!!.message)
-    //                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-    //                            progressDialog!!.dismiss()
-    //
-    //                        }
-                            }
-                        } catch (e: Exception) {
-                            activity?.let { myToast(it, "Something went wrong") }
-                            binding.shimmerPrePending.visibility = View.GONE
-                            progressDialog!!.dismiss()
-                            e.printStackTrace()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ModelPreList>, t: Throwable) {
-                        activity?.let { myToast(it, "Something went wrong") }
-                        binding.shimmerPrePending.visibility = View.GONE
-                        progressDialog!!.dismiss()
-
-                    }
-
-                })
-        }
-    */
 
     private fun setRecyclerViewAdapter(data: ArrayList<ResultPrePending>) {
         binding.recyclerView.apply {
@@ -162,12 +77,7 @@ class PrescriptionPendingFragment : Fragment() {
     }
 
     private fun apiCallGetPrePending1() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.pendingPreList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelPreList> {
@@ -190,34 +100,37 @@ class PrescriptionPendingFragment : Fragment() {
                                 binding.tvNotFound.visibility = View.VISIBLE
 
                             }
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.result.isEmpty()) {
                             Log.d("okhghghg", "" + response.body());
                             binding.shimmerPrePending.visibility = View.GONE
                             binding.tvNotFound.visibility = View.VISIBLE
                             activity?.let { myToast(it, "No Prescription Found") }
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
                             setRecyclerViewAdapter(mainData)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelPreList>, t: Throwable) {
-                    // myToast(requireActivity(), "Something went wrong")
-                    Toast.makeText(activity, "${t.message}", Toast.LENGTH_SHORT).show()
-                    // myToast(requireActivity(), "${t.message}")
-                    progressDialog!!.dismiss()
+                    countR1++
+                    if (countR1 <= 3) {
+                        apiCallGetPrePending1()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

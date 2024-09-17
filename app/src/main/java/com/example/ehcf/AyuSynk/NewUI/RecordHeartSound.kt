@@ -38,6 +38,7 @@ import com.ayudevice.ayusynksdk.utils.logs.AyuLogsListener
 import com.example.ehcf.AyuSynk.NewUI.RecordHeartSound.FragmentValue.Companion.recordHeartSound
 import com.example.ehcf.AyuSynk.utils.GenUtil
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.currentDate
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -59,11 +60,10 @@ class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelect
     private lateinit var binding: FragmentRecordHeartSoundBinding
     private var lastRecordedData: ShortArray? = null
     private var recordID = -1
-    var progressDialog: ProgressDialog? = null
     private var waitTimer: CountDownTimer? = null
     private var isRecordingPaused = false
     val usb = 1
-    lateinit var sessionManager:SessionManager
+    lateinit var sessionManager: SessionManager
     private var isPlayingRecordedSound = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,12 +76,12 @@ class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelect
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRecordHeartSoundBinding.bind(view)
-        sessionManager= SessionManager(requireContext())
+        sessionManager = SessionManager(requireContext())
 
 
         if (AdapterFamilyListView.memberName != "") {
             binding!!.tvPatientName.text = "Patient Name- ${AdapterFamilyListView.memberName}"
-            AdapterFamilyListView.memberName=""
+            AdapterFamilyListView.memberName = ""
         } else {
             binding!!.tvPatientName.text = "Patient Name- ${sessionManager.customerName}"
         }
@@ -241,25 +241,27 @@ class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelect
     }
 
     private fun apiCallAyuSynkUploaded(link: StringBuilder) {
-        ApiClient.apiService.uploadAyusynkReport(sessionManager.id.toString(),"AyuSynk Report",AdapterFamilyListView.memberID,
-            currentDate,link.toString())
+        ApiClient.apiService.uploadAyusynkReport(
+            sessionManager.id.toString(), "AyuSynk Report", AdapterFamilyListView.memberID,
+            currentDate, link.toString()
+        )
             .enqueue(object : Callback<ModelUploadReport> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
                     call: Call<ModelUploadReport>, response: Response<ModelUploadReport>
                 ) {
                     try {
-                        if(response.code() == 500) {
+                        if (response.code() == 500) {
                             myToast(requireActivity(), "Server Error")
 
                         } else if (response.body()!!.message.contains("Success")) {
-                            myToast(requireActivity(),"Report Uploaded Sucessfully")
+                            myToast(requireActivity(), "Report Uploaded Sucessfully")
 
                         } else {
                             myToast(requireActivity(), response.message())
                         }
 
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
@@ -528,18 +530,14 @@ class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelect
             }
 
             R.id.btn_report -> {
-                progressDialog = ProgressDialog(requireContext())
-                progressDialog!!.setMessage("Generating Report")
-                progressDialog!!.setTitle("Please Wait..")
-                progressDialog!!.isIndeterminate = false
-                progressDialog!!.setCancelable(true)
-                progressDialog!!.show()
+                AppProgressBar.showLoaderDialog(requireContext())
 
                 binding!!.btnReport.isEnabled = false
                 //  binding!!.progressBarReport.visibility = View.VISIBLE
                 binding!!.btnReportShare.isEnabled = false
                 val soundData = SoundData(fileFromLastRecordedAudio, LocationType.unknown)
-                AyuSynk.getBleInstance().generateDiagnosisReport(SoundFile(soundData, SoundType.HEART))
+                AyuSynk.getBleInstance()
+                    .generateDiagnosisReport(SoundFile(soundData, SoundType.HEART))
             }
 
             R.id.btn_shareUrl -> shareMessage(AyuSynk.getBleInstance().liveStreamUrl)
@@ -626,7 +624,7 @@ class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelect
         binding!!.btnReportShare.tag = soundFile
         binding!!.btnReportShare.backgroundTintList =
             ContextCompat.getColorStateList(requireContext(), R.color.main_color);
-        progressDialog!!.dismiss()
+        AppProgressBar.hideLoaderDialog()
 
         Toast.makeText(context, "Reports generated", Toast.LENGTH_SHORT).show()
         val link = StringBuilder()

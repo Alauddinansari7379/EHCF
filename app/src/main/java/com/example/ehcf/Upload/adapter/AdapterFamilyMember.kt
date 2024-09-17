@@ -20,12 +20,14 @@ import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.Rating
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
 class AdapterFamilyMember(val context: Context, private val list: ModelFamily) :
     RecyclerView.Adapter<AdapterFamilyMember.MyViewHolder>() {
    // private val filteredData = ArrayList(list)
+        lateinit var sessionManager: SessionManager
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -36,7 +38,7 @@ class AdapterFamilyMember(val context: Context, private val list: ModelFamily) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-
+sessionManager= SessionManager(context)
         try {
             holder.appointmentDate.text = list.result[position].date
             holder.doctorName.text = list.result[position].doctor_name.toString()
@@ -44,13 +46,13 @@ class AdapterFamilyMember(val context: Context, private val list: ModelFamily) :
 
             if(ConsultedFragment.adapter=="2"){
                 if (list.result[position].profile_picture!=null){
-                    Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_picture}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+                    Picasso.get().load("${sessionManager.imageurl}${list.result[position].profile_picture}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
 
                 }
             }
             if(ConsultedFragment.adapter=="1"){
                             if (list.result[position].profile_image!=null){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+                Picasso.get().load("${sessionManager.imageurl}${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
 
             }
             }

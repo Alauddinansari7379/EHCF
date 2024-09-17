@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.R
@@ -20,8 +21,9 @@ import retrofit2.Response
 class ResetPassword : AppCompatActivity() {
     private lateinit var binding:ActivityResetPasswordBinding
     private lateinit var sessionManager: SessionManager
-    var progressDialog: ProgressDialog? = null
-    var id = ""
+     var id = ""
+     var count = 0
+    val context=this@ResetPassword
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityResetPasswordBinding.inflate(layoutInflater)
@@ -59,12 +61,7 @@ class ResetPassword : AppCompatActivity() {
     }
 
     private fun apiCallChangePass(confirmPassword: String) {
-        progressDialog = ProgressDialog(this@ResetPassword)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.resetPassword(id, confirmPassword)
             .enqueue(object :
                 Callback<ResetPassResponse> {
@@ -73,20 +70,24 @@ class ResetPassword : AppCompatActivity() {
                     response: Response<ResetPassResponse>
                 ) {
                     if (response.body()!!.status == 1) {
-                        progressDialog!!.dismiss()
+                       AppProgressBar.hideLoaderDialog()
                         alretDilogChanged()
                         //myToast(requireActivity(), response.body()!!.message)
                     } else {
                         myToast(this@ResetPassword, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
                 }
 
                 override fun onFailure(call: Call<ResetPassResponse>, t: Throwable) {
-                    progressDialog!!.dismiss()
-                    myToast(this@ResetPassword, "Something went wrong")
+                    if (count <= 3) {
+                        apiCallChangePass(confirmPassword)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

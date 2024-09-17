@@ -96,7 +96,7 @@ class Dashboard : AppCompatActivity() {
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             //.baseUrl("https://jsonplaceholder.typicode.com/")
-            .baseUrl("https://ehcf.thedemostore.in/api/doctor/")
+            .baseUrl("https://ehcf.in/api/doctor/")
             .build()
             .create(apiInterface::class.java)
         val retrofitData = retrofitBuilder.specialistCategory()

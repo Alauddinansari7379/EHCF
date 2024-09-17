@@ -40,11 +40,11 @@ class AdapterMyDoctors(
         try {
             if (list[position].profile_image.isNotEmpty()) {
                 Picasso.get()
-                    .load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}")
+                    .load("${sessionManager.imageurl}${list[position].profile_image}")
                     .placeholder(R.drawable.profile).error(R.drawable.profile)
                     .into(holder.imgProfile);
 
-                //  Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
+                //  Picasso.get().load("https://ehcf.in/uploads/${list.result[position].profile_image}").into(holder.imgProfile)
             }
 
             holder.hospitalName.text = list[position].doctor_name

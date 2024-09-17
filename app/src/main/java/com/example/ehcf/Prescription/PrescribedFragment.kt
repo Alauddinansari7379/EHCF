@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescribed
 import com.example.ehcf.Prescription.model.ModelPrescribed
@@ -29,11 +30,13 @@ import retrofit2.Response
 
 class PrescribedFragment : Fragment() {
     private lateinit var binding: FragmentPrescribedBinding
-    var progressDialog: ProgressDialog? = null
-    private lateinit var sessionManager: SessionManager
+     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     var doctorName = ""
     var specilistName = ""
+    var countR1 = 0
+    var countR2 = 0
+    var countR3 = 0
     private var specilList = ModelSpecilList();
     private var mainData = ArrayList<ResultPrescribed>()
 
@@ -53,16 +56,9 @@ class PrescribedFragment : Fragment() {
         shimmerFrameLayout!!.startShimmer();
         sessionManager = SessionManager(requireContext())
         mainData = ArrayList<ResultPrescribed>()
-//        binding.btnAddReport.setOnClickListener {
-//            startActivity(Intent(requireContext(),ReportMain::class.java))
-//            sessionManager= SessionManager(requireContext())
-//
-//        }
+
         apiCallGetPrePending()
         apiCallSpecialistSpinner()
-//        Handler().postDelayed({
-//
-//                              }, 1000)
 
         binding.imgRefresh.setOnClickListener {
             binding.edtSearch.text.clear()
@@ -117,29 +113,10 @@ class PrescribedFragment : Fragment() {
 
         }
 
-      /*  binding.imgSearch.setOnClickListener {
-            binding.layoutFilter.visibility = View.GONE
-
-            if (binding.edtSearch.text.toString().isEmpty()) {
-                binding.edtSearch.error = "Enter Doctor Name"
-                binding.edtSearch.requestFocus()
-            } else {
-                doctorName = binding.edtSearch.text.toString()
-                apiCallSearchPrescription(doctorName)
-            }
-
-        }*/
-
     }
 
     private fun apiCallSpecialistSpinner() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-
-        progressDialog!!.show()
+       AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.specialistCategoryTest()
             .enqueue(object : Callback<ModelSpecilList> {
@@ -165,7 +142,7 @@ class PrescribedFragment : Fragment() {
                             // adapter!!.insert("New Value",0);
 
                             binding.spinnerSpecialist.adapter = adapter
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                             // binding.spinnerSpecialist.setSelection(sessionManager.specialist.toString().toInt()-1)
 
@@ -191,104 +168,28 @@ class PrescribedFragment : Fragment() {
                         e.printStackTrace()
                         activity?.let { myToast(it, "Something went wrong") }
 
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
                 }
 
                 override fun onFailure(call: Call<ModelSpecilList>, t: Throwable) {
-                    activity?.let { myToast(it, "Something went wrong") }
-                    progressDialog!!.dismiss()
+                    countR1++
+                    if (countR1 <= 3) {
+                        apiCallSpecialistSpinner()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
-                }
-
-            })
-    }
-
-/*
-    private fun apiCallSearchPrescription(doctorName: String) {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
-
-        ApiClient.apiService.searchPrescribed(sessionManager.id.toString(), doctorName)
-            .enqueue(object : Callback<ModelPrescribed> {
-                @SuppressLint("LogNotTimber")
-                override fun onResponse(
-                    call: Call<ModelPrescribed>, response: Response<ModelPrescribed>
-                ) {
-                    try {
-                        if (response.code() == 500) {
-                            myToast(requireActivity(), "Server Error")
-                            progressDialog!!.dismiss()
-                            binding.shimmerPrescribed.visibility = View.GONE
-                        } else if (response.body()!!.status == 0) {
-                            binding.tvNotFound.visibility = View.VISIBLE
-                            binding.shimmerPrescribed.visibility = View.GONE
-                            binding.edtSearch.text.clear()
-                            myToast(requireActivity(), "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
-
-                        } else if (response.body()!!.result.isEmpty()) {
-                            binding.recyclerView.adapter =
-                                AdapterPrescribed(requireContext(), response.body()!!)
-                            binding.recyclerView.adapter!!.notifyDataSetChanged()
-                            binding.tvNotFound.visibility = View.VISIBLE
-                            binding.shimmerPrescribed.visibility = View.GONE
-                            binding.edtSearch.text.clear()
-                            myToast(requireActivity(), "No Prescription Found")
-                            progressDialog!!.dismiss()
-
-                        } else {
-                            binding.recyclerView.adapter =
-                                AdapterPrescribed(requireContext(), response.body()!!)
-                            binding.recyclerView.adapter!!.notifyDataSetChanged()
-                            binding.tvNotFound.visibility = View.GONE
-                            shimmerFrameLayout?.startShimmer()
-                            binding.recyclerView.visibility = View.VISIBLE
-                            binding.shimmerPrescribed.visibility = View.GONE
-                            binding.edtSearch.text.clear()
-                            progressDialog!!.dismiss()
-//                        binding.rvManageSlot.apply {
-//                            binding.tvNoDataFound.visibility = View.GONE
-//                            shimmerFrameLayout?.startShimmer()
-//                            binding.rvManageSlot.visibility = View.VISIBLE
-//                            binding.shimmerMySlot.visibility = View.GONE
-//                            // myToast(this@ShuduleTiming, response.body()!!.message)
-//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-//                            progressDialog!!.dismiss()
-//
-//                        }
-                        }
-                    } catch (e: Exception) {
-                        myToast(requireActivity(), "Something went wrong")
-                        binding.shimmerPrescribed.visibility = View.GONE
-                        progressDialog!!.dismiss()
-                        e.printStackTrace()
                     }
                 }
 
-                override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    binding.shimmerPrescribed.visibility = View.GONE
-                    progressDialog!!.dismiss()
-
-                }
-
             })
     }
-*/
+
 
     private fun apiCallFilterPrescription(customer_name: String) {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+       AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.searchFilterDoctor(sessionManager.id.toString(),customer_name, specilistName)
             .enqueue(object : Callback<ModelPrescribed> {
@@ -305,7 +206,7 @@ class PrescribedFragment : Fragment() {
                         if (response.code() == 500) {
                             binding.shimmerPrescribed.visibility = View.GONE
                             activity?.let { myToast(it, "Server Error") }
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
                         else  if (response.body()!!.result.isEmpty()) {
@@ -313,7 +214,7 @@ class PrescribedFragment : Fragment() {
                             // myToast(requireActivity(),"No Data Found")
                             binding.shimmerPrescribed.visibility = View.GONE
 
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
                             mainData = response.body()!!.result!!
@@ -322,16 +223,22 @@ class PrescribedFragment : Fragment() {
 
                     } catch (e: Exception) {
                         activity?.let { myToast(it, "Something went wrong") }
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                         binding.shimmerPrescribed.visibility = View.GONE
                         e.printStackTrace()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    binding.shimmerPrescribed.visibility = View.GONE
-                    progressDialog!!.dismiss()
+                     binding.shimmerPrescribed.visibility = View.GONE
+                    countR2++
+                    if (countR2 <= 3) {
+                        apiCallFilterPrescription(customer_name)
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
@@ -339,12 +246,6 @@ class PrescribedFragment : Fragment() {
     }
 
     private fun apiCallGetPrePending() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        //  progressDialog!!.show()
 
         ApiClient.apiService.prescribedList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelPrescribed> {
@@ -361,7 +262,6 @@ class PrescribedFragment : Fragment() {
                         if (response.code() == 500) {
                             binding.shimmerPrescribed.visibility = View.GONE
                             activity?.let { myToast(it, "Server Error") }
-                            progressDialog!!.dismiss()
 
                         }
                        else  if (response.body()!!.result.isEmpty()) {
@@ -369,27 +269,28 @@ class PrescribedFragment : Fragment() {
                             // myToast(requireActivity(),"No Data Found")
                             binding.shimmerPrescribed.visibility = View.GONE
                             binding.tvNotFound.visibility = View.VISIBLE
-                            progressDialog!!.dismiss()
 
                         } else {
                             setRecyclerViewAdapter(mainData)
-                            progressDialog!!.dismiss()
-                        }
+                         }
 
                     } catch (e: Exception) {
                         activity?.let { myToast(it, "Something went wrong") }
-                        progressDialog!!.dismiss()
-                        binding.shimmerPrescribed.visibility = View.GONE
+                         binding.shimmerPrescribed.visibility = View.GONE
                         e.printStackTrace()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelPrescribed>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
                     binding.shimmerPrescribed.visibility = View.GONE
+                    countR3++
+                    if (countR3 <= 3) {
+                        apiCallGetPrePending()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
-
+                    }
                 }
 
             })
@@ -402,9 +303,6 @@ class PrescribedFragment : Fragment() {
             binding.shimmerPrescribed.visibility = View.GONE
             binding.tvNotFound.visibility = View.GONE
             adapter = AdapterPrescribed(requireContext(), data)
-
-            progressDialog!!.dismiss()
-
 
         }
     }

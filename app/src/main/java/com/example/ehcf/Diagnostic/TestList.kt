@@ -33,6 +33,9 @@ class TestList : AppCompatActivity(), AdapterTestList.AddToCart {
     val binding by lazy {
         ActivityCallForTestBinding.inflate(layoutInflater)
     }
+    var countN3=0
+    var countN2=0
+    var countN=0
     private lateinit var mainData: ArrayList<Result>
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     lateinit var sessionManager: SessionManager
@@ -110,10 +113,15 @@ class TestList : AppCompatActivity(), AdapterTestList.AddToCart {
             }
 
             override fun onFailure(call: Call<ModelTestList>, t: Throwable) {
-                myToast(context, t.message.toString())
-                binding.shimmerTest.visibility = View.GONE
-                AppProgressBar.hideLoaderDialog()
-            }
+                 binding.shimmerTest.visibility = View.GONE
+                countN++
+                if (countN <= 3) {
+                    apiCallTestList()
+                } else {
+                    myToast(context, t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
+
+                }            }
 
         })
     }
@@ -163,8 +171,14 @@ class TestList : AppCompatActivity(), AdapterTestList.AddToCart {
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN3++
+                    if (countN3 <= 3) {
+                        addToCart(id)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
@@ -211,10 +225,14 @@ class TestList : AppCompatActivity(), AdapterTestList.AddToCart {
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN2++
+                    if (countN2 <= 3) {
+                        apiCallCartList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

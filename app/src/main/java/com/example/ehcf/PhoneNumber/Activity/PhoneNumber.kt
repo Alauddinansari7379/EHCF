@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.OTPVerification
 import com.example.ehcf.PhoneNumber.ModelReponse.ForgotPasswordResponse
@@ -22,22 +23,15 @@ import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 
 class PhoneNumber : AppCompatActivity() {
-    private val context: Context = this@PhoneNumber
-    var progressDialog: ProgressDialog? =null
-    var phoneNumber=""
+    private val context = this@PhoneNumber
+    var phoneNumber = ""
+    var count = 0
 
     private lateinit var binding: ActivityPhoneNumberBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhoneNumberBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        progressDialog = ProgressDialog(this@PhoneNumber)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
 
         binding.tvSignIn.setOnClickListener {
             startActivity(Intent(context, SignIn::class.java))
@@ -58,15 +52,10 @@ class PhoneNumber : AppCompatActivity() {
     }
 
     private fun apiCallForgotPassword() {
-      val   phoneNumberNew = binding.edtPhoneNumber.text.toString()
-        val code="91"
-        phoneNumber =code+phoneNumberNew
-        progressDialog = ProgressDialog(this@PhoneNumber)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        val phoneNumberNew = binding.edtPhoneNumber.text.toString()
+        val code = "91"
+        phoneNumber = code + phoneNumberNew
+        AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.forgotPassword(phoneNumber).enqueue(object :
             Callback<ModelForgotPass> {
@@ -77,7 +66,7 @@ class PhoneNumber : AppCompatActivity() {
             ) {
                 if (response.body()!!.status == 1) {
                     myToast(this@PhoneNumber, response.body()!!.message)
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
                     val otp = response.body()!!.result.otp
                     val id = response.body()!!.result.id
 
@@ -89,16 +78,22 @@ class PhoneNumber : AppCompatActivity() {
                     Log.e("id", response.body()!!.result.id.toString())
                     context.startActivity(intent)
                 } else {
-                    myToast(this@PhoneNumber, "Please enter valid phone number")
-                    progressDialog!!.dismiss()
+                    myToast(context, "Please enter valid phone number")
+                    AppProgressBar.hideLoaderDialog()
                 }
 
 
             }
+
             override fun onFailure(call: Call<ModelForgotPass>, t: Throwable) {
-                myToast(this@PhoneNumber,t.message.toString())
-                // myToast(this@MobileNumber, "Something went wrong")
-                progressDialog!!.dismiss()
+                count++
+                if (count <= 3) {
+                    apiCallForgotPassword()
+                } else {
+                    myToast(context, t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
+
+                }
 
             }
 
@@ -111,8 +106,7 @@ class PhoneNumber : AppCompatActivity() {
             if (connected) {
 
                 // myToast(requireActivity(),"Connected")
-            }
-            else {
+            } else {
                 val changeReceiver = NetworkChangeReceiver(context)
                 changeReceiver.build()
                 //  myToast(requireActivity(),"Check Internet")

@@ -39,6 +39,11 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
     lateinit var sessionManager: SessionManager
     var totalPriceValue = ""
     var addressId = ""
+    var countN2 = 0
+    var countN3 = 0
+    var countN1 = 0
+    var countN = 0
+    var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -205,10 +210,14 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    count++
+                    if (count <= 3) {
+                        apiCallCartList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -264,10 +273,14 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallAddressList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -320,10 +333,19 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
                 }
 
                 override fun onFailure(call: Call<ModelAddAddress>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN1++
+                    if (countN1 <= 3) {
+                        apiCallAddAddress(
+                            address,
+                            landmark,
+                            city,
+                            pinCode
+                        )
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -364,8 +386,14 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN1++
+                    if (countN1 <= 3) {
+                        addToCart(id)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
@@ -407,8 +435,14 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN3++
+                    if (countN3 <= 3) {
+                        removeToCart(id)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
@@ -448,8 +482,14 @@ class CartMedicine : AppCompatActivity(), AdapterCart.Cart, AdapterAddress.Addre
             }
 
             override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                myToast(context, "${t.message}")
-                AppProgressBar.hideLoaderDialog()
+                countN2++
+                if (countN2 <= 3) {
+                    decreaseToCart(id)
+                } else {
+                    myToast(context, t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
+
+                }
             }
 
         })

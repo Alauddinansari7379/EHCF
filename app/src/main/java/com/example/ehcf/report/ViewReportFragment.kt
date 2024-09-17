@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
@@ -28,9 +29,8 @@ class ViewReportFragment : Fragment() {
     private lateinit var binding: FragmentViewReport2Binding
     private lateinit var sessionManager: SessionManager
     var image_viewAddRe: ImageView? = null
-    var progressDialog: ProgressDialog? = null
-    var imageView: ImageView? =null
-
+    var imageView: ImageView? = null
+    var countR2 = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,17 +41,13 @@ class ViewReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentViewReport2Binding.bind(view)
-        sessionManager=SessionManager(requireContext())
-       // apiCallGetPrePending()
+        sessionManager = SessionManager(requireContext())
+        // apiCallGetPrePending()
         apiCallGetTest()
     }
+
     private fun apiCallGetTest() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.getTest(ReportMain.prescriptionId)
             .enqueue(object : Callback<ModelGetTest> {
@@ -61,8 +57,7 @@ class ViewReportFragment : Fragment() {
                 ) {
                     if (response.body()!!.result.isEmpty()) {
                         binding.tvNoDataFound.visibility = View.VISIBLE
-                        // myToast(requireActivity(),"No Data Found")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     } else {
                         binding.recyclerView.apply {
@@ -72,7 +67,7 @@ class ViewReportFragment : Fragment() {
                                     it, response.body()!!
                                 )
                             }
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
                     }
@@ -80,14 +75,18 @@ class ViewReportFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ModelGetTest>, t: Throwable) {
-                    myToast(requireActivity(), "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR2++
+                    if (countR2 <= 3) {
+                        apiCallGetTest()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
-
 
 
 }

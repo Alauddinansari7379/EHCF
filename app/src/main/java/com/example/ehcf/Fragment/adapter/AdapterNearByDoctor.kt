@@ -17,12 +17,13 @@ import com.example.ehcf.Fragment.Model.ModelNearByDoctor
 import com.example.ehcf.Fragment.Model.ResultX
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
 class AdapterNearByDoctor(val context: Context, private val list: ArrayList<ResultX>) :
     RecyclerView.Adapter<AdapterNearByDoctor.MyViewHolder>() {
-
+lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -34,8 +35,9 @@ class AdapterNearByDoctor(val context: Context, private val list: ArrayList<Resu
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.id.text= "${position+1}"
         try {
+            sessionManager= SessionManager(context)
             if (list[position].profile_image!=null){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
+                Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
             }
             holder.hospitalName.text = list[position].doctor_name
             //   holder.specialities.text = list.result.doctor_list[position].specialist

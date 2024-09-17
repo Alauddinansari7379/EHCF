@@ -1,6 +1,6 @@
 package com.example.ehcf.FamailyMember.activity
 
- import android.annotation.SuppressLint
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -14,8 +14,8 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
- import android.os.Environment
- import android.provider.MediaStore
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
@@ -28,11 +28,11 @@ import com.example.ehcf.FamailyMember.Model.ModelFamilyMember
 import com.example.ehcf.FamailyMember.Model.ModelFamilyNew
 import com.example.ehcf.FamailyMember.activity.AddNewFamily.Data.Companion.refreshValue
 import com.example.ehcf.Fragment.test.UploadRequestBody
- import com.example.ehcf.Helper.AppProgressBar
- import com.example.ehcf.Helper.isOnline
+import com.example.ehcf.Helper.AppProgressBar
+import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
- import com.example.ehcf.R
- import com.example.ehcf.Upload.activity.UploadReportNew
+import com.example.ehcf.R
+import com.example.ehcf.Upload.activity.UploadReportNew
 import com.example.ehcf.databinding.ActivityAddNewFamilyBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
@@ -53,9 +53,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
-    private val context: Context = this@AddNewFamily
+    private val context = this@AddNewFamily
     var mydilaog: Dialog? = null
-    var progressDialog: ProgressDialog? = null
     private var relationListNew = ModelFamilyNew()
     var firstName = ""
     private lateinit var sessionManager: SessionManager
@@ -69,6 +68,10 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
     var id = ""
     var edit = ""
     var fileChosser = ""
+    var countR3 = 0
+    var countR4 = 0
+    var countR5 = 0
+    var countR6 = 0
     var dialog: Dialog? = null
     private lateinit var binding: ActivityAddNewFamilyBinding
 
@@ -134,7 +137,7 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
         }
 
         binding.userProfile.setOnClickListener {
-          //  openImageChooser()
+            //  openImageChooser()
             popupUpload()
         }
 
@@ -155,7 +158,7 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 binding.tvDate.requestFocus()
                 return@setOnClickListener
             }
-            if (gender=="null") {
+            if (gender == "null") {
                 myToast(this, "Select Gender")
                 return@setOnClickListener
             }
@@ -176,9 +179,9 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
                 if (selectedImageUri == null) {
                     apiCallAddMemberWithOutImg()
                 } else {
-                    if (fileChosser=="1"){
+                    if (fileChosser == "1") {
                         apiCallAddMemberCamera()
-                    }else{
+                    } else {
                         apiCallAddMember()
                     }
                 }
@@ -245,7 +248,7 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
         dialog = Dialog(this@AddNewFamily)
         val layoutSnapshot = view!!.findViewById<LinearLayout>(R.id.layoutSnapshot)
         val layoutGallery = view!!.findViewById<LinearLayout>(R.id.layoutGallery)
-        val layoutPDF= view!!.findViewById<LinearLayout>(R.id.layoutPDF)
+        val layoutPDF = view!!.findViewById<LinearLayout>(R.id.layoutPDF)
         val imgClose = view!!.findViewById<ImageView>(R.id.imgClose)
 
         //      val minute = view!!.findViewById<TextView>(R.id.imgClose)
@@ -290,12 +293,12 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
     }
 
     private fun openImageChooser() {
-         Intent(Intent.ACTION_PICK).also {
+        Intent(Intent.ACTION_PICK).also {
             it.type = "image/*"
             (MediaStore.ACTION_IMAGE_CAPTURE)
             val mimeTypes = arrayOf("image/jpeg", "image/png")
             it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-            startActivityForResult(it,REQUEST_CODE_IMAGE)
+            startActivityForResult(it, REQUEST_CODE_IMAGE)
 
         }
     }
@@ -309,7 +312,7 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
                     selectedImageUri = data?.data
                     Log.e("data?.data", data?.data.toString())
                     binding.userProfile.setImageURI(selectedImageUri)
-                 }
+                }
             }
         }
     }
@@ -344,14 +347,9 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
         }.show()
 
     }
-    private fun apiCallGetRelation() {
-        progressDialog = ProgressDialog(this@AddNewFamily)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
 
-        //  progressDialog!!.show()
+    private fun apiCallGetRelation() {
+
 
         ApiClient.apiService.getRelation()
             .enqueue(object : Callback<ModelFamilyNew> {
@@ -377,7 +375,6 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
                             Log.e("relaytion", relationId)
 
 
-                            progressDialog!!.dismiss()
 
 
                             binding.spinnerFamily.onItemSelectedListener =
@@ -397,16 +394,21 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
                                 }
 
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@AddNewFamily, "Something went wrong")
-                        progressDialog!!.dismiss()
                     }
 
                 }
-                override fun onFailure(call: Call<ModelFamilyNew>, t: Throwable) {
-                    myToast(this@AddNewFamily, "Something went wrong")
-                    progressDialog!!.dismiss()
 
+                override fun onFailure(call: Call<ModelFamilyNew>, t: Throwable) {
+                    countR3++
+                    if (countR3 <= 3) {
+                        apiCallGetRelation()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
@@ -428,22 +430,16 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(this@AddNewFamily)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-
-        progressDialog!!.isIndeterminate = false
-
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         //  binding.progressBar.progress = 0
         val body = UploadRequestBody(file, "profile_picture", this)
 
         ApiClient.apiService.addFamily(
             sessionManager.id.toString(), firstName, lastName,
-            dob, gender, relationId, email,description,
-            MultipartBody.Part.createFormData("profile_picture", file.name, body))
+            dob, gender, relationId, email, description,
+            MultipartBody.Part.createFormData("profile_picture", file.name, body)
+        )
             .enqueue(object : Callback<ModelFamilyMember> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
@@ -453,46 +449,46 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
                         if (response.body()!!.status == 1) {
                             myToast(this@AddNewFamily, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                             refresh()
 
                         } else {
                             myToast(this@AddNewFamily, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
-                    }catch (e:java.lang.Exception){
+                    } catch (e: java.lang.Exception) {
                         myToast(this@AddNewFamily, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelFamilyMember>, t: Throwable) {
-                    myToast(this@AddNewFamily, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR5++
+                    if (countR5 <= 3) {
+                        apiCallAddMember()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
+
     private fun apiCallAddMemberWithOutImg() {
 
-        progressDialog = ProgressDialog(this@AddNewFamily)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-
-        progressDialog!!.isIndeterminate = false
-
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         //  binding.progressBar.progress = 0
 
         ApiClient.apiService.addFamilyWithOutImg(
             sessionManager.id.toString(), firstName, lastName,
-            dob, gender, relationId, email,description,)
-             .enqueue(object : Callback<ModelFamilyMember> {
+            dob, gender, relationId, email, description,
+        )
+            .enqueue(object : Callback<ModelFamilyMember> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
                     call: Call<ModelFamilyMember>, response: Response<ModelFamilyMember>
@@ -501,25 +497,30 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
                         if (response.body()!!.status == 1) {
                             myToast(this@AddNewFamily, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                             refresh()
 
                         } else {
                             myToast(this@AddNewFamily, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
-                    }catch (e:java.lang.Exception){
+                    } catch (e: java.lang.Exception) {
                         myToast(this@AddNewFamily, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelFamilyMember>, t: Throwable) {
-                    myToast(this@AddNewFamily, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR3++
+                    if (countR3 <= 3) {
+                        apiCallGetRelation()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -555,7 +556,7 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
         ApiClient.apiService.addFamily(
             sessionManager.id.toString(), firstName, lastName,
-            dob, gender, relationId, email,description,
+            dob, gender, relationId, email, description,
             MultipartBody.Part.createFormData("profile_picture", file.name, body)
         ).enqueue(object :
             Callback<ModelFamilyMember> {
@@ -588,9 +589,14 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
 
             override fun onFailure(call: Call<ModelFamilyMember>, t: Throwable) {
-
-                    myToast(this@AddNewFamily, t.message.toString())
+                countR4++
+                if (countR4 <= 3) {
+                    apiCallAddMemberCamera()
+                } else {
+                    myToast(context, t.message.toString())
                     AppProgressBar.hideLoaderDialog()
+
+                }
             }
 
         })
@@ -599,14 +605,18 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
 
     private fun apiCallEditFamily() {
-        progressDialog = ProgressDialog(this@AddNewFamily)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
-        ApiClient.apiService.editFamily(id, firstName, lastName, dob, gender, relationId, email,description)
+        ApiClient.apiService.editFamily(
+            id,
+            firstName,
+            lastName,
+            dob,
+            gender,
+            relationId,
+            email,
+            description
+        )
             .enqueue(object : Callback<ModelFamilyMember> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
@@ -616,27 +626,32 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
 
                         if (response.body()!!.status == 1) {
                             myToast(this@AddNewFamily, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                             refreshValue = "1"
                             onBackPressed()
                             //refresh()
 
                         } else {
                             myToast(this@AddNewFamily, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@AddNewFamily, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelFamilyMember>, t: Throwable) {
-                    myToast(this@AddNewFamily, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR6++
+                    if (countR6 <= 3) {
+                        apiCallEditFamily()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -648,13 +663,15 @@ class AddNewFamily : AppCompatActivity(), UploadRequestBody.UploadCallback {
         startActivity(intent)
         overridePendingTransition(0, 0)
     }
+
     class Data() {
 
         // fields which are common across class objects
         companion object {
             var refreshValue = ""
-         }
+        }
     }
+
     override fun onStart() {
         super.onStart()
         if (isOnline(this)) {

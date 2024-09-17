@@ -19,6 +19,7 @@ import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.FamailyMember.activity.AddNewFamily
 import com.example.ehcf.R
 import com.example.ehcf.Upload.activity.FamilyMemberHistory
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,7 +31,7 @@ class AdapterFamilyList(
     val showPopUp: EditFamilyMember
 ) :
     RecyclerView.Adapter<AdapterFamilyList.MyViewHolder>() {
-
+lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -42,9 +43,10 @@ class AdapterFamilyList(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
+        sessionManager= SessionManager(context)
         if (list.result[position].profile_picture!=null) {
             Picasso.get()
-                .load("https://ehcf.thedemostore.in/uploads/${list.result[position].profile_picture}")
+                .load("${sessionManager.imageurl}${list.result[position].profile_picture}")
                 .placeholder(R.drawable.profile).error(R.drawable.profile)
                 .into(holder.imgProfileFamily);
         }

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.Fragment.test.UploadRequestBody
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.databinding.ActivityUploadReportNewBinding
@@ -55,16 +56,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,AdapterFamilyListView.CheckBox {
+class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,
+    AdapterFamilyListView.CheckBox {
     private lateinit var binding: ActivityUploadReportNewBinding
-    private val context: Context = this@UploadReportNew
+    private val context = this@UploadReportNew
     private var selectedImageUri: Uri? = null
-    var progressDialog: ProgressDialog? = null
     var mydilaog: Dialog? = null
     private var fileChosser = ""
     var date = ""
     var fis1: FileInputStream? = null
     var len1 = 0
+    var countR4 = 0
+    var countR5 = 0
+    var countR6 = 0
     var pImgFile1: File? = null
     private lateinit var sessionManager: SessionManager
 
@@ -82,12 +86,6 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
         }
         apiCallFamilyListNew()
 
-//        binding.layoutCamera.setOnClickListener {
-//          //  openCameraChooser()
-//            ImagePicker.with(this)
-//                .cameraOnly()	//User can only capture image using Camera
-//                .start()
-//        }
 
 
         binding.layoutCamera.setOnClickListener {
@@ -205,42 +203,6 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
             selectedImageUri = data?.data
 
 
-            //  pImgFile1 = File(selectedImageUri!!.path)
-
-//            val file: File = File(
-//                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-//                    .getAbsolutePath() + "/myAppImages/"
-//            )
-//            if (!file.exists()) {
-//                file.mkdirs()
-//            }
-//            val file1: File = File(
-//                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + "/myAppImages/" + selectedImageUri!!.lastPathSegment
-//            )
-//
-//           // val fos = FileOutputStream(file1)
-//
-//                val parcelFileDescriptor = contentResolver.openFileDescriptor(selectedImageUri!!, "r", null) ?: return
-//
-//                val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-//               // val file = File(cacheDir, contentResolver.getFileName(selectedImageUri!!))
-//                val outputStream = FileOutputStream(file1)
-//                inputStream.copyTo(outputStream)
-
-
-//                if (pImgFile1 != null) {
-//                    fis1 = FileInputStream(pImgFile1)
-//                    len1 = pImgFile1!!.length().toInt()
-//                }
-
-
-//
-//                ImagePicker.RESULT_ERROR -> {
-//                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-//                }
-//                else -> {
-//                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
-//                }
 
             when (requestCode) {
                 REQUEST_CODE_IMAGE -> {
@@ -251,10 +213,12 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
                             binding.layoutCameraGreen.visibility = View.VISIBLE
                             binding.layoutCameraNew.visibility = View.GONE
                         }
+
                         "2" -> {
                             binding.layoutGalleryGreen.visibility = View.VISIBLE
                             binding.layoutGalleryNew.visibility = View.GONE
                         }
+
                         "3" -> {
                             binding.layoutPDFGreen.visibility = View.VISIBLE
                             binding.layoutPDFNew.visibility = View.GONE
@@ -288,12 +252,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
 
 
     private fun apiCallFamilyListNew() {
-        progressDialog = ProgressDialog(this@UploadReportNew)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.getFamilyList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelFamilyList> {
@@ -307,30 +266,39 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
                         // binding.rvSlotTiming.invalidate();
                         if (response.body()!!.status == 0) {
                             myToast(this@UploadReportNew, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         } else if (response.code() == 500) {
                             myToast(this@UploadReportNew, "Server Error")
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvSlotTimingFamily.apply {
                                 adapter =
-                                    AdapterFamilyListView(this@UploadReportNew, response.body()!!,this@UploadReportNew)
-                                progressDialog!!.dismiss()
+                                    AdapterFamilyListView(
+                                        this@UploadReportNew,
+                                        response.body()!!,
+                                        this@UploadReportNew
+                                    )
+                                AppProgressBar.hideLoaderDialog()
                             }
                         } else {
                             binding.rvSlotTimingFamily.apply {
                                 //   adapter!!.notifyDataSetChanged();
                                 //myToast(this@ShuduleTiming, response.body()!!.message)
 
-                                adapter = AdapterFamilyListView(this@UploadReportNew, response.body()!!,this@UploadReportNew)
-                                binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
+                                adapter = AdapterFamilyListView(
+                                    this@UploadReportNew,
+                                    response.body()!!,
+                                    this@UploadReportNew
+                                )
+                                binding.rvSlotTimingFamily.layoutManager =
+                                    GridLayoutManager(context, 3)
                                 //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
-                                progressDialog!!.dismiss()
+                                AppProgressBar.hideLoaderDialog()
                             }
 
                         }
                     } catch (e: Exception) {
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                         e.printStackTrace()
                         myToast(this@UploadReportNew, "Something went wrong")
                     }
@@ -338,8 +306,14 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
 
 
                 override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
-                    progressDialog!!.dismiss()
-                    myToast(this@UploadReportNew, "Something went wrong")
+                    countR4++
+                    if (countR4 <= 3) {
+                        apiCallFamilyListNew()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
 
@@ -381,9 +355,11 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
                     }
 
                 }
+
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
                 }
+
                 else -> {
                     Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
                 }
@@ -418,14 +394,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(this@UploadReportNew)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-
-        progressDialog!!.isIndeterminate = false
-
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         //  binding.progressBar.progress = 0
         val body = UploadRequestBody(file, "image", this)
@@ -446,23 +415,20 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
                     response.body()?.let {
                         if (response.code() == 500) {
                             myToast(this@UploadReportNew, "Server Error")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
                             myToast(this@UploadReportNew, response.body()!!.message)
                             refresh()
-//                    binding.layoutRoot.snackbar(it.message)
-//                    binding.progressBar.progress = 100
-                            progressDialog!!.dismiss()
+
+                            AppProgressBar.hideLoaderDialog()
                         }
 
                     }
                 } catch (e: java.lang.Exception) {
-                    progressDialog!!.dismiss()
                     e.printStackTrace()
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
                     myToast(this@UploadReportNew, "Something Went Wrong")
-
 
 
                 }
@@ -470,11 +436,14 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
 
 
             override fun onFailure(call: Call<ModelUploadReport>, t: Throwable) {
-//                binding.layoutRoot.snackbar(t.message!!)
-//                binding.progressBar.progress = 0
-                progressDialog!!.dismiss()
-                myToast(this@UploadReportNew, "Something Went Wrong")
+                countR5++
+                if (countR5 <= 3) {
+                    uploadImage()
+                } else {
+                    myToast(context, t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
 
+                }
             }
 
 
@@ -512,14 +481,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
         val outputStream = FileOutputStream(file1)
         inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(this@UploadReportNew)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-
-        progressDialog!!.isIndeterminate = false
-
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         //  binding.progressBar.progress = 0
         val body = UploadRequestBody(file1, "image", this)
@@ -540,30 +502,34 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
                     response.body()?.let {
                         if (response.code() == 500) {
                             myToast(this@UploadReportNew, "Server Error")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
                             myToast(this@UploadReportNew, response.body()!!.message)
                             refresh()
-//                    binding.layoutRoot.snackbar(it.message)
-//                    binding.progressBar.progress = 100
-                            progressDialog!!.dismiss()
+
+                            AppProgressBar.hideLoaderDialog()
                         }
 
                     }
                 } catch (e: java.lang.Exception) {
                     myToast(this@UploadReportNew, "Something went wrong")
                     e.printStackTrace()
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
 
                 }
             }
 
 
             override fun onFailure(call: Call<ModelUploadReport>, t: Throwable) {
-//                binding.layoutRoot.snackbar(t.message!!)
-//                binding.progressBar.progress = 0
-                progressDialog!!.dismiss()
+                countR6++
+                if (countR6 <= 3) {
+                    uploadImageCamera()
+                } else {
+                    myToast(context, t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
+
+                }
 
             }
 
@@ -582,22 +548,6 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
         //  binding.progressBar.progress = percentage
     }
 
-//    override fun deleteReport(id: String) {
-//        SweetAlertDialog(this@UploadReportNew, SweetAlertDialog.WARNING_TYPE)
-//            .setTitleText("Are you sure want to Delete Report?")
-//            .setCancelText("No")
-//            .setConfirmText("Yes")
-//            .showCancelButton(true)
-//            .setConfirmClickListener { sDialog ->
-//                sDialog.cancel()
-//                deleteReportNew(id)
-//            }
-//            .setCancelClickListener { sDialog ->
-//                sDialog.cancel()
-//            }
-//            .show()
-//
-//    }
 
     private fun ContentResolver.getFileName(selectedImageUri: Uri): String {
         var name = ""
@@ -623,12 +573,12 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,Ad
 
     }
 
-    override fun checkBox(id:Int) {
-             if (id==1) {
-                binding.checkSelf.isChecked=true
-                //Do Whatever you want in isChecked
-            }else{
-                binding.checkSelf.isChecked=false
-            }
-     }
+    override fun checkBox(id: Int) {
+        if (id == 1) {
+            binding.checkSelf.isChecked = true
+            //Do Whatever you want in isChecked
+        } else {
+            binding.checkSelf.isChecked = false
+        }
+    }
 }

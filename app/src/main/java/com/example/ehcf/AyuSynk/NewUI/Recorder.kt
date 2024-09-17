@@ -24,6 +24,7 @@ import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener
 import com.ayudevice.ayusynksdk.utils.logs.AyuLogsListener
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityRecorderBinding
@@ -33,14 +34,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListener,
+class Recorder : Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListener,
     View.OnClickListener, RecorderListener, OnlineLiveStreamListener, DiagnosisReportUpdateListener,
-    AyuLogsListener,AdapterFamilyListView.CheckBox  {
+    AyuLogsListener, AdapterFamilyListView.CheckBox {
     private lateinit var binding: ActivityRecorderBinding
-    var progressDialog: ProgressDialog? = null
-    lateinit var sessionManager:SessionManager
-
-
+    lateinit var sessionManager: SessionManager
+    var countN = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,7 +52,7 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUiForRecording()
-        sessionManager= SessionManager(requireContext())
+        sessionManager = SessionManager(requireContext())
         apiCallFamilyListNew()
         binding.cardHeart.setOnClickListener {
             NavHostFragment.findNavController(this@Recorder).navigate(R.id.RecordHeart)
@@ -108,12 +107,7 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
 
 
     private fun apiCallFamilyListNew() {
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
 
         ApiClient.apiService.getFamilyList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelFamilyList> {
@@ -127,39 +121,54 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
                         // binding.rvSlotTiming.invalidate();
                         if (response.body()!!.status == 0) {
                             myToast(requireActivity(), "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         } else if (response.code() == 500) {
                             myToast(requireActivity(), "Server Error")
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvSlotTimingFamily.apply {
                                 adapter =
-                                    AdapterFamilyListView(requireActivity(), response.body()!!,this@Recorder)
-                                progressDialog!!.dismiss()
+                                    AdapterFamilyListView(
+                                        requireActivity(),
+                                        response.body()!!,
+                                        this@Recorder
+                                    )
+                                AppProgressBar.hideLoaderDialog()
                             }
                         } else {
                             binding.rvSlotTimingFamily.apply {
                                 //   adapter!!.notifyDataSetChanged();
                                 //myToast(this@ShuduleTiming, response.body()!!.message)
 
-                                adapter = AdapterFamilyListView(requireActivity(), response.body()!!,this@Recorder)
-                                binding.rvSlotTimingFamily.layoutManager = GridLayoutManager(context, 3)
+                                adapter = AdapterFamilyListView(
+                                    requireActivity(),
+                                    response.body()!!,
+                                    this@Recorder
+                                )
+                                binding.rvSlotTimingFamily.layoutManager =
+                                    GridLayoutManager(context, 3)
                                 //    binding.layoutFamilyMemeber.visibility=View.VISIBLE
 
-                                progressDialog!!.dismiss()
+                                AppProgressBar.hideLoaderDialog()
                             }
 
                         }
                     } catch (e: Exception) {
-                        progressDialog!!.dismiss()
-                        e.printStackTrace()
+                        AppProgressBar.hideLoaderDialog()
+                         e.printStackTrace()
                         myToast(requireActivity(), "Something went wrong")
                     }
                 }
 
 
                 override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
-                    progressDialog!!.dismiss()
-                    myToast(requireActivity(), "Something went wrong")
+                    countN++
+                    if (countN <= 3) {
+                        apiCallFamilyListNew()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
 
@@ -187,7 +196,7 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     }
 
     override fun deviceConnectionStrength(strength: DeviceStrength) {
-     }
+    }
 
     override fun deviceConnectionState(state: DeviceConnectionState) {
         if (state != DeviceConnectionState.DEVICE_CONNECTED) {
@@ -207,7 +216,7 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
 
 
     private fun onDeviceConnected() {
-         deviceBatteryUpdate(AyuSynk.getBleInstance().currentBatteryLevel)
+        deviceBatteryUpdate(AyuSynk.getBleInstance().currentBatteryLevel)
 //        binding!!.btnUpdateDevice.isEnabled = true
         binding!!.customBatteryMeter.visibility = View.VISIBLE
         binding!!.imageConnected.visibility = View.VISIBLE
@@ -224,7 +233,7 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     }
 
     private fun setUiForRecording() {
-             binding!!.ayuVisualizerView.clear() // Clear visualizer view before starting new recording
+        binding!!.ayuVisualizerView.clear() // Clear visualizer view before starting new recording
 
     }
 
@@ -251,11 +260,8 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
      */
 
 
-
-
     override fun onClick(v: View) {
         when (v.id) {
-
 
 
 //            R.id.btn_logs -> if (binding!!.btnLogs.text.toString().lowercase(Locale.getDefault())
@@ -267,7 +273,7 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
 //                binding!!.btnLogs.text = getString(R.string.logsText, "Enable")
 //                AyuSynk.getBleInstance().showLogs(false)
 //            }
-         }
+        }
     }
 
 
@@ -314,10 +320,10 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     override fun reportGenerated(soundFile: SoundFile) {
 
 
-     }
+    }
 
     override fun onReportGenerationError(error: String) {
-         // binding!!.progressBarReport.visibility = View.GONE
+        // binding!!.progressBarReport.visibility = View.GONE
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
@@ -338,12 +344,12 @@ class Recorder :Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListene
     }
 
     override fun checkBox(id: Int) {
-        if (id==1) {
-            binding.checkSelf.isChecked=true
-            AdapterFamilyListView.memberID=""
+        if (id == 1) {
+            binding.checkSelf.isChecked = true
+            AdapterFamilyListView.memberID = ""
             //Do Whatever you want in isChecked
-        }else{
-            binding.checkSelf.isChecked=false
+        } else {
+            binding.checkSelf.isChecked = false
         }
     }
 }

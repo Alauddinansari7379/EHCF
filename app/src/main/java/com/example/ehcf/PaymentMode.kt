@@ -18,7 +18,7 @@ import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Pharmacy.activity.BrowseMedicine
- import com.example.ehcf.Pharmacy.model.ModelOrder
+import com.example.ehcf.Pharmacy.model.ModelOrder
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
@@ -43,20 +43,28 @@ import java.nio.charset.Charset
 import java.security.MessageDigest
 
 class PaymentMode : AppCompatActivity(), PaymentResultListener {
-    private val context: Context = this@PaymentMode
+    private val context = this@PaymentMode
     private var doctorId = ""
     private lateinit var sessionManager: SessionManager
     var selectedate = ""
-    var progressDialog: ProgressDialog? = null
     var startTime = ""
     var slotId = ""
     var amt = 1000
+    var countN = 0
+    var countN1 = 0
+    var countN2 = 0
+    var countN3 = 0
+    var countN4 = 0
+    var countN5 = 0
+    var countN6 = 0
+    var countN7 = 0
+    var countN8 = 0
     var title = ""
     var paymentMode = ""
     var description = ""
     var medicine = ""
     var slug = ""
-     var addressId = ""
+    var addressId = ""
 
 
     var apiEndPoint = "/pg/v1/pay"
@@ -77,7 +85,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         medicine = intent.getStringExtra("Medicine").toString()
         slug = intent.getStringExtra("slug").toString()
         addressId = intent.getStringExtra("addressId").toString()
-        Log.d("TAGNEw","err")
+        Log.d("TAGNEw", "err")
 
         PhonePe.init(this@PaymentMode)
         try {
@@ -99,13 +107,13 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
 
         }
-        if (sessionManager.pricing=="Free"){
-            sessionManager.pricing= "0".toInt().toString()
+        if (sessionManager.pricing == "Free") {
+            sessionManager.pricing = "0".toInt().toString()
         }
-        if (sessionManager.pricing!!.isEmpty()){
-            sessionManager.pricing= "0".toInt().toString()
+        if (sessionManager.pricing!!.isEmpty()) {
+            sessionManager.pricing = "0".toInt().toString()
         }
-        if (sessionManager.pricing!="Free") {
+        if (sessionManager.pricing != "Free") {
             data.put("amount", sessionManager.pricing!!.toInt() * 100)//Long. Mandatory
 
             data.put("mobileNumber", "7908834635") //String. Optional
@@ -144,7 +152,8 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 Log.e("payloadBase64", "$payloadBase64")
                 Log.e("checksum", "$checksum")
                 try {
-                    PhonePe.getImplicitIntent(this, b2BPGRequest, "")?.let { startActivityForResult(it, 1) };
+                    PhonePe.getImplicitIntent(this, b2BPGRequest, "")
+                        ?.let { startActivityForResult(it, 1) };
                 } catch (e: PhonePeInitException) {
                 }
 
@@ -360,6 +369,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
                         } else if (response.code() == 200) {
                             popUpConsultOnline()
+                            countN = 0
                             AppProgressBar.hideLoaderDialog()
                         } else {
                             myToast(this@PaymentMode, response.body()!!.message)
@@ -374,8 +384,14 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
-                    AppProgressBar.hideLoaderDialog()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallCreateBookingOnlineConsultOnline()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
@@ -387,7 +403,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
         ApiClient.apiService.createOrder(
             sessionManager.id.toString(), sessionManager.pricing!!,
             paymentMode,
-            addressId,slug,memberID
+            addressId, slug, memberID
 
         )
             .enqueue(object : Callback<ModelOrder> {
@@ -405,7 +421,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                         } else if (response.body()!!.message.contains("Order placed successfully")) {
                             myToast(this@PaymentMode, response.body()!!.message)
                             BrowseMedicine.cartQty = "0"
-                            addressId=""
+                            addressId = ""
                             popUpConsultOnline()
                             AppProgressBar.hideLoaderDialog()
                         } else {
@@ -422,9 +438,14 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 }
 
                 override fun onFailure(call: Call<ModelOrder>, t: Throwable) {
-                    myToast(this@PaymentMode, "Something went wrong")
-                    AppProgressBar.hideLoaderDialog()
+                    countN1++
+                    if (countN1 <= 3) {
+                        apiCallCreateOrderMedicine(paymentMode)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
@@ -432,12 +453,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     }
 
     private fun apiCallCreateBookingOnlineConsultOnlineFree() {
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         paymentMode = "5"
 
@@ -461,16 +477,24 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                         myToast(this@PaymentMode, "Server Error")
                     } else if (response.code() == 200) {
                         popUpConsultOnline()
-                        progressDialog!!.dismiss()
+                        countN2 = 0
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+                    countN2++
+                    if (countN2 <= 3) {
+                        apiCallCreateBookingOnlineConsultOnlineFree()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
@@ -479,12 +503,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
     private fun apiCallCreateBookingAppointmentOnline() {
 
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         paymentMode = "2"
 
@@ -507,16 +526,23 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.body()!!.status == 1) {
                         popUpOnline()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+                    countN3++
+                    if (countN3 <= 3) {
+                        apiCallCreateBookingAppointmentOnline()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
@@ -525,12 +551,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
     private fun apiCallCreateBookingAppointmentOnlineFree() {
 
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         paymentMode = "5"
 
@@ -553,69 +574,32 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.body()!!.status == 1) {
                         popUpOnline()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+                    countN4++
+                    if (countN4 <= 3) {
+                        apiCallCreateBookingAppointmentOnlineFree()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
             })
     }
 
-    /*
-        private fun apiCallCreateBookingAppointment(){
-
-            progressDialog = ProgressDialog(this)
-            progressDialog!!.setMessage("Loading..")
-            progressDialog!!.setTitle("Please Wait")
-            progressDialog!!.isIndeterminate = false
-            progressDialog!!.setCancelable(false)
-            progressDialog!!.show()
-            val amount="1000"
-            val paymentMode="2"
-
-            ApiClient.apiService.createBooking(sessionManager.id.toString(),doctorId,startTime,title,description,amount,paymentMode)
-                .enqueue(object : Callback<ModelCreateBooking>
-                {
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onResponse(
-                        call: Call<ModelCreateBooking>,
-                        response: Response<ModelCreateBooking>
-                    )
-                    {
-                        if (response.body()!!.status==1){
-                            popUp()
-                            progressDialog!!.dismiss()
-                        }else{
-                            myToast(this@RazorPay,response.body()!!.message)
-                            progressDialog!!.dismiss()
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<ModelCreateBooking>, t: Throwable) {
-
-                    }
-
-
-                })
-        }
-    */
     private fun apiCallCreateBookingHomeVisitOnline() {
 
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+    AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         val paymentMode = "2"
 
@@ -638,16 +622,23 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.body()!!.status == 1) {
                         popUpHomeVisitOnline()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+                    countN5++
+                    if (countN5 <= 3) {
+                        apiCallCreateBookingHomeVisitOnline()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
@@ -656,12 +647,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
     private fun apiCallCreateBookingHomeVisitOnlineFree() {
 
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         val paymentMode = "5"
 
@@ -684,16 +670,23 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.body()!!.status == 1) {
                         popUpHomeVisitOnline()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
+                    countN6++
+                    if (countN6 <= 3) {
+                        apiCallCreateBookingHomeVisitOnlineFree()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 
@@ -766,7 +759,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
             //You can omit the image option to fetch the image from the dashboard
             options.put(
                 "image",
-                "https://ehcf.thedemostore.in/uploads/prescriptions/1689586754.png"
+                "${sessionManager.imageurl}prescriptions/1689586754.png"
             )
             options.put("theme.color", "#9F367A");
             options.put("currency", "INR");
@@ -806,25 +799,13 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     }
 
 
-
     override fun onPaymentError(p0: Int, p1: String?) {
         Toast.makeText(this, "Payment Field ", Toast.LENGTH_LONG).show()
-
-//        val intent = Intent(applicationContext, MySlot::class.java)
-//        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//        finish()
-//        startActivity(intent)
-
     }
 
     private fun apiCallCreateBookingAppointment() {
 
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         val paymentMode = "1"
 
@@ -847,21 +828,27 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.code() == 500) {
                         myToast(this@PaymentMode, "Server Error")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     } else if (response.body()!!.status == 1) {
                         popUp()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
-                    t.message?.let { myToast(this@PaymentMode, it) }
-                    progressDialog!!.dismiss()
+                    countN7++
+                    if (countN7 <= 3) {
+                        apiCallCreateBookingAppointment()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
 
@@ -869,16 +856,8 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     }
 
     private fun apiCallCreateBookingHomeVisit() {
-
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
-        val amount = "1000"
+        AppProgressBar.showLoaderDialog(context)
         val paymentMode = "1"
-
         ApiClient.apiService.createConsultation(
             sessionManager.id.toString(),
             doctorId,
@@ -898,17 +877,23 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.body()!!.status == 1) {
                         popUp()
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     } else {
                         myToast(this@PaymentMode, response.body()!!.message)
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelCreateConsultation>, t: Throwable) {
-                    t.message?.let { myToast(this@PaymentMode, it) }
-                    progressDialog!!.dismiss()
+                    countN8++
+                    if (countN8 <= 3) {
+                        apiCallCreateBookingAppointment()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
 

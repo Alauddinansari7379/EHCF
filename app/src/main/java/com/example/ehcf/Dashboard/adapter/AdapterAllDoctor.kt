@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
 class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew) :
     RecyclerView.Adapter<AdapterAllDoctor.MyViewHolder>() {
+        lateinit var sessionManager: SessionManager
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -28,9 +30,10 @@ class AdapterAllDoctor(val context: Context, private val list: ModelAllDoctorNew
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.id.text= "${position+1}"
+        sessionManager= SessionManager(context)
         try {
             if (list.result.doctor_list[position].profile_image!=null){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list.result.doctor_list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
+                Picasso.get().load("${sessionManager.imageurl}${list.result.doctor_list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile_image);
             }
             holder.hospitalName.text = list.result.doctor_list[position].hospital_name
             //   holder.specialities.text = list.result.doctor_list[position].specialist

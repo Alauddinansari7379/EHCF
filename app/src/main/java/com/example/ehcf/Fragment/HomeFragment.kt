@@ -39,6 +39,7 @@ import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
 import com.example.ehcf.Fragment.Model.ModelNearByDoctor
 import com.example.ehcf.Fragment.Model.ResultX
 import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -97,6 +98,8 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
     var hours = ""
     var minutes = ""
     var secondsNew = ""
+    var countN = 0
+    var countN1 = 0
     private var diffTime: Long? = null
     private var diffTimeSeconds: Long? = null
     var bookingId = ""
@@ -302,19 +305,19 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
         //https://bit.ly/2BteuF2
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescription/dafa68d6f10cc3dba833670e242bafe4.png",
+                "${sessionManager.imageurl}prescription/dafa68d6f10cc3dba833670e242bafe4.png",
                 ""
             )
         )
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescription/1e1d20758a5ca79b561a869bc23f90e8.png",
+                "${sessionManager.imageurl}prescription/1e1d20758a5ca79b561a869bc23f90e8.png",
                 ""
             )
         )
         imageList.add(
             SlideUIModel(
-                "https://ehcf.thedemostore.in/uploads/prescription/942fd6aea4e27bed28d1cc06e27baf5b.png",
+                "${sessionManager.imageurl}prescription/942fd6aea4e27bed28d1cc06e27baf5b.png",
                 ""
             )
         )
@@ -494,13 +497,6 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
     }
 
     private fun apiCallNearByDoctor(postalCode: String) {
-//
-//        progressDialog = ProgressDialog(requireContext())
-//        progressDialog!!.setMessage("Loading..")
-//        progressDialog!!.setTitle("Please Wait")
-//        progressDialog!!.isIndeterminate = false
-//        progressDialog!!.setCancelable(true)
-        //  progressDialog!!.show()
 
          ApiClient.apiService.getNearByDoctor(
              postalCode,
@@ -521,12 +517,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
                                 binding.rvAllDoctor.visibility = View.VISIBLE
                                 binding.shimmer.visibility = View.GONE
                                  mainData = response.body()!!.result
-
+                                countN1=0
                                 adapter = activity?.let {
                                     AdapterNearByDoctor(it,mainData )
                                 }
-                                //  progressDialog!!.dismiss()
-                            }
+                             }
                         } else {
                             binding.shimmer.visibility = View.GONE
 
@@ -541,74 +536,21 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
 
                 override fun onFailure(call: Call<ModelNearByDoctor>, t: Throwable) {
                     binding.shimmer.visibility = View.GONE
-                     myToast(requireActivity(),"${t.message}")
-                    // progressDialog!!.dismiss()
-//>>>>>>>>>>:17.4595688
-//                                                                                                    78.3681035
-                }
+                    countN1++
+                    if (countN1 <= 3) {
+                        apiCallNearByDoctor(postalCode)
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        binding.shimmer.visibility = View.GONE
+                        AppProgressBar.hideLoaderDialog()
 
-            })
-
-    }
-/*
-    private fun apiCallAllDoctor() {
-//
-//        progressDialog = ProgressDialog(requireContext())
-//        progressDialog!!.setMessage("Loading..")
-//        progressDialog!!.setTitle("Please Wait")
-//        progressDialog!!.isIndeterminate = false
-//        progressDialog!!.setCancelable(true)
-        //  progressDialog!!.show()
-
-        val searchNew = ""
-        ApiClient.apiService.getAllDoctor(
-            sessionManager.latitude,
-            sessionManager.longitude,
-            searchNew
-        ).enqueue(object :
-                Callback<ModelAllDoctorNew> {
-                @SuppressLint("LogNotTimber", "SuspiciousIndentation")
-                override fun onResponse(
-                    call: Call<ModelAllDoctorNew>,
-                    response: Response<ModelAllDoctorNew>
-                ) {
-                    try {
-                        if (response.code() == 500) {
-                            myToast(requireActivity(), "Unable to fetch nearest doctor")
-                        } else if (response.body()!!.status == 1) {
-                            binding.rvAllDoctor.apply {
-                                shimmerFrameLayout?.startShimmer()
-                                binding.rvAllDoctor.visibility = View.VISIBLE
-                                binding.shimmer.visibility = View.GONE
-                                adapter = activity?.let {
-                                    AdapterAllDoctor(it, response.body()!!)
-                                }
-                                //  progressDialog!!.dismiss()
-                            }
-                        } else {
-                            binding.shimmer.visibility = View.GONE
-
-                              myToast(requireActivity(), response.body()!!.message.toString())
-                            //  progressDialog!!.dismiss()
-                        }
-                    } catch (e: Exception) {
-                        Log.e("Exception", e.printStackTrace().toString())
-                        e.printStackTrace()
                     }
-                }
-
-                override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
-                    binding.shimmer.visibility = View.GONE
-                     myToast(requireActivity(),"${t.message}")
-                    // progressDialog!!.dismiss()
-//>>>>>>>>>>:17.4595688
 //                                                                                                    78.3681035
                 }
 
             })
 
     }
-*/
 
     private fun apiCallGetConsultationAccepted() {
         ApiClient.apiService.getConsultationAccptedHome(sessionManager.id.toString(), "accepted")
@@ -637,8 +579,15 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
                 }
 
                 override fun onFailure(call: Call<ModelUpComingHome>, t: Throwable) {
-                    activity?.let { myToast(it, "Something went wrong") }
+                    countN++
+                    if (countN <= 3) {
+                        apiCallGetConsultationAccepted()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        binding.shimmer.visibility = View.GONE
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

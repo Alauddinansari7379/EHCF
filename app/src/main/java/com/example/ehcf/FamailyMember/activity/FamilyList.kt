@@ -10,6 +10,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.FamailyMember.Adapter.AdapterFamilyList
 import com.example.ehcf.FamailyMember.Model.ModelDelete
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityFamilyListBinding
@@ -22,10 +23,11 @@ import retrofit2.Response
 
 class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
     private lateinit var binding: ActivityFamilyListBinding
-    var progressDialog: ProgressDialog? = null
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
-
+    val context = this@FamilyList
+    var countN3 = 0
+    var countN = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFamilyListBinding.inflate(layoutInflater)
@@ -35,7 +37,7 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
         shimmerFrameLayout!!.startShimmer();
 
 
-         sessionManager = SessionManager(this@FamilyList)
+        sessionManager = SessionManager(this@FamilyList)
         apiCallFamilyList()
 
         binding.imgBack.setOnClickListener {
@@ -45,14 +47,7 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
 
 
     private fun apiCallFamilyList() {
-        progressDialog = ProgressDialog(this@FamilyList)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
-
-
+        AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.getFamilyList(sessionManager.id.toString())
             .enqueue(object : Callback<ModelFamilyList> {
                 @SuppressLint("LogNotTimber")
@@ -65,8 +60,7 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmer.visibility = View.GONE
-                            // myToast(requireActivity(),"No Data Found")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         } else {
                             binding.recyclerView.apply {
                                 binding.tvNoDataFound.visibility = View.GONE
@@ -76,34 +70,32 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
                                     response.body()!!,
                                     this@FamilyList
                                 )
-                                progressDialog!!.dismiss()
+                                AppProgressBar.hideLoaderDialog()
                             }
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@FamilyList, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
-                    myToast(this@FamilyList, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countN3++
+                    if (countN3 <= 3) {
+                        apiCallFamilyList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
 
     private fun apiCallDelete(id: String) {
-        progressDialog = ProgressDialog(this@FamilyList)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
-
-
+        AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.deleteFamily(id)
             .enqueue(object : Callback<ModelDelete> {
                 @SuppressLint("LogNotTimber")
@@ -113,29 +105,34 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
                     try {
                         if (response.code() == 500) {
                             myToast(this@FamilyList, "Server error")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.status == 1) {
                             myToast(this@FamilyList, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                             refresh()
                         } else {
                             myToast(this@FamilyList, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
 
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@FamilyList, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
 
                 override fun onFailure(call: Call<ModelDelete>, t: Throwable) {
-                    myToast(this@FamilyList, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallFamilyList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -166,6 +163,7 @@ class FamilyList : AppCompatActivity(), AdapterFamilyList.EditFamilyMember {
             refresh()
         }
     }
+
     private fun refresh() {
         overridePendingTransition(0, 0)
         finish()

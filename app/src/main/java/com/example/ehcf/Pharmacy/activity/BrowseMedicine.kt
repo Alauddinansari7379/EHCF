@@ -26,7 +26,8 @@ class BrowseMedicine : AppCompatActivity() {
         ActivityBrowseMedicineBinding.inflate(layoutInflater)
     }
     var shimmerFrameLayout: ShimmerFrameLayout? = null
-
+    var countN3=0
+    var countN=0
     lateinit var sessionManager: SessionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +43,10 @@ class BrowseMedicine : AppCompatActivity() {
 
             }
             cardMyOrder.setOnClickListener {
-                slug="medicine"
+                slug = "medicine"
                 val intent = Intent(context as Activity, Orders::class.java)
                 context.startActivity(intent)
-             }
+            }
 
             cardMyCart.setOnClickListener {
                 startActivity(Intent(context, CartMedicine::class.java))
@@ -118,10 +119,14 @@ class BrowseMedicine : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
                     binding.shimmerMedicine.visibility = View.GONE
-                    myToast(this@BrowseMedicine, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallAllMedicine()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -129,10 +134,10 @@ class BrowseMedicine : AppCompatActivity() {
     }
 
     private fun apiCallCartList() {
-       // AppProgressBar.showLoaderDialog(context)
+        // AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.cartList(
-            sessionManager.id.toString(),"medicine"
+            sessionManager.id.toString(), "medicine"
 
         )
             .enqueue(object :
@@ -151,7 +156,7 @@ class BrowseMedicine : AppCompatActivity() {
                             AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.result.isEmpty()) {
-                            cartQty="0"
+                            cartQty = "0"
                             binding.qty.text = cartQty
                             AppProgressBar.hideLoaderDialog()
 
@@ -160,7 +165,7 @@ class BrowseMedicine : AppCompatActivity() {
                             response.body()!!.result.forEach {
                                 qty.add(it.quantity.toInt())
                             }
-                            cartQty=qty.sum().toInt().toString()
+                            cartQty = qty.sum().toInt().toString()
                             binding.qty.text = cartQty
                         }
                     } catch (e: Exception) {
@@ -171,23 +176,29 @@ class BrowseMedicine : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN3++
+                    if (countN3 <= 3) {
+                        apiCallCartList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
             })
 
     }
-    companion object{
-        var cartQty=""
-        var slug=""
+
+    companion object {
+        var cartQty = ""
+        var slug = ""
     }
 
     override fun onResume() {
         super.onResume()
-        binding.qty.text= cartQty
+        binding.qty.text = cartQty
     }
 
 }

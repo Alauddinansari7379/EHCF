@@ -17,12 +17,13 @@ import com.example.ehcf.Appointments.UpComing.model.ResultXXX
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.R
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
-class AdapterCancelled(val context: Context,  private val list: ArrayList<ResultXXX>) :
+class AdapterCancelled(val context: Context, private val list: ArrayList<ResultXXX>) :
     RecyclerView.Adapter<AdapterCancelled.MyViewHolder>() {
-
+    lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -33,6 +34,7 @@ class AdapterCancelled(val context: Context,  private val list: ArrayList<Result
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
         try {
+            sessionManager=SessionManager(context)
 
 //        holder.appointmentDate.text = list.result.cancelled[position].start_time.substring(0,10)
 //        holder.doctorName.text = list.result.cancelled[position].doctor_name
@@ -41,7 +43,8 @@ class AdapterCancelled(val context: Context,  private val list: ArrayList<Result
 //        holder.description.text = list.result.cancelled[position].description
 //        holder.totalAmount.text = list.result.cancelled[position].total_amount
             if (list[position].profile_image!!.isNotEmpty()) {
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+                Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}")
+                    .placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
 
 
             }
@@ -77,16 +80,18 @@ class AdapterCancelled(val context: Context,  private val list: ArrayList<Result
                 "1" -> {
                     holder.tvConsultationTypeCan.text = "Tele-Consultation"
                 }
+
                 "2" -> {
                     holder.tvConsultationTypeCan.text = "Clinic-Visit"
                 }
+
                 "3" -> {
                     holder.tvConsultationTypeCan.text = "Home-Visit"
                 }
             }
 
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 //            1 -> {
@@ -119,18 +124,19 @@ class AdapterCancelled(val context: Context,  private val list: ArrayList<Result
     }
 
     open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-          val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDateCan)
-          val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameCan)
-          val startTime: TextView = itemView.findViewById(R.id.tvStartTimeCan)
-          val endTime: TextView = itemView.findViewById(R.id.tvEndTimeCan)
-          val totalAmount: TextView = itemView.findViewById(R.id.tvTotalAmountCan)
-          val tvStatus: TextView = itemView.findViewById(R.id.tvStatusCan)
-          val tvPatientNameRej: TextView = itemView.findViewById(R.id.tvPatientNameRej)
-          val tvConsultationTypeCan: TextView = itemView.findViewById(R.id.tvConsultationTypeCan)
-          val profile: ImageView = itemView.findViewById(R.id.imgProfile)
+        val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDateCan)
+        val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameCan)
+        val startTime: TextView = itemView.findViewById(R.id.tvStartTimeCan)
+        val endTime: TextView = itemView.findViewById(R.id.tvEndTimeCan)
+        val totalAmount: TextView = itemView.findViewById(R.id.tvTotalAmountCan)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvStatusCan)
+        val tvPatientNameRej: TextView = itemView.findViewById(R.id.tvPatientNameRej)
+        val tvConsultationTypeCan: TextView = itemView.findViewById(R.id.tvConsultationTypeCan)
+        val profile: ImageView = itemView.findViewById(R.id.imgProfile)
+
         //  val btnOkDialog: Button = itemView.findViewById(R.id.btnOkDialog)
 //        val image: ImageView = itemView.findViewById(R.id.cardSpecia)
-         val cardView: CardView = itemView.findViewById(R.id.cardViewCan)
+        val cardView: CardView = itemView.findViewById(R.id.cardViewCan)
 
 
     }

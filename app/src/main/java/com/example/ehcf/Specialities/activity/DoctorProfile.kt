@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.adapter.AdapterCommentList
@@ -32,12 +33,13 @@ import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 import java.util.ArrayList
 
-class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
+class DoctorProfile : AppCompatActivity(), AdapterDoctorProfile.CommentList {
     private lateinit var binding: ActivityDoctorProfileBinding
-    var progressDialog: ProgressDialog? = null
-    private var context: Context = this@DoctorProfile
+    private var context = this@DoctorProfile
     var doctorId = ""
     var dashboard = ""
+    var countR = 0
+    var countC = 0
     var dialog: Dialog? = null
 
 
@@ -49,7 +51,7 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
         binding = ActivityDoctorProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
-        if (DoctorProfile.consaltationList.size==0){
+        if (DoctorProfile.consaltationList.size == 0) {
             DoctorProfile.consaltationList.add(ModelConsaltation("Tele Consultation", "1"))
             DoctorProfile.consaltationList.add(ModelConsaltation("Clinic Visit ", "2"))
             DoctorProfile.consaltationList.add(ModelConsaltation("Home Visit", "3"))
@@ -104,27 +106,18 @@ class DoctorProfile : AppCompatActivity(),AdapterDoctorProfile.CommentList {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
-//        binding.bt.setOnClickListener{
-//            val intent = Intent(context as Activity, ShuduleTiming::class.java)
-//                .putExtra("doctorId",doctorId)
-//            context.startActivity(intent)
-//        }
+
     }
-companion object{
-    var consaltationList = ArrayList<ModelConsaltation>()
 
-    var consultationTypeId = ""
+    companion object {
+        var consaltationList = ArrayList<ModelConsaltation>()
 
-}
+        var consultationTypeId = ""
+
+    }
 
     private fun apiCallDoctorProfile() {
 
-        progressDialog = ProgressDialog(this@DoctorProfile)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        //progressDialog!!.show()
 
         Log.e("doctorId", "$doctorId")
 
@@ -140,7 +133,6 @@ companion object{
                         if (response.body()!!.result.isEmpty()) {
                             binding.shimmer.visibility = View.GONE
                             myToast(this@DoctorProfile, "No Doctor Found")
-                            progressDialog!!.dismiss()
                         } else {
 
 
@@ -153,35 +145,35 @@ companion object{
                                     response.body()!!,
                                     this@DoctorProfile, this@DoctorProfile
                                 )
-                                progressDialog!!.dismiss()
                             }
 
 
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
-                        myToast(this@DoctorProfile,"Something went wrong")
-                        progressDialog!!.dismiss()
+                        myToast(this@DoctorProfile, "Something went wrong")
                     }
                 }
 
                 override fun onFailure(call: Call<ModelDoctorProfile>, t: Throwable) {
                     binding.shimmer.visibility = View.GONE
-                    myToast(this@DoctorProfile, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR++
+                    if (countR <= 3) {
+                        apiCallDoctorProfile()
+                    } else {
+                        myToast(this@DoctorProfile, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
             })
 
     }
+
     private fun apiCallCommentList() {
-        progressDialog = ProgressDialog(this@DoctorProfile)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
 
         ApiClient.apiService.doctorAllComments(doctorId)
@@ -196,7 +188,7 @@ companion object{
                         if (response.body()!!.result.isEmpty()) {
                             binding.shimmer.visibility = View.GONE
                             myToast(this@DoctorProfile, "No Review Found")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         } else {
                             binding.recyclerViewComment.apply {
                                 shimmerFrameLayout?.startShimmer()
@@ -205,20 +197,27 @@ companion object{
                                     response.body()!!,
                                     this@DoctorProfile
                                 )
-                                progressDialog!!.dismiss()
+                                AppProgressBar.hideLoaderDialog()
                             }
 
                         }
-                    } catch (e:Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
-                        myToast(this@DoctorProfile,"Something went wrong")
-                        progressDialog!!.dismiss()
+                        myToast(this@DoctorProfile, "Something went wrong")
+                        AppProgressBar.hideLoaderDialog()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelCommentList>, t: Throwable) {
-                     myToast(this@DoctorProfile, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    AppProgressBar.hideLoaderDialog()
+                    countC++
+                    if (countC <= 3) {
+                        apiCallCommentList()
+                    } else {
+                        myToast(this@DoctorProfile, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
@@ -242,52 +241,7 @@ companion object{
 
     override fun commentList() {
         apiCallCommentList()
-     }
-
-//    override fun consaltationType(doctorid: String) {
-//        consaltationList.add(ModelConsaltation("Select Consultation Type ", "0"))
-//        consaltationList.add(ModelConsaltation("Tele Consultation", "1"))
-//        consaltationList.add(ModelConsaltation("Home Visit", "2"))
-//        consaltationList.add(ModelConsaltation("Clinic Visit", "3"))
-//
-//        val view = layoutInflater.inflate(R.layout.dialog_consaltation_type, null)
-//        dialog = Dialog(this@DoctorProfile)
-//        val consaltationType = view!!.findViewById<Spinner>(R.id.spinnerConsaltaionTDilog)
-//        val ok = view!!.findViewById<Button>(R.id.btnOkDialogConsaltation)
-//        dialog = Dialog(this@DoctorProfile)
-//
-//        consaltationType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-//                if (consaltationList.size > 0) {
-//                    consultationTypeId = consaltationList[i].id.toString()
-//                    Log.e(ContentValues.TAG, "consultationTypeId: $consultationTypeId")
-//                }
-//            }
-//
-//            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-//        }
-//        consaltationType.adapter = ArrayAdapter<ModelConsaltation>(
-//            context,
-//            android.R.layout.simple_list_item_1,
-//            consaltationList
-//        )
-//
-//        if (view.parent != null) {
-//            (view.parent as ViewGroup).removeView(view) // <- fix
-//        }
-//        dialog!!.setContentView(view)
-//        dialog?.setCancelable(true)
-//
-//
-//        dialog?.show()
-//        ok.setOnClickListener {
-//            sessionManager.bookingType = consultationTypeId
-//            val intent = Intent(context as Activity, DoctorProfileNew::class.java)
-//                .putExtra("doctorId", doctorid)
-//            context.startActivity(intent)
-//            dialog?.dismiss()
-//        }
-//    }
+    }
 
 
 }

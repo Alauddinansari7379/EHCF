@@ -23,7 +23,7 @@ class DownloadPrescription : AppCompatActivity() {
 
 
 
-//        binding.wv.loadUrl("https://ehcf.thedemostore.in/print/5")
+//        binding.wv.loadUrl("https://ehcf.in/print/5")
 //        binding.wv.loadUrl("https://www.google.com")
 
         // this will enable the javascript.
@@ -257,7 +257,7 @@ class DownloadPrescription : AppCompatActivity() {
                     "</html>"
 
 
-        wv.loadDataWithBaseURL("https://ehcf.thedemostore.in/print/5", html, mimeType, encoding, "");
+        wv.loadDataWithBaseURL("https://ehcf.in/print/5", html, mimeType, encoding, "");
         createWebPrintJob(wv)
     }*/
 

@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.EditText
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Fragment.test.UploadRequestBody
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Profile.modelResponse.ModelProfilePic
@@ -40,19 +41,20 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
+class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback {
     private lateinit var sessionManager: SessionManager
     private lateinit var binding: FragmentProfile2Binding
-    var progressDialog: ProgressDialog? =null
-    var customerName =""
+    var customerName = ""
     private var selectedImageUri: Uri? = null
 
     var dialog: Dialog? = null
     private var fullName = ""
     private var emailUpdate = ""
 
-    var confirmPassword =""
-    var email =""
+    var email = ""
+    var count = 0
+    var count1 = 0
+    var count2 = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,10 +76,11 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
         binding.tvLastName.text = customerName
         binding.tvEmail.text = email
 
-        if (sessionManager.profilePic!!.isNotEmpty()){
+        if (sessionManager.profilePic!!.isNotEmpty()) {
 
-            Picasso.get().load("https://ehcf.thedemostore.in/uploads/${sessionManager.profilePic}").placeholder(R.drawable.profile).error(R.drawable.profile).into(binding.userProfile)
-            Log.e("pofile","https://ehcf.thedemostore.in/uploads/${sessionManager.profilePic}")
+            Picasso.get().load("${sessionManager.imageurl}${sessionManager.profilePic}")
+                .placeholder(R.drawable.profile).error(R.drawable.profile).into(binding.userProfile)
+            Log.e("pofile", "${sessionManager.imageurl}${sessionManager.profilePic}")
         }
         binding.btnUpdateName.setOnClickListener {
             updateNameEmailDialog()
@@ -94,9 +97,10 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
             uploadImage()
         }
     }
+
     private fun uploadImage() {
         if (selectedImageUri == null) {
-            activity?.let { myToast(it,"Select an Image First") }
+            activity?.let { myToast(it, "Select an Image First") }
             // binding.layoutRoot.snackbar("Select an Image First")
             return
         }
@@ -113,18 +117,16 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
         val outputStream = FileOutputStream(file)
         inputStream.copyTo(outputStream)
 
-        progressDialog = ProgressDialog(activity)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
 
         // binding.progressBar.progress = 0
         val body = UploadRequestBody(file, "image", this)
 
 
-        ApiClient.apiService.profilePicture(sessionManager.id.toString(), MultipartBody.Part.createFormData("image", file.name, body), "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        ApiClient.apiService.profilePicture(
+            sessionManager.id.toString(),
+            MultipartBody.Part.createFormData("image", file.name, body),
+            "json".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         ).enqueue(object : Callback<ModelProfilePic> {
             override fun onResponse(
                 call: Call<ModelProfilePic>, response: Response<ModelProfilePic>
@@ -135,9 +137,9 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
                             myToast(activity!!, "Server error")
 
                         } else if (response.code() == 200) {
-
+                            count = 0
                             //   binding.layoutRoot.snackbar("Successfully Uploaded")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                             SweetAlertDialog(requireContext(), SweetAlertDialog.SUCCESS_TYPE)
                                 .setTitleText("Successfully Uploaded")
                                 .setConfirmText("Ok")
@@ -145,41 +147,47 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
                                 .setConfirmClickListener { sDialog ->
                                     sDialog.cancel()
                                     // (activity as ReportMain).refresh()
-                                    binding.layoutBtnUpload.visibility=View.GONE
-                                    sessionManager.profilePic=response.body()!!.result
-                                    Picasso.get().load("https://ehcf.thedemostore.in/uploads/${sessionManager.profilePic}").into(binding.userProfile)
+                                    binding.layoutBtnUpload.visibility = View.GONE
+                                    sessionManager.profilePic = response.body()!!.result
+                                    Picasso.get()
+                                        .load("${sessionManager.imageurl}${sessionManager.profilePic}")
+                                        .into(binding.userProfile)
 
                                 }
                                 .setCancelClickListener { sDialog ->
                                     sDialog.cancel()
                                 }
                                 .show()
-                            // apiCallGetPrePending1()
 
-                            //  binding.progressBar.progress = 100
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         } else {
                             myToast(activity!!, "Something went wrong")
+                            AppProgressBar.hideLoaderDialog()
                         }
 
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(activity!!, "Something went wrong")
                         e.printStackTrace()
+                        AppProgressBar.hideLoaderDialog()
                     }
                 }
             }
 
             override fun onFailure(call: Call<ModelProfilePic>, t: Throwable) {
-                // binding.layoutRoot.snackbar(t.message!!)
-                // binding.progressBar.progress = 0
-                myToast(activity!!,"Something went wrong")
+                count++
+                if (count <= 3) {
+                    uploadImage()
+                } else {
+                    myToast(requireActivity(), t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
 
-                progressDialog!!.dismiss()
+                }
 
             }
 
         })
     }
+
     private fun opeinImageChooser() {
         Intent(Intent.ACTION_PICK).also {
             it.type = "image/*"
@@ -204,7 +212,7 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
                     selectedImageUri = data?.data
                     Log.e("data?.data", data?.data.toString())
                     binding.userProfile.setImageURI(selectedImageUri)
-                    binding.layoutBtnUpload.visibility=View.VISIBLE
+                    binding.layoutBtnUpload.visibility = View.VISIBLE
                 }
             }
         }
@@ -240,38 +248,44 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
         }.show()
 
     }
+
     private fun apiCallChangePass(confirmPassword: String) {
 
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
-        ApiClient.apiService.resetPassword(sessionManager.id.toString(), confirmPassword).enqueue(object :Callback<ResetPassResponse>
-        {
-            override fun onResponse(
-                call: Call<ResetPassResponse>,
-                response: Response<ResetPassResponse>
-            ) {
-                if (response.body()!!.status == 1) {
-                    progressDialog!!.dismiss()
-                    alretDilogChanged()
-                    //myToast(requireActivity(), response.body()!!.message)
-                } else {
-                    myToast(requireActivity(), response.body()!!.message)
-                    progressDialog!!.dismiss()
+        AppProgressBar.showLoaderDialog(requireContext())
+        ApiClient.apiService.resetPassword(sessionManager.id.toString(), confirmPassword)
+            .enqueue(object : Callback<ResetPassResponse> {
+                override fun onResponse(
+                    call: Call<ResetPassResponse>,
+                    response: Response<ResetPassResponse>
+                ) {
+                    try {
+                        if (response.body()!!.status == 1) {
+                            AppProgressBar.hideLoaderDialog()
+                            count1 = 0
+                            alretDilogChanged()
+                            //myToast(requireActivity(), response.body()!!.message)
+                        } else {
+                            myToast(requireActivity(), response.body()!!.message)
+                            AppProgressBar.hideLoaderDialog()
 
+                        }
+                    } catch (e: Exception) {
+                        AppProgressBar.hideLoaderDialog()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ResetPassResponse>, t: Throwable) {
-                progressDialog!!.dismiss()
-                myToast(requireActivity(),"Something went wrong")
+                override fun onFailure(call: Call<ResetPassResponse>, t: Throwable) {
+                    count1++
+                    if (count1 <= 3) {
+                        apiCallChangePass(confirmPassword)
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
-            }
+                    }
+                }
 
-        })
+            })
 
 
     }
@@ -309,6 +323,7 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
             }
             .show()
     }
+
     private fun changePassDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_password_change, null)
         dialog = Dialog(requireContext())
@@ -351,17 +366,13 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
             }
         }
     }
+
     private fun apiCallUpdateNameEmail(name: String, email: String) {
 
         Log.e("NAme", name)
         Log.e("email", email)
 
-        progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(requireContext())
         ApiClient.apiService.updateNameEmail(sessionManager.id.toString(), name, email)
             .enqueue(object :
                 Callback<ModelUpdateNameEmail> {
@@ -371,14 +382,13 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
                 ) {
                     if (response.code() == 500) {
                         myToast(requireActivity(), "Server Error")
-                        progressDialog!!.dismiss()
-
+                        AppProgressBar.hideLoaderDialog()
                     } else if (response.code() == 200) {
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                         alertDialogUpdated()
                         sessionManager.customerName = response.body()!!.result.customer_name
                         sessionManager.email = response.body()!!.result.email
-
+                        count2 = 0
                         customerName = sessionManager.customerName.toString()
                         this@ProfileFragment.email = sessionManager.email.toString()
 
@@ -388,21 +398,27 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
 
                     } else {
                         myToast(requireActivity(), "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
                 }
 
                 override fun onFailure(call: Call<ModelUpdateNameEmail>, t: Throwable) {
-                    progressDialog!!.dismiss()
-                    myToast(requireActivity(), "Something went wrong")
+                    count2++
+                    if (count2 <= 3) {
+                        apiCallUpdateNameEmail(name, email)
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
 
 
     }
+
     private fun updateNameEmailDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_update_name_and_email, null)
         dialog = Dialog(requireContext())
@@ -454,24 +470,15 @@ class ProfileFragment : Fragment(), UploadRequestBody.UploadCallback  {
 
     override fun onStart() {
         super.onStart()
-        if (isOnline(requireContext())){
+        if (isOnline(requireContext())) {
             //  myToast(requireActivity(), "Connected")
-        }else{
+        } else {
             val changeReceiver = NetworkChangeReceiver(context)
             changeReceiver.build()
             //  myToast(requireActivity(), "Not C")
 
         }
-//        CheckInternet().check { connected ->
-//            if (connected) {
-//             //    myToast(requireActivity(),"Connected")
-//            }
-//            else {
-//                val changeReceiver = NetworkChangeReceiver(context)
-//                changeReceiver.build()
-//                //  myToast(requireActivity(),"Check Internet")
-//            }
-//        }
+
     }
 
 }

@@ -19,12 +19,14 @@ import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.Rating
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
-class AdapterConsulted(val context: Context,  private val list: ArrayList<ResultXXX>) :
+class AdapterConsulted(val context: Context, private val list: ArrayList<ResultXXX>) :
     RecyclerView.Adapter<AdapterConsulted.MyViewHolder>() {
-   // private val filteredData = ArrayList(list)
+    // private val filteredData = ArrayList(list)
+    lateinit var sessionManager: SessionManager
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -35,23 +37,27 @@ class AdapterConsulted(val context: Context,  private val list: ArrayList<Result
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-
+        sessionManager = SessionManager(context)
         try {
             holder.appointmentDate.text = list[position].date
             holder.doctorName.text = list[position].doctor_name.toString()
 
 
-            if(ConsultedFragment.adapter=="2"){
-                if (list[position].profile_picture!=null){
-                    Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_picture}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+            if (ConsultedFragment.adapter == "2") {
+                if (list[position].profile_picture != null) {
+                    Picasso.get().load("${sessionManager.imageurl}${list[position].profile_picture}")
+                        .placeholder(R.drawable.profile).error(R.drawable.profile)
+                        .into(holder.profile);
 
                 }
             }
-            if(ConsultedFragment.adapter=="1"){
-                            if (list[position].profile_image!=null){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+            if (ConsultedFragment.adapter == "1") {
+                if (list[position].profile_image != null) {
+                    Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}")
+                        .placeholder(R.drawable.profile).error(R.drawable.profile)
+                        .into(holder.profile);
 
-            }
+                }
             }
 
 
@@ -92,9 +98,11 @@ class AdapterConsulted(val context: Context,  private val list: ArrayList<Result
                 "1" -> {
                     holder.consultationType.text = "Tele-Consultation"
                 }
+
                 "2" -> {
                     holder.consultationType.text = "Clinic-Visit"
                 }
+
                 "3" -> {
                     holder.consultationType.text = "Home-Visit"
                 }
@@ -111,7 +119,7 @@ class AdapterConsulted(val context: Context,  private val list: ArrayList<Result
 
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -127,26 +135,26 @@ class AdapterConsulted(val context: Context,  private val list: ArrayList<Result
 //    }
 
 
-        override fun getItemCount(): Int {
-            return list.size
+    override fun getItemCount(): Int {
+        return list.size
 
-        }
-
-        open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDateCom)
-            val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameCom)
-            val startTime: TextView = itemView.findViewById(R.id.tvStartTimeCom)
-            val endTime: TextView = itemView.findViewById(R.id.tvEndTimeCom)
-            val status: TextView = itemView.findViewById(R.id.tvStatusCom)
-            val consultationType: TextView = itemView.findViewById(R.id.tvConsultationTypeCan)
-            val amount: TextView = itemView.findViewById(R.id.tvTotalAmountCom)
-            val patientNameCom: TextView = itemView.findViewById(R.id.tvPatientNameCom)
-            val btnSubmitReview: Button = itemView.findViewById(R.id.btnSubmitReview)
-            val btnViewPrescription: Button = itemView.findViewById(R.id.btnViewPrescription)
-
-            // val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
-            val profile: ImageView = itemView.findViewById(R.id.imgProfileCom)
-
-
-        }
     }
+
+    open class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val appointmentDate: TextView = itemView.findViewById(R.id.tvAppointmentDateCom)
+        val doctorName: TextView = itemView.findViewById(R.id.tvDoctorNameCom)
+        val startTime: TextView = itemView.findViewById(R.id.tvStartTimeCom)
+        val endTime: TextView = itemView.findViewById(R.id.tvEndTimeCom)
+        val status: TextView = itemView.findViewById(R.id.tvStatusCom)
+        val consultationType: TextView = itemView.findViewById(R.id.tvConsultationTypeCan)
+        val amount: TextView = itemView.findViewById(R.id.tvTotalAmountCom)
+        val patientNameCom: TextView = itemView.findViewById(R.id.tvPatientNameCom)
+        val btnSubmitReview: Button = itemView.findViewById(R.id.btnSubmitReview)
+        val btnViewPrescription: Button = itemView.findViewById(R.id.btnViewPrescription)
+
+        // val endTime: TextView = itemView.findViewById(R.id.tvEndTime)
+        val profile: ImageView = itemView.findViewById(R.id.imgProfileCom)
+
+
+    }
+}

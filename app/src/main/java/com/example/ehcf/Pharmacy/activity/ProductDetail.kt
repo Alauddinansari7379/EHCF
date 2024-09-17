@@ -29,9 +29,12 @@ class ProductDetail : AppCompatActivity() {
     }
     lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
-     var subCateId = ""
+    var subCateId = ""
     var productId = ""
     var idP = ""
+    var countN = 0
+    var countN1 = 0
+    var countN2 = 0
     var productQty = ""
     var qtyList = ArrayList<ModelSpinner>()
 
@@ -46,25 +49,25 @@ class ProductDetail : AppCompatActivity() {
         idP = intent.getStringExtra("id").toString()
         productId = intent.getStringExtra("product_number").toString()
         subCateId = intent.getStringExtra("sub_category_id").toString()
-        Log.e("productId",productId)
-        Log.e("subCateId",subCateId)
+        Log.e("productId", productId)
+        Log.e("subCateId", subCateId)
         apiCallMedicineDetail()
 
         with(binding) {
             imgBack.setOnClickListener {
                 onBackPressed()
             }
-                btnAddtoCart.setOnClickListener {
+            btnAddtoCart.setOnClickListener {
                 addToCart()
             }
             radioPrice.setOnClickListener {
-                if (radioPrice.isChecked){
-                    radioMarket.isChecked=false
+                if (radioPrice.isChecked) {
+                    radioMarket.isChecked = false
                 }
             }
             radioMarket.setOnClickListener {
-                if (radioMarket.isChecked){
-                    radioPrice.isChecked=false
+                if (radioMarket.isChecked) {
+                    radioPrice.isChecked = false
                 }
             }
 
@@ -80,7 +83,8 @@ class ProductDetail : AppCompatActivity() {
             qtyList.add(ModelSpinner("9", "1"))
             qtyList.add(ModelSpinner("10", "1"))
             val adapter: ArrayAdapter<ModelSpinner?> =
-                ArrayAdapter(context, R.layout.simple_list_item,
+                ArrayAdapter(
+                    context, R.layout.simple_list_item,
                     qtyList as List<ModelSpinner?>
                 )
             spinnerQty.adapter = adapter
@@ -110,7 +114,7 @@ class ProductDetail : AppCompatActivity() {
 
         ApiClient.apiService.productsDetail(
             idP,
-         )
+        )
             .enqueue(object :
                 Callback<ModelMedicine> {
                 @SuppressLint("LogNotTimber")
@@ -129,7 +133,7 @@ class ProductDetail : AppCompatActivity() {
                         } else {
                             binding.shimmerMedicineDet.visibility = View.GONE
                             response.body()!!.result.forEach {
-                                productId=it.product_number.toString()
+                                productId = it.product_number.toString()
                                 binding.tvProductName.text = it.product_name
                                 binding.description.text = it.description
                                 binding.marketPrice.text = "₹" + it.marked_price.toString()
@@ -140,7 +144,7 @@ class ProductDetail : AppCompatActivity() {
                                         .load(sessionManager.imageurl + it.image) // image url
                                         .placeholder(R.drawable.placeholder_n) // any placeholder to load at start
                                         .error(R.drawable.error_placeholder)  // any image in case of error
-                                         .centerCrop()
+                                        .centerCrop()
                                         .into(binding.image);
 
 
@@ -161,19 +165,24 @@ class ProductDetail : AppCompatActivity() {
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
                     binding.shimmerMedicineDet.visibility = View.GONE
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallMedicineDetail()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
 
     }
+
     private fun addToCart() {
         AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.addToCart(
-            productId, sessionManager.id.toString(), productQty,"medicine"
+            productId, sessionManager.id.toString(), productQty, "medicine"
         )
             .enqueue(object :
                 Callback<ModelAddToCart> {
@@ -194,7 +203,7 @@ class ProductDetail : AppCompatActivity() {
                             myToast(context, response.body()!!.message)
                             apiCallCartList()
                             AppProgressBar.hideLoaderDialog()
-                         }
+                        }
                     } catch (e: Exception) {
                         Log.e("Exception", e.printStackTrace().toString())
                         e.printStackTrace()
@@ -203,18 +212,24 @@ class ProductDetail : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN1++
+                    if (countN1 <= 3) {
+                        addToCart()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
+
     private fun apiCallCartList() {
         // AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.cartList(
-            sessionManager.id.toString(),"medicine"
+            sessionManager.id.toString(), "medicine"
 
         )
             .enqueue(object :
@@ -243,7 +258,7 @@ class ProductDetail : AppCompatActivity() {
                             }
                             BrowseMedicine.cartQty = qty.sum().toInt().toString()
                             onBackPressed()
-                         }
+                        }
                     } catch (e: Exception) {
                         Log.e("Exception", e.printStackTrace().toString())
                         e.printStackTrace()
@@ -252,10 +267,14 @@ class ProductDetail : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN2++
+                    if (countN2 <= 3) {
+                        apiCallCartList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

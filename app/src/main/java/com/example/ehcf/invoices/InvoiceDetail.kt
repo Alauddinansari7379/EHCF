@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Fragment.MainActivity
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityInvoiceDetailBinding
 import com.example.ehcf.sharedpreferences.SessionManager
@@ -40,11 +41,11 @@ import kotlin.collections.ArrayList
 
 class InvoiceDetail : AppCompatActivity() {
     private lateinit var binding: ActivityInvoiceDetailBinding
-    private val context: Context = this@InvoiceDetail
-    var progressDialog: ProgressDialog? = null
-    var relationList = ArrayList<String>()
+    private val context = this@InvoiceDetail
+     var relationList = ArrayList<String>()
     private var permissionGranted: Boolean? = false
     private val PERMISSION_REQUEST_CODE = 1
+    private var count1 = 1
 
     var invoiceId = ""
 
@@ -136,12 +137,7 @@ class InvoiceDetail : AppCompatActivity() {
 
 
     private fun apiCallInvoiceDetial() {
-        progressDialog = ProgressDialog(this@InvoiceDetail)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+     AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.invoiceDetails(invoiceId)
             .enqueue(object : Callback<ModelInvoiceDetial> {
@@ -157,13 +153,13 @@ class InvoiceDetail : AppCompatActivity() {
                         } else if (response.body()!!.status == 0) {
 
                             myToast(this@InvoiceDetail, "${response.body()!!.message}")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvManageSlot.adapter =
                                 AdapterInvoiceDetial(this@InvoiceDetail, response.body()!!)
                             binding.rvManageSlot.adapter!!.notifyDataSetChanged()
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
 
@@ -172,28 +168,24 @@ class InvoiceDetail : AppCompatActivity() {
                                 AdapterInvoiceDetial(this@InvoiceDetail, response.body()!!)
                             binding.rvManageSlot.adapter!!.notifyDataSetChanged()
                             binding.rvManageSlot.visibility = View.VISIBLE
-                            progressDialog!!.dismiss()
-//                        binding.rvManageSlot.apply {
-//                            binding.tvNoDataFound.visibility = View.GONE
-//                            shimmerFrameLayout?.startShimmer()
-//                            binding.rvManageSlot.visibility = View.VISIBLE
-//                            binding.shimmerMySlot.visibility = View.GONE
-//                            // myToast(this@ShuduleTiming, response.body()!!.message)
-//                            adapter = AdapterSlotsList(this@MySlot, response.body()!!, this@MySlot)
-//                            progressDialog!!.dismiss()
-//
-//                        }
+                            AppProgressBar.hideLoaderDialog()
+
                         }
                     }catch (e:Exception){
                         myToast(this@InvoiceDetail, "Something went wrong")
-                         progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelInvoiceDetial>, t: Throwable) {
-                    myToast(this@InvoiceDetail, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    count1++
+                    if (count1 <= 3) {
+                        apiCallInvoiceDetial()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
 

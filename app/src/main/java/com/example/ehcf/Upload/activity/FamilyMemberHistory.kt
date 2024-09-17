@@ -12,7 +12,9 @@ import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
 import com.example.ehcf.FamailyMember.Adapter.AdapterFamilyList
 import com.example.ehcf.FamailyMember.Model.ModelFamily
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.Helper.progrossDilog
 import com.example.ehcf.R
 import com.example.ehcf.Upload.adapter.AdapterFamilyMember
 import com.example.ehcf.Upload.adapter.AdapterReportHistory
@@ -28,10 +30,10 @@ import retrofit2.Response
 
 class FamilyMemberHistory : AppCompatActivity() {
     private lateinit var binding: ActivityFamilyMemberHistoryBinding
-    var progressDialog: ProgressDialog? = null
     private lateinit var sessionManager: SessionManager
-
-
+    val context = this@FamilyMemberHistory
+    var countR = 0
+    var countR1 = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFamilyMemberHistoryBinding.inflate(layoutInflater)
@@ -43,14 +45,14 @@ class FamilyMemberHistory : AppCompatActivity() {
         }
 
 
-        if(AdapterFamilyList.familyMemberList=="1"){
-            AdapterFamilyList.familyMemberList=""
+        if (AdapterFamilyList.familyMemberList == "1") {
+            AdapterFamilyList.familyMemberList = ""
             apiCallViewAppointment()
 
         }
 
-        if(AdapterFamilyList.familyMemberList=="2"){
-            AdapterFamilyList.familyMemberList=""
+        if (AdapterFamilyList.familyMemberList == "2") {
+            AdapterFamilyList.familyMemberList = ""
             apiCallViewReport()
 
         }
@@ -66,14 +68,8 @@ class FamilyMemberHistory : AppCompatActivity() {
     }
 
 
-
     private fun apiCallViewReport() {
-         progressDialog = ProgressDialog(this@FamilyMemberHistory)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.reportHistory(
             sessionManager.id.toString(),
@@ -87,9 +83,10 @@ class FamilyMemberHistory : AppCompatActivity() {
                     try {
                         if (response.body()!!.result.isEmpty()) {
                             binding.tvNoDataFoundApp.visibility = View.GONE
-                            binding.tvNoDataFoundReport.visibility = View.VISIBLE                            // myToast(requireActivity(),"No Data Found")
+                            binding.tvNoDataFoundReport.visibility =
+                                View.VISIBLE                            // myToast(requireActivity(),"No Data Found")
                             binding.rvCancled.visibility = View.GONE
-                             progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
 
                         } else {
@@ -98,38 +95,39 @@ class FamilyMemberHistory : AppCompatActivity() {
                                 binding.tvNoDataFoundReport.visibility = View.GONE
                                 binding.recyclerView.visibility = View.VISIBLE
                                 binding.rvCancled.visibility = View.GONE
-                                adapter = AdapterReportHistory(response.body()!!, this@FamilyMemberHistory,
+                                adapter = AdapterReportHistory(
+                                    response.body()!!, this@FamilyMemberHistory,
                                 )
                             }
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
                         myToast(this@FamilyMemberHistory, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
                 }
 
 
                 override fun onFailure(call: Call<ModelGetAllReport>, t: Throwable) {
-                    myToast(this@FamilyMemberHistory, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR++
+                    if (countR <= 3) {
+                        apiCallViewReport()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
 
     private fun apiCallViewAppointment() {
-        progressDialog = ProgressDialog(this@FamilyMemberHistory)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.memberAppointmentHistory(
             sessionManager.id.toString(),
             AdapterFamilyListView.memberID
@@ -142,19 +140,19 @@ class FamilyMemberHistory : AppCompatActivity() {
                     try {
                         if (response.code() == 500) {
                             myToast(this@FamilyMemberHistory, "Server Error")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.tvNoDataFoundApp.visibility = View.VISIBLE
                             binding.tvNoDataFoundReport.visibility = View.GONE
                             // myToast(requireActivity(),"No Appointment Found")
                             binding.rvCancled.apply {
-                                 binding.recyclerView.visibility = View.GONE
-                                adapter = AdapterFamilyMember(this@FamilyMemberHistory, response.body()!!)
-                                progressDialog!!.dismiss()
+                                binding.recyclerView.visibility = View.GONE
+                                adapter =
+                                    AdapterFamilyMember(this@FamilyMemberHistory, response.body()!!)
+                                AppProgressBar.hideLoaderDialog()
 
                             }
-                            progressDialog!!.dismiss()
 
                         } else {
                             binding.rvCancled.apply {
@@ -164,7 +162,7 @@ class FamilyMemberHistory : AppCompatActivity() {
                                 binding.recyclerView.visibility = View.GONE
                                 adapter =
                                     AdapterFamilyMember(this@FamilyMemberHistory, response.body()!!)
-                                progressDialog!!.dismiss()
+                                AppProgressBar.hideLoaderDialog()
 
                             }
                         }
@@ -173,14 +171,20 @@ class FamilyMemberHistory : AppCompatActivity() {
                     } catch (e: Exception) {
                         e.printStackTrace()
                         myToast(this@FamilyMemberHistory, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
 
                     }
                 }
 
                 override fun onFailure(call: Call<ModelFamily>, t: Throwable) {
-                    myToast(this@FamilyMemberHistory, "Something went wrong Pls Try Again")
-                    progressDialog!!.dismiss()
+                    countR1++
+                    if (countR1 <= 3) {
+                        apiCallViewAppointment()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
 
                 }
 
@@ -190,7 +194,7 @@ class FamilyMemberHistory : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        AdapterFamilyListView.memberID=""
+        AdapterFamilyListView.memberID = ""
 
     }
 

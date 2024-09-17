@@ -103,7 +103,7 @@ class AppointmentDetails : AppCompatActivity() {
                         binding.tvStatus.text = response.body()!!.result.status_for_customer
                         if (response.body()!!.result.profile_image != null) {
                             Picasso.get()
-                                .load("https://ehcf.thedemostore.in/uploads/${response.body()!!.result.profile_image}")
+                                .load("${sessionManager.imageurl}${response.body()!!.result.profile_image}")
                                 .placeholder(
                                     R.drawable.profile
                                 ).error(R.drawable.profile).into(binding.imgProfile);

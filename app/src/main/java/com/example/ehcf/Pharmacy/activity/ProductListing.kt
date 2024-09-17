@@ -28,6 +28,9 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
     val binding by lazy {
         ActivityProductListingBinding.inflate(layoutInflater)
     }
+    var countN = 0
+    var countN1 = 0
+    var countN2 = 0
     lateinit var sessionManager: SessionManager
     private var click = ""
     lateinit var AdapterListing: AdapterListing
@@ -51,7 +54,10 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
             try {
                 binding.edtSearch.addTextChangedListener { str ->
                     setRecyclerViewAdapter(mainData.filter {
-                        it.product_name != null && it.product_name!!.contains(str.toString(), ignoreCase = true)
+                        it.product_name != null && it.product_name!!.contains(
+                            str.toString(),
+                            ignoreCase = true
+                        )
                     } as ArrayList<Result>)
                 }
             } catch (e: Exception) {
@@ -69,22 +75,24 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
         apiCallAllMedicineList()
         apiCallCartList()
     }
+
     @SuppressLint("SetTextI18n")
     private fun setRecyclerViewAdapter(data: ArrayList<Result>) {
         binding.recyclerview.apply {
             binding.recyclerview.apply {
                 shimmerFrameLayout?.startShimmer()
                 adapter =
-                    AdapterListing(context,data, this@ProductListing)
+                    AdapterListing(context, data, this@ProductListing)
                 binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
                 binding.tvQty.text = data.size.toString() + " Products"
 
                 binding.shimmerListing.visibility = View.GONE
-                 AppProgressBar.hideLoaderDialog()
+                AppProgressBar.hideLoaderDialog()
 
             }
         }
     }
+
     private fun apiCallAllMedicineList() {
         // AppProgressBar.showLoaderDialog(this@BrowseMedicine)
 
@@ -107,7 +115,7 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
                             AppProgressBar.hideLoaderDialog()
 
                         } else {
-                            mainData=response.body()!!.result
+                            mainData = response.body()!!.result
                             setRecyclerViewAdapter(mainData)
                             AppProgressBar.hideLoaderDialog()
 
@@ -121,10 +129,14 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
                     binding.shimmerListing.visibility = View.GONE
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallAllMedicineList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -134,7 +146,7 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
     override fun addToCart(id: String) {
         AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.addToCart(
-            id, sessionManager.id.toString(), "1","medicine"
+            id, sessionManager.id.toString(), "1", "medicine"
 
         )
             .enqueue(object :
@@ -165,9 +177,14 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
                 }
 
                 override fun onFailure(call: Call<ModelAddToCart>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
+                    countN1++
+                    if (countN1 <= 3) {
+                        addToCart(id)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -177,7 +194,7 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
         // AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.cartList(
-            sessionManager.id.toString(),"medicine"
+            sessionManager.id.toString(), "medicine"
 
         )
             .enqueue(object :
@@ -215,18 +232,23 @@ class ProductListing : AppCompatActivity(), AdapterListing.AddToCart {
                 }
 
                 override fun onFailure(call: Call<ModelMedicine>, t: Throwable) {
-                    myToast(context, "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN2++
+                    if (countN2 <= 3) {
+                        apiCallCartList()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
 
     }
+
     override fun onResume() {
         super.onResume()
-        binding.qty.text= BrowseMedicine.cartQty
+        binding.qty.text = BrowseMedicine.cartQty
     }
 
 }

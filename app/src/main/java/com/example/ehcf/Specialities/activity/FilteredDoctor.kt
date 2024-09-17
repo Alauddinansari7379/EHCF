@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.OnlineDoctor.adapter.AdapterOnlineDoctor
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
@@ -28,20 +29,21 @@ import xyz.teamgravity.checkinternet.CheckInternet
 
 class FilteredDoctor : AppCompatActivity() {
     private lateinit var binding: ActivityFilteredDoctorBinding
-    private val context: Context = this@FilteredDoctor
+    private val context = this@FilteredDoctor
     private var specialitiesID = ""
-    var progressDialog: ProgressDialog? = null
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
-
+    var count = 0
+    var count1 = 0
+    var count2 = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFilteredDoctorBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
 
-        if (sessionManager.bookingType!="1"){
-            binding.layoutOnline.visibility=View.GONE
+        if (sessionManager.bookingType != "1") {
+            binding.layoutOnline.visibility = View.GONE
         }
 
         shimmerFrameLayout = findViewById(R.id.shimmer)
@@ -64,67 +66,9 @@ class FilteredDoctor : AppCompatActivity() {
     }
 
 
-    private fun apiCallDoctor() {
-
-        progressDialog = ProgressDialog(this@FilteredDoctor)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        //  progressDialog!!.show()
-
-        val lat = "435435"
-        val lng = "54357"
-        val searchNew = ""
-        ApiClient.apiService.getAllDoctor(
-            sessionManager.latitude,
-            sessionManager.longitude,
-            searchNew
-        )
-            .enqueue(object :
-                Callback<ModelAllDoctorNew> {
-                @SuppressLint("LogNotTimber")
-                override fun onResponse(
-                    call: Call<ModelAllDoctorNew>,
-                    response: Response<ModelAllDoctorNew>
-                ) {
-                    try {
-                        if (response.body()!!.status == 1) {
-                            binding.rvAllDoctor.apply {
-
-                                adapter = AdapterAllDoctor(this@FilteredDoctor, response.body()!!)
-                                progressDialog!!.dismiss()
-                            }
-                        } else {
-                            myToast(this@FilteredDoctor, response.body()!!.message.toString())
-                            progressDialog!!.dismiss()
-                            binding.shimmer.visibility = View.GONE
-
-                        }
-                    }catch (e:Exception){
-                        myToast(this@FilteredDoctor,"Something went wrong")
-                        progressDialog!!.dismiss()
-                    }
-                }
-
-                override fun onFailure(call: Call<ModelAllDoctorNew>, t: Throwable) {
-                    myToast(this@FilteredDoctor, "${t.message}")
-                    progressDialog!!.dismiss()
-
-                }
-
-            })
-
-    }
-
     private fun apiCallOnlineDoctor() {
-        progressDialog = ProgressDialog(this@FilteredDoctor)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
 
+        AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.onlineDoctors(specialitiesID, "").enqueue(object :
             Callback<ModelOnlineDoctor> {
             @SuppressLint("LogNotTimber")
@@ -138,13 +82,13 @@ class FilteredDoctor : AppCompatActivity() {
                     if (response.body()!!.result.isEmpty()) {
                         myToast(this@FilteredDoctor, "No Online Doctor Found")
                         binding.shimmer.visibility = View.GONE
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                         binding.rvAllDoctor.apply {
                             shimmerFrameLayout?.startShimmer()
                             binding.rvAllDoctor.visibility = View.VISIBLE
                             binding.shimmer.visibility = View.GONE
                             adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         }
                     } else {
                         binding.rvAllDoctor.apply {
@@ -152,20 +96,25 @@ class FilteredDoctor : AppCompatActivity() {
                             binding.rvAllDoctor.visibility = View.VISIBLE
                             binding.shimmer.visibility = View.GONE
                             adapter = AdapterOnlineDoctor(this@FilteredDoctor, response.body()!!)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                         }
 
                     }
-                }catch (e:Exception){
-                    myToast(this@FilteredDoctor,"Something went wrong")
-                    progressDialog!!.dismiss()
+                } catch (e: Exception) {
+                    myToast(this@FilteredDoctor, "Something went wrong")
+                    AppProgressBar.hideLoaderDialog()
                 }
 
             }
 
             override fun onFailure(call: Call<ModelOnlineDoctor>, t: Throwable) {
-                myToast(this@FilteredDoctor, "Something went wrong")
-                progressDialog!!.dismiss()
+                if (count <= 3) {
+                    apiCallOnlineDoctor()
+                } else {
+                    myToast(context, t.message.toString())
+                    AppProgressBar.hideLoaderDialog()
+
+                }
 
             }
 
@@ -174,12 +123,6 @@ class FilteredDoctor : AppCompatActivity() {
 
     private fun apiCallFilteredDoctor() {
 
-        progressDialog = ProgressDialog(this@FilteredDoctor)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        //  progressDialog!!.show()
 
         Log.e("specialitiesIDAPI", "$specialitiesID")
 
@@ -195,24 +138,22 @@ class FilteredDoctor : AppCompatActivity() {
                     try {
 
                         if (response.body()!!.result.isEmpty()) {
-                        myToast(this@FilteredDoctor, "No Doctor Found")
-                        binding.shimmer.visibility = View.GONE
-
-                        progressDialog!!.dismiss()
-                    } else {
-                        binding.rvAllDoctor.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvAllDoctor.visibility = View.VISIBLE
+                            myToast(this@FilteredDoctor, "No Doctor Found")
                             binding.shimmer.visibility = View.GONE
-                            adapter = AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
-                            progressDialog!!.dismiss()
-                        }
 
-                    }
+                         } else {
+                            binding.rvAllDoctor.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAllDoctor.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                adapter =
+                                    AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
+                             }
+
+                        }
                     } catch (e: Exception) {
                         myToast(this@FilteredDoctor, "Something went wrong")
                         e.printStackTrace()
-                         progressDialog!!.dismiss()
 
                     }
 
@@ -221,22 +162,24 @@ class FilteredDoctor : AppCompatActivity() {
                 override fun onFailure(call: Call<ModelFilteredDoctor>, t: Throwable) {
                     myToast(this@FilteredDoctor, "Something went wrong")
                     binding.shimmer.visibility = View.GONE
+                    count1++
+                    if (count1 <= 3) {
+                        apiCallFilteredDoctor()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
-                    progressDialog!!.dismiss()
+                    }
 
                 }
 
             })
 
     }
+
     private fun apiCallFilteredDoctor1() {
 
-        progressDialog = ProgressDialog(this@FilteredDoctor)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-          progressDialog!!.show()
+     AppProgressBar.showLoaderDialog(context)
 
         Log.e("specialitiesIDAPI", "$specialitiesID")
 
@@ -248,41 +191,48 @@ class FilteredDoctor : AppCompatActivity() {
                     call: Call<ModelFilteredDoctor>,
                     response: Response<ModelFilteredDoctor>
                 ) {
-                    try{
-                    if (response.body()!!.result.isEmpty()) {
-                        myToast(this@FilteredDoctor, "No Doctor Found")
-                        binding.shimmer.visibility = View.GONE
-                        binding.rvAllDoctor.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvAllDoctor.visibility = View.VISIBLE
+                    try {
+                        if (response.body()!!.result.isEmpty()) {
+                            myToast(this@FilteredDoctor, "No Doctor Found")
                             binding.shimmer.visibility = View.GONE
-                            adapter = AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
-                            progressDialog!!.dismiss()
-                        }
-                        progressDialog!!.dismiss()
-                    } else {
-                        binding.rvAllDoctor.apply {
-                            shimmerFrameLayout?.startShimmer()
-                            binding.rvAllDoctor.visibility = View.VISIBLE
-                            binding.shimmer.visibility = View.GONE
-                            adapter = AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
-                            progressDialog!!.dismiss()
-                        }
+                            binding.rvAllDoctor.apply {
+                                count2=0
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAllDoctor.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                adapter =
+                                    AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
+                                AppProgressBar.hideLoaderDialog()
+                            }
+                        } else {
+                            binding.rvAllDoctor.apply {
+                                shimmerFrameLayout?.startShimmer()
+                                binding.rvAllDoctor.visibility = View.VISIBLE
+                                binding.shimmer.visibility = View.GONE
+                                adapter =
+                                    AdapterFilteredDoctor(this@FilteredDoctor, response.body()!!)
+                                AppProgressBar.hideLoaderDialog()
+                            }
 
-                    }
-                    }catch (e:Exception){
+                        }
+                    } catch (e: Exception) {
                         e.printStackTrace()
-                        myToast(this@FilteredDoctor,"Something went wrong")
-                        progressDialog!!.dismiss()
+                        myToast(this@FilteredDoctor, "Something went wrong")
+                        AppProgressBar.hideLoaderDialog()
                     }
                 }
 
                 override fun onFailure(call: Call<ModelFilteredDoctor>, t: Throwable) {
-                    myToast(this@FilteredDoctor, "Something went wrong")
-                    binding.shimmer.visibility = View.GONE
+                     binding.shimmer.visibility = View.GONE
 
-                    progressDialog!!.dismiss()
+                    count2++
+                    if (count2 <= 3) {
+                        apiCallFilteredDoctor1()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

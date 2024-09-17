@@ -14,6 +14,7 @@ import com.example.ehcf.Prescription.model.ModelPreList
 import com.example.ehcf.Prescription.model.My_model
 import com.example.ehcf.Prescription.model.ResultPrePending
 import com.example.ehcf.R
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
@@ -21,7 +22,7 @@ class AdapterPrescriptionPending(
     val context: Context, private val list: ArrayList<ResultPrePending>
 ) :
     RecyclerView.Adapter<AdapterPrescriptionPending.MyViewHolder>() {
-
+lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -33,10 +34,10 @@ class AdapterPrescriptionPending(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-
+sessionManager= SessionManager(context)
         try {
             if (list[position].profile_image!!.isNotEmpty()){
-                Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
+                Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
             }
             holder.bookingDate.text = list[position].date
             holder.specialitiesName.text = list[position].category_name.toString()

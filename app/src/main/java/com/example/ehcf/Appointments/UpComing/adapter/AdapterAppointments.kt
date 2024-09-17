@@ -22,6 +22,7 @@ import com.example.ehcf.Fragment.HomeFragment
 import com.example.ehcf.Helper.changeDateFormatNew
 import com.example.ehcf.Helper.convertTo12Hour
 import com.example.ehcf.R
+import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,10 +30,11 @@ import java.util.*
 
 class AdapterAppointments(
     val context: Context,
-     private val list: ArrayList<ResultXXXX>,
-    val showPopUp: ShowPopUp) :
+    private val list: ArrayList<ResultXXXX>,
+    val showPopUp: ShowPopUp
+) :
     RecyclerView.Adapter<AdapterAppointments.MyViewHolder>() {
-
+    lateinit var sessionManager: SessionManager
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -45,13 +47,14 @@ class AdapterAppointments(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
-
+        sessionManager = SessionManager(context)
         holder.appointmentDate.text = list[position].date
         holder.doctorName.text = list[position].doctor_name.toString()
 
-        if (list[position].profile_image!!.isNotEmpty()){
-            Picasso.get().load("https://ehcf.thedemostore.in/uploads/${list[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
-         }
+        if (list[position].profile_image!!.isNotEmpty()) {
+            Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}")
+                .placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.profile);
+        }
 
         if (list[position].member_name != null) {
             holder.tvPatientName.text = list[position].member_name
@@ -94,11 +97,13 @@ class AdapterAppointments(
 
 
             }
+
             "2" -> {
                 holder.consultationType.text = "Clinic-Visit"
 
 
             }
+
             "3" -> {
                 holder.consultationType.text = "Home-Visit"
 
@@ -136,7 +141,8 @@ class AdapterAppointments(
         holder.btnCheck.setOnClickListener {
 
             if (list[position].start_time != null) {
-                showPopUp.popupRemainingTime(list[position].date?.let { it1 -> changeDateFormatNew(it1)
+                showPopUp.popupRemainingTime(list[position].date?.let { it1 ->
+                    changeDateFormatNew(it1)
                 } + " " + list[position].start_time)
 
             }
@@ -146,7 +152,10 @@ class AdapterAppointments(
 
         }
         holder.btnJoinMeeting.setOnClickListener {
-            showPopUp.videoCall(list[position].date + "EHCF" + list[position].start_time, list[position].id)
+            showPopUp.videoCall(
+                list[position].date + "EHCF" + list[position].start_time,
+                list[position].id
+            )
 
         }
 
@@ -164,7 +173,7 @@ class AdapterAppointments(
 //
 //        }
 
-        if (HomeFragment.homeCall=="1"){
+        if (HomeFragment.homeCall == "1") {
             holder.itemView.setOnClickListener {
                 val intent = Intent(context as Activity, Appointments::class.java)
                     .putExtra("bookingId", list[position].id.toString())

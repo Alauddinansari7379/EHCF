@@ -23,6 +23,8 @@ import retrofit2.Response
 class FragmentActive : Fragment() {
     private lateinit var binding: FragmentActiveBinding
     lateinit var sessionManager: SessionManager
+    var countN4 = 0
+    var countN = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -85,10 +87,14 @@ class FragmentActive : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ModelOrderList>, t: Throwable) {
-                    myToast(requireActivity(), "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallOrderList()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -122,7 +128,8 @@ class FragmentActive : Fragment() {
 
                         } else {
                             binding.recyclerView.apply {
-                                 adapter= AdapterOrderListTest(requireContext(),response.body()!!.result)
+                                adapter =
+                                    AdapterOrderListTest(requireContext(), response.body()!!.result)
                                 AppProgressBar.hideLoaderDialog()
 
                             }
@@ -137,10 +144,14 @@ class FragmentActive : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ModelOrderList>, t: Throwable) {
-                    myToast(requireActivity(), "${t.message}")
-                    AppProgressBar.hideLoaderDialog()
-                    // progressDialog!!.dismiss()
+                    countN4++
+                    if (countN4 <= 3) {
+                        apiCallOrderTestList()
+                    } else {
+                        myToast(requireActivity(), t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })

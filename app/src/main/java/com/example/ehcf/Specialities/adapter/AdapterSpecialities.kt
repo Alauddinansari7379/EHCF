@@ -38,7 +38,7 @@ class AdapterSpecialities(val context: Context, private val list: ModelSplic,pri
         sessionManager = SessionManager(context)
 
         holder.name.text = list.result[position].category_name.toString()
-        Picasso.get().load("https://ehcf.thedemostore.in/uploads/"+list.result[position].category_image).into(holder.image)
+        Picasso.get().load("${sessionManager.imageurl}"+list.result[position].category_image).into(holder.image)
 
 
         holder.cardView.setOnClickListener {

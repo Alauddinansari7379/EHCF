@@ -26,25 +26,28 @@ class OrderDetail : AppCompatActivity() {
     }
     val context = this@OrderDetail
     lateinit var sessionManager: SessionManager
-    var orderId=""
+    var orderId = ""
+    var countN = 0
+    var countN1 = 0
+
     @SuppressLint("LogNotTimber")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         sessionManager = SessionManager(context)
 
-        orderId=intent.getStringExtra("order_id").toString()
-        Log.e("orderId",orderId)
+        orderId = intent.getStringExtra("order_id").toString()
+        Log.e("orderId", orderId)
 
-        if (slug=="test")  apiCallOrderDetailTest()else apiCallOrderDetail()
+        if (slug == "test") apiCallOrderDetailTest() else apiCallOrderDetail()
 
 
-        with(binding){
+        with(binding) {
             imgBack.setOnClickListener {
                 onBackPressed()
             }
         }
-         //apiCallOrderDetail()
+        //apiCallOrderDetail()
 
     }
 
@@ -69,14 +72,14 @@ class OrderDetail : AppCompatActivity() {
                                     context,
                                     response.body()!!.result
                                 )
-                                binding.recyclerView.layoutManager=GridLayoutManager(context,2)
+                                binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
                                 AppProgressBar.hideLoaderDialog()
                             }
-                            response.body()!!.result.forEach{
-                                binding.orderNo.text="EHCFOrder"+it.order_id.toString()
-                                binding.cost.text=it.totalCoast.toString()
-                                binding.statues.text=it.status
-                                binding.payment.text=it.payment_name
+                            response.body()!!.result.forEach {
+                                binding.orderNo.text = "EHCFOrder" + it.order_id.toString()
+                                binding.cost.text = it.totalCoast.toString()
+                                binding.statues.text = it.status
+                                binding.payment.text = it.payment_name
 
                             }
                         }
@@ -92,13 +95,20 @@ class OrderDetail : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelOrderDetMed>, t: Throwable) {
-                    myToast(context, t.message.toString())
-                    AppProgressBar.hideLoaderDialog()
+                    countN++
+                    if (countN <= 3) {
+                        apiCallOrderDetail()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })
 
     }
+
     private fun apiCallOrderDetailTest() {
         AppProgressBar.showLoaderDialog(context)
         ApiClient.apiService.orderDetailTest(orderId, slug)
@@ -120,14 +130,14 @@ class OrderDetail : AppCompatActivity() {
                                     context,
                                     response.body()!!.result
                                 )
-                                binding.recyclerView.layoutManager=GridLayoutManager(context,2)
+                                binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
                                 AppProgressBar.hideLoaderDialog()
                             }
-                            response.body()!!.result.forEach{ it ->
-                                binding.orderNo.text="EHCFOrder"+it.order_id.toString()
-                                binding.cost.text=it.totalCoast.toString()
-                                binding.statues.text=it.status
-                                binding.payment.text=it.payment_name
+                            response.body()!!.result.forEach { it ->
+                                binding.orderNo.text = "EHCFOrder" + it.order_id.toString()
+                                binding.cost.text = it.totalCoast.toString()
+                                binding.statues.text = it.status
+                                binding.payment.text = it.payment_name
 
                             }
                         }
@@ -143,8 +153,14 @@ class OrderDetail : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ModelOrderDetMed>, t: Throwable) {
-                    myToast(context, t.message.toString())
-                    AppProgressBar.hideLoaderDialog()
+                    countN1++
+                    if (countN1 <= 3) {
+                        apiCallOrderDetailTest()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })

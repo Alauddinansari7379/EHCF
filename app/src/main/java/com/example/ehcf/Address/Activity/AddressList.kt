@@ -25,11 +25,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AddressList : AppCompatActivity() {
     private val context: Context = this@AddressList
-     private var recyclerView: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private lateinit var sessionManager: SessionManager
-var count=0
-var countR=0
-  //  private var addressList = AddressListResponse("",0)
+    var count = 0
+    var countR = 0
+    //  private var addressList = AddressListResponse("",0)
 
     private lateinit var binding: ActivityAddressListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,22 +80,29 @@ var countR=0
         AppProgressBar.showLoaderDialog(context)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://ehcf.thedemostore.in/api/customer/")
+            .baseUrl("https://ehcf.in/api/customer/")
             .build()
             .create(ApiInterface::class.java)
 
-        val retrofitData = retrofitBuilder.addAddress(sessionManager.id, address, landmark, sessionManager.latitude.toString(), sessionManager.longitude.toString())
+        val retrofitData = retrofitBuilder.addAddress(
+            sessionManager.id,
+            address,
+            landmark,
+            sessionManager.latitude.toString(),
+            sessionManager.longitude.toString()
+        )
         retrofitData.enqueue(
             object : Callback<AddAddressResponse> {
                 @SuppressLint("LogNotTimber")
                 override fun onResponse(
-                    call: Call<AddAddressResponse>, response: Response<AddAddressResponse>) {
+                    call: Call<AddAddressResponse>, response: Response<AddAddressResponse>
+                ) {
 
                     Log.e("Ala", response.body()!!.message)
                     Log.e("Ala", "${response.body()!!.status}")
 
                     if (response.body()!!.status == 1) {
-                        countR=0
+                        countR = 0
                         myToast(this@AddressList, response.body()!!.message)
                         binding.layoutAddress.visibility = View.GONE
                         binding.tvArrowHide.visibility = View.GONE
@@ -126,12 +133,13 @@ var countR=0
 
             })
     }
+
     private fun apiCallGetAddressList() {
 
         AppProgressBar.showLoaderDialog(context)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://ehcf.thedemostore.in/api/customer/")
+            .baseUrl("https://ehcf.in/api/customer/")
             .build()
             .create(ApiInterface::class.java)
 
@@ -139,18 +147,19 @@ var countR=0
         retrofitData.enqueue(
             object : Callback<AddressListResponse> {
                 override fun onResponse(
-                    call: Call<AddressListResponse>, response: Response<AddressListResponse>) {
-                    count=0
-                        val recyclerView = findViewById<RecyclerView>(R.id.rvAddressList)
-                        recyclerView.apply {
-                            adapter = AdapterAddressList(context, response.body()!!)
+                    call: Call<AddressListResponse>, response: Response<AddressListResponse>
+                ) {
+                    count = 0
+                    val recyclerView = findViewById<RecyclerView>(R.id.rvAddressList)
+                    recyclerView.apply {
+                        adapter = AdapterAddressList(context, response.body()!!)
 
-                        }
+                    }
                     AppProgressBar.hideLoaderDialog()
                 }
 
                 override fun onFailure(call: Call<AddressListResponse>, t: Throwable) {
-                      count++
+                    count++
                     if (count <= 3) {
                         apiCallGetAddressList()
                     } else {

@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         requestNotificationPermission()
 
         if (sessionManager.imageurl!!.isEmpty()){
-            sessionManager.imageurl="https://ehcf.thedemostore.in/uploads/"
+            sessionManager.imageurl="https://ehcf.in/uploads/"
         }
 
 

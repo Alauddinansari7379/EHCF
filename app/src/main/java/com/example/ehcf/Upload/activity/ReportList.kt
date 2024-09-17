@@ -14,6 +14,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Appointments.Consulted.adapter.AdapterConsulted
 import com.example.ehcf.Appointments.UpComing.model.ResultXXX
 import com.example.ehcf.FamailyMember.Model.ModelFamilyList
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Upload.adapter.AdapterUploadReport
 import com.example.ehcf.Upload.model.ModelDeleteRep
@@ -26,12 +27,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
+class ReportList : AppCompatActivity(), AdapterUploadReport.DeleteReport {
     private lateinit var binding: ActivityReportListBinding
-    private val context: Context = this@ReportList
-    var progressDialog: ProgressDialog? = null
+    private val context = this@ReportList
     private lateinit var sessionManager: SessionManager
-    var data=ArrayList<ResultX>()
+    var data = ArrayList<ResultX>()
+    var count1 = 0
+    var count2 = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +48,9 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
-        binding.edtSearch.addTextChangedListener {str ->
+        binding.edtSearch.addTextChangedListener { str ->
             setRecyclerViewAdapter(data.filter {
-                it.member_name!=null && it.member_name.contains(str.toString(),ignoreCase = true)
+                it.member_name != null && it.member_name.contains(str.toString(), ignoreCase = true)
             } as ArrayList<ResultX>)
         }
 
@@ -62,75 +64,7 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
     }
 
 
-    private fun apiCallFamilyList() {
 
-
-
-        ApiClient.apiService.getFamilyList(sessionManager.id.toString())
-            .enqueue(object : Callback<ModelFamilyList> {
-                @SuppressLint("LogNotTimber")
-                override fun onResponse(
-                    call: Call<ModelFamilyList>, response: Response<ModelFamilyList>
-                ) {
-
-
-                    try {
-                        val familyList = response.body()!!
-                        if (familyList != null) {
-
-                            //spinner code start
-                            val items = arrayOfNulls<String>(familyList.result!!.size)
-
-                            for (i in familyList.result!!.indices) {
-                                items[i] = familyList.result!![i].member_name
-                            }
-                          //  progressDialog!!.dismiss()
-
-                            val adapter: ArrayAdapter<String?> =
-                                ArrayAdapter(
-                                    context,
-                                    R.layout.simple_list_item_1,
-                                    items
-                                )
-                            binding.spinnerFamily.adapter = adapter
-                            //   binding.spinnerFamily.setSelection(items.indexOf(relationId));
-                            //   Log.e("relaytion",relationId)
-
-
-
-
-                            binding.spinnerFamily.onItemSelectedListener =
-                                object : AdapterView.OnItemSelectedListener {
-                                    override fun onItemSelected(
-                                        adapterView: AdapterView<*>?,
-                                        view: View,
-                                        i: Int,
-                                        l: Long
-                                    ) {
-                                        val id = familyList.result!![i].id
-                                        val relationId = id.toString()
-                                        //   Toast.makeText(this@RegirstrationTest, "" + id, Toast.LENGTH_SHORT).show()
-                                    }
-
-                                    override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-                                }
-                        }
-
-
-                    }catch(e:Exception){
-                        e.printStackTrace()
-                        myToast(this@ReportList, "Something went wrong")
-                    }
-                }
-
-                override fun onFailure(call: Call<ModelFamilyList>, t: Throwable) {
-                    myToast(this@ReportList, "Something went wrong")
-                  //  progressDialog!!.dismiss()
-
-                }
-
-            })
-    }
     private fun setRecyclerViewAdapter(data: ArrayList<ResultX>) {
         binding.recyclerView.apply {
             binding.tvNoDataFound.visibility = View.GONE
@@ -138,13 +72,8 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
         }
     }
 
-     private fun deleteReportNew(id: String) {
-        progressDialog = ProgressDialog(this@ReportList)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+    private fun deleteReportNew(id: String) {
+        AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.deleteReport(id)
             .enqueue(object : Callback<ModelDeleteRep> {
@@ -157,26 +86,31 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
 
                         if (response.body()!!.status == 1) {
                             myToast(this@ReportList, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
                             refresh()
 
                         } else {
                             myToast(this@ReportList, response.body()!!.message)
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@ReportList, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
 
                 }
 
                 override fun onFailure(call: Call<ModelDeleteRep>, t: Throwable) {
-                    myToast(this@ReportList, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    count1++
+                    if (count1 <= 3) {
+                        deleteReportNew(id)
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
@@ -184,12 +118,7 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
     }
 
     private fun apiCallGetAllReport() {
-        progressDialog = ProgressDialog(this@ReportList)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.getReport(sessionManager.id.toString())
             .enqueue(object : Callback<ModelGetAllReport> {
@@ -201,35 +130,36 @@ class ReportList : AppCompatActivity(),AdapterUploadReport.DeleteReport {
                         if (response.body()!!.result.isEmpty()) {
                             binding.btbAddMoreReport.text = "Add Report"
                             binding.tvNoDataFound.visibility = View.VISIBLE
-                            // myToast(requireActivity(),"No Data Found")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
-                            data= response.body()!!.result
+                            data = response.body()!!.result
                             setRecyclerViewAdapter(data)
 
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         myToast(this@ReportList, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
 
                 }
 
                 override fun onFailure(call: Call<ModelGetAllReport>, t: Throwable) {
-                    myToast(this@ReportList, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    count2++
+                    if (count2 <= 3) {
+                        apiCallGetAllReport()
+                    } else {
+                        myToast(context, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
 
+                    }
                 }
 
             })
     }
-
-
-
 
 
     override fun deleteReport(id: String) {

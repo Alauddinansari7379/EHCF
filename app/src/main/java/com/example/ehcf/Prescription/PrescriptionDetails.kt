@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.currentDate
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetial
@@ -41,7 +42,6 @@ import java.util.*
 
 class PrescriptionDetails : AppCompatActivity() {
     private lateinit var binding: ActivityPrescriptionDetailsBinding
-    var progressDialog: ProgressDialog? = null
     private val context: Context = this@PrescriptionDetails
     var id = ""
     var doctorName = ""
@@ -56,6 +56,7 @@ class PrescriptionDetails : AppCompatActivity() {
     var plan = ""
     var doctorId = ""
     var followUp = ""
+    var countR4 = 0
     var dataList: ArrayList<String>? = null
     private lateinit var sessionManager: SessionManager
 
@@ -120,7 +121,7 @@ class PrescriptionDetails : AppCompatActivity() {
                 // Use 'launchPdfFromPath' if you want to use assets file (enable "fromAssets" flag) / internal directory
                 PdfViewerActivity.launchPdfFromUrl(           //PdfViewerActivity.Companion.launchPdfFromUrl(..   :: incase of JAVA
                     context,
-                    "https://ehcf.thedemostore.in/print/$id",                                // PDF URL in String format
+                    "https://ehcf.in/print/$id",                                // PDF URL in String format
                     titleName + "_Prescription",                        // PDF Name/Title in String format
                     "Prescription Save to directory",                  // If nothing specific, Put "" it will save to Downloads
                     enableDownload = true                    // This param is true by defualt.
@@ -128,7 +129,7 @@ class PrescriptionDetails : AppCompatActivity() {
             )
 
 
-//                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://ehcf.thedemostore.in/print/$id"))
+//                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://ehcf.in/print/$id"))
 //                    startActivity(browserIntent)
 
 
@@ -166,12 +167,7 @@ class PrescriptionDetails : AppCompatActivity() {
     }
 
     private fun apiCallPreDet() {
-        progressDialog = ProgressDialog(this@PrescriptionDetails)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        progressDialog!!.show()
+        AppProgressBar.showLoaderDialog(context)
 
         ApiClient.apiService.viewPrescriptionDetial(id)
             .enqueue(object : Callback<ModelPreDetJava> {
@@ -185,7 +181,7 @@ class PrescriptionDetails : AppCompatActivity() {
 
                         if (response.code() == 500) {
                             myToast(this@PrescriptionDetails, "Server Error")
-                            progressDialog!!.dismiss()
+                            AppProgressBar.hideLoaderDialog()
 
                         } else {
                             binding.recyclerView.apply {
@@ -217,7 +213,7 @@ class PrescriptionDetails : AppCompatActivity() {
 
                                     if (currentDate.toInt() > followNew.toInt()) {
                                         binding.btnBookAppointmnet.visibility = View.GONE
-                                         binding.followUpdate.setTextColor(Color.parseColor("#F44336"))
+                                        binding.followUpdate.setTextColor(Color.parseColor("#F44336"))
 
                                     }
 //                                 if (followDate=="10072023"){
@@ -243,26 +239,15 @@ class PrescriptionDetails : AppCompatActivity() {
                                     response.body()!!
                                 )
 
-                                progressDialog!!.dismiss()
+                                AppProgressBar.hideLoaderDialog()
 
                             }
-//                        binding.recyclerViewNote.apply {
-//                            adapter = AdapterPrescriptionDetialDoctorNote(
-//                                this@PrescriptionDetails,
-//                                response.body()!!
-//                            )
-//
-//                            progressDialog!!.dismiss()
-
-                            //          }
-
                             binding.recyclerViewLabTest.apply {
                                 adapter = AdapterPrescriptionDetialLabTest(
                                     this@PrescriptionDetails,
                                     response.body()!!
                                 )
 //
-//                            progressDialog!!.dismiss()
 
                             }
 
@@ -270,16 +255,22 @@ class PrescriptionDetails : AppCompatActivity() {
                         }
 
 
-                    }catch (e:java.lang.Exception){
+                    } catch (e: java.lang.Exception) {
                         myToast(this@PrescriptionDetails, "Something went wrong")
-                        progressDialog!!.dismiss()
+                        AppProgressBar.hideLoaderDialog()
                     }
 
                 }
-                override fun onFailure(call: Call<ModelPreDetJava>, t: Throwable) {
-                    myToast(this@PrescriptionDetails, t.message.toString())
-                    progressDialog!!.dismiss()
 
+                override fun onFailure(call: Call<ModelPreDetJava>, t: Throwable) {
+                    countR4++
+                    if (countR4 <= 3) {
+                        apiCallPreDet()
+                    } else {
+                        myToast(this@PrescriptionDetails, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
 
             })

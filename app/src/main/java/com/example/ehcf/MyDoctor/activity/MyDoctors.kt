@@ -8,6 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
+import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.MyDoctor.Adapter.AdapterMyDoctors
 import com.example.ehcf.MyDoctor.Model.ModelMyDoctor
@@ -33,13 +35,13 @@ class MyDoctors : AppCompatActivity(), AdapterMyDoctors.VideoCall {
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     private var mainData = ArrayList<ResultMyDoctor>()
-
+    var countR = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyDoctorsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
-
+        AdapterAllDoctor.dashboard = "1"
         shimmerFrameLayout = findViewById(R.id.shimmer)
         shimmerFrameLayout!!.startShimmer()
         binding.imgBack.setOnClickListener {
@@ -49,6 +51,7 @@ class MyDoctors : AppCompatActivity(), AdapterMyDoctors.VideoCall {
             apiCallMyDoctors()
         }
         apiCallMyDoctors()
+
 
         binding.edtSearch.addTextChangedListener { str ->
             setRecyclerViewAdapter(mainData.filter {
@@ -90,12 +93,7 @@ class MyDoctors : AppCompatActivity(), AdapterMyDoctors.VideoCall {
     }
 
     private fun apiCallMyDoctors() {
-        progressDialog = ProgressDialog(this@MyDoctors)
-        progressDialog!!.setMessage("Loading..")
-        progressDialog!!.setTitle("Please Wait")
-        progressDialog!!.isIndeterminate = false
-        progressDialog!!.setCancelable(true)
-        // progressDialog!!.show()
+
 
 
         ApiClient.apiService.myDoctors(sessionManager.id.toString())
@@ -141,8 +139,14 @@ class MyDoctors : AppCompatActivity(), AdapterMyDoctors.VideoCall {
                 }
 
                 override fun onFailure(call: Call<ModelMyDoctor>, t: Throwable) {
-                    myToast(this@MyDoctors, "Something went wrong")
-                    progressDialog!!.dismiss()
+                    countR++
+                    if (countR <= 3) {
+                        apiCallMyDoctors()
+                    } else {
+                        myToast(this@MyDoctors, t.message.toString())
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
                 }
             })
 

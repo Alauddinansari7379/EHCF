@@ -315,6 +315,7 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
                         }
 
                     } catch (e: Exception) {
+                        AppProgressBar.hideLoaderDialog()
                         e.printStackTrace()
                     }
                 }
