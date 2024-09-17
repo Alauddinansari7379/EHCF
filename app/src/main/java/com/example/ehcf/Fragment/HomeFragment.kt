@@ -662,7 +662,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
         jitsiMeetUserInfo.email = sessionManager.email
         try {
             val defaultOptions: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
-                .setServerURL(URL("https://jvc.ethicalhealthcare.in/"))
+                .setServerURL(URL("https://jitsi.ethicalhealthcare.in/"))
                 .setRoom(startTime)
                 .setAudioMuted(false)
                 .setVideoMuted(true)

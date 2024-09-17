@@ -184,6 +184,7 @@ dependencies {
     // implementation("phonepe.intentsdk.android.snapshot:IntentSDK:releaseSDK-1229827-SNAPSHOT")
     implementation 'phonepe.intentsdk.android.release:IntentSDK:2.4.1'
 
+    implementation 'org.jitsi.react:jitsi-meet-sdk:8.5.0' // Use the appropriate version
 
 
 
