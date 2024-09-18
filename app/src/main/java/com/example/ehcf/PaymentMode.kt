@@ -1,9 +1,8 @@
 package com.example.ehcf
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -17,14 +16,14 @@ import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView.Companion.membe
 import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
+import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.Pharmacy.activity.BrowseMedicine
 import com.example.ehcf.Pharmacy.model.ModelOrder
-import com.example.ehcf.OnlineDoctor.model.ModelCreateConsultation
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
+import com.example.ehcf.phonepesdk.ApiUtilities
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.myrecyview.apiclient.ApiClient
-import com.example.ehcf.phonepesdk.ApiUtilities
 import com.phonepe.intent.sdk.api.B2BPGRequestBuilder
 import com.phonepe.intent.sdk.api.PhonePe
 import com.phonepe.intent.sdk.api.PhonePeInitException
@@ -41,6 +40,7 @@ import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 import java.nio.charset.Charset
 import java.security.MessageDigest
+
 
 class PaymentMode : AppCompatActivity(), PaymentResultListener {
     private val context = this@PaymentMode
@@ -599,7 +599,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
 
     private fun apiCallCreateBookingHomeVisitOnline() {
 
-    AppProgressBar.showLoaderDialog(context)
+        AppProgressBar.showLoaderDialog(context)
         val amount = "1000"
         val paymentMode = "2"
 
@@ -694,59 +694,66 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     }
 
     private fun popUpOnline() {
-        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-            .setTitleText("Your Booking Confirmed")
-            .setConfirmText("Ok")
-            .showCancelButton(true)
-            .setConfirmClickListener { sDialog ->
-                sDialog.cancel()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                finish()
-                startActivity(intent)
-            }
+        val pDialog = SweetAlertDialog(
+            context,
+            SweetAlertDialog.SUCCESS_TYPE
+        )
+        pDialog.setTitleText("Your Booking Confirmed")
+        pDialog.setConfirmText("Ok")
+        pDialog.showCancelButton(true)
+        pDialog.setConfirmClickListener { sDialog ->
+            sDialog.cancel()
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
+            startActivity(intent)
+        }
             .setCancelClickListener { sDialog ->
                 sDialog.cancel()
             }
-            .show()
+        pDialog.setCancelable(false)
+        pDialog.show()
+
 
     }
 
     private fun popUpConsultOnline() {
-        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-            .setTitleText("Your Booking Confirmed")
-            .setConfirmText("Ok")
-            .showCancelButton(true)
-            .setConfirmClickListener { sDialog ->
-                sDialog.cancel()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                finish()
-                startActivity(intent)
-            }
+        val pDialog = SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+        pDialog.setTitleText("Your Booking Confirmed")
+        pDialog.setConfirmText("Ok")
+        pDialog.showCancelButton(true)
+        pDialog.setConfirmClickListener { sDialog ->
+            sDialog.cancel()
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
+            startActivity(intent)
+        }
             .setCancelClickListener { sDialog ->
                 sDialog.cancel()
             }
-            .show()
+        pDialog.setCancelable(false)
+        pDialog.show()
 
     }
 
     private fun popUpHomeVisitOnline() {
-        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-            .setTitleText("Your Booking Confirmed")
-            .setConfirmText("Ok")
-            .showCancelButton(true)
-            .setConfirmClickListener { sDialog ->
-                sDialog.cancel()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                finish()
-                startActivity(intent)
-            }
+        val pDialog = SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+        pDialog.setTitleText("Your Booking Confirmed")
+        pDialog.setConfirmText("Ok")
+        pDialog.showCancelButton(true)
+        pDialog.setConfirmClickListener { sDialog ->
+            sDialog.cancel()
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
+            startActivity(intent)
+        }
             .setCancelClickListener { sDialog ->
                 sDialog.cancel()
             }
-            .show()
+        pDialog.setCancelable(false)
+        pDialog.show()
 
     }
 
@@ -901,21 +908,22 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
     }
 
     private fun popUp() {
-        SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-            .setTitleText("Your Booking Confirmed")
-            .setConfirmText("Ok")
-            .showCancelButton(true)
-            .setConfirmClickListener { sDialog ->
-                sDialog.cancel()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                finish()
-                startActivity(intent)
-            }
+        val pDialog = SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+        pDialog.setTitleText("Your Booking Confirmed")
+        pDialog.setConfirmText("Ok")
+        pDialog.showCancelButton(true)
+        pDialog.setConfirmClickListener { sDialog ->
+            sDialog.cancel()
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            finish()
+            startActivity(intent)
+        }
             .setCancelClickListener { sDialog ->
                 sDialog.cancel()
             }
-            .show()
+        pDialog.setCancelable(false)
+        pDialog.show()
 
     }
 

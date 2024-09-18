@@ -31,8 +31,7 @@ import java.net.URL
 class MyDoctors : AppCompatActivity(), AdapterMyDoctors.VideoCall {
     private lateinit var binding: ActivityMyDoctorsBinding
     private val context: Context = this@MyDoctors
-    var progressDialog: ProgressDialog? = null
-    private lateinit var sessionManager: SessionManager
+     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     private var mainData = ArrayList<ResultMyDoctor>()
     var countR = 0
@@ -118,24 +117,20 @@ class MyDoctors : AppCompatActivity(), AdapterMyDoctors.VideoCall {
                         } else if (response.body()!!.result.isNotEmpty()) {
                             binding.rvAllDoctor.apply {
                                 setRecyclerViewAdapter(mainData)
-                                progressDialog!!.dismiss()
-                                binding.rvAllDoctor.adapter!!.notifyDataSetChanged()
+                                 binding.rvAllDoctor.adapter!!.notifyDataSetChanged()
                                 binding.tvNoDataFound.visibility = View.GONE
                                 shimmerFrameLayout?.startShimmer()
                                 binding.rvAllDoctor.visibility = View.VISIBLE
                                 binding.shimmer.visibility = View.GONE
-                                progressDialog!!.dismiss()
-                            }
+                             }
                         } else {
                             setRecyclerViewAdapter(mainData)
                             myToast(this@MyDoctors, "No Doctor Found")
-                            progressDialog!!.dismiss()
-                        }
+                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
                         myToast(this@MyDoctors, "Something went wrong")
-                        progressDialog!!.dismiss()
-                    }
+                     }
                 }
 
                 override fun onFailure(call: Call<ModelMyDoctor>, t: Throwable) {

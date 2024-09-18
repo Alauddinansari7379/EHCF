@@ -63,6 +63,7 @@ class AppointmentDetails : AppCompatActivity() {
                         }else
                         Log.e("Ala", "${response.body()!!}")
                         Log.e("Ala", "${response.body()!!.status}")
+                        AppProgressBar.showLoaderDialog(context)
 
                         binding.tvDate.text = response.body()!!.result.date
                         binding.tvTime.text = convertTo12Hour(response.body()!!.result.start_time)
@@ -114,6 +115,8 @@ class AppointmentDetails : AppCompatActivity() {
                     }catch (e:Exception){
                         e.printStackTrace()
                         myToast(this@AppointmentDetails, "Something went wrong")
+                        AppProgressBar.showLoaderDialog(context)
+
                     }
                 }
 

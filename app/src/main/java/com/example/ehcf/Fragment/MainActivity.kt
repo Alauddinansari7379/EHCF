@@ -261,12 +261,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.includedrawar1.tvLogOut.setOnClickListener {
-                SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure want to logout?")
-                    .setCancelText("No")
-                    .setConfirmText("Yes")
-                    .showCancelButton(true)
-                    .setConfirmClickListener { sDialog ->
+                val pDialog =  SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)//CUSTOM_IMAGE_TYPE//ERROR_TYPE //PROGRESS_TYPE
+                pDialog .setTitleText("Are you sure want to logout?")
+                pDialog .setCancelText("No")
+                pDialog .setConfirmText("Yes")
+              //  pDialog .setCustomImage(R.drawable.location)
+                pDialog .showCancelButton(false)
+                pDialog .setConfirmClickListener { sDialog ->
                         sDialog.cancel()
                         sessionManager.logout()
                         val intent = Intent(applicationContext, SignIn::class.java)
@@ -275,10 +276,11 @@ class MainActivity : AppCompatActivity() {
                         finish()
                         startActivity(intent)
                     }
-                    .setCancelClickListener { sDialog ->
+                pDialog .setCancelClickListener { sDialog ->
                         sDialog.cancel()
                     }
-                    .show()
+             //   pDialog.setCancelable(false)
+                pDialog.show()
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
 

@@ -219,9 +219,9 @@ class UpComingFragment : Fragment(), AdapterAppointments.ShowPopUp {
         if (ratingPage) {
             apiCallGetConsultationAccepted()
             //  (activity as Appointments).refresh()
-            val intent = Intent(context as Activity, Rating::class.java)
+            val intent = Intent(requireContext(), Rating::class.java)
                 .putExtra("meetingId", meetingId)
-            (context as Activity).startActivity(intent)
+            (requireContext()).startActivity(intent)
             ratingPage = false
         }
         if (refresh){
