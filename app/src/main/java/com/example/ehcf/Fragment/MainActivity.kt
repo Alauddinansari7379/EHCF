@@ -54,8 +54,13 @@ import com.example.ehcf.login.activity.SignIn
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.auth.oauth2.GoogleCredentials
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.ibrahimsn.lib.SmoothBottomBar
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
+import java.io.IOException
 
 
 class MainActivity : AppCompatActivity() {
@@ -94,7 +99,9 @@ class MainActivity : AppCompatActivity() {
         if (sessionManager.imageurl!!.isEmpty()){
             sessionManager.imageurl="https://ehcf.in/uploads/"
         }
-
+        GlobalScope.launch(Dispatchers.IO) {
+          //  Log.e("AccessToken", getAccessToken(this@MainActivity).toString())
+        }
 
          when {
             ContextCompat.checkSelfPermission(
@@ -331,6 +338,15 @@ class MainActivity : AppCompatActivity() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    @Throws(IOException::class)
+    private fun getAccessToken(context: Context): String? {
+        val googleCredentials: GoogleCredentials = GoogleCredentials
+            .fromStream(context.resources.openRawResource(R.raw.service_account))
+            .createScoped(listOf("https://www.googleapis.com/auth/cloud-platform"))
+         googleCredentials.refresh()
+        return googleCredentials.accessToken.tokenValue
     }
 
     private fun showNotificationPermissionRationale() {

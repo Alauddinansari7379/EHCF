@@ -26,7 +26,9 @@ android {
     buildFeatures {
         viewBinding = true
      }
-
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -186,6 +188,6 @@ dependencies {
 
     implementation 'org.jitsi.react:jitsi-meet-sdk:8.5.0' // Use the appropriate version
 
-
+    implementation "com.google.auth:google-auth-library-oauth2-http:1.2.2"
 
 }

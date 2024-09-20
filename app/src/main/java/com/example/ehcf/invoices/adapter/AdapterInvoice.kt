@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.R
 import com.example.ehcf.invoices.InvoiceDetail
 import com.example.ehcf_doctor.Invoice.model.ModelInvoice
+import com.example.ehcf_doctor.Invoice.model.Result
 
 
-class AdapterInvoice(val context: Context, private val list: ModelInvoice) :
+class AdapterInvoice(val context: Context, private val list: ArrayList<Result>) :
     RecyclerView.Adapter<AdapterInvoice.MyViewHolder>() {
 
 
@@ -27,14 +28,14 @@ class AdapterInvoice(val context: Context, private val list: ModelInvoice) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.SrNo.text= "${position+1}"
 
-        holder.invoiceNo.text = list.result[position].invoice_id
-        holder.date.text = list.result[position].date
-        holder.patientName.text = list.result[position].doctor_name
-//        holder.name.text = list.result[position].category_name.toString()
-//        Picasso.get().load(list.result[position].category_image).into(holder.image)
+        holder.invoiceNo.text = list[position].invoice_id
+        holder.date.text = list[position].date
+        holder.patientName.text = list[position].doctor_name
+//        holder.name.text = list[position].category_name.toString()
+//        Picasso.get().load(list[position].category_image).into(holder.image)
         holder.btnView.setOnClickListener {
             val intent = Intent(context as Activity, InvoiceDetail::class.java)
-                .putExtra("invoiceId", list.result[position].invoice_id)
+                .putExtra("invoiceId", list[position].invoice_id)
 
             context.startActivity(intent)
         }
@@ -45,7 +46,7 @@ class AdapterInvoice(val context: Context, private val list: ModelInvoice) :
 
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 

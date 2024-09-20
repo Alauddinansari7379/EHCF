@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
+import com.example.ehcf.Appointments.UpComing.adapter.AdapterAppointments
+import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -21,6 +24,7 @@ import com.example.ehcf.databinding.ActivityInvoiceBinding
 import com.example.ehcf.databinding.ActivityReportBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.ehcf_doctor.Invoice.model.ModelInvoice
+import com.example.ehcf_doctor.Invoice.model.Result
 import com.example.myrecyview.apiclient.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
@@ -40,6 +44,8 @@ class Invoice : AppCompatActivity() {
     var count1 = 0
     var mydilaog: Dialog? = null
     var selectedDate = ""
+    private var mainData = java.util.ArrayList<Result>()
+
     var shimmerFrameLayout: ShimmerFrameLayout? = null
     private lateinit var sessionManager: SessionManager
 
@@ -60,17 +66,23 @@ class Invoice : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
-        binding.imgSearch.setOnClickListener {
-            if (binding.edtSearch.text.toString().isEmpty()) {
-                binding.edtSearch.error = "Enter Patient Name"
-                binding.edtSearch.requestFocus()
-            } else {
-                selectedDate = ""
-                search = binding.edtSearch.text.toString()
-                apiCallFilterInvoiceList(search, selectedDate)
-            }
-
+        binding.edtSearch.addTextChangedListener { str ->
+            setRecyclerViewAdapter(mainData.filter {
+                it.doctor_name!=null&&it.doctor_name.contains(str.toString(), ignoreCase = true)
+            } as java.util.ArrayList<Result>)
         }
+//
+//        binding.imgSearch.setOnClickListener {
+//            if (binding.edtSearch.text.toString().isEmpty()) {
+//                binding.edtSearch.error = "Enter Patient Name"
+//                binding.edtSearch.requestFocus()
+//            } else {
+//                selectedDate = ""
+//                search = binding.edtSearch.text.toString()
+//                apiCallFilterInvoiceList(search, selectedDate)
+//            }
+//
+//        }
 
 
         val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
@@ -104,7 +116,14 @@ class Invoice : AppCompatActivity() {
 
         }
     }
+    private fun setRecyclerViewAdapter(data: java.util.ArrayList<Result>) {
+        binding.rvManageSlot.apply {
+            adapter = AdapterInvoice(this@Invoice, data)
+            binding.rvManageSlot.visibility = View.VISIBLE
+            binding.rvManageSlot.adapter!!.notifyDataSetChanged()
 
+        }
+    }
     private fun apiCallInvoiceList() {
 
 
@@ -127,7 +146,7 @@ class Invoice : AppCompatActivity() {
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvManageSlot.adapter =
-                                AdapterInvoice(this@Invoice, response.body()!!)
+                                AdapterInvoice(this@Invoice, response.body()!!.result)
                             binding.rvManageSlot.adapter!!.notifyDataSetChanged()
                             binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmerInvoice.visibility = View.GONE
@@ -135,7 +154,8 @@ class Invoice : AppCompatActivity() {
 
                         } else {
                             binding.rvManageSlot.adapter =
-                                AdapterInvoice(this@Invoice, response.body()!!)
+                                AdapterInvoice(this@Invoice, response.body()!!.result)
+                            mainData = response.body()!!.result!!
                             binding.rvManageSlot.adapter!!.notifyDataSetChanged()
                             binding.tvNoDataFound.visibility = View.GONE
                             shimmerFrameLayout?.startShimmer()
@@ -189,7 +209,7 @@ class Invoice : AppCompatActivity() {
 
                         } else if (response.body()!!.result.isEmpty()) {
                             binding.rvManageSlot.adapter =
-                                AdapterInvoice(this@Invoice, response.body()!!)
+                                AdapterInvoice(this@Invoice, response.body()!!.result)
                             binding.rvManageSlot.adapter!!.notifyDataSetChanged()
                             binding.tvNoDataFound.visibility = View.VISIBLE
                             binding.shimmerInvoice.visibility = View.GONE
@@ -199,7 +219,7 @@ class Invoice : AppCompatActivity() {
 
                         } else {
                             binding.rvManageSlot.adapter =
-                                AdapterInvoice(this@Invoice, response.body()!!)
+                                AdapterInvoice(this@Invoice, response.body()!!.result)
                             binding.rvManageSlot.adapter!!.notifyDataSetChanged()
                             binding.tvNoDataFound.visibility = View.GONE
                             shimmerFrameLayout?.startShimmer()
