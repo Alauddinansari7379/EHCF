@@ -25,23 +25,28 @@ import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 
 class Appointments : AppCompatActivity() {
-    private val context:Context=this@Appointments
-    private lateinit var sessionManager:SessionManager
-    private lateinit var binding:ActivityAppointmentsBinding
+    private val context: Context = this@Appointments
+    private lateinit var sessionManager: SessionManager
+    private lateinit var binding: ActivityAppointmentsBinding
     private lateinit var pager: ViewPager // creating object of ViewPager
     private lateinit var tab: TabLayout  // creating object of TabLayout
     private lateinit var bar: Toolbar    // creating object of ToolBar
+    var refreshNew = ""
 
     @SuppressLint("UseCompatLoadingForDrawables", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityAppointmentsBinding.inflate(layoutInflater)
+        binding = ActivityAppointmentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.imgBack.setOnClickListener {
             startActivity(Intent(this@Appointments, MainActivity::class.java))
         }
-        sessionManager= SessionManager(this)
+        refreshNew = intent.getStringExtra("refresh").toString()
+        sessionManager = SessionManager(this)
 
+        if (refreshNew=="1"){
+            refresh()
+        }
         val refreshListener = SwipeRefreshLayout.OnRefreshListener {
             overridePendingTransition(0, 0)
             finish()
@@ -82,18 +87,20 @@ class Appointments : AppCompatActivity() {
         tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 pager.currentItem = tab.position
-                when(tab.position) {
+                when (tab.position) {
                     0 -> {
                         tabs.setSelectedTabIndicatorColor(Color.parseColor("#45369F"))
-                        tabIndex=tab.position
+                        tabIndex = tab.position
                     }
+
                     1 -> {
                         tabs.setSelectedTabIndicatorColor(Color.parseColor("#3A97C5"))
-                        tabIndex=tab.position
+                        tabIndex = tab.position
                     }
+
                     2 -> {
                         tabs.setSelectedTabIndicatorColor(Color.parseColor("#FF0413"))
-                        tabIndex=tab.position
+                        tabIndex = tab.position
                     }
                 }
 
@@ -125,11 +132,12 @@ class Appointments : AppCompatActivity() {
         startActivity(Intent(this@Appointments, MainActivity::class.java))
 
     }
+
     override fun onStart() {
         super.onStart()
-        if (isOnline(this)){
+        if (isOnline(this)) {
             //  myToast(requireActivity(), "Connected")
-        }else{
+        } else {
             val changeReceiver = NetworkChangeReceiver(context)
             changeReceiver.build()
             //  myToast(requireActivity(), "Not C")
@@ -137,8 +145,9 @@ class Appointments : AppCompatActivity() {
         }
 
     }
-    companion object{
-       var tabIndex=1
+
+    companion object {
+        var tabIndex = 1
     }
 
     override fun onResume() {

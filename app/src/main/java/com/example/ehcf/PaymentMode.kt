@@ -475,6 +475,7 @@ class PaymentMode : AppCompatActivity(), PaymentResultListener {
                 ) {
                     if (response.code() == 500) {
                         myToast(this@PaymentMode, "Server Error")
+                        AppProgressBar.hideLoaderDialog()
                     } else if (response.code() == 200) {
                         popUpConsultOnline()
                         countN2 = 0

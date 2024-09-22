@@ -60,6 +60,7 @@ lateinit var sessionManager: SessionManager
                 holder.tvRatingReview.text = list.result[position].overall_ratings
                 holder.tvNoOfrating.text = list.result[position].no_of_ratings
             }
+
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
             when (list.result[position].specialist.toString()) {
                 "1" -> {

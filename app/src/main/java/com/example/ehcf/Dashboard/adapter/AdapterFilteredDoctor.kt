@@ -10,14 +10,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
+import com.example.ehcf.Dashboard.modelResponse.modelAll.DoctorX
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.squareup.picasso.Picasso
 
 
-class AdapterFilteredDoctor(val context: Context, private val list: ModelScarchByLocationAndSpc) :
+class AdapterFilteredDoctor(val context: Context, private val list: ArrayList<DoctorX>) :
     RecyclerView.Adapter<AdapterFilteredDoctor.MyViewHolder>() {
         lateinit var sessionManager: SessionManager
 
@@ -31,21 +31,28 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelScarchB
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // holder.id.text= "${position+1}"
         sessionManager= SessionManager(context)
-        if (list.result[position].profile_image!!.isNotEmpty()){
-            Picasso.get().load("${sessionManager.imageurl}${list.result[position].profile_image}").placeholder(R.drawable.profile).error(R.drawable.profile).into(holder.imgProfile);
-        }
-        holder.doctorName.text = list.result[position].doctor_name
-        holder.address.text = list.result[position].address
-        holder.exeprince.text = list.result[position].experience
-        // Picasso.get().load(list.result.doctor_list[position].category_image).into(holder.image)
+       // for (i in list[position].doctors) {
+            if ( list[position].profile_image!!.isNotEmpty()) {
+                Picasso.get().load("${sessionManager.imageurl}${list[position].profile_image}")
+                    .placeholder(R.drawable.profile).error(R.drawable.profile)
+                    .into(holder.imgProfile);
+            }
+            holder.doctorName.text = list[position].doctor_name
+            holder.address.text = list[position].address
+            holder.exeprince.text =  list[position].experience
+            holder.specialities.text=list[position].specialist
+       /// }
+         // Picasso.get().load(list.doctor_list[position].category_image).into(holder.image)
 
         holder.btnBookApp.setOnClickListener {
+            AdapterAllDoctor.dashboard="1"
             val intent = Intent(context as Activity, DoctorProfile::class.java)
-                .putExtra("doctorId", list.result[position].id)
+                .putExtra("doctorId", list[position].id.toString())
             context.startActivity(intent)
         }
 
-        when (list.result[position].specialist) {
+/*
+        when (list[position].specialist.toString()) {
             "1" -> {
                 holder.specialities.text = "PSYCHOLOGIST"
             }
@@ -107,11 +114,12 @@ class AdapterFilteredDoctor(val context: Context, private val list: ModelScarchB
 
             // Glide.with(hol der.image).load(list[position].url).into(holder.image)
         }
+*/
     }
 
 
     override fun getItemCount(): Int {
-        return list.result.size
+        return list.size
 
     }
 

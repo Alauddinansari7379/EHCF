@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             sessionManager.imageurl="https://ehcf.in/uploads/"
         }
         GlobalScope.launch(Dispatchers.IO) {
-          //  Log.e("AccessToken", getAccessToken(this@MainActivity).toString())
+            Log.e("AccessToken", getAccessToken(this@MainActivity).toString())
         }
 
          when {

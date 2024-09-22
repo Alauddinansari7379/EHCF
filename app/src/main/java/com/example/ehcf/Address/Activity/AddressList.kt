@@ -88,8 +88,9 @@ class AddressList : AppCompatActivity() {
             sessionManager.id,
             address,
             landmark,
-            sessionManager.latitude.toString(),
-            sessionManager.longitude.toString()
+            binding.edtCity.text.toString(),
+            binding.edtPinCode.text.toString(),
+
         )
         retrofitData.enqueue(
             object : Callback<AddAddressResponse> {

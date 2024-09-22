@@ -36,9 +36,8 @@ import com.example.ehcf.Appointments.UpComing.model.ModelUpComingHome
 import com.example.ehcf.Appointments.UpComing.model.ResultXXXX
 import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
+import com.example.ehcf.Dashboard.modelResponse.modelAll.DoctorX
 import com.example.ehcf.Fragment.Model.ModelNearByDoctor
-import com.example.ehcf.Fragment.Model.ResultX
-import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
@@ -88,7 +87,7 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
      private lateinit var binding: FragmentHomeBinding
     private lateinit var sessionManager: SessionManager
     var shimmerFrameLayout: ShimmerFrameLayout? = null
-    var mainData = ArrayList<ResultX>()
+    var mainData = ArrayList<DoctorX>()
     var meetingId =""
     private var mainDataNew = ArrayList<ResultXXXX>()
     var ratingPage = false
@@ -516,10 +515,11 @@ class HomeFragment : Fragment(), Listener, LocationData.AddressCallBack,AdapterA
                                 shimmerFrameLayout?.startShimmer()
                                 binding.rvAllDoctor.visibility = View.VISIBLE
                                 binding.shimmer.visibility = View.GONE
-                                 mainData = response.body()!!.result
+
+                              //   mainData = response.body()!!.result
                                 countN1=0
                                 adapter = activity?.let {
-                                    AdapterNearByDoctor(it,mainData )
+                                    AdapterNearByDoctor(it,response.body()!!.result )
                                 }
                              }
                         } else {

@@ -404,7 +404,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,
             binding.edtTitle.text.toString(),
             MultipartBody.Part.createFormData("report", file.name, body),
             RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json"),
-            AdapterFamilyListView.memberID, date
+            AdapterFamilyListView.memberID, date,""
         ).enqueue(object :
             Callback<ModelUploadReport> {
             override fun onResponse(
@@ -412,19 +412,20 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,
                 response: Response<ModelUploadReport>
             ) {
                 try {
-                    response.body()?.let {
-                        if (response.code() == 500) {
-                            myToast(this@UploadReportNew, "Server Error")
-                            AppProgressBar.hideLoaderDialog()
+                    if (response.code() == 500) {
+                        myToast(this@UploadReportNew, "Server Error")
+                        AppProgressBar.hideLoaderDialog()
 
-                        } else {
+                    }
+                    response.body()?.let {
+
                             myToast(this@UploadReportNew, response.body()!!.message)
                             refresh()
 
                             AppProgressBar.hideLoaderDialog()
-                        }
-
                     }
+                    AppProgressBar.hideLoaderDialog()
+
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
                     AppProgressBar.hideLoaderDialog()
@@ -491,7 +492,7 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,
             binding.edtTitle.text.toString(),
             MultipartBody.Part.createFormData("report", file1.name, body),
             RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json"),
-            AdapterFamilyListView.memberID, date
+            AdapterFamilyListView.memberID, date,""
         ).enqueue(object :
             Callback<ModelUploadReport> {
             override fun onResponse(
@@ -499,17 +500,15 @@ class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,
                 response: Response<ModelUploadReport>
             ) {
                 try {
-                    response.body()?.let {
-                        if (response.code() == 500) {
-                            myToast(this@UploadReportNew, "Server Error")
-                            AppProgressBar.hideLoaderDialog()
+                    if (response.code() == 500) {
+                        myToast(this@UploadReportNew, "Server Error")
+                        AppProgressBar.hideLoaderDialog()
 
-                        } else {
+                    }
+                    response.body()?.let {
                             myToast(this@UploadReportNew, response.body()!!.message)
                             refresh()
-
                             AppProgressBar.hideLoaderDialog()
-                        }
 
                     }
                 } catch (e: java.lang.Exception) {

@@ -113,6 +113,13 @@ class Rating : AppCompatActivity() {
 
             })
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(context, Appointments::class.java)
+            .putExtra("refresh", "1")
+        context.startActivity(intent)
+    }
     override fun onStart() {
         super.onStart()
         CheckInternet().check { connected ->

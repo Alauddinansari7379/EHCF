@@ -160,6 +160,7 @@ var count=0
             // Log and toast
             val msg = getString(R.string.channel_id, fcmToken)
             Log.e("Token", fcmToken)
+            sessionManager.fcmToken=fcmToken
             // Toast.makeText(requireContext(), token, Toast.LENGTH_SHORT).show()
         })
     }

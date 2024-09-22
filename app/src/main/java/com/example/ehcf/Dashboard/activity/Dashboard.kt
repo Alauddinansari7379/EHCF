@@ -1,12 +1,10 @@
 package com.example.ehcf.Dashboard.activity
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,15 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.postDelayed
 import androidx.core.widget.addTextChangedListener
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.adapter.AdapterFilteredDoctor
-import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
-import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
+import com.example.ehcf.Dashboard.modelResponse.modelAll.Doctor
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
-import com.example.ehcf.Fragment.HomeFragment
-import com.example.ehcf.Fragment.Model.ModelNearByDoctor
-import com.example.ehcf.Fragment.Model.ResultX
+import com.example.ehcf.Dashboard.modelResponse.modelAll.DoctorX
+import com.example.ehcf.Dashboard.modelResponse.modelAll.ModelAllDoctor
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -48,7 +42,7 @@ class Dashboard : AppCompatActivity() {
     var specilistId = ""
     var count = 0
     var countN = 0
-    var mainData = ArrayList<ResultX>()
+    var mainData = ArrayList<DoctorX>()
     private var specilList = ModelSpecilList();
 
 
@@ -62,16 +56,16 @@ class Dashboard : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
-
+        apiCallAllDoctor()
 
         try {
             binding.edtLocation.addTextChangedListener { str ->
                 setRecyclerViewAdapter(mainData.filter {
-                    it.clinic_address != null && it.clinic_address!!.contains(
+                    it.address!= null && it.address!!.contains(
                         str.toString(),
                         ignoreCase = true
                     )
-                } as ArrayList<ResultX>)
+                } as ArrayList<DoctorX>)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -82,13 +76,13 @@ class Dashboard : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed(200) {
             apiCallSpecialistSpinner1()
-            apiCallNearByDoctor()
+            //apiCallNearByDoctor()
 
 
         }
 
         binding.btnSignIn.setOnClickListener {
-            apiCallSearch()
+          //  apiCallSearch()
         }
     }
 
@@ -133,7 +127,13 @@ class Dashboard : AppCompatActivity() {
                                 l: Long
                             ) {
                                 val id = specilList.result!![i].id
+                                val categoryName = specilList.result!![i].categoryName
                                 specilistId = id.toString()
+                                     val pendingOrders = mainData.filter { data ->
+                                         data.specialist == categoryName
+                                    }
+                                    setRecyclerViewAdapter(pendingOrders as ArrayList)
+
                                 // Toast.makeText(this@RegirstrationTest, "" + id, Toast.LENGTH_SHORT).show()
                             }
 
@@ -150,6 +150,7 @@ class Dashboard : AppCompatActivity() {
     }
 
 
+/*
     private fun apiCallSearch() {
         AppProgressBar.showLoaderDialog(context)
         val location = binding.edtLocation.text.toString().trim()
@@ -201,13 +202,67 @@ class Dashboard : AppCompatActivity() {
             })
 
     }
+*/
+    private fun apiCallAllDoctor() {
+        AppProgressBar.showLoaderDialog(context)
+        val location = binding.edtLocation.text.toString().trim()
 
-    private fun setRecyclerViewAdapter(data: ArrayList<ResultX>) {
+        ApiClient.apiService.searchByLocation("11.854369", "32.856965","")
+            .enqueue(object :
+                Callback<ModelAllDoctor> {
+                @SuppressLint("LogNotTimber")
+                override fun onResponse(
+                    call: Call<ModelAllDoctor>,
+                    response: Response<ModelAllDoctor>
+                ) {
+                    if (response.body()!!.result.doctor_list.isEmpty()) {
+                        binding.rvAllDoctor.adapter =
+                            AdapterFilteredDoctor(this@Dashboard, mainData )
+                        //  binding.rvManageSlot.adapter!!.notifyDataSetChanged()
+                        binding.shimmer.visibility = View.GONE
+                        myToast(this@Dashboard, "No Doctor Found")
+                        AppProgressBar.hideLoaderDialog()
+
+                    } else {
+
+                        binding.shimmer.visibility = View.GONE
+                        for (i in response.body()!!.result.doctor_list) {
+                            mainData.addAll(i.doctors)
+                        }
+
+                        binding.rvAllDoctor.adapter = AdapterFilteredDoctor(this@Dashboard, mainData)
+                         AppProgressBar.hideLoaderDialog()
+
+                    }
+                }
+
+
+                override fun onFailure(
+                    call: Call<ModelAllDoctor>,
+                    t: Throwable
+                ) {
+                    count++
+                    if (count <= 3) {
+                        apiCallAllDoctor()
+                    } else {
+                        myToast(this@Dashboard, t.message.toString())
+                        binding.shimmer.visibility = View.GONE
+                        AppProgressBar.hideLoaderDialog()
+
+                    }
+                    AppProgressBar.hideLoaderDialog()
+                }
+
+            })
+
+    }
+
+    private fun setRecyclerViewAdapter(data: ArrayList<DoctorX>) {
         binding.rvAllDoctor.apply {
             shimmerFrameLayout?.startShimmer()
             binding.rvAllDoctor.visibility = View.VISIBLE
             binding.shimmer.visibility = View.GONE
-            adapter = AdapterNearByDoctor(this@Dashboard, data)
+            adapter = AdapterFilteredDoctor(this@Dashboard, data)
 
         }
     }
@@ -226,53 +281,6 @@ class Dashboard : AppCompatActivity() {
         }
     }
 
-    private fun apiCallNearByDoctor() {
-
-        ApiClient.apiService.getNearByDoctor(
-            HomeFragment.postalCodeNew,
-
-            ).enqueue(object :
-            Callback<ModelNearByDoctor> {
-            @SuppressLint("LogNotTimber", "SuspiciousIndentation")
-            override fun onResponse(
-                call: Call<ModelNearByDoctor>,
-                response: Response<ModelNearByDoctor>
-            ) {
-                try {
-                    if (response.code() == 500) {
-                        myToast(this@Dashboard, "Unable to fetch nearest doctor")
-                    } else if (response.body()!!.status == 1) {
-                        mainData = response.body()!!.result
-                        setRecyclerViewAdapter(mainData)
-                    } else {
-                        binding.shimmer.visibility = View.GONE
-
-                        myToast(this@Dashboard, response.body()!!.message.toString())
-                        //  progressDialog!!.dismiss()
-                    }
-                } catch (e: Exception) {
-                    Log.e("Exception", e.printStackTrace().toString())
-                    e.printStackTrace()
-                }
-            }
-
-            override fun onFailure(call: Call<ModelNearByDoctor>, t: Throwable) {
-                myToast(this@Dashboard, "${t.message}")
-                countN++
-                if (countN <= 3) {
-                    apiCallNearByDoctor()
-                } else {
-                    myToast(this@Dashboard, t.message.toString())
-                    binding.shimmer.visibility = View.GONE
-                    AppProgressBar.hideLoaderDialog()
-
-                }
-                AppProgressBar.hideLoaderDialog()
-            }
-
-        })
-
-    }
 
 
 

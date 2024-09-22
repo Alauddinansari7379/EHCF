@@ -10,6 +10,7 @@ import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Dashboard.modelResponse.SearchbyLocationRes
+import com.example.ehcf.Dashboard.modelResponse.modelAll.ModelAllDoctor
 import com.example.ehcf.Diagnostic.model.ModelTestList
 import com.example.ehcf.FamailyMember.Model.*
 import com.example.ehcf.Fragment.Model.ModelNearByDoctor
@@ -90,8 +91,8 @@ interface ApiInterface {
         @Field("customer id") customer_id: Int,
         @Field("address") address: String,
         @Field("landmark") landmark: String,
-        @Field("lat") lat: String,
-        @Field("lng") lng: String,
+        @Field("city") city: String,
+        @Field("pincode") pincode: String,
     ): Call<AddAddressResponse>
 
 
@@ -107,13 +108,12 @@ interface ApiInterface {
         @Field("password") password: String,
     ): Call<ResetPassResponse>
 
-    @FormUrlEncoded
     @POST("get_nearest_doctors")
     fun searchByLocation(
-        @Field("lat") lat: String,
-        @Field("lng") lng: String,
-        @Field("search") search: String,
-    ): Call<SearchbyLocationRes>
+        @Query("lat") lat: String,
+        @Query("lng") lng: String,
+        @Query("search") search: String,
+    ): Call<ModelAllDoctor>
 
     @GET("get_doctor_categories")
     fun getPhotos(): Call<ModelSplic>
@@ -332,6 +332,7 @@ interface ApiInterface {
         @Part("desc") desc: RequestBody,
         @Query("member_id") member_id: String,
         @Query("date") date: String,
+        @Query("ayusynk_report") ayusynk_report: String,
     ): Call<ModelUploadReport>
 
     @Headers("Accept: application/json")

@@ -12,8 +12,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
-import com.example.ehcf.Fragment.Model.ModelNearByDoctor
 import com.example.ehcf.Fragment.Model.ResultX
 import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
