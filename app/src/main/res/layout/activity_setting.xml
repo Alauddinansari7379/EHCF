@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Setting">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="55dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Settings"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAddFamilyMember"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/baseline_person_add_24"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:padding="5dp"
+                    android:text="Add Family Member"
+                    android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.viewpager.widget.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#686868">
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFamilyMemberList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/baseline_format_list_numbered_24"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:padding="5dp"
+                    android:text="Family Member List"
+                    android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.viewpager.widget.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#686868">
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAddressBook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/ic_baseline_location_on_24"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:padding="5dp"
+                    android:text="Address Book"
+                    android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.viewpager.widget.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#686868">
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPrivacyPolicies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/ic_baseline_fingerprint_24"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:padding="5dp"
+                    android:text="Privacy policies"
+                    android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.viewpager.widget.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#686868">
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/ic_baseline_logout_24"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:padding="5dp"
+                    android:text="LOGOUT"
+                    android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.viewpager.widget.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#686868">
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                 >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFaqCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/ic_baseline_question_mark_24"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    android:padding="5dp"
+                    android:text="FAQ Categories"
+                    android:textColor="#686868"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.viewpager.widget.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="#686868">
+
+                </androidx.viewpager.widget.ViewPager>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

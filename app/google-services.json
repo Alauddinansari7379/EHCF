@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "779322195377",
+    "project_id": "ehcfpatient-5f2b5",
+    "storage_bucket": "ehcfpatient-5f2b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779322195377:android:b95b562981cfb8cac09190",
+        "android_client_info": {
+          "package_name": "com.Amtech.ehcfpatient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfYGP4xIb8spKUMJ30jHg3DWEv8VjSUvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

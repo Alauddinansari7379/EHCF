@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawelTest"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+
+
+            <!--    <ScrollView-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content">-->
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:orientation="vertical"-->
+            <!--            android:layout_height="wrap_content">-->
+
+            <!--        </LinearLayout>-->
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="230dp"
+        android:layout_height="180dp"
+        android:background="@drawable/logonew">
+
+    </androidx.appcompat.widget.AppCompatImageView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/tvDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/dashboard"
+                    android:foregroundGravity="bottom"
+                    android:padding="5dp"
+                    android:text="Dashboard"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvAppointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/appointments"
+                    android:padding="5dp"
+                    android:text="Appointments"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvPrescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/appointments"
+                    android:padding="5dp"
+                    android:text="Prescription"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvMyDoctor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/mydoctor"
+                    android:padding="5dp"
+                    android:text="My Doctors"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/tvMyReport"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="20dp"-->
+            <!--                android:layout_marginTop="20dp">-->
+
+            <!--                <androidx.appcompat.widget.AppCompatTextView-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:background="?android:attr/selectableItemBackground"-->
+            <!--                    android:drawableLeft="@drawable/myreport"-->
+            <!--                    android:padding="5dp"-->
+            <!--                    android:text="My Reports"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="15dp"-->
+            <!--                    android:textStyle="bold">-->
+
+            <!--                </androidx.appcompat.widget.AppCompatTextView>-->
+            <!--            </LinearLayout>-->
+
+            <LinearLayout
+                android:id="@+id/tvInvoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/invoice"
+                    android:padding="5dp"
+                    android:text="Invoices"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvRefunds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/refunds"
+                    android:padding="5dp"
+                    android:text="Refunds"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tvDiagnostic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/refunds"
+                    android:padding="5dp"
+                    android:text="Diagnostic"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tvMedicine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/refunds"
+                    android:padding="5dp"
+                    android:text="Pharmacy"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvProfileSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/profilesetting"
+                    android:padding="5dp"
+                    android:text="Profile Settings"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tvAyuSynk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:text="AyuSynk"
+                    android:drawableLeft="@drawable/profilesetting">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/Report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/reportIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:src="@drawable/invoice" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/reportIcon"
+                    android:text="Report"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/reportArrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="25dp"
+                    android:src="@drawable/icn_next_arrow" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/reportLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/_F8F8F8"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/invoice"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/AddReport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:text="Add Report"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@drawable/baseline_format_list_numbered_24"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/reportList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:drawableTint="@color/main_color"
+                        android:gravity="center"
+                        android:text="Report List"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/orderIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="25dp"
+                    android:src="@drawable/mydoctor" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/orderIcon"
+                    android:text="Family Member"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/orderArrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="25dp"
+                    android:src="@drawable/icn_next_arrow" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/orderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/_F8F8F8"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_person_add_24"
+                        android:drawableTint="@color/main_color"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/AddFamilyList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:gravity="center"
+                        android:drawableTint="@color/main_color"
+                        android:text="Add Family Member"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/baseline_format_list_numbered_24"
+                        android:drawableTint="@color/main_color"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/familyMemberList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:gravity="center"
+                        android:drawableTint="@color/main_color"
+                        android:text="Family Member List"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvPasswordChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/passwordchange"
+                    android:padding="5dp"
+                    android:text="Password Change"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvPrivacyTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/privacyterms"
+                    android:padding="5dp"
+                    android:text="Privacy &amp; Terms"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <!--</LinearLayout>-->
+                <!--    </ScrollView>-->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tvLogOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:drawableLeft="@drawable/ic_baseline_logout_24"
+                    android:drawableTint="@color/main_color"
+                    android:padding="5dp"
+                    android:text="Logout"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
+

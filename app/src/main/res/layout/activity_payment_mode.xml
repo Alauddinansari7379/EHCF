@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PaymentMode">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="55dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Select Payment Mode"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRazorPay"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:elevation="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/online_pay">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="Razor pay"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPhonePay"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:elevation="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/phonepay">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="Phone pay"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCashOnDelivery"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:elevation="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/cashondelivery">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="Cash on Delivery"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardFreeOfCost"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:elevation="5dp"
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/cashondelivery">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="Free of Cost"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--<LinearLayout-->
+            <!--    android:layout_width="match_parent"-->
+            <!--    android:layout_height="wrap_content">-->
+            <!--    <TextView-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:text="Preferred Payment Methods"-->
+            <!--        android:textStyle="bold"-->
+            <!--        android:layout_marginLeft="10dp"-->
+            <!--        android:textColor="@color/black">-->
+
+            <!--    </TextView>-->
+            <!--</LinearLayout>-->
+            <!--    <androidx.cardview.widget.CardView-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_marginLeft="10dp"-->
+            <!--        android:layout_marginRight="10dp"-->
+            <!--        android:layout_height="60dp"-->
+            <!--        android:layout_marginTop="10dp"-->
+            <!--        app:cardCornerRadius="10dp">-->
+
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            android:orientation="horizontal">-->
+
+            <!--            <ImageView-->
+            <!--                android:layout_width="40dp"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:layout_marginLeft="20dp"-->
+            <!--                android:background="@drawable/phonepay"-->
+            <!--                android:layout_gravity="center">-->
+            <!--            </ImageView>-->
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="UPI - PhonePe"-->
+            <!--                android:layout_marginLeft="10dp"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textStyle="bold">-->
+
+            <!--            </TextView>-->
+            <!--        </LinearLayout>-->
+            <!--    </androidx.cardview.widget.CardView>-->
+            <!--    <LinearLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_marginTop="10dp"-->
+            <!--        android:layout_height="wrap_content">-->
+            <!--        <TextView-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="Cards, UPI &amp; More"-->
+            <!--            android:textStyle="bold"-->
+            <!--            android:layout_marginLeft="10dp"-->
+            <!--            android:textColor="@color/black">-->
+
+            <!--        </TextView>-->
+            <!--    </LinearLayout>-->
+            <!--    <androidx.cardview.widget.CardView-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_marginLeft="10dp"-->
+            <!--        android:layout_marginRight="10dp"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_marginTop="10dp"-->
+            <!--        app:cardCornerRadius="10dp">-->
+
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            android:orientation="vertical">-->
+            <!--<LinearLayout-->
+            <!--    android:layout_width="wrap_content"-->
+            <!--    android:layout_height="wrap_content">-->
+
+            <!--            <ImageView-->
+            <!--                android:layout_width="40dp"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:layout_marginLeft="20dp"-->
+            <!--                android:background="@drawable/creditcard"-->
+            <!--                android:layout_gravity="center">-->
+            <!--            </ImageView>-->
+            <!--    <LinearLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:orientation="vertical">-->
+            <!--        <TextView-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="Card"-->
+            <!--            android:textSize="15sp"-->
+            <!--            android:layout_marginLeft="10dp"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:textStyle="bold">-->
+
+            <!--        </TextView>-->
+            <!--        <TextView-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="Visa, Master Card, RuPay &amp; More"-->
+            <!--            android:layout_marginLeft="10dp"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:textStyle="bold">-->
+            <!--        </TextView>-->
+            <!--    </LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--                <View-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="1dp"-->
+            <!--                    android:layout_marginTop="10dp"-->
+            <!--                    android:background="#DCD9D9">-->
+
+            <!--                </View>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content">-->
+
+            <!--                <ImageView-->
+            <!--                    android:layout_width="40dp"-->
+            <!--                    android:layout_height="40dp"-->
+            <!--                    android:layout_marginLeft="20dp"-->
+            <!--                    android:background="@drawable/upi"-->
+            <!--                    android:layout_gravity="center">-->
+            <!--                </ImageView>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="vertical">-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="UPI"-->
+            <!--                        android:textSize="15sp"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+
+            <!--                    </TextView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="Pay with installed app, or use others"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+            <!--                    </TextView>-->
+            <!--                </LinearLayout>-->
+
+            <!--            </LinearLayout>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:gravity="center"-->
+            <!--                android:layout_marginRight="5dp"-->
+            <!--                android:layout_marginLeft="5dp"-->
+            <!--                android:layout_marginTop="15sp"-->
+            <!--                android:orientation="horizontal">-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_marginRight="5dp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <androidx.cardview.widget.CardView-->
+            <!--                        android:layout_width="70dp"-->
+            <!--                        android:layout_height="70dp"-->
+            <!--                        app:cardCornerRadius="10dp"-->
+            <!--                        >-->
+
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:gravity="center"-->
+            <!--                            android:orientation="vertical">-->
+
+            <!--                            <ImageView-->
+            <!--                                android:layout_width="35dp"-->
+            <!--                                android:layout_height="35dp"-->
+            <!--                                android:padding="5dp"-->
+            <!--                                android:src="@drawable/googlepay"  />-->
+
+            <!--                        </LinearLayout>-->
+
+            <!--                    </androidx.cardview.widget.CardView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_marginTop="15dp"-->
+            <!--                        android:gravity="center"-->
+            <!--                        android:textStyle="bold"-->
+            <!--                        android:textSize="12dp"-->
+            <!--                        android:layout_marginBottom="5dp"-->
+            <!--                        android:text="Google pay"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        />-->
+
+            <!--                </LinearLayout>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_marginRight="5dp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <androidx.cardview.widget.CardView-->
+            <!--                        android:layout_width="70dp"-->
+            <!--                        android:layout_height="70dp"-->
+            <!--                        app:cardCornerRadius="10dp"-->
+            <!--                        >-->
+
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:gravity="center"-->
+            <!--                            android:orientation="vertical">-->
+
+            <!--                            <ImageView-->
+            <!--                                android:layout_width="35dp"-->
+            <!--                                android:layout_height="35dp"-->
+            <!--                                android:padding="5dp"-->
+            <!--                                android:src="@drawable/phonepay1"  />-->
+
+            <!--                        </LinearLayout>-->
+
+            <!--                    </androidx.cardview.widget.CardView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_marginTop="15dp"-->
+            <!--                        android:gravity="center"-->
+            <!--                        android:textStyle="bold"-->
+            <!--                        android:textSize="12dp"-->
+            <!--                        android:layout_marginBottom="5dp"-->
+            <!--                        android:text="Phone pay"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        />-->
+
+            <!--                </LinearLayout>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_marginRight="5dp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <androidx.cardview.widget.CardView-->
+            <!--                        android:layout_width="70dp"-->
+            <!--                        android:layout_height="70dp"-->
+            <!--                        app:cardCornerRadius="10dp"-->
+            <!--                        >-->
+
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:gravity="center"-->
+            <!--                            android:orientation="vertical">-->
+
+            <!--                            <ImageView-->
+            <!--                                android:layout_width="35dp"-->
+            <!--                                android:layout_height="35dp"-->
+            <!--                                android:padding="5dp"-->
+            <!--                                android:src="@drawable/paytm"  />-->
+
+            <!--                        </LinearLayout>-->
+
+            <!--                    </androidx.cardview.widget.CardView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_marginTop="15dp"-->
+            <!--                        android:gravity="center"-->
+            <!--                        android:textStyle="bold"-->
+            <!--                        android:textSize="12dp"-->
+            <!--                        android:layout_marginBottom="5dp"-->
+            <!--                        android:text="Paytm"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        />-->
+
+            <!--                </LinearLayout>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_marginRight="5dp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:orientation="vertical"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <androidx.cardview.widget.CardView-->
+            <!--                        android:layout_width="70dp"-->
+            <!--                        android:layout_height="70dp"-->
+            <!--                        app:cardCornerRadius="10dp"-->
+            <!--                        >-->
+
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:gravity="center"-->
+            <!--                            android:orientation="vertical">-->
+
+            <!--                            <ImageView-->
+            <!--                                android:layout_width="35dp"-->
+            <!--                                android:layout_height="35dp"-->
+            <!--                                android:padding="5dp"-->
+            <!--                                android:src="@drawable/upi"  />-->
+
+            <!--                        </LinearLayout>-->
+
+            <!--                    </androidx.cardview.widget.CardView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_marginTop="15dp"-->
+            <!--                        android:gravity="center"-->
+            <!--                        android:textStyle="bold"-->
+            <!--                        android:textSize="12dp"-->
+            <!--                        android:layout_marginBottom="5dp"-->
+            <!--                        android:text="Others"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        />-->
+
+            <!--                </LinearLayout>-->
+
+            <!--            </LinearLayout>-->
+
+
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="#DCD9D9">-->
+
+            <!--            </View>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_height="wrap_content">-->
+
+            <!--                <ImageView-->
+            <!--                    android:layout_width="40dp"-->
+            <!--                    android:layout_height="40dp"-->
+            <!--                    android:layout_marginLeft="20dp"-->
+            <!--                    android:background="@drawable/netbanking"-->
+            <!--                    android:layout_gravity="center">-->
+            <!--                </ImageView>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="vertical">-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="Netbanking"-->
+            <!--                        android:textSize="15sp"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+
+            <!--                    </TextView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="All Indian banks"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+            <!--                    </TextView>-->
+            <!--                </LinearLayout>-->
+
+            <!--            </LinearLayout>-->
+
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="#DCD9D9">-->
+
+            <!--            </View>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_height="wrap_content">-->
+
+            <!--                <ImageView-->
+            <!--                    android:layout_width="40dp"-->
+            <!--                    android:layout_height="40dp"-->
+            <!--                    android:layout_marginLeft="20dp"-->
+            <!--                    android:background="@drawable/netbanking"-->
+            <!--                    android:layout_gravity="center">-->
+            <!--                </ImageView>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="vertical">-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="Wallet"-->
+            <!--                        android:textSize="15sp"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+
+            <!--                    </TextView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="MobikWlk &amp; More"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+            <!--                    </TextView>-->
+            <!--                </LinearLayout>-->
+
+            <!--            </LinearLayout>-->
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="#DCD9D9">-->
+
+            <!--            </View>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_height="wrap_content">-->
+
+            <!--                <ImageView-->
+            <!--                    android:layout_width="40dp"-->
+            <!--                    android:layout_height="40dp"-->
+            <!--                    android:layout_marginLeft="20dp"-->
+            <!--                    android:background="@drawable/netbanking"-->
+            <!--                    android:layout_gravity="center">-->
+            <!--                </ImageView>-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:orientation="vertical">-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="Pay Later"-->
+            <!--                        android:textSize="15sp"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+
+            <!--                    </TextView>-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="Simpl,LazyPay,ICIC &amp; More"-->
+            <!--                        android:layout_marginLeft="10dp"-->
+            <!--                        android:textColor="@color/black"-->
+            <!--                        android:textStyle="bold">-->
+            <!--                    </TextView>-->
+            <!--                </LinearLayout>-->
+
+            <!--            </LinearLayout>-->
+
+            <!--        </LinearLayout>-->
+            <!--    </androidx.cardview.widget.CardView>-->
+            <!--    <LinearLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:gravity="bottom"-->
+            <!--        android:layout_marginRight="10dp"-->
+            <!--        android:layout_marginLeft="10dp"-->
+            <!--        android:layout_marginBottom="5dp"-->
+            <!--        android:layout_marginTop="10dp"-->
+            <!--        android:layout_gravity="bottom"-->
+            <!--        android:orientation="horizontal">-->
+
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:gravity="center"-->
+            <!--            android:layout_weight="2"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            android:orientation="vertical">-->
+
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textStyle="bold"-->
+            <!--                android:text="80$">-->
+            <!--            </TextView>-->
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:text="View details">-->
+            <!--            </TextView>-->
+            <!--        </LinearLayout>-->
+
+            <!--        <androidx.appcompat.widget.AppCompatButton-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="Pay Now"-->
+            <!--            android:layout_weight="1"-->
+            <!--            android:backgroundTint="#A3C8DF"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:layout_gravity="bottom"-->
+            <!--            android:textAllCaps="false">-->
+
+            <!--        </androidx.appcompat.widget.AppCompatButton>-->
+
+            <!--    </LinearLayout>-->
+
+            <!--    <TextView-->
+            <!--        android:id="@+id/text_home"-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_marginStart="8dp"-->
+            <!--        android:layout_marginTop="8dp"-->
+            <!--        android:layout_marginEnd="8dp"-->
+            <!--        android:textAlignment="center"-->
+            <!--        android:visibility="gone"-->
+            <!--        android:textSize="20sp"-->
+            <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--        app:layout_constraintStart_toStartOf="parent"-->
+            <!--        app:layout_constraintTop_toTopOf="parent" />-->
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

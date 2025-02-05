@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Address.Activity.AddressList">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="55dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Address List"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:src="?android:attr/selectableItemBackground"
+                android:layout_marginTop="20dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAddAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_baseline_add_24"
+                    android:text="Add Address"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvArrowHide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_baseline_arrow_drop_down_24"
+                    android:text="Hide"
+                    android:visibility="gone"
+                    android:layout_marginStart="10dp"
+                    android:drawableTint="#F44336"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="#F44336"
+                    android:textSize="16dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+<LinearLayout
+    android:id="@+id/layoutAddress"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="Address">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="*"
+                    android:textColor="#E91E63">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/edtEnterAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/corner"
+                    android:gravity="start"
+                    android:hint="Enter Address"
+                    android:inputType="textMultiLine"
+                    android:padding="10dp"
+                    android:textSize="15dp">
+
+                </EditText>
+
+            </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp">
+
+        <EditText
+            android:id="@+id/edtLandmark"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/corner"
+            android:hint="Landmark"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="15dp">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="#9F367A"
+                android:text="Submit"
+                android:textAllCaps="false"
+                app:cornerRadius="8dp">
+
+            </com.google.android.material.button.MaterialButton>
+</LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginEnd="10dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:drawableRight="@drawable/ic_baseline_edit_24"-->
+<!--                    android:drawableTint="#868686"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:text="16-2-705/8.NH65 Judges Colony, New Malakpet, Hyderabad, Telangana  500036, India, NH65, Judges Colony, New Malakpet, Hyderabad, Telangana  500036, India"-->
+<!--                    android:textColor="#686868"-->
+<!--                    android:textStyle="bold">-->
+
+<!--                </TextView>-->
+<!--            </LinearLayout>-->
+
+<!--            <androidx.viewpager.widget.ViewPager-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:background="#686868">-->
+
+<!--            </androidx.viewpager.widget.ViewPager>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="10dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:drawableRight="@drawable/ic_baseline_edit_24"-->
+<!--                    android:drawableTint="#868686"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:text="98,near Babu Medicals,Maruhaapdiyar Nagar,Madurai Tamil Nadu 625016, india"-->
+<!--                    android:textColor="#686868"-->
+<!--                    android:textStyle="bold">-->
+
+<!--                </TextView>-->
+<!--            </LinearLayout>-->
+
+<!--            <androidx.viewpager.widget.ViewPager-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:background="#686868">-->
+
+<!--            </androidx.viewpager.widget.ViewPager>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="10dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:drawableRight="@drawable/ic_baseline_edit_24"-->
+<!--                    android:drawableTint="#868686"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:text="RXP6+59P,Ruiru.kenya"-->
+<!--                    android:textColor="#686868"-->
+<!--                    android:textStyle="bold">-->
+
+<!--                </TextView>-->
+<!--            </LinearLayout>-->
+
+<!--            <androidx.viewpager.widget.ViewPager-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:background="#686868">-->
+
+<!--            </androidx.viewpager.widget.ViewPager>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="10dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:drawableRight="@drawable/ic_baseline_edit_24"-->
+<!--                    android:drawableTint="#868686"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:text="Nishat Harwan Rd,Rainawari, Srinagar,191123"-->
+<!--                    android:textColor="#686868"-->
+<!--                    android:textStyle="bold">-->
+
+<!--                </TextView>-->
+<!--            </LinearLayout>-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAddressList"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

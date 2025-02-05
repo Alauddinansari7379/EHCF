@@ -1,0 +1,40 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+        }
+        maven {
+            url 'https://www.jitpack.io'
+        }
+        maven {
+            url = "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-snapshots"
+        }
+
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+        }
+        maven {
+            url 'https://www.jitpack.io'
+        }
+        maven
+                {
+
+                    url = "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-snapshots"
+                    url = "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-android"
+                }
+    }
+}
+rootProject.name = "EHCF"
+include ':app'
+include ':ayusynksdk'
+

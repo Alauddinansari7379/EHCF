@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Upload.activity.UploadReportNew">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="55dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Upload Report"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="2dp"
+            app:cardCornerRadius="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Submit Your Medical Report"
+                android:textColor="@color/main_color"
+                android:textSize="12dp"
+                android:textStyle="bold">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewNew"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+             >
+
+        </androidx.appcompat.widget.AppCompatImageView>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view"
+        android:layout_width="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/accept"
+        android:visibility="gone"
+        android:layout_height="50dp"
+        android:gravity="center">
+
+    </androidx.appcompat.widget.AppCompatImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+         <LinearLayout
+            android:id="@+id/layoutCamera"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+             <LinearLayout
+                 android:id="@+id/layoutCameraNew"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/main_color"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/camera"
+                    android:backgroundTint="@color/white" />
+
+            </LinearLayout>
+             <LinearLayout
+                 android:id="@+id/layoutCameraGreen"
+                 android:layout_width="30dp"
+                 android:layout_height="30dp"
+                 android:visibility="gone"
+                 android:background="@drawable/circle"
+                 android:backgroundTint="@color/green"
+                 android:gravity="center">
+
+                 <androidx.appcompat.widget.AppCompatImageView
+                     android:layout_width="20dp"
+                     android:layout_height="20dp"
+                     android:background="@drawable/accept"
+                     />
+
+             </LinearLayout>
+
+             <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Camera">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutGallery"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/layoutGalleryNew"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/main_color"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/GalleryImageGreen"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_menu_gallery"
+                    android:backgroundTint="@color/white" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutGalleryGreen"
+                android:layout_width="30dp"
+                android:visibility="gone"
+                android:layout_height="30dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/green"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                     android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/accept"
+                     />
+
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gallery">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutPDF"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/layoutPDFNew"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/main_color"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/pdf"
+                    android:backgroundTint="@color/white" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutPDFGreen"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                android:background="@drawable/circle"
+                android:backgroundTint="@color/green"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/accept"
+                    />
+
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PDF">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+        </LinearLayout>
+     </LinearLayout>
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report For Self"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"
+        android:textSize="12sp">
+
+    </androidx.appcompat.widget.AppCompatTextView>
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkSelf"
+        android:layout_width="wrap_content"
+        android:checked="true"
+        android:clickable="false"
+        android:layout_height="wrap_content">
+
+    </androidx.appcompat.widget.AppCompatCheckBox>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+             <LinearLayout
+                android:id="@+id/layoutFamilyMemeber"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                 android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Report For Family Member"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/main_color"
+                    android:textStyle="bold"
+                    android:textSize="12sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/corner"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSlotTimingFamily"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:text="Report Date"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/corner"
+                    android:hint="DD/MM/YYYY"
+                    android:inputType="text"
+                    android:maxLength="10"
+                    android:padding="10dp"
+                    android:textSize="14sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:text="Report Name"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_marginRight="10dp"
+                android:background="@drawable/corner">
+
+                <EditText
+                    android:id="@+id/edtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/corner"
+                    android:hint="Enter Report Name"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textSize="14sp">
+
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#A3C8DF"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    app:cornerRadius="8dp">
+
+                </com.google.android.material.button.MaterialButton>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#9F367A"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    app:cornerRadius="8dp">
+
+                </com.google.android.material.button.MaterialButton>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNoDataFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="No Report Found"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+    </LinearLayout>
+
+</LinearLayout>
+

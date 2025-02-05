@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".Profile.activity.ProfileFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Profile"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </androidx.appcompat.widget.Toolbar>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userProfile"
+                    android:layout_width="@dimen/_95sdp"
+                    android:layout_height="@dimen/_95sdp"
+                    android:elevation="@dimen/_10sdp"
+                    android:src="@drawable/profile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cameraBtn"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/bg_reound_white"
+                    android:elevation="@dimen/_10sdp"
+                    android:padding="@dimen/_6sdp"
+                    android:src="@drawable/ic_baseline_edit_24"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/userProfile"
+                    app:layout_constraintEnd_toEndOf="@+id/userProfile"
+                    app:layout_constraintStart_toStartOf="@+id/userProfile"
+                    app:layout_constraintTop_toBottomOf="@+id/userProfile"
+                    app:tint="@color/_324754" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/layoutBtnUpload"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUpload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="Save"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    >
+
+                </com.google.android.material.button.MaterialButton>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="(Your wallet balance $ 00)"
+                    android:textColor="@color/main_color"
+                    android:textSize="15sp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/corner"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:text="Menpani pooluy"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:textSize="14sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="100dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/india"></androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/corner"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:text="Menpani pooluy"
+                    android:textSize="14sp"
+                    >
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/corner"
+                    android:inputType="textEmailAddress"
+                    android:padding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="ranautban007@gmail.com"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    >
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="#9F367A"
+                android:text="Update Name &amp; Email"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                app:cornerRadius="8dp">
+
+            </com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/main_color"
+                android:text="Change Password"
+                android:textAllCaps="false"
+                app:cornerRadius="8dp">
+
+            </com.google.android.material.button.MaterialButton>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

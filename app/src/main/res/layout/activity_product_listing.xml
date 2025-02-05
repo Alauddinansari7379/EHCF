@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Pharmacy.activity.ProductListing">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <LinearLayout
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/main_color"
+            android:elevation="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="18dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toTopOf="@+id/appCompatImageView">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                android:textStyle="bold">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/cart"
+            android:tint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Medicine List"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="2"
+            android:background="@drawable/corner"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:drawablePadding="@dimen/_5sdp"
+            android:drawableTint="@color/main_color"
+            android:hint="Search for Medicine"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColorHint="@color/black"
+            android:textSize="15dp">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diabetic Medicine"
+                    android:textColor="@color/main_color"
+                    android:textSize="@dimen/_10sdp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvQty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/main_color"
+                    android:textSize="@dimen/_7sdp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+            </LinearLayout>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_listing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/shimmer_effect_listing">
+
+                    </include>
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

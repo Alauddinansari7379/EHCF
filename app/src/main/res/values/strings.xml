@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">MCF Patient</string>
+    <string name="title_activity_nagivation_bar">NagivationBar</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="channel_id" translatable="false">EHCF-channel</string>
+    <string name="channel_name" translatable="false">EHCF</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_bootom_navigation">BootomNavigation</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_bootom_test">BootomTest</string>
+    <string name="title_activity_prescription">Prescription</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_navigation_test">NavigationTest</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="select_module_label">Select Module</string>
+    <string name="ble_fragment_label">AyuSynkBleSdk</string>
+    <string name="recordheart">recordheart</string>
+    <string name="connect_fragment_label">Connect Fragment</string>
+    <string name="ota_fragment_label">Update AyuDevice</string>
+    <string name="usb_fragment_label">AyuSynkUsbSdk</string>
+    <string name="lbl_select_date">Select Date</string>
+    <string name="tv_invalidDateMessage">Invalid Date</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="select_module_help"><b>Please select which type of device do you have?</b>\n\n For <b>AyuSynk:</b> Select BLE MODULE\n For <b>AyuSynk connection via Dongle:</b> Select USB MODULE\n For <b>AyuLynk</b>: Select USB MODULE</string>
+    <string name="ble_module">BLE Module</string>
+    <string name="usb_module">USB Module</string>
+    <string name="text_notification_enabled">Notification Enabled</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="device_disconnected">Device disconnected</string>
+    <string name="device_connected">Device connected</string>
+    <string name="device_strength">Connection: %1$s</string>
+    <string name="onlineLiveText">%1$s Online Streaming</string>
+    <string name="shareUrl">Share Url</string>
+    <string name="generate_report">Generate Report</string>
+    <string name="share_reports">Share reports</string>
+    <string name="logsText">%1$s Logs</string>
+    <string name="share_logs">Share logs</string>
+
+    <string name="ota_message">What\'s New \n %1$s</string>
+    <string name="no_updates">No updates</string>
+    <string name="check_update">Check for update</string>
+    <string name="device_update">Update device</string>
+    <string name="cancel">Cancel</string>
+    <string name="test_ota">Enable test ota</string>
+    <string name="upload_started">Upload started</string>
+    <string name="upload_complete">Upload Completed</string>
+    <string name="upload_error">Upload error %1$s</string>
+    <string name="upload_progress">Uploading %1$d</string>
+    <string name="cancel_update">Cancel update</string>
+    <string name="LiveStream" />
+
+
+    \\
+    <string name="BTconnFail">Connection Failed</string>
+    <string name="BTConnected">Device Connected</string>
+    <string name="BTDisConnected">Disconnect</string>
+    <string name="sBTdevNF">"Bluetooth device not found!"</string>
+    <string name="sBTstaNF">Status: Bluetooth not found</string>
+    <string name="BTEnable">Bluetooth enabled</string>
+    <string name="sBTturON">Bluetooth turned on</string>
+    <string name="BTisON">Bluetooth is already on</string>
+    <string name="sEnabled">Bluetooth ON</string>
+    <string name="sDisabled">Bluetooth OFF</string>
+    <string name="sBTdisabl">Bluetooth disabled</string>
+    <string name="BTnotOn">Please turned on Bluetooth</string>
+    <string name="lt_bluetooth_status">Bluetooth status</string>
+    <string name="BTturOff">Bluetooth turned off</string>
+    <string name="cConnet">Connecting…</string>
+    <string name="ErrSockCrea">Socket creation failed</string>
+    <string name="DisStart">Scanning started</string>
+    <string name="show_paired_devices">Show Paired Devices</string>
+    <string name="DisStop">Scanning stopped</string>
+    <string name="status">"Status: "</string>
+    <string name="discover_new_devices">Discover new device</string>
+
+</resources>

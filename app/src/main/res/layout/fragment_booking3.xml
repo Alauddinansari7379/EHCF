@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragment.BookingFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="What Do You Want To Do"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="15dp"
+                android:backgroundTint="#E7EDF5"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shuffle"
+                        android:backgroundTint="@color/main_color">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tele Consultation"
+                        android:textColor="@color/main_color"
+                        android:textSize="15sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Under 30 Mins"
+                        android:textSize="12sp">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/ladydoctor"
+                        android:cropToPadding="true">
+
+                    </androidx.constraintlayout.utils.widget.ImageFilterView>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnConsultDoctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="2dp"
+                    android:backgroundTint="@color/main_color"
+                    android:gravity="center"
+                    android:text="Book Now"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white">
+
+                </androidx.appcompat.widget.AppCompatButton>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="15dp"
+                android:backgroundTint="#E7EDF5"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shuffle"
+                        android:backgroundTint="@color/main_color">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clinic Visit"
+                        android:textColor="@color/main_color"
+                        android:textSize="15sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your Health is our concerns"
+                        android:textSize="12sp">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/appointmentcalander"
+                        android:cropToPadding="true">
+
+                    </androidx.constraintlayout.utils.widget.ImageFilterView>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBookAppointment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="2dp"
+                    android:backgroundTint="@color/main_color"
+                    android:gravity="center"
+                    android:text="Book Now"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white">
+
+                </androidx.appcompat.widget.AppCompatButton>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="15dp"
+                android:backgroundTint="#E7EDF5"
+                app:cardCornerRadius="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shuffle"
+                        android:backgroundTint="@color/main_color">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Home Visit"
+                        android:textColor="@color/main_color"
+                        android:textSize="15sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hospital At Home"
+                        android:textSize="12sp">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/hosiptalathome"
+                        android:cropToPadding="true">
+
+                    </androidx.constraintlayout.utils.widget.ImageFilterView>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnHomeVisit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="2dp"
+                    android:backgroundTint="@color/main_color"
+                    android:gravity="center"
+                    android:text="Book Now"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white">
+
+                </androidx.appcompat.widget.AppCompatButton>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

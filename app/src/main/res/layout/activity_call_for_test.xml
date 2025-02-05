@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Diagnostic.TestList">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Test Lists"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <LinearLayout
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/main_color"
+            android:elevation="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="18dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/appCompatImageView">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                android:textStyle="bold">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/cart"
+            android:tint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/corner"
+            android:backgroundTint="@color/main_color"
+            android:drawableStart="@drawable/ic_baseline_phone_enabled_24"
+            android:drawablePadding="@dimen/_5sdp"
+            android:drawableTint="@color/white"
+            android:inputType="text"
+            android:padding="@dimen/_10sdp"
+            android:text="please Call For Test Booking"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp">
+
+        </androidx.appcompat.widget.AppCompatButton>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="2"
+            android:background="@drawable/corner"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/main_color"
+            android:hint="Search test name"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColorHint="@color/black"
+            android:textSize="15dp">
+
+        </EditText>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMyOrder"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="#ECD9E9"
+            app:cardCornerRadius="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="My Orders"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@drawable/ordernew"
+                    android:layout_marginStart="5dp"
+                    android:backgroundTint="@color/black">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMyCart"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:backgroundTint="#ECD9E9"
+            app:cardCornerRadius="10dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="My Cart"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@drawable/cart"
+                    android:layout_marginStart="5dp"
+                    android:backgroundTint="@color/black">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="#DEDCDC"
+        android:orientation="horizontal">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circulesvg"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/sugar_blood_level">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Diabetic"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circulesvg"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/thyroid">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Thyroid"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circulesvg"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/kidney">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kidney"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circulesvg"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/kidney">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fever"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circulesvg"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/kidney">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Skin"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circulesvg"
+                        android:gravity="center">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/kidney">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cancer"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:text="Test List"
+        android:textColor="@color/main_color"
+        android:textSize="14sp"
+        android:textStyle="bold">
+
+    </androidx.appcompat.widget.AppCompatTextView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_test"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_effect_listing">
+
+            </include>
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+</LinearLayout>
+

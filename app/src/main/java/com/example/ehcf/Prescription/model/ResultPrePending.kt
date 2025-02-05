@@ -1,0 +1,30 @@
+package com.example.ehcf.Prescription.model
+
+data class ResultPrePending(
+    val category_name: String?=null,
+    val comments: Any,
+    val consultation_type: String,
+    val created_at: String,
+    val customer_comments: Any,
+    val customer_rating: String,
+    val date: String,
+    val doctor_id: String,
+    val doctor_name: String?=null,
+    val end_time: String?=null,
+    val id: String,
+    val member_name: String,
+    val customer_name: String,
+    val patient_id: String,
+    val payment_mode: String,
+    val phone_number: String,
+    val profile_image: String,
+    val rating: String,
+    val rtest: String,
+    val slot_id: String,
+    val specialist: String,
+    val start_time: String?=null,
+    val status: String?=null,
+    val time: String,
+    val total: String,
+    val updated_at: String
+)

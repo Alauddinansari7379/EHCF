@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".CreateSlot.activity.MyAvailableSlot">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="55dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="40dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="?actionBarItemBackground"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Available Slots"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Slots For-"
+            android:layout_marginLeft="10dp"
+            android:textColor="#686868"
+            android:textStyle="bold">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20-01-2022"
+            android:textColor="@color/black"
+            android:textStyle="bold">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSelectDate"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="10dp"
+                android:backgroundTint="#EC4C4C">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Date"
+                        android:layout_marginLeft="15dp"
+                        android:layout_gravity="end"
+                        android:textColor="@color/white"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="@color/white"
+                        android:drawableRight="@drawable/ic_baseline_calendar_month_24"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSelectDateFollowUp"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:cardCornerRadius="10dp"
+                android:backgroundTint="#EC4C4C">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select Date"
+                        android:layout_marginLeft="15dp"
+                        android:layout_gravity="end"
+                        android:textColor="@color/white"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="@color/white"
+                        android:drawableRight="@drawable/ic_baseline_calendar_month_24"
+                        android:textStyle="bold">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Booking For"
+                android:layout_marginEnd="5dp"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lLayoutNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/corner"
+            android:minHeight="40dp"
+            android:orientation="horizontal">
+
+            <pl.utkala.searchablespinner.SearchableSpinner
+                android:id="@+id/spinnerFamily"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:autofillHints="sdsd"
+                app:closeText="Close"
+                app:dialogTitle="Select State" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutFamilyMemeber"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Booking For Family Member"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/corner"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSlotTimingFamily"
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+     </LinearLayout>
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSlotTiming"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+
+
+
+
+
+</LinearLayout>

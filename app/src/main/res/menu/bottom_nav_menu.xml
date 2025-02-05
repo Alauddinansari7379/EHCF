@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/fragment_Home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home"/>
+
+
+    <item
+        android:id="@+id/fragment_prescription"
+        android:icon="@drawable/invoice"
+        android:title="Prescription"/>
+    <item
+        android:id="@+id/fragment_booking"
+        android:icon="@drawable/appointments"
+        android:title="Booking"/>
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/profilesetting"
+        android:title="Profile"/>
+</menu>

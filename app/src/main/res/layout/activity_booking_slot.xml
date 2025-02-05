@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CreateSlot.activity.Payment">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            android:src="?android:attr/selectableItemBackground">
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRegistration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Payment"
+            android:textColor="@color/black"
+            android:textStyle="bold">
+        </androidx.appcompat.widget.AppCompatTextView>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="15sp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="15dp"
+
+            android:elevation="5dp"
+            android:backgroundTint="#E3E8E7"
+
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+
+
+                <LinearLayout
+                    android:id="@+id/layoutDateFromDilog"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_height="40dp"
+                    >
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDateFromDilog"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Slot Details"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:layout_marginStart="5dp"
+                            android:text="Slot Date-"
+                            android:textColor="@color/black" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvSlotDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="27-01-2023"
+                            android:textColor="@color/black" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:layout_marginStart="5dp"
+                            android:text="Slot Time-"
+                            android:textColor="@color/black" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvSlotTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="09:30"
+                            android:textColor="@color/black" />
+
+                    </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="Consultation fee: 1000"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:text="Title">-->
+
+<!--        </androidx.appcompat.widget.AppCompatTextView>-->
+
+<!--    <androidx.appcompat.widget.AppCompatTextView-->
+
+<!--        android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="*"-->
+<!--            android:textColor="#E91E63">-->
+
+<!--    </androidx.appcompat.widget.AppCompatTextView>-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginRight="10dp">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/edtTitle"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:background="@drawable/corner"-->
+<!--            android:hint="Title"-->
+<!--            android:inputType="text"-->
+<!--            android:padding="10dp"-->
+<!--            android:textSize="15dp">-->
+
+<!--        </EditText>-->
+
+<!--    </LinearLayout>-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:text="Description">-->
+
+<!--        </androidx.appcompat.widget.AppCompatTextView>-->
+
+<!--    <androidx.appcompat.widget.AppCompatTextView-->
+
+<!--        android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="*"-->
+<!--            android:textColor="#E91E63">-->
+
+<!--    </androidx.appcompat.widget.AppCompatTextView>-->
+
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginRight="10dp">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/edtDescription"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:background="@drawable/corner"-->
+<!--            android:hint="Description"-->
+<!--            android:inputType="text"-->
+<!--            android:padding="10dp"-->
+<!--            android:textSize="15dp">-->
+
+<!--        </EditText>-->
+
+<!--    </LinearLayout>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Payment"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

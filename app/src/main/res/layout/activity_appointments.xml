@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Appointments.Appointments">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:background="?actionBarItemBackground"
+            android:src="@drawable/ic_baseline_arrow_back_24">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                 android:textStyle="bold"
+                android:layout_marginStart="-10dp"
+                android:textColor="@color/black"
+                android:text="Appointments">
+            </androidx.appcompat.widget.AppCompatTextView>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:background="?actionBarItemBackground"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_notifications_24"
+                android:text="Appointments">
+            </androidx.appcompat.widget.AppCompatImageView>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgLogout"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
+                android:padding="2dp"
+                android:tint="@color/black"
+                android:visibility="gone"
+                android:backgroundTint="@color/black"
+                android:background="?actionBarItemBackground"
+                android:src="@drawable/ic_baseline_logout_24"
+                android:text="Appointments">
+            </androidx.appcompat.widget.AppCompatImageView>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        app:tabIndicatorColor="@color/main_color"
+        app:tabIndicatorGravity="center"
+        android:background="@drawable/tabcorner"
+        android:layout_margin="10dp"
+        android:backgroundTint="#E7EDF5"
+        app:tabIndicatorHeight="40dp"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabIndicator="@drawable/tabcorner"
+        app:tabSelectedTextColor="@color/white"
+        android:layout_height="40dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextColor="@android:color/black" />
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+    </androidx.viewpager.widget.ViewPager>
+    </LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
