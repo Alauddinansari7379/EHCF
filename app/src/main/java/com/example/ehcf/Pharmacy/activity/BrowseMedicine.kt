@@ -14,7 +14,7 @@ import com.example.ehcf.Pharmacy.model.ModelMedicine
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityBrowseMedicineBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback

@@ -1,24 +1,11 @@
 package com.example.ehcf.report
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import com.example.ehcf.Helper.myToast
-import com.example.ehcf.Prescription.adapter.AdapterPrescribed
-import com.example.ehcf.Prescription.model.ModelPrescribed
-import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityReportBinding
-import com.example.ehcf.databinding.ActivityReportViewBinding
-import com.example.ehcf.report.adapter.AdapterAppReport
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
-import com.giphy.sdk.analytics.GiphyPingbacks.context
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import rezwan.pstu.cse12.youtubeonlinestatus.recievers.NetworkChangeReceiver
 import xyz.teamgravity.checkinternet.CheckInternet
 

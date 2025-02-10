@@ -9,17 +9,8 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityImageUploadBinding
-import com.example.ehcf.report.adapter.AdapterAppReport
-import com.example.myrecyview.apiclient.ApiClient
 import com.google.android.material.snackbar.Snackbar
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream

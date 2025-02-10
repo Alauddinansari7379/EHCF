@@ -2,11 +2,9 @@ package com.example.ehcf.Prescription
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,21 +12,17 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.currentDate
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetial
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetialDiagonsis
-import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetialDoctorNote
 import com.example.ehcf.Prescription.adapter.AdapterPrescriptionDetialLabTest
 import com.example.ehcf.Prescription.model.ModelPreDetJava
-import com.example.ehcf.R
 import com.example.ehcf.Specialities.activity.DoctorProfile
 import com.example.ehcf.databinding.ActivityPrescriptionDetailsBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
-import com.giphy.sdk.analytics.GiphyPingbacks.context
+import com.example.ehcf.retrofit.ApiClient
 import com.rajat.pdfviewer.PdfViewerActivity
 import retrofit2.Call
 import retrofit2.Callback

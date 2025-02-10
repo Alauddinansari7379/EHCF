@@ -14,15 +14,13 @@ import com.example.ehcf.Diagnostic.model.Result
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Pharmacy.activity.BrowseMedicine
-import com.example.ehcf.Pharmacy.activity.CartMedicine
 import com.example.ehcf.Pharmacy.activity.Orders
-import com.example.ehcf.Pharmacy.adapter.AdapterListing
 import com.example.ehcf.Pharmacy.model.ModelAddToCart
 import com.example.ehcf.Pharmacy.model.ModelMedicine
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityCallForTestBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback

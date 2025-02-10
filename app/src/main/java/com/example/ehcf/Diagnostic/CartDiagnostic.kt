@@ -3,8 +3,6 @@ package com.example.ehcf.Diagnostic
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.app.ProgressDialog
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -27,9 +25,8 @@ import com.example.ehcf.Pharmacy.adapter.AdapterCartDiagnostic
 import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityCartDiagnosticBinding
-import com.example.ehcf.databinding.ActivityCartMedicineBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

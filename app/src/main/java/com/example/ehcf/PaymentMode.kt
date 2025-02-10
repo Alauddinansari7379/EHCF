@@ -2,7 +2,6 @@ package com.example.ehcf
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -23,7 +22,7 @@ import com.example.ehcf.Prescription.PrescriptionDetails
 import com.example.ehcf.databinding.ActivityPaymentModeBinding
 import com.example.ehcf.phonepesdk.ApiUtilities
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.phonepe.intent.sdk.api.B2BPGRequestBuilder
 import com.phonepe.intent.sdk.api.PhonePe
 import com.phonepe.intent.sdk.api.PhonePeInitException

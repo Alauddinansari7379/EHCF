@@ -1,7 +1,6 @@
 package com.example.ehcf.AyuSynk.NewUI
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -45,13 +44,12 @@ import com.example.ehcf.R
 import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.databinding.FragmentRecordHeartSoundBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
-import java.util.*
 
 
 class RecordHeartSound : Fragment(), AyuDeviceListener, AdapterView.OnItemSelectedListener,

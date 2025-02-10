@@ -1,7 +1,6 @@
 package com.example.ehcf.report
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,17 +9,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
-import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentViewReport2Binding
-import com.example.ehcf.databinding.FragmentViewReportBinding
-import com.example.ehcf.report.activity.AddReport
 import com.example.ehcf.report.activity.ReportMain
-import com.example.ehcf.report.adapter.AdapterAppReport
 import com.example.ehcf.report.adapter.AdapterViewReport
 import com.example.ehcf.report.model.ModelGetTest
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

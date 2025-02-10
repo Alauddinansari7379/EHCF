@@ -1,19 +1,14 @@
 package com.example.ehcf.Specialities.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.ehcf.CreateSlot.Adapter.AdapterFamilyListView
-import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
@@ -24,7 +19,7 @@ import com.example.ehcf.Specialities.model.ModelConsaltation
 import com.example.ehcf.Specialities.model.ModelDoctorProfile
 import com.example.ehcf.databinding.ActivityDoctorProfileBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback

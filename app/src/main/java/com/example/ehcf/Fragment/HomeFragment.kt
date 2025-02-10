@@ -38,7 +38,6 @@ import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
 import com.example.ehcf.Fragment.Model.ModelNearByDoctor
 import com.example.ehcf.Fragment.Model.ResultX
-import com.example.ehcf.Fragment.adapter.AdapterAppointmentsHome
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.isOnline
 import com.example.ehcf.Helper.myToast
@@ -48,7 +47,7 @@ import com.example.ehcf.Specialities.activity.FilteredDoctor
 import com.example.ehcf.Specialities.activity.Specialities
 import com.example.ehcf.databinding.FragmentHomeBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

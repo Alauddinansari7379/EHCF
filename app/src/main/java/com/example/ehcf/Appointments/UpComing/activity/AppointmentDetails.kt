@@ -2,7 +2,6 @@ package com.example.ehcf.Appointments.UpComing.activity
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,7 @@ import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAppointmentDetailsBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,7 +62,7 @@ class AppointmentDetails : AppCompatActivity() {
                         }else
                         Log.e("Ala", "${response.body()!!}")
                         Log.e("Ala", "${response.body()!!.status}")
-                        AppProgressBar.showLoaderDialog(context)
+                        AppProgressBar.hideLoaderDialog()
 
                         binding.tvDate.text = response.body()!!.result.date
                         binding.tvTime.text = convertTo12Hour(response.body()!!.result.start_time)
@@ -115,7 +114,7 @@ class AppointmentDetails : AppCompatActivity() {
                     }catch (e:Exception){
                         e.printStackTrace()
                         myToast(this@AppointmentDetails, "Something went wrong")
-                        AppProgressBar.showLoaderDialog(context)
+                        AppProgressBar.hideLoaderDialog()
 
                     }
                 }

@@ -2,7 +2,6 @@ package com.example.ehcf.report.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
@@ -20,13 +19,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.ehcf.Fragment.test.*
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
-import com.example.ehcf.Prescription.model.ModelPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentViewReportBinding
 import com.example.ehcf.report.adapter.AdapterAppReport
 import com.example.ehcf.report.model.ModelGetTest
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

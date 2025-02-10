@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
@@ -33,7 +32,7 @@ import com.example.ehcf.Upload.model.ModelUploadReport
 import com.example.ehcf.databinding.ActivityUploadReportNewBinding
 import com.example.ehcf.report.activity.AddReport
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import id.zelory.compressor.Compressor
@@ -54,7 +53,6 @@ import java.io.FileOutputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UploadReportNew : AppCompatActivity(), UploadRequestBody.UploadCallback,
     AdapterFamilyListView.CheckBox {

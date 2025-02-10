@@ -2,41 +2,31 @@ package com.example.ehcf.invoices
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.DownloadManager
-import android.app.ProgressDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.databinding.ActivityInvoiceDetailBinding
 import com.example.ehcf.sharedpreferences.SessionManager
 import com.example.ehcf_doctor.Invoice.adapter.AdapterInvoiceDetial
-import com.example.ehcf_doctor.Invoice.model.ModelInvoice
 import com.example.ehcf_doctor.Invoice.model.ModelInvoiceDetial
-import com.example.myrecyview.apiclient.ApiClient
-import com.rajat.pdfviewer.PdfRendererView
-import com.rajat.pdfviewer.PdfViewerActivity
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.OutputStream
-import java.util.*
 import kotlin.collections.ArrayList
 
 class InvoiceDetail : AppCompatActivity() {

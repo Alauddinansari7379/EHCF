@@ -1,8 +1,6 @@
 package com.example.ehcf.RatingAndReviews
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -12,14 +10,13 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ehcf.Appointments.Appointments
-import com.example.ehcf.Appointments.UpComing.activity.UpComingFragment
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.model.ModelRating
 import com.example.ehcf.databinding.ActivityRatingBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

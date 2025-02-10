@@ -1,19 +1,11 @@
 package com.example.ehcf.Upload.activity
 
-import android.R
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.ehcf.Appointments.Consulted.adapter.AdapterConsulted
-import com.example.ehcf.Appointments.UpComing.model.ResultXXX
-import com.example.ehcf.FamailyMember.Model.ModelFamilyList
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Upload.adapter.AdapterUploadReport
@@ -22,7 +14,7 @@ import com.example.ehcf.Upload.model.ModelGetAllReport
 import com.example.ehcf.Upload.model.ResultX
 import com.example.ehcf.databinding.ActivityReportListBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

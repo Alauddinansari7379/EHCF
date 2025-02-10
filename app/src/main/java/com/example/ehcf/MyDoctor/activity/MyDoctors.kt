@@ -1,7 +1,6 @@
 package com.example.ehcf.MyDoctor.activity
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -17,7 +16,7 @@ import com.example.ehcf.MyDoctor.Model.ResultMyDoctor
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityMyDoctorsBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions

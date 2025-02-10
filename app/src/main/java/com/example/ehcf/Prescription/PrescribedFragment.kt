@@ -1,9 +1,7 @@
 package com.example.ehcf.Prescription
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +14,11 @@ import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.Prescription.adapter.AdapterPrescribed
 import com.example.ehcf.Prescription.model.ModelPrescribed
-import com.example.ehcf.Prescription.model.ResultPrePending
 import com.example.ehcf.Prescription.model.ResultPrescribed
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentPrescribedBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback

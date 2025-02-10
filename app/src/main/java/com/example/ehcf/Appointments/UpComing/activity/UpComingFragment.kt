@@ -1,15 +1,12 @@
 package com.example.ehcf.Appointments.UpComing.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.support.wearable.view.RecyclerViewMergeAdapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,11 +28,8 @@ import com.example.ehcf.R
 import com.example.ehcf.RatingAndReviews.Rating
 import com.example.ehcf.databinding.FragmentUpComingBinding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.jitsi.meet.sdk.*
 import retrofit2.Call
 import retrofit2.Callback

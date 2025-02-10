@@ -3,9 +3,7 @@ package com.example.ehcf.Registration.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -25,12 +23,9 @@ import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.Registration.ModelResponse.ModelGender
 import com.example.ehcf.Registration.ModelResponse.ModelOTP
-import com.example.ehcf.Registration.ModelResponse.ModelOTPResponse
-import com.example.ehcf.Registration.ModelResponse.RegistationResponse
 import com.example.ehcf.Registration.ModelResponse.SpinnerModel
 import com.example.ehcf.databinding.ActivityRegistrationBinding
-import com.example.ehcf.login.activity.SignIn
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging

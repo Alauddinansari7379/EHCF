@@ -2,7 +2,6 @@ package com.example.ehcf.Profile.activity
 
 import android.app.Activity
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
@@ -27,7 +26,7 @@ import com.example.ehcf.Profile.modelResponse.ResetPassResponse
 import com.example.ehcf.R
 import com.example.ehcf.databinding.FragmentProfile2Binding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

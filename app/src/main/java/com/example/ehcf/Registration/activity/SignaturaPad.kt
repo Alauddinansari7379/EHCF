@@ -2,7 +2,6 @@ package com.example.ehcf.Registration.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Intent
@@ -16,12 +15,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
-import com.example.ehcf.Fragment.MainActivity
 import com.example.ehcf.Fragment.test.UploadRequestBody
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
@@ -29,7 +24,7 @@ import com.example.ehcf.PrivacyPolicies
 import com.example.ehcf.Registration.ModelResponse.RegistationResponse
 import com.example.ehcf.databinding.ActivitySignaturaPadBinding
 import com.example.ehcf.login.activity.SignIn
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging

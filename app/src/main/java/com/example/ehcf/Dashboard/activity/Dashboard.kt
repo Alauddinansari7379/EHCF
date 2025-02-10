@@ -1,7 +1,6 @@
 package com.example.ehcf.Dashboard.activity
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -14,10 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.postDelayed
 import androidx.core.widget.addTextChangedListener
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-import com.example.ehcf.Dashboard.adapter.AdapterAllDoctor
 import com.example.ehcf.Dashboard.adapter.AdapterFilteredDoctor
 import com.example.ehcf.Dashboard.adapter.AdapterNearByDoctor
-import com.example.ehcf.Dashboard.modelResponse.ModelAllDoctorNew
 import com.example.ehcf.Dashboard.modelResponse.ModelScarchByLocationAndSpc
 import com.example.ehcf.Dashboard.modelResponse.ModelSpecilList
 import com.example.ehcf.Fragment.HomeFragment
@@ -29,7 +26,7 @@ import com.example.ehcf.R
 import com.example.ehcf.Notification.Interface.apiInterface
 import com.example.ehcf.databinding.ActivityDashboard2Binding
 import com.example.ehcf.sharedpreferences.SessionManager
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback

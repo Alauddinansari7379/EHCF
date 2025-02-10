@@ -1,18 +1,15 @@
 package com.example.ehcf.OnlineDoctor.activity
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.OnlineDoctor.model.ModelOnlineDoctor
 import com.example.ehcf.OnlineDoctor.adapter.AdapterOnlineDoctor
 import com.example.ehcf.databinding.ActivityFindYourDoctor1Binding
-import com.example.myrecyview.apiclient.ApiClient
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

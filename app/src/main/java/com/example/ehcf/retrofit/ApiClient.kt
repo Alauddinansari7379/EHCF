@@ -1,6 +1,5 @@
-package com.example.myrecyview.apiclient
+package com.example.ehcf.retrofit
 
-import com.example.ehcf.retrofit.ApiInterface
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +14,6 @@ object ApiClient {
     private var retrofit: Retrofit? = null
     private val client: Retrofit?
         get() {
-            //somenath
             val interceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             val apiClient: OkHttpClient = OkHttpClient.Builder()
