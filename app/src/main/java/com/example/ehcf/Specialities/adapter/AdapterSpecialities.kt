@@ -39,6 +39,7 @@ class AdapterSpecialities(val context: Context, private val list: ModelSplic,pri
 
         holder.name.text = list.result[position].category_name.toString()
         Picasso.get().load("${sessionManager.imageurl}"+list.result[position].category_image).into(holder.image)
+//        Picasso.get().load("https://shariahequities.com/shariah_api/public/uploads/"+list.result[position].category_image).into(holder.image)
 
 
         holder.cardView.setOnClickListener {

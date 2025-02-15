@@ -92,7 +92,8 @@ class MainActivity : AppCompatActivity() {
         requestNotificationPermission()
 
         if (sessionManager.imageurl!!.isEmpty()){
-            sessionManager.imageurl="https://ehcf.in/uploads/"
+//            sessionManager.imageurl="https://ehcf.in/uploads/"
+            sessionManager.imageurl="https://shariahequities.com/shariah_api/public/uploads/"
         }
 
 

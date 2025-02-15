@@ -32,7 +32,7 @@ class AppointmentDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityAppointmentDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        sessionManager = SessionManager(context)
         bookingId = intent.getStringExtra("bookingId").toString()
         Log.e("bookingId", bookingId)
 

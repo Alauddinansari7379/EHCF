@@ -1,12 +1,11 @@
 package com.example.ehcf.Address.Activity
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Address.Adapter.AdapterAddressList
 import com.example.ehcf.Address.ModelResponse.AddAddressResponse
@@ -15,6 +14,7 @@ import com.example.ehcf.Helper.AppProgressBar
 import com.example.ehcf.Helper.myToast
 import com.example.ehcf.R
 import com.example.ehcf.databinding.ActivityAddressListBinding
+import com.example.ehcf.retrofit.ApiClient
 import com.example.ehcf.retrofit.ApiInterface
 import com.example.ehcf.sharedpreferences.SessionManager
 import retrofit2.Call
@@ -80,7 +80,8 @@ class AddressList : AppCompatActivity() {
         AppProgressBar.showLoaderDialog(context)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://ehcf.in/api/customer/")
+//            .baseUrl("https://ehcf.in/api/customer/")
+            .baseUrl(ApiClient.BASE_URL)
             .build()
             .create(ApiInterface::class.java)
 
@@ -139,7 +140,8 @@ class AddressList : AppCompatActivity() {
         AppProgressBar.showLoaderDialog(context)
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://ehcf.in/api/customer/")
+//            .baseUrl("https://ehcf.in/api/customer/")
+            .baseUrl(ApiClient.BASE_URL)
             .build()
             .create(ApiInterface::class.java)
 

@@ -4,11 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ehcf.Helper.myToast
-import com.example.ehcf.R
 import com.example.ehcf.Notification.Adapter.Adapter
 import com.example.ehcf.Notification.Interface.apiInterface
+import com.example.ehcf.R
 import com.example.ehcf.Specialities.model.ModelSplic
 import com.example.ehcf.databinding.ActivityApiTestingBinding
+import com.example.ehcf.retrofit.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +28,8 @@ class ApiTesting : AppCompatActivity() {
             val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             //.baseUrl("https://jsonplaceholder.typicode.com/")
-            .baseUrl("https://ehcf.in/api/customer/")
+//            .baseUrl("https://ehcf.in/api/customer/")
+                .baseUrl(ApiClient.BASE_URL)
             .build()
             .create(apiInterface::class.java)
 
